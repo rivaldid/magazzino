@@ -408,6 +408,11 @@ function table_next_mds() {
 $mask = "<th>NEXT</th>";
 return table_core("prossimo mds libero","SELECT task_IncrementaStringaMDS();",$mask);
 }
+
+function table_Scarichi() {
+$mask = "<th>Documento di scarico</th><th>Tipo Fornitura</th><th>Documento di fornitura</th><th>Provenienza</th><th>Destinazione</th><th>Data Carico</th><th>Data Scarico</th><th>Articoli</th><th>Note</th><th>Quantita'</th><th>Scansione scarico</th>";
+return table_core("lista scarichi","select * from listaScarichi;",$mask);
+}
  
  
 ?>

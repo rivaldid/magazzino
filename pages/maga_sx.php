@@ -14,6 +14,7 @@
 <li><a href="?page=task_scarichi">Scarichi</a></li>
 <li><a href="?page=task_ricerca">Magazzino</a></li>
 <li><a href="?page=task_compattazione">Compattazione</a></li>
+<li><a href="?page=output_scarichi">Visualizza Scarichi</a></li>
 </ul>
 </p>
 <p class="left_box_container">Utilita'
