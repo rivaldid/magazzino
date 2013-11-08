@@ -99,6 +99,10 @@ li { list-style-type: none; }
 	border-collapse:collapse;
 }
 
+.right table tr:hover {
+	background-color: #C0C0C0;
+}
+
 .left_container { 
 	padding: 0.3em;
 	font-size: 1.2em;
