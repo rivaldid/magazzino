@@ -78,7 +78,7 @@ function scarico_step2($idArticolo) {
 	
 	$note = safe($_POST['note']);
 
-	$callsql = "CALL taskScarico('{$idArticolo}','{$idRubricaRich}','{$tipoDocRich}','{$numDocRich}','{$quantita}','{$posOrigine}','{$posDestinazione}','{$data}','{$note}');";
+	echo $callsql = "CALL taskScarico('{$idArticolo}','{$idRubricaRich}','{$tipoDocRich}','{$numDocRich}','{$quantita}','{$posOrigine}','{$posDestinazione}','{$data}','{$note}');";
 	echo call_core("task Scarico",$callsql);
 	return true;
 }
