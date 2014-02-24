@@ -1,418 +1,272 @@
 <?php
 
 
-//**********************************************************************
-
-// PRIVATE/SERVICE
-
-
-function call_core($label,$sql) {
-$classemysql = new MysqlClass();
-$classemysql->connetti();
-$a = "<p class=\"insert_response\"> {$label}... ";
-$tmp = $classemysql->myquery($sql);
-if ($tmp) $a .= "ok!</p>";
-$classemysql->disconnetti();
-return $a;
+function optionlist_intestazioni($attivita) {
+$id_contatto = "id_contatto_".strtolower($attivita);
+if ($attivita == "")
+	$sql = "SELECT id_contatto,intestazione FROM RUBRICA ORDER BY intestazione;";
+else
+	$sql = "SELECT id_contatto,intestazione FROM RUBRICA WHERE attivita='{$attivita}' ORDER BY intestazione;";
+return optionlist_core($sql,$id_contatto,"2");
 }
 
 
-function selectstar_core($tabel) {
-	return "SELECT * FROM {$tabel};";
+function optionlist_merce() {
+$sql = "SELECT id_merce,tags,id_vendor FROM MERCE ORDER BY tags,id_vendor;";
+return optionlist_core($sql,"option_id_merce","3");
+}
+
+function optionlist_id_merce() {
+$sql = "SELECT id_merce FROM MERCE ORDER BY id_merce;";
+return optionlist_core_simple($sql,"id_merce","1");
 }
 
 
-/*
-function insert_core($tabella,$valori,$action) {
-$classemysql = new MysqlClass();
-$classemysql->connetti();
-$sql = _array2sql($tabella, $valori, $action);
-switch ($action) {
-	case "INSERT INTO":
-		$localecho = "Inserimento";
-		break;
-	case "UPDATE":
-		$localecho = "Aggiornamento";
-		break;
-	default:
-		killemall("Errore in accesso alle tabelle.");
+function optionlist_merce_da_tag_in_magazzino($tags) {
+$tags = explode(" ",epura_double($tags));
+$foo='0';
+foreach ($tags as $tag) {
+	if ($foo=='0') {
+		$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%'";
+		$foo='1';
+	} else
+		$sql .= " UNION SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%'";
 }
-$output[0] = "<p class=\"insert_response\">{$localecho} dati in tabella {$tabella}... ";
-$tmp = $classemysql->myquery($sql);
-if ($tmp) $output[0] .= "ok!</p>";
-$output[1] = mysql_insert_id();
-$classemysql->disconnetti();
-return $output;
+$sql .= " ORDER BY posizione,tags,id_vendor";
+return optionlist_core_double($sql,"option_id_merce_posizione","5");
 }
-*/
 
 
-function table_core($tabella,$sql,$mask) {
-$classemysql = new MysqlClass();
-$classemysql->connetti();
-$resultset = $classemysql->myquery($sql);
-$output = "<h3>Contenuto dati in {$tabella}...</h3>";
-$output .= "<table><tr>{$mask}</tr>";
-$numero_campi = mysql_num_fields($resultset);
-while ($riga = mysql_fetch_array($resultset, MYSQL_BOTH)) {
-	$output .= "<tr>";
-	for ($i=0; $i<$numero_campi; $i++) {
-		if (mysql_field_name($resultset,$i) == "file")
-			$output .= "<td><a href=\"registro/{$riga[$i]}\">{$riga[$i]}</a></td>";
-		else 
-			$output .= "<td>{$riga[$i]}</td>";
+function optionlist_merce_in_magazzino() {
+$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce);";
+return optionlist_core_double($sql,"option_id_merce_posizione","5");
+}
+
+
+/* etichette:
+ * [1-4] tags
+ * 5 posizioni
+ * 6 categorie documenti
+ * 7 destinazioni
+ */
+function optionlist_etichette($sel) {
+$sql = "SELECT label FROM etichette WHERE selettore=\"{$sel}\";";
+return optionlist_core_simple($sql,"listaetichette{$sel}","1");
+}
+
+
+function input_etichetta($selettore,$label) {
+$testsql = "SELECT label FROM etichette WHERE label='{$label}'";
+$result = service_get_field($testsql,"label");
+if (!isset($result)) {
+	$actionsql = "CALL input_etichette('{$selettore}','{$label}');";
+	call_core($label,$actionsql);
+	switch ($selettore) {
+		case 1:
+			$a = "Tag1 {$label} aggiunto";
+			break;
+		case 2:
+			$a = "Tag2 {$label} aggiunto";
+			break;
+		case 3:
+			$a = "Tag3 {$label} aggiunto";
+			break;
+		case 4:
+			$a = "Tag4 {$label} aggiunto";
+			break;
+		case 5:
+			$a = "Posizione {$label} aggiunta";
+			break;
+		case 6:
+			$a = "Tipo di documento {$label} aggiunto";
+			break;
+		case 7:
+			$a = "Destinazione {$label} aggiunta";
+			break;
+		default:
+			$a = "Probabile incongruenza di dati, riferire all'amministratore";
 	}
-	$output .= "</tr>";
+} else $a = "Nessun inserimento effettuato";
+return "<p>{$a}</p>";
 }
-$output .= "</table>";
-$classemysql->pulizia($resultset);
-$classemysql->disconnetti();
-return $output;	
-}
-
-
-function optionlist_core_simple($sql,$mask,$n) {
-$classemysql = new MysqlClass();
-$classemysql->connetti();
-$tmp = $classemysql->myquery($sql);
-$output = "<select name=\"{$mask}\">\n";
-$output .= "<option selected=\"selected\" value=\"NULL\"></option>\n";
-while ($riga = mysql_fetch_row($tmp)) {
-	$output .= "<option value=\"";
-	for ($i=0; $i<$n; $i++) {
-		if ($i>0) $output .= " ";
-		$output .= $riga[$i];
-	}
-	$output .= "\">";
-	for ($i=0; $i<$n; $i++) {
-		if ($i>0) $output .= " ";
-		$output .= "[{$riga[$i]}]";
-	}
-	$output .= "</option>\n";
-}
-$output .= "</select>";
-$classemysql->pulizia($tmp);
-$classemysql->disconnetti();
-return $output;
-}
-
-
-function optionlist_core($sql,$mask,$n) {
-$classemysql = new MysqlClass();
-$classemysql->connetti();
-$tmp = $classemysql->myquery($sql);
-$output = "<select name=\"{$mask}\">\n";
-$output .= "<option selected=\"selected\" value=\"NULL\"></option>\n";
-while ($riga = mysql_fetch_row($tmp)) {
-	$output .= "<option value=\"{$riga[0]}\">";
-	for ($i=1; $i<$n; $i++) {
-		if ($i>1) $output .= " ";
-		$output .= "[{$riga[$i]}]";
-	}
-	$output .= "</option>\n";
-}
-$output .= "</select>";
-$classemysql->pulizia($tmp);
-$classemysql->disconnetti();
-return $output;
-}
-
-
-
-function service_get_field($sql,$target) {
-	$classemysql = new MysqlClass();
-	$classemysql->connetti();
-	$resultset = $classemysql->myquery($sql);
-	$row = mysql_fetch_assoc($resultset);
-	$classemysql->pulizia($resultset);
-	$classemysql->disconnetti();
-	return $row[$target];	
-}
-
-
-
-
-//**********************************************************************
-
-
-// PUBLIC OPTIONLIST AMMINISTRAZIONE
-
-function optionlist_intestazioni() { //REGISTRO
-return optionlist_core(selectstar_core("listaIntestazioni"),"idRubrica","3");
-}
-
-function optionlist_fornitori() { //ORDINI FORNITURE
-return optionlist_core(selectstar_core("listaFornitori"),"idRubricaFornitore","2");
-}
-
-function optionlist_DocOrdini() { //ORDINI FORNITURE
-return optionlist_core_simple(selectstar_core("listaDocOrdini"),"docOrdine","2");
-}
-
-function optionlist_intestazioneMittentiOrdine() { //ORDINI FORNITURE
-return optionlist_core(selectstar_core("listaIntestazioneMittentiOrdine"),"idRubricaOrdinante","2");
-}
-
-function optionlist_trasportatori() { //FORNITURE
-return optionlist_core(selectstar_core("listaTrasportatori"),"idRubricaTrasportatore","2");
-}
-
-function optionlist_NumDDT() { //FORNITURE
-return optionlist_core_simple(selectstar_core("listaNumDDT"),"numDocFornitura","1");
-}
-
-function optionlist_TipoNumOrdiniEmessi() { //CONTABILITA'
-return optionlist_core_simple(selectstar_core("listaTipoNumOrdiniEmessi"),"tipoNumOrdini","2");
-}
-
-function optionlist_tipoDoc() {
-$sql = "SELECT label FROM tipoDoc;";
-return optionlist_core_simple($sql,"tipoDoc","1");
-}
-
-function optionlist_tipoDoc_ordine() {
-$sql = "SELECT label FROM tipoDoc WHERE ambito=\"ordine\";";
-return optionlist_core_simple($sql,"tipoDoc","1");
-}
-
-
-// PUBLIC OPTIONLIST MAGAZZINO
-
-function optionlist_tags($livello) {
-return optionlist_core_simple("SELECT label FROM tags WHERE livello=\"{$livello}\";","tag_l{$livello}","1");
-}
-
-function optionlist_articoli() {
-return optionlist_core(selectstar_core("articoli"),"idArticolo","3");
-}
-
-function optionlist_posizioni() {
-return optionlist_core_simple(selectstar_core("posizioni"),"posizioni","1");
-}
-
-function optionlist_piazzamenti() {
-return optionlist_core_simple(selectstar_core("piazzamenti"),"piazzamenti","1");
-}
-
-function optionlist_disponibilitaArticoli() {
-return optionlist_core("CALL disponibilitaArticoli();","idArticolo","3");
-}
-
-function optionlist_disponibilitaArticoliSenzaAsset() {
-return optionlist_core("CALL disponibilitaArticoliSenzaAsset();","idArticolo","3");
-}
-
-function optionlist_intestazioni_richiedenti() {
-return optionlist_core(selectstar_core("listaRichiedenti"),"idRubricaRich","2");
-}
-
-function optionlist_destinazioni() {
-return optionlist_core_simple(selectstar_core("destinazioni"),"posDestinazione","1");
-}
-
-function optionlist_posizioniOccupate($idArticolo) {
-$tags = service_get_field("SELECT * FROM articoli WHERE idArticolo=\"{$idArticolo}\"","tags");
-return optionlist_core_simple("CALL posizioniOccupate('{$tags}');","posOrigine","1");
-}
-
-function optionlist_tagsDisponibili() {
-return optionlist_core_simple("CALL tagsDisponibili();","tags","1");
-}
-
-function optionlist_assetSerialptNumber() {
-return optionlist_core_simple(selectstar_core("listaAssetIN_SerialptNumber"),"serialptNumber","2");
-}
-
-function optionlist_doc_non_in_colli() {
-$sql = "SELECT data,idRubrica,tipoDoc,numDoc,intestazione FROM registro JOIN rubrica USING (idRubrica)
-WHERE (idRubrica,tipoDoc,numDoc) NOT IN (SELECT idRubrica,tipoDoc,numDoc FROM Colli) ORDER BY data;";
-return optionlist_core_simple($sql,"documento","5");
-}
-
-
-
-//**********************************************************************
-
-
-// PUBLIC TABLE AMMINISTRAZIONE 
 
 
 function table_rubrica() {
-$sql = "SELECT * FROM stampaRubrica;";
-$mask = "<th>Tipo contatto</th>
-		<th>Intestazione</th>
-		<th>Partita IVA</th>
-		<th>Codice fiscale</th>
-		<th>Indirizzo</th>
-		<th>CAP</th>
-		<th>Citta'</th>
-		<th>Nazione</th>
-		<th>Telefono</th>
-		<th>FAX</th>
-		<th>Sito Web</th>
-		<th>eMail</th>";
+$sql = "SELECT * FROM RUBRICA ORDER BY intestazione;";
+$mask = "<th>id</th><th>Intestazione</th><th>Attivita'</th><th>Partita IVA</th><th>Codice Fiscale</th>
+<th>Indirizzo</th><th>Telefono</th><th>FAX</th><th>Sito Web</th><th>@mail</th>";
 return table_core("rubrica",$sql,$mask);
 }
 
 
 function table_registro() {
-$sql = "SELECT * FROM stampaRegistro;";
-$mask = "<th>Attivita'</th>
-		<th>Mittente</th>
-		<th>Tipo</th>
-		<th>Numero</th>
-		<th>Data</th>
-		<th>Scansione</th>";
+$sql = "SELECT intestazione,categoria,numero,gruppo,data,file FROM REGISTRO LEFT JOIN RUBRICA USING(id_contatto) ORDER BY data,intestazione,categoria,numero;";
+$mask = "<th>Intestazione</th><th>Tipo</th><th>Numero</th><th>Gruppo</th><th>Data</th><th>File</th>";
 return table_core("registro",$sql,$mask);
 }
 
 
-function table_ordini() {
-$mask = "<th>Data</th><th>Ordinante</th><th>Tipo</th><th>Numero</th>
-<th>Fornitore</th><th>Codice fornitore</th><th>TAGS</th><th>Quantita'</th><th>Scansione ordine</th>";
-return table_core("ordini",selectstar_core("listaOrdini"),$mask);
+function table_etichette() {
+$sql = "SELECT 'Tag1',label FROM etichette WHERE selettore='1' UNION
+SELECT 'Tag2',label FROM etichette WHERE selettore='2' UNION
+SELECT 'Tag3',label FROM etichette WHERE selettore='3' UNION
+SELECT 'Tag4',label FROM etichette WHERE selettore='4' UNION
+SELECT 'Posizione',label FROM etichette WHERE selettore='5' UNION
+SELECT 'Destinazione',label FROM etichette WHERE selettore='7' UNION
+SELECT 'Tipo di documento',label FROM magazzino.etichette WHERE selettore='6';";
+$mask = "<th>Tipo di etichetta</th><th>Etichetta</th>";
+return table_core("etichette",$sql,$mask);
 }
 
 
-function table_forniture() {
-$mask = "<th>Tipo fornitura</th><th>Numero fornitura</th><th>Data</th><th>Fornitore</th>
-<th>Tipo ordine</th><th>Numero ordine</th><th>Richiedente</th><th>Scansione doc fornitura</th>";
-return table_core("forniture",selectstar_core("listaForniture"),$mask);
+function table_magazzino() {
+$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) ORDER BY posizione,tags,id_vendor;";
+$mask = "<th>Posizione</th><th>TAGS</th><th>Codice vendor</th><th>Giacenza</th><th>Descrizione</th>";
+return table_core("magazzino",$sql,$mask);
 }
 
 
 function table_log() {
-$mask = "<th>Merce</th><th>Data</th><th>Evento</th><th>Quantita'</th>";
-return table_core("log","CALL log();",$mask);
+$sql = "SELECT data, status, posizione, 
+		intestazione, categoria, numero, 
+		tags, id_vendor, descrizione, 
+		quantita, note 
+		FROM view_log;";
+		
+$mask = "<th>Data</th><th>Status</th><th>Posizione</th>
+		<th>Fornitore</th><th>Tipo</th><th>Numero</th>
+		<th>TAGS</th><th>id Vendor</th><th>Descrizione merce</th>
+		<th>Quantita'</th><th>Note</th>";
+		
+return table_core("transazioni",$sql,$mask);
 }
 
 
-function table_contabilita($idRubricaOrdinante,$tipoDocOrdinante,$numDocOrdinante) {
-$mask = "<th>Merce</th><th>TAGS</th><th>Ordine</th><th>Consegna</th><th>Rimanenza</th>";
-$callsql = "CALL taskContabilitaMerceOrdinata('{$idRubricaOrdinante}','{$tipoDocOrdinante}','{$numDocOrdinante}');";
-$intestazione = service_get_field("SELECT intestazione FROM rubrica WHERE idRubrica=\"{$idRubricaOrdinante}\"","intestazione");
-$a = "<h3><i>Riassunto contabilita per ordine {$tipoDocOrdinante} numero {$numDocOrdinante} emesso da {$intestazione}</i></h3>";
-$a .= table_core("contabilita",$callsql,$mask);
+function table_ordini() {
+$sql = "SELECT data,status,posizione,
+		intestazione,tipo_fornitura,numero_fornitura,
+		tags,id_vendor,descrizione,
+		quantita,note,
+		tipo_ordine,numero_ordine,trasportatore 
+		FROM view_log_ordini;";
+
+$mask = "<th>Data</th><th>Status</th><th>Posizione</th>
+<th>Fornitore</th><th>Tipo</th><th>Numero</th>
+<th>TAGS</th><th>id Vendor</th><th>Descrizione merce</th>
+<th>Quantita'</th><th>Note</th>
+<th>Tipo ordine</th><th>Numero ordine</th><th>Trasportatore</th>";
+
+return table_core("ordini",$sql,$mask);
+}
+
+
+function table_scarichi() {
+$sql = "SELECT data,posizione,tags,id_vendor,quantita,intestazione,numero,note FROM OPERAZIONI
+LEFT JOIN (SELECT id_merce,tags,id_vendor FROM MERCE) AS merce USING(id_merce)
+LEFT JOIN (SELECT id_contatto,id_documento,numero FROM REGISTRO) AS registro USING(id_documento)
+LEFT JOIN (SELECT id_contatto,intestazione FROM RUBRICA) as rubrica USING(id_contatto)
+WHERE direzione='0' ORDER BY data DESC,posizione;";
+$mask = "<th>Data</th><th>Posizione</th><th>TAGS</th><th>Id Vendor</th><th>Quantita</th><th>Richiedente</th><th>Scarico</th><th>Note</th>";
+return table_core("scarichi",$sql,$mask);
+}
+
+
+function table_merce() {
+$sql = "SELECT * FROM MERCE ORDER BY tags,id_vendor;";
+$mask = "<th>id</th><th>TAGS</th><th>Codice vendor</th><th>Descrizione</th>";
+return table_core("merce",$sql,$mask);
+}
+
+
+function table_operazioni_onclick() {
+$sql = "SELECT * FROM view_log_ordini;";
+$mask = "<th>Data</th><th>Status</th><th>Posizione</th><th>Intestazione</th><th>Tipo fornitura</th><th>Numero fornitura</th>
+		<th>TAGS</th><th>id Vendor</th><th>Descrizione</th><th>Quantita'</th><th>Note</th>
+		<th>Tipo ordine</th><th>Numero ordine</th><th>Trasportatore</th>";
+
+$a = atitolo."Modifica valori in operazioni".ctitolo.accapo;
+$a .= atable.accapo.athead.atr.$mask.ctr.cthead.accapo;
+
+$classemysql = new MysqlClass();
+$classemysql->connetti();
+
+$resultset = $classemysql->myquery($sql);
+
+while ($riga = mysql_fetch_row($resultset)) {
+	$a .= atr.accapo;
+	for ($i=4; $i<18; $i++)
+		$a .= atd."<a href=\"?page=edit&id=".$riga[0]."\">".$riga[$i]."</a>".ctd.accapo;
+	$a .= ctr.accapo;
+}
+
+$classemysql->pulizia($resultset);
+$classemysql->disconnetti();
+
+$a .= ctable.accapo;
 return $a;
 }
 
 
-function table_esitoRicercaDoc($data,$tipoDoc,$numDoc) {
-$mask = "<th>Data</th><th>Progressivo</th><th>Tipo</th><th>Numero</th><th>Scansione</th><th>Intestazione</th><th>Contatto</th>";
-return table_core("ricercaDoc","CALL taskRicercaDoc('{$data}','{$tipoDoc}','{$numDoc}');",$mask);
+function table_operazioni_edit($id_operazione) {
+$sql = "SELECT * FROM view_log_ordini WHERE id_operazione={$id_operazione};";
+$mask = "<th>Campo</th><th>Valore attuale</th><th>Flag</th><th>Nuovo valore</th>";
+
+$a = atitolo."Modifica l'operazione #".$id_operazione.ctitolo.accapo;
+$a .= "<form name=\"merce\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=edit")."\">".accapo;
+$a .= atable.accapo.athead.atr.$mask.ctr.cthead.accapo;
+
+$classemysql = new MysqlClass();
+$classemysql->connetti();
+
+$resultset = $classemysql->myquery($sql);
+
+while ($riga = mysql_fetch_row($resultset)) {
+	$a .= atr.atd."<b>Data</b>".ctd.atd.$riga[4].ctd.atd."<input name=\"check_data\" type=\"checkbox\"/>".ctd.atd.date_picker("data").ctd.ctr.accapo;
+	$a .= atr.atd."<b>Status</b>".ctd.atd.$riga[5].ctd.atd."<input name=\"check_status\" type=\"checkbox\"/ disabled>".ctd.atd."Non modificabile".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Posizione</b>".ctd.atd.$riga[6].ctd.atd."<input name=\"check_posizione\" type=\"checkbox\"/ disabled>".ctd.atd."Non Modificabile".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Fornitore</b>".ctd.atd.$riga[7].ctd.atd."<input name=\"check_fornitore\" type=\"checkbox\"/>".ctd.atd.optionlist_intestazioni("Fornitore").ctd.ctr.accapo;
+	$a .= atr.atd."<b>Fornitura</b>".ctd.atd.$riga[8]." - ".$riga[9].ctd.atd."<input name=\"check_fornitura\" type=\"checkbox\"/>".ctd.atd.optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.ctr.accapo;
+	
+	$a .= atr.atd."<b>Merce</b>".ctd.atd;
+		$a .= "<b>TAGS:</b> ".$riga[10]."<br>".accapo;
+		$a .= "<b>id Vendor:</b> ".$riga[11]."<br>".accapo;
+		$a .= "<b>Descrizione:</b> ".$riga[12]."<br>".accapo;
+	$a .= ctd.accapo.atd."<input name=\"check_merce\" type=\"checkbox\"/>".ctd.accapo.atd.accapo;
+		$a .= "Tag1 ".optionlist_etichette("1")."<input type=\"text\" name=\"testotag1\"><br>".accapo;
+		$a .= "Tag2 ".optionlist_etichette("2")."<input type=\"text\" name=\"testotag2\"><br>".accapo;
+		$a .= "Tag3 ".optionlist_etichette("3")."<input type=\"text\" name=\"testotag3\"><br>".accapo;
+		$a .= "Tag4 ".optionlist_etichette("4")."<input type=\"text\" name=\"testotag4\"><br>".accapo;
+		$a .= "id Vendor "."<input type=\"text\" name=\"id_vendor\"><br>".accapo;
+		$a .= "Descrizione "."<input type=\"text\" name=\"descrizione_merce\">".accapo;
+	$a .= ctd.accapo.ctr.accapo;
+	
+	$a .= atr.atd."<b>Quantita'</b>".ctd.atd.$riga[13].ctd.atd."<input name=\"check_quantita\" type=\"checkbox\"/>".ctd.atd."<input type=\"text\" name=\"quantita\">".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Note</b>".ctd.atd.$riga[14].ctd.atd."<input name=\"check_note\" type=\"checkbox\"/>".ctd.atd."<input type=\"text\" name=\"note\">".ctd.ctr.accapo;
+	
+	$a .= atr.atd."<b>Ordine</b>".ctd.atd.$riga[15]." - ".$riga[16].ctd.atd."<input name=\"check_ordine\" type=\"checkbox\"/>".ctd.accapo.atd;
+	$a .= "<select name=\"tipo_ordine\"><option selected=\"selected\" value=\"NULL\">OFF</option><option value=\"ODA\">ODA</option><option value=\"BDC\">BDC</option>".accapo;
+	$a .= "<input type=\"text\" name=\"numero_ordine\">".ctd.ctr.accapo;
+	
+	$a .= atr.atd."<b>Trasportatore</b>".ctd.atd.$riga[17].ctd.atd."<input name=\"check_trasportatore\" type=\"checkbox\"/>".ctd.atd.optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
+	
+	$a .= "<input type=\"hidden\" name=\"id_operazione\" value=\"".$riga[0]."\">".accapo;
+	//$a .= "<input type=\"hidden\" name=\"id_merce\" value=\"".$riga[1]."\">".accapo;
+	//$a .= "<input type=\"hidden\" name=\"id_contatto\" value=\"".$riga[2]."\">".accapo;
+	//$a .= "<input type=\"hidden\" name=\"id_documento\" value=\"".$riga[3]."\">".accapo;
+	$a .= "<input type=\"hidden\" name=\"status\" value=\"".$riga[5]."\">".accapo;
+	$a .= "<input type=\"hidden\" name=\"posizione\" value=\"".$riga[6]."\">".accapo;
+}
+
+$classemysql->pulizia($resultset);
+//$classemysql->disconnetti();
+
+$a .= atr.atd.ctd.atd.ctd.atd.ctd.atd."<input type=\"reset\" name=\"reset\" value=\"Clear\">\n<input type=\"submit\" name=\"submit\" value=\"Submit\">".ctd.ctr;
+$a .= ctable.accapo;
+$a .= "</form>".accapo;
+
+return $a;
 }
 
 
-function table_tipodoc() {
-$sql = "SELECT * FROM tipoDoc ORDER BY ambito;";
-return table_core("tipoDoc",$sql,"<th>Etichetta</th><th>Ambito</th>");
-}
-
-
-function table_next_codint() {
-$mask = "<th>NEXT</th>";
-return table_core("prossimo codice interno libero","SELECT task_IncrementaStringa();",$mask);
-}
-
-
-function table_Colli() {
-$sql = "SELECT idColli,tipoDoc,numDoc,data,file,intestazione,tipoRubrica FROM Colli JOIN registro USING (idRubrica,tipoDoc,numDoc) JOIN rubrica USING (idRubrica);";
-$mask = "<th>Progressivo</th><th>Documento</th><th>Numero</th><th>Data</th><th>Scansione</th><th>Intestazione</th><th>Attivita'</th>";
-return table_core("documenti raggruppati (ex colli)",$sql,$mask);
-}
-
-
-// PUBLIC TABLE MAGAZZINO
-
-function table_tags() {
-return table_core("tags",selectstar_core("tags"),"<th>Livello</th><th>Etichetta</th>");
-}
-
-function table_locations() {
-return table_core("locations",selectstar_core("listaLocations"),"<th>Indicatore</th><th>Etichetta</th>");
-}
-
-
-function table_articoli() {
-$sql = "SELECT tags,note FROM articoli;";
-$mask = "<th>TAGS</th><th>Note</th>";
-return table_core("articoli",$sql,$mask);
-}
-
-function table_esitoRicercaTags($tags) {
-$callsql = "CALL taskRicercaArticolo(\"{$tags}\")";
-$mask = "<th>TAGS</th><th>Articoli disponibili</th><th>Posizione</th>";
-return table_core("articoli",$callsql,$mask);
-}
-
-
-function table_asset() {
-$mask = "<th>TAGS</th><th>Posizione</th><th>Fornitura</th>
-<th>Serial</th><th>PT Number</th><th>Note</th><th>Data</th>";
-return table_core("asset",selectstar_core("listaAsset"),$mask);
-}
-
-
-function table_esitoRicercaAsset($input) {
-$mask = "<th>Serial</th><th>PT Number</th><th>Note</th><th>Posizione</th>";
-return table_core("asset","CALL taskRicercaAsset('{$input}');",$mask);
-}
-
-
-function table_NumOrfani() {
-$sql = "SELECT provenienza,tipoRubrica,intestazione,tipoDoc,numDoc FROM
-(SELECT * FROM sublista_numdoc_in_task WHERE (idRubrica,tipoDoc,numDoc) NOT IN (SELECT idRubrica,tipoDoc,numDoc FROM registro)) AS sel2
-JOIN rubrica USING (idRubrica);";
-$mask = "<th>Provenienza</th><th>tipo</th><th>Intestazione</th><th>DOCUMENTO</th><th>NUMERO</th>";
-return table_core("tasks",$sql,$mask);
-}
-
-
-function table_DocOrfani() {
-$sql = "SELECT tipoRubrica,intestazione,tipoDoc,numDoc,data,file FROM listaDocOrfani JOIN rubrica USING (idRubrica);";
-$mask = "<th>Attivita</th><th>Intestazione</th><th>Tipo</th><th>Numero</th><th>Data</th><th>Scansione</th>";
-
-/*
-SELECT * FROM registro WHERE (idRubrica,tipoDoc,numDoc)
-NOT IN
-(SELECT idRubricaOrdinante AS idRubrica,tipoDocOrdinante AS tipoDoc,numDocOrdinante AS numDoc FROM ordini
-UNION
-SELECT idRubricaFornitore,tipoDocFornitura,numDocFornitura FROM forniture
-UNION
-SELECT idRubricaOrdinante,tipoDocOrdinante,numDocOrdinante FROM forniture
-UNION
-SELECT idRubricaFornitore,tipoDocFornitura,numDocFornitura FROM consegne
-UNION
-SELECT idRubricaFornitore,tipoDocFornitura,numDocFornitura FROM carichi
-UNION
-SELECT idRubricaRich,tipoDocRich,numDocRich FROM scarichi)
-*/
-
-return table_core("documenti",$sql,$mask);
-}
-
-
-function table_ddt() {
-$mask = "<th>Data</th><th>Progressivo</th><th>Tipo</th><th>Numero</th><th>Scansione</th><th>Intestazione</th><th>Contatto</th>";
-return table_core("DDT","CALL taskRicercaDoc('','DDT','');",$mask);
-}
-
-
-function table_mds() {
-$mask = "<th>Data</th><th>Progressivo</th><th>Tipo</th><th>Numero</th><th>Scansione</th><th>Intestazione</th><th>Contatto</th>";
-return table_core("MDS","CALL taskRicercaDoc('','MDS','');",$mask);	
-}
-
-
-function table_next_mds() {
-$mask = "<th>NEXT</th>";
-return table_core("prossimo mds libero","SELECT task_IncrementaStringaMDS();",$mask);
-}
-
-function table_Scarichi() {
-$mask = "<th>Documento di scarico</th><th>Tipo Fornitura</th><th>Documento di fornitura</th><th>Provenienza</th><th>Destinazione</th><th>Data Carico</th><th>Data Scarico</th><th>Articoli</th><th>Note</th><th>Quantita'</th><th>Scansione scarico</th>";
-return table_core("lista scarichi","select * from listaScarichi;",$mask);
-}
- 
- 
 ?>
+

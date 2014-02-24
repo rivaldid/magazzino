@@ -1,458 +1,283 @@
 <?php
 
+function form_etichette() {
+$a = atitolo."Aggiungi etichetta".ctitolo.accapo;
+$a .= "<form name=\"etichette\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=etichette")."\">".accapo;
+$a .= atable.accapo;
 
-//  FORM AMMINISTRAZIONE
+	$a .= atr.accapo.atd."Selettore".ctd.accapo.atd.accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"1\">Tag1".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"2\">Tag2".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"3\">Tag3".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"4\">Tag4".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"5\">Posizione".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"7\">Destinazione".accapo;
+	$a .= "<input type=\"radio\" name=\"selettore\" value=\"6\">Tipo di documento".accapo;
+	$a .= ctd.accapo.ctr.accapo;
+	
+	$a .= atr.accapo.atd."Etichetta".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"label\">".ctd.accapo.ctr.accapo;
+	
+$a .= fine_form;
+return $a;
+}
+
+function form_rubrica() {
+$a = atitolo."Aggiungi contatto in rubrica".ctitolo.accapo;
+$a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=rubrica")."\">".accapo;
+$a .= atable.accapo;
+	// intestazione
+	$a .= atr.accapo.atd."Intestazione".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"intestazione\">".ctd.accapo.ctr.accapo;
+	// attivita
+	$a .= atr.accapo.atd."Attivita'".ctd.accapo.atd.accapo;
+	$a .= "<input type=\"radio\" name=\"attivita\" value=\"Fornitore\">Fornitore".accapo;
+	$a .= "<input type=\"radio\" name=\"attivita\" value=\"Trasportatore\">Trasportatore".accapo;
+	$a .= "<input type=\"radio\" name=\"attivita\" value=\"Richiedente\">Richiedente".accapo;
+	$a .= ctd.accapo.ctr.accapo;
+	// partita iva
+	$a .= atr.accapo.atd."Partita IVA".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"partita_iva\">".ctd.accapo.ctr.accapo;
+	// codice fiscale
+	$a .= atr.accapo.atd."Codice Fiscale".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"codice_fiscale\">".ctd.accapo.ctr.accapo;
+	// indirizzo
+	$a .= atr.accapo.atd."Indirizzo".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"indirizzo\">".ctd.accapo.ctr.accapo;
+	// telefono
+	$a .= atr.accapo.atd."Telefono".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"telefono\">".ctd.accapo.ctr.accapo;
+	// fax
+	$a .= atr.accapo.atd."Fax".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"fax\">".ctd.accapo.ctr.accapo;
+	// sito web
+	$a .= atr.accapo.atd."Sito Web".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"sito_web\">".ctd.accapo.ctr.accapo;
+	// email
+	$a .= atr.accapo.atd."@mail".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"email\">".ctd.accapo.ctr.accapo;
+$a .= fine_form;
+return $a;
+}
 
 
-function form_input_rubrica() {
-	$a = atitolo."Inserisci contatto in rubrica".ctitolo.accapo;
-	$a .= "<form name=\"input_rubrica\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_rubrica")."\">".accapo;
+function form_registro() {
+$a = atitolo."Aggiungi documento in registro".ctitolo.accapo;
+$a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=registro")."\">".accapo;
+$a .= atable.accapo;
+
+$a .= atr.accapo.atd."Mittente".ctd.atd.optionlist_intestazioni("").ctd.ctr.accapo;
+$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo;
+$a .= atd.optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
+
+$a .= atr.accapo.atd."Progressivo (collo)".ctd.accapo.atd."<input type=\"text\" name=\"gruppo\">".ctd.accapo.ctr.accapo;
+$a .= atr.accapo.atd."Data".ctd.accapo.atd.date_picker("data").ctd.accapo.ctr.accapo;
+
+$a .= atr.accapo.atd."Scansione".ctd.accapo.atd.accapo;
+$a .= "<input type=\"file\" name=\"file1\">".accapo."<input type=\"hidden\" name=\"action\" value=\"upload\">".accapo;
+$a .= ctd.accapo.ctr.accapo;
+
+$a .= fine_form;
+return $a;
+}
+
+
+function form_moving() {
+$a = atitolo."Sposta e compatta le aree del magazzino".ctitolo.accapo;
+$a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=magazzino")."\">".accapo;
+$a .= atable.accapo;
+
+$a .= atr.accapo.atd."Seleziona merce da spostare".ctd.accapo.atd.optionlist_merce_in_magazzino().ctd.accapo.ctr.accapo;
+$a .= atr.accapo.atd."Nuova posizione".ctd.accapo.atd.accapo;
+$a .= optionlist_etichette("5").accapo."<input type=\"text\" name=\"posizione_finale\">".accapo;
+$a .= ctd.accapo.ctr.accapo;
+
+$a .= fine_form;
+return $a;
+}
+
+
+function form_aggiorna_merce() {
+$a = atitolo."Aggiorna merce inserita a sistema".ctitolo.accapo;
+$a .= "<form name=\"merce\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=merce")."\">".accapo;
+$a .= atable.accapo;
+
+	$a .= atr.accapo.atd."Identificativo merce da aggiornare".ctd.accapo.atd.accapo.optionlist_id_merce().accapo.ctd.accapo.ctr.accapo;
+
+	$a .= atr.accapo.atd."tag1 (cosa e')".ctd.accapo.atd.optionlist_etichette("1")."<input type=\"text\" name=\"testotag1\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."tag2 (come e')".ctd.accapo.atd.optionlist_etichette("2")."<input type=\"text\" name=\"testotag2\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."tag3 (quanto e')".ctd.accapo.atd.optionlist_etichette("3")."<input type=\"text\" name=\"testotag3\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."lista altri tags".ctd.accapo.atd.optionlist_etichette("4")."<input type=\"text\" name=\"testotag4\">".ctd.accapo.ctr.accapo;
+
+	$a .= atr.accapo.atd."Codice vendor".ctd.accapo.atd."<input type=\"text\" name=\"id_vendor\">".ctd.accapo.ctr.accapo;
+
+	$a .= atr.accapo.atd."Descrizione merce".ctd.accapo.atd."<input type=\"text\" name=\"descrizione_merce\">".ctd.accapo.ctr.accapo;
+
+$a .= fine_form;
+return $a;
+}
+
+
+function form_carico($b,$c,$d,$e,$f,$g,$h,$i) {
+$a = atitolo."Carico merce".ctitolo.accapo;
+$a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=carico")."\">".accapo;
+$a .= atable.accapo;
+	
+	// b) id_fornitore 
+	if ($b == "")
+		$a .= atr.accapo.atd."Fornitore".ctd.atd.optionlist_intestazioni("Fornitore").ctd.ctr.accapo;
+	else {
+		$bb = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$b}\"","intestazione");
+		$a .= atr.accapo.atd."Fornitore".ctd.atd.$bb.ctd.ctr.accapo;
+	}
+		
+	// c) id_trasportatore
+	if (($c == "") OR ($c == "NULL"))
+		$a .= atr.accapo.atd."Trasportatore".ctd.atd.optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
+	else {
+		$cc = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$c}\"","intestazione");
+		$a .= atr.accapo.atd."Trasportatore".ctd.atd.$cc.ctd.ctr.accapo;
+	}
+		
+	// de) categoria & numero
+	if ($e == "") {
+		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo;
+		$a .= atd.optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
+	}
+	else 
+		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.$d." ".$e.ctd.accapo.ctr;
+	
+	// f) data
+	if ($f == "") {
+		$a .= atr.accapo.atd."Data carico".ctd.accapo;
+		$a .= atd.date_picker("data").ctd.accapo.ctr.accapo;
+	}
+	else 
+		$a .= atr.accapo.atd."Data carico".ctd.accapo.atd.$f.ctd.accapo.ctr.accapo;
+	
+	// g) note
+	if ($g == "") {
+		$a .= atr.accapo.atd."Note carico".ctd.accapo;
+		$a .= atd."<input type=\"text\" name=\"note\">".ctd.accapo.ctr.accapo;
+	}
+	else 
+		$a .= atr.accapo.atd."Note carico".ctd.accapo.atd.$g.ctd.accapo.ctr.accapo;
+	
+	// hi) ordine
+	if ($i == "") {
+		$a .= atr.accapo.atd."Tipo e numero ordine".ctd.accapo.atd.accapo;
+		$a .= "<input type=\"radio\" name=\"categoria_ordine\" value=\"ODA\" checked=\"checked\">ODA".accapo;
+		$a .= "<input type=\"radio\" name=\"categoria_ordine\" value=\"BDC\">BDC".accapo;
+		$a .= "<input type=\"text\" name=\"numero_ordine\">".accapo.ctd.accapo.ctr.accapo;
+	}
+	else
+		$a .= atr.accapo.atd."Tipo e numero ordine".ctd.accapo.atd.$h." ".$i.ctd.accapo.ctr.accapo;
+	
+
+	
+	// ******************** CARICO PARTE STATICA ***************************
+	
+	// id_merce da modello
+	$a .= atr.accapo.atd."Scegli modello tags merce".ctd.accapo;
+	$a .= atd.accapo.optionlist_merce().accapo.ctd.accapo.ctr.accapo;
+	
+	// nuovo inserimento merce
+	//tags
+	$a .= atr.accapo.atd."Nuovo modello tags merce".ctd.accapo.atd.accapo;
 	$a .= atable.accapo;
+	$a .= atr.accapo.atd."tag1 (cosa e')".ctd.accapo.atd.optionlist_etichette("1")."<input type=\"text\" name=\"testotag1\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."tag2 (come e')".ctd.accapo.atd.optionlist_etichette("2")."<input type=\"text\" name=\"testotag2\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."tag3 (quanto e')".ctd.accapo.atd.optionlist_etichette("3")."<input type=\"text\" name=\"testotag3\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."lista altri tags".ctd.accapo.atd.optionlist_etichette("4")."<input type=\"text\" name=\"testotag4\">".ctd.accapo.ctr.accapo;
+
+	// id_vendor
+	$a .= atr.accapo.atd."Codice vendor".ctd.accapo.atd."<input type=\"text\" name=\"id_vendor\">".ctd.accapo.ctr.accapo;
+
+	// descrizione_merce
+	$a .= atr.accapo.atd."Descrizione merce".ctd.accapo.atd."<input type=\"text\" name=\"descrizione_merce\">".ctd.accapo.ctr.accapo;
+	$a .= ctable.accapo;
+	$a .= ctd.accapo.ctr.accapo;
 	
-	// tipo_rubrica
-	$a .= atr.accapo.atd."Tipo di contatto".ctd.accapo;
-	$a .= atd.accapo;
-	$a .= "<select name=\"tipoRubrica\">".accapo;
-	$a .= "<option selected=\"selected\"></option>".accapo;
-	$a .= "<option value=\"Fornitore\">Fornitore</option>".accapo;
-	$a .= "<option value=\"Trasportatore\">Trasportatore</option>".accapo;
-	$a .= "<option value=\"Richiedente\">Richiedente</option>".accapo;
-	$a .= "</select>".accapo;
-	$a .= ctd.accapo;
-	$a .= ctr.accapo;
+	// quantita
+	$a .= atr.accapo.atd."Quantita'".ctd.accapo;
+	$a .= atd."<input type=\"text\" name=\"quantita\">".ctd.accapo.ctr.accapo;
+
+	// posizione
+	$a .= atr.accapo.atd."Posizione".ctd.accapo.atd.accapo;
+	$a .= optionlist_etichette("5")."<input type=\"text\" name=\"posizione\">";
+	$a .= ctd.accapo.ctr.accapo;
 	
-	// CAMPI
-	$a .= apri_line."Intestazione".ctd.accapo.atd."<input type=\"text\" name=\"intestazione\">".chiudi_line;
-	$a .= apri_line."Partita IVA".ctd.accapo.atd."<input type=\"text\" name=\"pIva\">".chiudi_line;
-	$a .= apri_line."Codice fiscale".ctd.accapo.atd."<input type=\"text\" name=\"codFiscale\">".chiudi_line;
-	$a .= apri_line."Indirizzo".ctd.accapo.atd."<input type=\"text\" name=\"indirizzo\">".chiudi_line;
-	$a .= apri_line."CAP".ctd.accapo.atd."<input type=\"text\" name=\"cap\">".chiudi_line;
-	$a .= apri_line."Citta'".ctd.accapo.atd."<input type=\"text\" name=\"citta\">".chiudi_line;
-	$a .= apri_line."Nazione".ctd.accapo.atd."<input type=\"text\" name=\"nazione\">".chiudi_line;
-	$a .= apri_line."Numero di telefono".ctd.accapo.atd."<input type=\"text\" name=\"tel\">".chiudi_line;
-	$a .= apri_line."Numero di Fax".ctd.accapo.atd."<input type=\"text\" name=\"fax\">".chiudi_line;
-	$a .= apri_line."Sito Web".ctd.accapo.atd."<input type=\"text\" name=\"sitoWeb\">".chiudi_line;
-	$a .= apri_line."eMail".ctd.accapo.atd."<input type=\"text\" name=\"email\">".chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
+$a .= fine_form;
+return $a;
 }
 
 
-function form_input_registro() {
-	$a = atitolo."Inserisci un documento".ctitolo.accapo;
-	$a .= "<form name=\"input_ordini\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_registro")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Mittente documento".ctd.accapo.atd.optionlist_intestazioni().chiudi_line;
-	
-	// tipo_documento
-	/*
-	$a .= apri_line."Tipo documento".ctd.accapo.atd.accapo;
-	$a .= "<select name=\"tipoDoc\">".accapo;
-	$a .= "<option selected=\"selected\"></option>".accapo;
-	$a .= "<option value=\"ODA\">ODA</option>".accapo;
-	$a .= "<option value=\"BDC\">BDC</option>".accapo;
-	$a .= "<option value=\"DDT\">DDT</option>".accapo;
-	$a .= "<option value=\"MDS\">Modulo di scarico (MDS)</option>".accapo;
-	$a .= "<option value=\"LDV\">Lettera di vettura (LDV)</option>".accapo;
-	$a .= "<option value=\"EMAIL\">eMail</option>".accapo;
-	$a .= "</select>".accapo.chiudi_line;
-	*/
-	$a .= apri_line."Tipo di documento".ctd.accapo.atd.optionlist_tipoDoc().chiudi_line;
-	
-	// campi
-	$a .= apri_line."Numero documento".ctd.accapo.atd."<input type=\"text\" name=\"numDoc\" value=\"Automatico\">".chiudi_line;
-	$a .= apri_line."Data".ctd.accapo.atd.date_picker("data").chiudi_line;
-	
-	// file
-	$a .= apri_line."Scansione".ctd.accapo.atd.accapo;
-	$a .= "<input type=\"file\" name=\"file1\">".accapo."<input type=\"hidden\" name=\"action\" value=\"upload\">".accapo.chiudi_line;	
-	
-	$a .= fine_form;
-	return $a;
+
+
+function form_scarico_step1() {
+$a = atitolo."Step 1: ricerca merce per tag".ctitolo.accapo;
+$a .= "<form name=\"scarico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=scarico")."\">".accapo;
+$a .= atable.accapo.atr.accapo.atd."Tags da ricercare".ctd.accapo;
+$a .= atd."<input type=\"text\" name=\"tags\">".ctd.accapo.ctr;
+$a .= "<input type=\"hidden\" name=\"steps\" value=\"step2\">";
+$a .= fine_form;
+return $a;
 }
 
 
-function form_input_registro_nofile() {
-	$a = atitolo."Inserisci un documento".ctitolo.accapo;
-	$a .= "<form name=\"input_ordini\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_registro_nofile")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Mittente documento".ctd.accapo.atd.optionlist_intestazioni().chiudi_line;
-	
-	// tipo_documento
-	$a .= apri_line."Tipo di documento".ctd.accapo.atd.optionlist_tipoDoc().chiudi_line;
-	
-	// campi
-	$a .= apri_line."Numero documento".ctd.accapo.atd."<input type=\"text\" name=\"numDoc\" value=\"Automatico\">".chiudi_line;
-	$a .= apri_line."Data".ctd.accapo.atd.date_picker("data").chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
+function form_scarico_step2($tags) {
+$a = atitolo."Step 2: scegli merce da scaricare".ctitolo.accapo;
+$a .= "<form name=\"scarico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=scarico")."\">".accapo;
+$a .= atable.accapo.atr.accapo.atd."Tags da ricercare".ctd.accapo;
+$a .= atd;
+
+if (isset($tags))
+	$a .= optionlist_merce_da_tag_in_magazzino($tags);
+else
+	$a .= optionlist_merce_in_magazzino();
+
+$a .= ctd.accapo.ctr.accapo;
+$a .= "<input type=\"hidden\" name=\"steps\" value=\"step3\">";
+$a .= fine_form;
+return $a;
 }
 
 
-function form_input_ordini() {
-	$a = atitolo."Inserisci un ordine".ctitolo.accapo;
-	$a .= adesc."In seguito ad una consegna, inserire un ordine collegando un articolo ad un ordine, un codice dato dal fornitore ed una quantita'".cdesc.accapo;
-	$a .= "<form name=\"input_ordini\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_ordini")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= "<tr>\n<td>Mittente ordine</td>\n<td>".optionlist_intestazioneMittentiOrdine()."</td>\n</tr>\n";
-	$a .= apri_line."Tipo di documento".ctd.accapo.atd.optionlist_tipoDoc_ordine().accapo;
-	$a .= "<input type=\"text\" name=\"numDocOrdinante\">".chiudi_line;
-	
-	$a .= apri_line."Fornitore".ctd.accapo.atd.optionlist_fornitori().chiudi_line;
-	$a .= apri_line."Articoli".ctd.accapo.atd.optionlist_articoli().chiudi_line;
-	$a .= apri_line."Codice articolo del fornitore".ctd.accapo.atd."<input type=\"text\" name=\"codArticoloFornitore\">".chiudi_line;
-	$a .= apri_line."Quantita'".ctd.accapo.atd."<input type=\"text\" name=\"quantita\">".chiudi_line;
+function form_scarico_step3($id_merce,$posizione) {
+$titolo = "Step3: completa lo scarico per ";
+$tags = service_get_field("SELECT * FROM MERCE WHERE id_merce=\"{$id_merce}\"","tags");
+$id_vendor = service_get_field("SELECT * FROM MERCE WHERE id_merce=\"{$id_merce}\"","id_vendor");
+$titolo .= $tags;
+if (isset($id_vendor)) $titolo .= " ".$id_vendor;
+$giacenza = service_get_field("SELECT * FROM MAGAZZINO WHERE id_merce=\"{$id_merce}\" AND posizione=\"{$posizione}\"","quantita");
+$titolo .= " ({$giacenza} disponibili in posizione {$posizione})";
 
-	$a .= fine_form;
-	return $a;
+$a = atitolo.$titolo.ctitolo.accapo;
+$a .= "<form name=\"scarico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=scarico")."\">".accapo;
+$a .= atable.accapo.atr.accapo.atd."Seleziona  il richiedente".ctd.accapo;
+$a .= atd.optionlist_intestazioni("Richiedente").ctd.accapo;
+// quantita
+$a .= atr.accapo.atd."Quantita'".ctd.accapo;
+$a .= atd."<input type=\"text\" name=\"quantita\">".ctd.accapo.ctr.accapo;
+// destinazione
+$a .= atr.accapo.atd."Destinazione".ctd.accapo.atd.accapo;
+$a .= optionlist_etichette("7")."<input type=\"text\" name=\"destinazione\">";
+$a .= ctd.accapo.ctr.accapo;
+// data
+$a .= atr.accapo.atd."Data".ctd.accapo;
+$a .= atd.date_picker("data").ctd.accapo.ctr.accapo;
+// note
+$a .= atr.accapo.atd."Note".ctd.accapo;
+$a .= atd."<input type=\"text\" name=\"note\">".ctd.accapo.ctr.accapo;
+
+$a .= "<input type=\"hidden\" name=\"steps\" value=\"step4\">";
+$a .= "<input type=\"hidden\" name=\"id_merce\" value=\"{$id_merce}\">";
+$a .= "<input type=\"hidden\" name=\"posizione\" value=\"{$posizione}\">";
+
+$a .= fine_form;
+return $a;
 }
 
-
-function form_input_forniture() {
-	$a = atitolo."Inserisci una fornitura".ctitolo.accapo;
-	$a .= adesc."Crea un'associazione fornitore - richiedente - trasportatore, collegando un ordine ad una consegna".cdesc.accapo;
-	$a .= "<form name=\"input_forniture\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_forniture")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Fornitore".ctd.accapo.atd.optionlist_fornitori().chiudi_line;
-	$a .= apri_line."Numero fornitura".ctd.accapo.atd;
-	$a .= "<select name=\"tipoDocFornitura\">".accapo;
-	$a .= "<option selected=\"selected\"></option>".accapo;
-	$a .= "<option value=\"DDT\">DDT</option>".accapo;
-	$a .= "</select>".accapo;
-	$a .= "<input type=\"text\" name=\"numDocFornitura\">".chiudi_line;
-	$a .= apri_line."Mittente ordine".ctd.accapo.atd.optionlist_intestazioneMittentiOrdine().chiudi_line;
-	
-	$a .= apri_line."Numero ordine".ctd.accapo.atd;
-	$a .= "<select name=\"tipoDocOrdinante\">".accapo;
-	$a .= "<option selected=\"selected\"></option>".accapo;
-	$a .= "<option value=\"ODA\">ODA</option>".accapo;
-	$a .= "<option value=\"BDC\">BDC</option>".accapo;
-	$a .= "</select>".accapo;
-	$a .= "<input type=\"text\" name=\"numDocOrdinante\">".chiudi_line;
-	
-	$a .= apri_line."Trasportatore".ctd.accapo.atd.optionlist_trasportatori().chiudi_line;
-
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_contabilita() {
-	$a = "<h3>Ricerca contabilita' per ordine</h3>\n";
-	$a .= "<form name=\"input_contabilita\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_ricerca_contabilita");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<tr>\n<td>Mittente ordine</td>\n<td>".optionlist_intestazioneMittentiOrdine()."</td>\n</tr>\n";
-	$a .= "<tr>\n<td>Tipo e Numero ordine</td>\n<td>".optionlist_TipoNumOrdiniEmessi()."</td>\n</tr>\n";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_ricerca_doc() {
-	$a = atitolo."Ricerca documenti".ctitolo.accapo;
-	$a .= adesc."Seleziona e compila: 1)niente, 2)data, 3)tipo, 4)data-tipo, 5)numero".cdesc.accapo;
-	$a .= adesc."NB: solo data crea un intervallo -7 +7".cdesc.accapo;
-	$a .= "<form name=\"input_ricerca_doc\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=task_ricerca_doc")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Tipo di ricerca".ctd.accapo.atd.accapo;
-	$a .= "<select name=\"tiposearch\">".accapo;
-	$a .= "<option selected=\"selected\"></option>".accapo;
-	$a .= "<option value=\"100\">per data</option>".accapo;
-	$a .= "<option value=\"010\">per tipo</option>".accapo;
-	$a .= "<option value=\"110\">per data e tipo</option>".accapo;
-	$a .= "<option value=\"001\">per numero</option>".accapo;
-	$a .= "</select>".accapo.chiudi_line;
-	
-	$a .= apri_line."Centro dell'intervallo".ctd.accapo.atd.date_picker("data").chiudi_line;
-	$a .= apri_line."Tipo di documento".ctd.accapo.atd.optionlist_tipoDoc().chiudi_line;
-	$a .= apri_line."Numero del documento".ctd.accapo.atd."<input type=\"text\" name=\"numDoc\">".chiudi_line;
-
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_tipoDoc() {
-	$a = atitolo."Inserisci un tipo di documento".ctitolo.accapo;
-	$a .= "<form name=\"input_tipodoc\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=tipodoc")."\">".accapo;
-	$a .= atable.accapo;
-	$a .= apri_line."Ambito".ctd.accapo.atd.accapo;
-	$a .= "<input type=\"radio\" name=\"ambito\" value=\"ordine\">ordine".accapo;
-	$a .= "<input type=\"radio\" name=\"ambito\" value=\"fornitura\">fornitura".accapo;
-	$a .= "<input type=\"radio\" name=\"ambito\" value=\"altro\">altro".accapo.chiudi_line;
-	$a .= apri_line."Etichetta".ctd.accapo.atd."<input type=\"text\" name=\"label\">".chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_collo() {
-	$a = atitolo."Raggruppa documenti con progressivo (ex colli)".ctitolo.accapo;
-	$a .= "<form name=\"input_colli\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=colli")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Numero progressivo assegnato".ctd.accapo.atd."<input type=\"text\" name=\"idColli\">".chiudi_line;
-	$a .= apri_line."Documento".ctd.accapo.atd.optionlist_doc_non_in_colli().chiudi_line;
-	
-	$a .= fine_form;
-	return $a;	
-}
-
-
-// FORM MAGAZZINO
-
-
-function form_input_tags() {
-	$a = atitolo."Inserisci un TAG".ctitolo.accapo;
-	$a .= adesc."Livello etichette: da 1 a 3 in base all'importanza della caratteristica rappresentata".cdesc.accapo;
-	$a .= "<form name=\"input_tags\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=tags")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Livello".ctd.accapo.atd.accapo;
-	$a .= "<input type=\"radio\" name=\"livello\" value=\"1\">".accapo;
-	$a .= "<input type=\"radio\" name=\"livello\" value=\"2\">".accapo;
-	$a .= "<input type=\"radio\" name=\"livello\" value=\"3\">".accapo.chiudi_line;
-	$a .= apri_line."Etichetta".ctd.accapo.atd."<input type=\"text\" name=\"label\">".chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_locations() {
-	$a = atitolo."Inserisci una posizione".ctitolo.accapo;
-	$a .= adesc."Indicatore 1 per posizioni tra scaffali, 2 per piazzamenti negli scaffali, 3 per destinazioni di merce in uscita".cdesc.accapo;
-	$a .= "<form name=\"input_locations\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=locations")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Indicatore".ctd.accapo.atd.accapo;
-	$a .= "<input type=\"radio\" name=\"indicatore\" value=\"1\">".accapo;
-	$a .= "<input type=\"radio\" name=\"indicatore\" value=\"2\">".accapo;
-	$a .= "<input type=\"radio\" name=\"indicatore\" value=\"3\">".accapo;
-	$a .= chiudi_line;
-	$a .= apri_line."Etichetta".ctd.accapo.atd."<input type=\"text\" name=\"label\">".chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_articoli() {
-	$a = atitolo."Insererisci articoli in inventario".ctitolo.accapo;
-	$a .= adesc."Raggruppa insiemi di etichette per rappresentare modelli per merci da assumere".cdesc.accapo;
-	$a .= "<form name=\"input_articoli\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=inventario_articoli")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."TAGS".ctd.accapo.atd.optionlist_tags("1").optionlist_tags("2").optionlist_tags("3").chiudi_line;
-	$a .= apri_line."Note".ctd.accapo.atd."<input type=\"text\" name=\"descrizione\">".chiudi_line;
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_asset_step1() {
-	$a = atitolo."Specializza un articolo come asset".ctitolo.accapo;
-	$a .= "<form name=\"input_asset\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=input_asset")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= apri_line."Articoli".ctd.accapo.atd.optionlist_disponibilitaArticoliSenzaAsset().chiudi_line;
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step1\">";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_asset_step2($idArticolo) {
-	$a = "<h3>Specializza un articolo come asset</h3>\n";
-	$a .= "<form name=\"input_asset\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=input_asset");
-	$a .= "\">\n<table>\n";
-	
-	$a .= apri_line."Seriale".ctd.accapo.atd."<input type=\"text\" name=\"seriale\">".chiudi_line;
-	$a .= apri_line."PT Number".ctd.accapo.atd."<input type=\"text\" name=\"ptNumber\">".chiudi_line;
-	$a .= apri_line."Posizioni".ctd.accapo.atd.optionlist_posizioniOccupate($idArticolo).chiudi_line;
-	$a .= apri_line."Note".ctd.accapo.atd."<input type=\"text\" name=\"note\">".chiudi_line;
-	$a .= apri_line."Data".ctd.accapo.atd.date_picker("data").chiudi_line;
-	
-	$a .= "<input type=\"hidden\" name=\"idArticolo\" value=\"{$idArticolo}\">";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step2\">";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_carichi1() {
-	$a = atitolo."Insererisci un carico".ctitolo.accapo;
-	$a .= adesc."Viene richiesto il numero del DDT, inserirlo con massima attenzione".cdesc.accapo;
-	$a .= "<form name=\"input_carichi1\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=task_carichi")."\">".accapo;
-	$a .= atable.accapo;
-	
-	$a .= "<tr>\n";
-		$a .= "<td><input type=\"radio\" name=\"tipo_ins\" value=\"new\">Nuovo articolo</td>\n";
-		$a .= "<td>\n";
-			$a .= "<table>\n";
-				$a .= "<tr>\n<td>TAGS</td>\n<td>".optionlist_tags("1").optionlist_tags("2").optionlist_tags("3")."</td>\n</tr>\n";
-				$a .= "<tr>\n<td>Note</td>\n<td><input type=\"text\" name=\"descrizione\"></td>\n</tr>\n";
-			$a .= "</table>\n";
-		$a .= "</td>\n";
-	$a .= "</tr>";
-	
-	$a .= "<td><input type=\"radio\" name=\"tipo_ins\" value=\"old\">Da modello</td>\n<td>".optionlist_articoli()."</td>\n</tr>\n";
-	$a .= "<tr>\n<td>Quantita'</td>\n<td><input type=\"text\" name=\"quantita\"></td>\n</tr>\n";
-	
-	$a .= "<td>Fornitore</td>\n<td>".optionlist_fornitori()."</td>\n</tr>\n";
-	$a .= "<td>numero DDT</td>\n<td><input type=\"text\" name=\"numDocFornitura\"></td>\n</tr>\n";
-	$a .= "<td>Destinazione</td>\n<td>".optionlist_posizioni().optionlist_piazzamenti()."</td>\n</tr>\n";
-	
-	$a .= "<tr>\n<td>Data</td>\n<td>".date_picker("data")."</td>\n</tr>\n";
-	$a .= "<tr>\n<td>Note</td>\n<td><input type=\"text\" name=\"note\"></td>\n</tr>\n";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_scarichi_step1() {
-	$a = "<h3>Insererisci uno scarico step1</h3>\n";
-	$a .= "<form name=\"input_scarichi\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_scarichi");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<tr>\n<td>Articolo</td>\n<td>".optionlist_disponibilitaArticoliSenzaAsset()."</td>\n</tr>\n";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step1\">";
-	
-	$a .= fine_form;
-	return $a;	
-}
-
-
-function form_input_scarichi_step2($idArticolo) {
-	$a = "<h3>Insererisci uno scarico step2</h3>\n";
-	$a .= "<form name=\"input_scarichi\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_scarichi");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<tr>\n<td>Richiedenti</td>\n<td>".optionlist_intestazioni_richiedenti()."</td>\n</tr>\n";
-	$a .= "<td>numero documento di scarico</td>\n<td><input type=\"text\" name=\"numDocRich\"></td>\n</tr>\n";
-	$a .= "<td>Quantita'</td>\n<td><input type=\"text\" name=\"quantita\"></td>\n</tr>\n";
-	
-	$a .= "<td>Provenienza</td>\n<td>".optionlist_posizioniOccupate($idArticolo)."</td>\n</tr>\n";
-	$a .= "<td>Destinazione</td>\n<td>".optionlist_destinazioni()."</td>\n</tr>\n";
-	$a .= "<tr>\n<td>Data</td>\n<td>".date_picker("data")."</td>\n</tr>\n";
-	$a .= "<td>Note</td>\n<td><input type=\"text\" name=\"note\"></td>\n</tr>\n";
-	
-	$a .= "<input type=\"hidden\" name=\"idArticolo\" value=\"{$idArticolo}\">";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step2\">";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_ricerca() {
-	$a = "<h3>Ricerca per TAGS articolo</h3>\n";
-	$a .= "<form name=\"ricerca\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_ricerca");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<tr>\n<td>Tags</td>\n<td>".optionlist_tagsDisponibili()."</td>\n</tr>\n";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_ricerca_asset() {
-	$a = "<h3>Ricerca per TAGS articolo</h3>\n";
-	$a .= "<form name=\"ricerca\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_ricerca_asset");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<td>Serial o PT Number</td>\n<td><input type=\"text\" name=\"input\"></td>\n</tr>\n";
-	
-	$a .= fine_form;
-	return $a;
-}
-
-
-function form_input_compattazione_step1() {
-	$a = "<h3>Compatta posizioni in magazzino</h3>\n";
-	$a .= "<form name=\"compattazione\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_compattazione");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<tr>\n<td>Tags</td>\n<td>".optionlist_disponibilitaArticoliSenzaAsset()."</td>\n</tr>\n";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step1\">";
-	
-	$a .= fine_form;
-	return $a;	
-}
-
-
-function form_input_compattazione_step2($idArticolo) {
-	$a = "<h3>Compatta merce in magazzino</h3>\n";
-	$a .= "<form name=\"compattazione\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_compattazione");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<td>Provenienza</td>\n<td>".optionlist_posizioniOccupate($idArticolo)."</td>\n</tr>\n";
-	$a .= "<td>Destinazione</td>\n<td>".optionlist_posizioni().optionlist_piazzamenti()."</td>\n</tr>\n";
-	
-	$a .= "<input type=\"hidden\" name=\"idArticolo\" value=\"{$idArticolo}\">";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step2\">";
-	
-	$a .= fine_form;
-	return $a;	
-}
-
-
-function form_input_scarichi_asset_step1() {
-	$a = "<h3>Scarica asset dal magazzino</h3>\n";
-	$a .= "<form name=\"scarichi_asset\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_scarichi_asset");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<td>Seleziona Asset</td>\n<td>".optionlist_assetSerialptNumber()."</td>\n</tr>\n";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step1\">";
-	
-	$a .= fine_form;
-	return $a;	
-}
-
-
-function form_input_scarichi_asset_step2($serialptNumber) {
-	$a = "<h3>Scarica asset dal magazzino</h3>\n";
-	$a .= "<form name=\"scarichi_asset\" method=\"post\" enctype=\"multipart/form-data\" action=\"";
-	$a .= htmlentities("?page=task_scarichi_asset");
-	$a .= "\">\n<table>\n";
-	
-	$a .= "<td>Richiedente</td>\n<td>".optionlist_intestazioni_richiedenti()."</td>\n</tr>\n";
-	$a .= "<td>Numero documento di scarico</td>\n<td><input type=\"text\" name=\"numDocRich\"></td>\n</tr>\n";
-	$a .= "<td>Destinazione</td>\n<td>".optionlist_destinazioni()."</td>\n</tr>\n";
-	$a .= "<tr>\n<td>Data</td>\n<td>".date_picker("data")."</td>\n</tr>\n";
-	$a .= "<td>Note</td>\n<td><input type=\"text\" name=\"note\"></td>\n</tr>\n";
-	
-	$a .= "<input type=\"hidden\" name=\"serialptNumber\" value=\"{$serialptNumber}\">";
-	$a .= "<input type=\"hidden\" name=\"steps\" value=\"step2\">";
-	
-	$a .= fine_form;
-	return $a;	
-}
 
 
 ?>

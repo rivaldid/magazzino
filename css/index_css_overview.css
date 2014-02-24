@@ -1,0 +1,285 @@
+* {
+    margin: 0 auto;
+    padding: 0;
+	text-decoration: none;
+	
+}
+
+.logo_title {
+	margin: 2em auto;
+	border:none;
+}
+
+/*logo in alto a sx*/
+.logo_poste {
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+.header {
+	text-align: center;
+    width: 100%;
+	height: auto;
+	background: url("../img/bk_header.png") repeat-x;
+	
+}
+
+.mask {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+/************************************************************************************************/
+/* 											FOOTER'S STYLE  									*/
+/************************************************************************************************/
+div#footer img {
+border: none;
+}
+div#footer {
+	color: #0067FF;
+    background: url("../img/bk_footer2.png") repeat-x;
+    float: left;
+    height: 250px;
+	clear: both;
+    width: 100%;
+	/*border: 5px solid yellow;*/
+	text-align: center;
+    font-size: 16px;
+    font-family: Verdana;
+ position:relative;
+
+}
+.centrato {
+margin: 1em auto;
+}
+div#footer  ul li
+{
+ color: #FFFFFF;
+ display:inline-table;
+ *display:inline;
+ margin: auto 1em auto 1em;
+ vertical-align: middle;
+}
+
+div#footer a:link 
+{
+padding:0.2em;
+color: #FFFFFF;
+}
+div#footer ul li a:hover 
+{
+ color: #E9F404;
+ padding:0.2em;
+ border-top: 1px dashed #fff;
+ border-bottom: 1px dashed #fff;
+ background: #2E89D1;
+ 
+ 
+}
+
+div#footer  a:visited 
+{ 
+padding:0.2em;
+color: #ffffff;
+}
+
+div#footer .w3c a:hover {
+ padding:0.2em;
+ border:none;
+ background: transparent;
+}
+
+.badge {
+	position:absolute;
+	right:5px;
+	top:10px;
+}
+
+/************************************************************************************************/
+/* 											TABLES'S STYLE  									*/
+/************************************************************************************************/
+
+.CSSTableGenerator h3 {
+    /*background: #DCE5F0;*/
+    background: #E7F404;
+    padding: 1em;
+    text-transform: uppercase;
+    font: verdana;
+    padding: 0.5em;
+	
+}
+.CSSTableGenerator {
+    box-shadow: 5px 5px 2px #888888;
+    border: 1px solid #000000;
+   
+   margin: 2em 0px  2em 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.CSSTableGenerator table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    height: 100%;
+}
+.CSSTableGenerator tr:last-child td:last-child {
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.CSSTableGenerator table tr:first-child td:first-child {
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.CSSTableGenerator tr:last-child td:first-child {
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.CSSTableGenerator tr:hover td { background-color: #ffffff; text-decoration: none; }
+.CSSTableGenerator td {
+    vertical-align: middle;
+    background-color: #ffffaa;
+    border: 1px solid #000000;
+    border-width: 0px 1px 1px 0px;
+    text-align: left;
+    padding: 4px;
+    font-size: 12px;
+    font-family: Verdana;
+    
+    color: #000000;
+}
+.CSSTableGenerator tr:last-child td { border-width: 0px 1px 0px 0px }
+.CSSTableGenerator tr td:last-child { border-width: 0px 0px 1px 0px }
+.CSSTableGenerator tr:last-child td:last-child { border-width: 0px 0px 0px 0px }
+.CSSTableGenerator tr:first-child th {
+    background: -o-linear-gradient(bottom, #008CFF 5%, #008CFF 100%);
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #008CFF), color-stop(1, #008CFF) );
+    background: -moz-linear-gradient( center top, #008CFF 5%, #008CFF 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#008CFF", endColorstr="#008CFF");
+    background: -o-linear-gradient(top,#008CFF,008CFF);
+    background-color: #008CFF;
+    border: 0px solid #000000;
+    text-align: center;
+    border-width: 0px 0px 1px 1px;
+    font-size: 14px;
+    font-family: Verdana;
+    font-weight: bold;
+    color: #ffffff;
+	text-transform: uppercase;
+}
+.CSSTableGenerator tr:first-child td:first-child { border-width: 0px 1px 1px 0px }
+.CSSTableGenerator tr:first-child td:last-child { border-width: 0px 0px 1px 1px }
+
+
+
+/************************************************************************************************/
+/* 											FORM'S STYLE  										*/
+/************************************************************************************************/
+
+
+input[type="text"],input[type="button"],input[type="password"],input[type="submit"],input[type="checkbox"],textarea, input[type="reset"]  {
+	line-height:normal !important;
+	background: #000;
+	font-family: tahoma, helvetica, sans-serif;
+	font-style: normal;
+	font-size: 16px;
+	color: #000000;
+	
+	
+}
+
+
+
+.form_labelstyle {
+	font-family: tahoma, helvetica, sans-serif;
+	font-style: bold;
+	font-size: 16px;
+	color: #000000;
+}
+
+
+
+select {
+	border: 1px solid #1F1F1F;
+    padding:2px;
+    margin: 0;
+    background: #CCCCCC;
+    color:#000000;
+    border:none;
+    outline:none;
+    appearance:none;
+    cursor:pointer;
+}
+
+/* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    select {padding-right:18px}
+}
+
+label {position:relative}
+label:after {
+    content:'<>';
+    font:11px "Consolas", monospace;
+    color:#aaa;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform:rotate(90deg);
+    right:8px; top:2px;
+    padding:0 0 2px;
+    border-bottom:1px solid #ddd;
+    position:absolute;
+    pointer-events:none;
+}
+label:before {
+    content:'';
+    right:6px; top:0px;
+    width:20px; height:20px;
+    background:#f8f8f8;
+    position:absolute;
+    pointer-events:none;
+    display:block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+.navi_menu_side {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    width: 150px;
+	border: 1px solid red;
+	
+}
+.navi_menu_side H3 {
+	background: #E9F404;
+	font-family:'Verdana',sans-serif;
+	padding: 0.2em;
+	text-transform:uppercase;
+	font-size: 95%;
+	border-top: 4px solid white;
+	border-bottom: 4px solid white;
+	
+
+
+}
+.navi_menu_side li {
+    
+	font-size: 18px;
+    font-weight: 400;
+	opacity: 0.9;
+	font-family:'Verdana',sans-serif;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.navi_menu_side a {
+    color: #CCCCCC;
+    display: block;
+    font-weight: normal;
+    margin: 0;
+    padding: 8px 12px;
+    text-decoration: none;
+}
+.navi_menu_side a:hover, .navi_menu_side ul li a.active {
+    background: url("../img/hover.png") no-repeat scroll left center #1073BC;
+    color: #EAF505;
+    padding-bottom: 8px;
+	border-right: 5px solid black;
+}
