@@ -23,6 +23,13 @@ div#home  {
 	top:0px;
 }
 
+/*logo in alto a dx*/
+.logo_frazionario {
+	position:absolute;
+	right:0px;
+	top:0px;
+}
+
 .header {
 	text-align: center;
     width: 100%;
@@ -162,11 +169,7 @@ div#footer .w3c a:hover {
  background: transparent;
 }
 
-.badge {
-	position:absolute;
-	right:5px;
-	top:10px;
-}
+
 
 /************************************************************************************************/
 /* 											TABLES'S STYLE  									*/
