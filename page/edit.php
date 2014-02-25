@@ -5,13 +5,25 @@ if (isset($_GET['id'])) {
 	echo "<div class=\"CSSTableGenerator\" >".table_operazioni_edit($_GET['id'])."</div>";
 	
 } elseif (isset($_POST['submit'])) {
-	
-	// quelli che si possono modificare...
-	
+		
 	if (isset($_POST['check_data'])) {
 		$data = safe($_POST['datayear'])."-".safe($_POST['datamonth'])."-".safe($_POST['dataday']);
 		if ($data === 'NULL-NULL-NULL') $data = date('Y-m-d');		
 	} else $data = NULL;
+	
+	if (isset($_POST['check_posizione'])) {
+		if (!isset($_POST['listaetichette5']) OR !($_POST['listaetichette5']) OR ($_POST['listaetichette5'] == "NULL")) {
+			if (!isset($_POST['posizione']) OR !($_POST['posizione']) OR ($_POST['posizione'] == "NULL"))
+				killemall("posizione merce");
+			echo input_etichetta("5",safe(epura($_POST['posizione'])));
+			$posizione = safe(epura($_POST['posizione']));
+		} else $posizione = safe($_POST['listaetichette5']);
+	} else $posizione = NULL;
+	
+	
+	
+	
+	
 	
 	if (isset($_POST['check_fornitore'])) {
 		if (!isset($_POST['id_contatto_fornitore']) OR !($_POST['id_contatto_fornitore']) OR ($_POST['id_contatto_fornitore'] == "NULL"))

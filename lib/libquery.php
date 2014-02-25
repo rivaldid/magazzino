@@ -209,7 +209,7 @@ return $a;
 
 function table_operazioni_edit($id_operazione) {
 $sql = "SELECT * FROM view_log_ordini WHERE id_operazione={$id_operazione};";
-$mask = "<th>Campo</th><th>Valore attuale</th><th>Flag</th><th>Nuovo valore</th>";
+$mask = "<th>Stato attuale</th><th>Nuovo stato</th>";
 
 $a = atitolo."Modifica l'operazione #".$id_operazione.ctitolo.accapo;
 $a .= "<form name=\"merce\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=edit")."\">".accapo;
@@ -221,17 +221,13 @@ $classemysql->connetti();
 $resultset = $classemysql->myquery($sql);
 
 while ($riga = mysql_fetch_row($resultset)) {
-	$a .= atr.atd."<b>Data</b>".ctd.atd.$riga[4].ctd.atd."<input name=\"check_data\" type=\"checkbox\"/>".ctd.atd.date_picker("data").ctd.ctr.accapo;
-	$a .= atr.atd."<b>Status</b>".ctd.atd.$riga[5].ctd.atd."<input name=\"check_status\" type=\"checkbox\"/ disabled>".ctd.atd."Non modificabile".ctd.ctr.accapo;
-	$a .= atr.atd."<b>Posizione</b>".ctd.atd.$riga[6].ctd.atd."<input name=\"check_posizione\" type=\"checkbox\"/ disabled>".ctd.atd."Non Modificabile".ctd.ctr.accapo;
-	$a .= atr.atd."<b>Fornitore</b>".ctd.atd.$riga[7].ctd.atd."<input name=\"check_fornitore\" type=\"checkbox\"/>".ctd.atd.optionlist_intestazioni("Fornitore").ctd.ctr.accapo;
-	$a .= atr.atd."<b>Fornitura</b>".ctd.atd.$riga[8]." - ".$riga[9].ctd.atd."<input name=\"check_fornitura\" type=\"checkbox\"/>".ctd.atd.optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Status merce:</b> ".$riga[5].ctd.atd."Campo non modificabile".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Data attuale:</b> ".$riga[4].ctd.atd."<input name=\"check_data\" type=\"checkbox\"/> <b>Nuova data: </b> ".date_picker("data").ctd.ctr.accapo;
+	$a .= atr.atd."<b>Posizione attuale:</b> ".$riga[6].ctd.atd."<input name=\"check_posizione\" type=\"checkbox\"/> <b> Nuova posizione:</b> ".optionlist_etichette("5")."<input type=\"text\" name=\"posizione\">".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Fornitura:</b> ".$riga[7]." - ".$riga[8]." - ".$riga[9].ctd.atd."<input name=\"check_fornitura\" type=\"checkbox\"/> <b>Nuova: </b>".optionlist_intestazioni("Fornitore").optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.ctr.accapo;
 	
-	$a .= atr.atd."<b>Merce</b>".ctd.atd;
-		$a .= "<b>TAGS:</b> ".$riga[10]."<br>".accapo;
-		$a .= "<b>id Vendor:</b> ".$riga[11]."<br>".accapo;
-		$a .= "<b>Descrizione:</b> ".$riga[12]."<br>".accapo;
-	$a .= ctd.accapo.atd."<input name=\"check_merce\" type=\"checkbox\"/>".ctd.accapo.atd.accapo;
+	$a .= atr.atd."<b>Merce:</b> ".$riga[10]." - ".$riga[11]." - ".$riga[12].ctd.accapo.atd;
+		$a .= "<input name=\"check_merce\" type=\"checkbox\"/> <b>Nuovo inserimento</b><br>".accapo;
 		$a .= "Tag1 ".optionlist_etichette("1")."<input type=\"text\" name=\"testotag1\"><br>".accapo;
 		$a .= "Tag2 ".optionlist_etichette("2")."<input type=\"text\" name=\"testotag2\"><br>".accapo;
 		$a .= "Tag3 ".optionlist_etichette("3")."<input type=\"text\" name=\"testotag3\"><br>".accapo;
@@ -240,27 +236,24 @@ while ($riga = mysql_fetch_row($resultset)) {
 		$a .= "Descrizione "."<input type=\"text\" name=\"descrizione_merce\">".accapo;
 	$a .= ctd.accapo.ctr.accapo;
 	
-	$a .= atr.atd."<b>Quantita'</b>".ctd.atd.$riga[13].ctd.atd."<input name=\"check_quantita\" type=\"checkbox\"/>".ctd.atd."<input type=\"text\" name=\"quantita\">".ctd.ctr.accapo;
-	$a .= atr.atd."<b>Note</b>".ctd.atd.$riga[14].ctd.atd."<input name=\"check_note\" type=\"checkbox\"/>".ctd.atd."<input type=\"text\" name=\"note\">".ctd.ctr.accapo;
-	
-	$a .= atr.atd."<b>Ordine</b>".ctd.atd.$riga[15]." - ".$riga[16].ctd.atd."<input name=\"check_ordine\" type=\"checkbox\"/>".ctd.accapo.atd;
+	$a .= atr.atd."<b>Quantita':</b> ".$riga[13].ctd.atd."<input name=\"check_quantita\" type=\"checkbox\"/> <b>Nuova quantita':</b> <input type=\"text\" name=\"quantita\">".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Note':</b> ".$riga[14].ctd.atd."<input name=\"check_note\" type=\"checkbox\"/> <b>Nuova nota:</b> <input type=\"text\" name=\"note\">".ctd.ctr.accapo;
+		
+	$a .= atr.atd."<b>Ordine:</b> ".$riga[15]." - ".$riga[16].ctd.atd."<input name=\"check_ordine\" type=\"checkbox\"/> <b>Nuovo ordine:</b> ".accapo;
 	$a .= "<select name=\"tipo_ordine\"><option selected=\"selected\" value=\"NULL\">OFF</option><option value=\"ODA\">ODA</option><option value=\"BDC\">BDC</option>".accapo;
 	$a .= "<input type=\"text\" name=\"numero_ordine\">".ctd.ctr.accapo;
 	
-	$a .= atr.atd."<b>Trasportatore</b>".ctd.atd.$riga[17].ctd.atd."<input name=\"check_trasportatore\" type=\"checkbox\"/>".ctd.atd.optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
+	$a .= atr.atd."<b>Trasportatore:</b> ".$riga[17].ctd.atd."<input name=\"check_trasportatore\" type=\"checkbox\"/> <b>Nuovo trasportatore:</b> ".optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
+	
+	$a .= atr.atd.ctd.atd."<input name=\"check_delete\" type=\"checkbox\"/> <b>Elimina riga</b>".ctd.ctr.accapo;
 	
 	$a .= "<input type=\"hidden\" name=\"id_operazione\" value=\"".$riga[0]."\">".accapo;
-	//$a .= "<input type=\"hidden\" name=\"id_merce\" value=\"".$riga[1]."\">".accapo;
-	//$a .= "<input type=\"hidden\" name=\"id_contatto\" value=\"".$riga[2]."\">".accapo;
-	//$a .= "<input type=\"hidden\" name=\"id_documento\" value=\"".$riga[3]."\">".accapo;
-	$a .= "<input type=\"hidden\" name=\"status\" value=\"".$riga[5]."\">".accapo;
-	$a .= "<input type=\"hidden\" name=\"posizione\" value=\"".$riga[6]."\">".accapo;
 }
 
 $classemysql->pulizia($resultset);
 //$classemysql->disconnetti();
 
-$a .= atr.atd.ctd.atd.ctd.atd.ctd.atd."<input type=\"reset\" name=\"reset\" value=\"Clear\">\n<input type=\"submit\" name=\"submit\" value=\"Submit\">".ctd.ctr;
+$a .= atr.atd.ctd.atd."<input type=\"reset\" name=\"reset\" value=\"Clear\">\n<input type=\"submit\" name=\"submit\" value=\"Submit\">".ctd.ctr;
 $a .= ctable.accapo;
 $a .= "</form>".accapo;
 
