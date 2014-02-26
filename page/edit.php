@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
 	if (isset($_POST['check_data'])) {
 		$data = safe($_POST['datayear'])."-".safe($_POST['datamonth'])."-".safe($_POST['dataday']);
 		if ($data === 'NULL-NULL-NULL') $data = date('Y-m-d');		
-	} else $data = NULL;
+	} else $data = '0000-00-00';
 	
 	// posizione
 	if (isset($_POST['check_posizione'])) {
@@ -35,7 +35,7 @@ if (isset($_GET['id'])) {
 		$numero_fornitura = safe($_POST['numero']);
 			
 	} else {
-		$id_fornitore = NULL;
+		$id_fornitore = '0';
 		$categoria_fornitura = NULL;
 		$numero_fornitura = NULL;
 	}
@@ -85,7 +85,7 @@ if (isset($_GET['id'])) {
 		if (!isset($_POST['quantita']) OR !($_POST['quantita']) OR ($_POST['quantita'] == "NULL"))
 			killemall("quantita merce");
 		$quantita = safe(int_ok($_POST['quantita']));
-	} else $quantita = NULL;
+	} else $quantita = '0';
 	
 	// note
 	if (isset($_POST['check_note'])) {
@@ -112,7 +112,7 @@ if (isset($_GET['id'])) {
 		if (!isset($_POST['id_contatto_trasportatore']) OR !($_POST['id_contatto_trasportatore']) OR ($_POST['id_contatto_trasportatore'] == "NULL"))
 			killemall("intestazione trasportatore");
 		$id_trasportatore = safe($_POST['id_contatto_trasportatore']);
-	} else $id_trasportatore = NULL;
+	} else $id_trasportatore = '0';
 	
 	// ELIMINA
 	if (isset($_POST['check_delete'])) 
