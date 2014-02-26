@@ -3,8 +3,9 @@ class MysqlClass
 {
 	
 	// variabili
-	private $nomehost = "localhost";     
-	private $nomeuser = "magazzino";          
+	//private $nomehost = "10.98.2.155";
+	private $nomehost = "localhost";
+	private $nomeuser = "magazzino";
 	private $password = "magauser";
           
 	
