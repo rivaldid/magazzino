@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
 	
 	echo $callsql = "CALL moving_magazzino('{$id_merce}','{$posizione_iniziale}','{$posizione_finale}');";
 	echo call_core("moving merce",$callsql);
-	echo "<p><h2><a href=\"magazzino.php\">Nuovo moving</a></h2></p>";
+	echo "<p><h2><a href=\"?page=magazzino\">Nuovo moving</a></h2></p>";
 
 } else echo "<div class=\"CSSTableGenerator\" >".form_moving()."</div>";
 	

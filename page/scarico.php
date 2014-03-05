@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 				
 				echo $callsql = "CALL SCARICO('{$id_richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data}','{$note}');";
 				echo call_core("scarico merce",$callsql);			
-				echo "<p><h2><a href=\"?page=scarico\">Nuovo inserimento</a></h2></p>";
+				echo "<p><h2><a href=\"?page=scarico\">Nuovo scarico</a></h2></p>";
 				break;
 		
 			default:

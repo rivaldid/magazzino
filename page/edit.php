@@ -1,17 +1,40 @@
 <?php
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && isset($_GET['status'])) {
 	
-	echo "<div class=\"CSSTableGenerator\" >".table_operazioni_edit($_GET['id'])."</div>";
+	if (($_GET['status']) == "IN")
+		echo "<div class=\"CSSTableGenerator\" >".table_operazioni_edit_in($_GET['id'])."</div>";
+	else
+		echo "Per le uscite mi sto attrezzando!";
 	
 } elseif (isset($_POST['submit'])) {
+	
+	// CHIAVE & STATO
+	$id_operazione = safe($_POST['id_operazione']);
+	
+	// controllo generale sui check
+	if ((!(isset($_POST['check_data']))) && 
+		(!(isset($_POST['check_fornitura']))) &&
+		(!(isset($_POST['check_merce']))) &&
+		(!(isset($_POST['check_quantita']))) &&
+		(!(isset($_POST['check_note']))) &&
+		(!(isset($_POST['check_ordine']))) &&
+		(!(isset($_POST['check_trasportatore']))) &&
+		(!(isset($_POST['check_delete']))))
+		killemall("mancata selezione del target da modificare");
+	
+	// ELIMINA
+	if (isset($_POST['check_delete']))
+		//echo call_core("aggiornamento data operazione #{$id_operazione}","CALL update_data_operazione('{$id_operazione}','{$data}');");
 	
 	// data
 	if (isset($_POST['check_data'])) {
 		$data = safe($_POST['datayear'])."-".safe($_POST['datamonth'])."-".safe($_POST['dataday']);
-		if ($data === 'NULL-NULL-NULL') $data = date('Y-m-d');		
-	} else $data = '0000-00-00';
+		if ($data === 'NULL-NULL-NULL') $data = date('Y-m-d');
+		//echo call_core("aggiornamento data operazione #{$id_operazione}","CALL update_data_operazione('{$id_operazione}','{$data}');");
+	}
 	
+	/**************** la posizione non può essere cambiata poiché PK di magazzino con id_merce. tuttavia esiste il moving
 	// posizione
 	if (isset($_POST['check_posizione'])) {
 		if (!isset($_POST['listaetichette5']) OR !($_POST['listaetichette5']) OR ($_POST['listaetichette5'] == "NULL")) {
@@ -21,6 +44,7 @@ if (isset($_GET['id'])) {
 			$posizione = safe(epura($_POST['posizione']));
 		} else $posizione = safe($_POST['listaetichette5']);
 	} else $posizione = NULL;
+	*****************/
 	
 	// fornitura
 	if (isset($_POST['check_fornitura'])) {
@@ -114,28 +138,8 @@ if (isset($_GET['id'])) {
 		$id_trasportatore = safe($_POST['id_contatto_trasportatore']);
 	} else $id_trasportatore = '0';
 	
-	// ELIMINA
-	if (isset($_POST['check_delete'])) 
-		$flag='1';
-	else
-		$flag='0';
-	
-	// CHIAVE
-	$id_operazione = safe($_POST['id_operazione']);
 		
-	// controllo generale sui check
-	if ((!(isset($_POST['check_data']))) && 
-		(!(isset($_POST['check_posizione']))) && 
-		(!(isset($_POST['check_fornitura']))) &&
-		(!(isset($_POST['check_merce']))) &&
-		(!(isset($_POST['check_quantita']))) &&
-		(!(isset($_POST['check_note']))) &&
-		(!(isset($_POST['check_ordine']))) &&
-		(!(isset($_POST['check_trasportatore']))) &&
-		(!(isset($_POST['check_delete']))))
-		killemall("mancata selezione del target da modificare");
-	 
-	echo $callsql = "CALL EDIT('{$id_operazione}','{$data}','{$posizione}','{$id_fornitore}','{$categoria_fornitura}','{$numero_fornitura}','{$tags}','{$id_vendor}','{$descrizione_merce}','{$quantita}','{$note}','{$categoria_ordine}','{$numero_ordine}','{$id_trasportatore}','{$flag}');";
+	//echo $callsql = "CALL EDIT('{$id_operazione}','{$data}','{$id_fornitore}','{$categoria_fornitura}','{$numero_fornitura}','{$tags}','{$id_vendor}','{$descrizione_merce}','{$quantita}','{$note}','{$categoria_ordine}','{$numero_ordine}','{$id_trasportatore}','{$flag}');";
 	//echo call_core("aggiornamento operazione",$callsql);
 	
 

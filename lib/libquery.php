@@ -27,10 +27,10 @@ $tags = explode(" ",epura_double($tags));
 $foo='0';
 foreach ($tags as $tag) {
 	if ($foo=='0') {
-		$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%'";
+		$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%' AND quantita>0";
 		$foo='1';
 	} else
-		$sql .= " UNION SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%'";
+		$sql .= " UNION SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE tags LIKE '%{$tag}%' AND quantita>0";
 }
 $sql .= " ORDER BY posizione,tags,id_vendor";
 return optionlist_core_double($sql,"option_id_merce_posizione","5");
@@ -38,7 +38,7 @@ return optionlist_core_double($sql,"option_id_merce_posizione","5");
 
 
 function optionlist_merce_in_magazzino() {
-$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce);";
+$sql = "SELECT id_merce,posizione,tags,id_vendor,quantita FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE quantita>0";
 return optionlist_core_double($sql,"option_id_merce_posizione","5");
 }
 
@@ -120,7 +120,7 @@ return table_core("etichette",$sql,$mask);
 
 
 function table_magazzino() {
-$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) ORDER BY posizione,tags,id_vendor;";
+$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE quantita>0 ORDER BY posizione,tags,id_vendor;";
 $mask = "<th>Posizione</th><th>TAGS</th><th>Codice vendor</th><th>Giacenza</th><th>Descrizione</th>";
 return table_core("magazzino",$sql,$mask);
 }
@@ -195,7 +195,7 @@ $resultset = $classemysql->myquery($sql);
 while ($riga = mysql_fetch_row($resultset)) {
 	$a .= atr.accapo;
 	for ($i=4; $i<18; $i++)
-		$a .= atd."<a href=\"?page=edit&id=".$riga[0]."\">".$riga[$i]."</a>".ctd.accapo;
+		$a .= atd."<a href=\"?page=edit&status={$riga[5]}&id={$riga[0]}\">{$riga[$i]}</a>".ctd.accapo;
 	$a .= ctr.accapo;
 }
 
@@ -207,7 +207,7 @@ return $a;
 }
 
 
-function table_operazioni_edit($id_operazione) {
+function table_operazioni_edit_in($id_operazione) {
 $sql = "SELECT * FROM view_log_ordini WHERE id_operazione={$id_operazione};";
 $mask = "<th>Stato attuale</th><th>Nuovo stato</th>";
 
@@ -221,9 +221,10 @@ $classemysql->connetti();
 $resultset = $classemysql->myquery($sql);
 
 while ($riga = mysql_fetch_row($resultset)) {
+	
 	$a .= atr.atd."<b>Status merce:</b> ".$riga[5].ctd.atd."Campo non modificabile".ctd.ctr.accapo;
 	$a .= atr.atd."<b>Data attuale:</b> ".$riga[4].ctd.atd."<input name=\"check_data\" type=\"checkbox\"/> <b>Nuova data: </b> ".date_picker("data").ctd.ctr.accapo;
-	$a .= atr.atd."<b>Posizione attuale:</b> ".$riga[6].ctd.atd."<input name=\"check_posizione\" type=\"checkbox\"/> <b> Nuova posizione:</b> ".optionlist_etichette("5")."<input type=\"text\" name=\"posizione\">".ctd.ctr.accapo;
+	$a .= atr.atd."<b>Posizione:</b> ".$riga[6].ctd.atd."Campo non modificabile".ctd.ctr.accapo;
 	$a .= atr.atd."<b>Fornitura:</b> ".$riga[7]." - ".$riga[8]." - ".$riga[9].ctd.atd."<input name=\"check_fornitura\" type=\"checkbox\"/> <b>Nuova: </b>".optionlist_intestazioni("Fornitore").optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.ctr.accapo;
 	
 	$a .= atr.atd."<b>Merce:</b> ".$riga[10]." - ".$riga[11]." - ".$riga[12].ctd.accapo.atd;
@@ -245,9 +246,10 @@ while ($riga = mysql_fetch_row($resultset)) {
 	
 	$a .= atr.atd."<b>Trasportatore:</b> ".$riga[17].ctd.atd."<input name=\"check_trasportatore\" type=\"checkbox\"/> <b>Nuovo trasportatore:</b> ".optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
 	
-	$a .= atr.atd.ctd.atd."<input name=\"check_delete\" type=\"checkbox\"/> <b>Elimina riga</b>".ctd.ctr.accapo;
+	$a .= atr.atd.ctd.atd."<input name=\"check_delete\" type=\"checkbox\"/ disabled> <b>Elimina riga</b>".ctd.ctr.accapo;
 	
 	$a .= "<input type=\"hidden\" name=\"id_operazione\" value=\"".$riga[0]."\">".accapo;
+	
 }
 
 $classemysql->pulizia($resultset);
