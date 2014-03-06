@@ -161,12 +161,20 @@ return table_core("ordini",$sql,$mask);
 
 
 function table_scarichi() {
+/*
 $sql = "SELECT data,posizione,tags,id_vendor,quantita,intestazione,numero,note FROM OPERAZIONI
 LEFT JOIN (SELECT id_merce,tags,id_vendor FROM MERCE) AS merce USING(id_merce)
 LEFT JOIN (SELECT id_contatto,id_documento,numero FROM REGISTRO) AS registro USING(id_documento)
 LEFT JOIN (SELECT id_contatto,intestazione FROM RUBRICA) as rubrica USING(id_contatto)
 WHERE direzione='0' ORDER BY data DESC,posizione;";
-$mask = "<th>Data</th><th>Posizione</th><th>TAGS</th><th>Id Vendor</th><th>Quantita</th><th>Richiedente</th><th>Scarico</th><th>Note</th>";
+*/
+$sql = "SELECT data,MAGAZZINO.posizione AS provenienza, OPERAZIONI.posizione AS destinazione,tags,id_vendor,OPERAZIONI.quantita,intestazione,numero,note FROM OPERAZIONI
+LEFT JOIN (SELECT id_merce,tags,id_vendor FROM MERCE) AS merce USING(id_merce)
+LEFT JOIN (SELECT id_contatto,id_documento,numero FROM REGISTRO) AS registro USING(id_documento)
+LEFT JOIN (SELECT id_contatto,intestazione FROM RUBRICA) as rubrica USING(id_contatto)
+LEFT JOIN MAGAZZINO USING(id_merce)
+WHERE direzione='0' ORDER BY data DESC,OPERAZIONI.posizione;";
+$mask = "<th>Data</th><th>Provenienza</th><th>Destinazione</th><th>TAGS</th><th>Id Vendor</th><th>Quantita</th><th>Richiedente</th><th>Scarico</th><th>Note</th>";
 return table_core("scarichi",$sql,$mask);
 }
 
