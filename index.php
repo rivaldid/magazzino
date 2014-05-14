@@ -5,39 +5,14 @@
 	<link rel="stylesheet" href="css/index_css.css" type="text/css" />	
 	<link rel="stylesheet" href="css/navi_menu_top.css" type="text/css" />
 	<link rel="icon" href="img/favicon.png" type="image/png">
+
 	<!-- librerie js per filtro tablelle -->
 		<script src="lib/jquery.min.js"></script>
 		<script src="lib/jquery.filtertable.min.js"></script>
 	<!-- librerie js per order tablelle -->
 	<script src="lib/jquery.tablesorter.js"></script>
-	<!-- <script src="lib/jquery.tablesorter.pager.js"></script> -->
-	
-	
-	<!-- Lbreria Jquery e css per visualizzare l' help_icon -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+
 <script type='text/javascript'>
-	/**		form help icon		**/
-$(function() {
-	$( "#dialog" ).dialog({
-	autoOpen: false,
-	show: {
-	effect: "blind",
-	duration: 10
-	},
-	hide: {
-	effect: "explode",
-	duration: 10
-	}
-	});
-$( "#opener" ).click(function() {
-	$( "#dialog" ).dialog( "open" );
-	});
-});
-
-
 	/** js per filtro           **/
 
 		$(document).ready(function() {
