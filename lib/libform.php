@@ -1,8 +1,13 @@
-<?php
+<!-- finestra di dialogo di prova inserita nel form di ETICHETTE...prima di cancellare chiedere a Davide... -->
 
+<div id="dialog" title="Basic dialog">
+<p>Compilare questo campo perche' obligatorio. Cliccare sulla X per chiudere questa finestra</p>
+</div>
+
+<?php
 function form_etichette() {
 $a = atitolo."Aggiungi etichetta".ctitolo.accapo;
-$a .= "<form name=\"etichette\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=etichette")."\">".accapo;
+$a .= "<img src=\"img/help_icon.png\" id=\"opener\" /><form name=\"etichette\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=etichette")."\">".accapo;
 $a .= atable.accapo;
 
 	$a .= atr.accapo.atd."Selettore".ctd.accapo.atd.accapo;

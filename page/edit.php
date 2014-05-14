@@ -5,7 +5,7 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
 	if (($_GET['status']) == "IN")
 		echo "<div class=\"CSSTableGenerator\" >".table_operazioni_edit_in($_GET['id'])."</div>";
 	else
-		echo "Per le uscite mi sto attrezzando!";
+		killemall("procedure per la modifica degli scarichi in costruzione");
 	
 } elseif (isset($_POST['submit'])) {
 	

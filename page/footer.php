@@ -8,7 +8,7 @@
 				<li class="box_footer"><a href="http://rge1pats101/orario">Orario</a></li>
 				<li class="box_footer"><a href="http://10.200.22.24/ADC/ReportGiornaliero.aspx">ADC</a></li>
 				<li class="box_footer"><a href="http://10.200.22.24/rfid/">R-fid</a></li>
-				<li class="box_footer"><a href="#">Wiki</a></li>
+				<li class="box_footer"><a href="?page=credits">Credits</a></li>
 			</ul>
 		</div>
 	</div> <!-- end div footer -->

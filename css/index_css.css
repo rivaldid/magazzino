@@ -112,7 +112,6 @@ div#footer img {
 border: none;
 }
 div#footer {
-	color: #0067FF;
     background: url("../img/bk_footer2.png") repeat-x;
     float: left;
     height: 200px;
@@ -120,9 +119,7 @@ div#footer {
     width: 100%;
 	/*border: 5px solid yellow;*/
 	text-align: center;
-    font-size: 16px;
-    font-family: Verdana;
-	font-weight: bold;
+	font: bold 16px Verdana ;
 	position:relative;
 	bottom: 0;
 
@@ -179,10 +176,9 @@ div#footer .w3c a:hover {
     /*background: #DCE5F0;*/
     background: #E7F404;
     text-transform: uppercase;
-    font-family: Verdana;
-	font-size: 14px;
     padding: 0.5em;
-	font-style: italic;
+	font: italic bold 14px Verdana ;
+
 	
 }
 .CSSTableGenerator {
@@ -208,6 +204,7 @@ div#footer .w3c a:hover {
     border-spacing: 0;
     width: 100%;
     height: 100%;
+	
 }
 .CSSTableGenerator tr:last-child td:last-child {
     -moz-border-radius-bottomright: 0px;
@@ -238,9 +235,11 @@ div#footer .w3c a:hover {
     border-width: 0px 1px 1px 0px;
     text-align: left;
     padding: 4px;
-    font-size: 12px;
-    font-family: Verdana;
     color: #000000;
+	font: normal normal 12px Verdana ;
+
+	
+	
 }
 .CSSTableGenerator tr:last-child td { border-width: 0px 1px 0px 0px }
 .CSSTableGenerator tr td:last-child { border-width: 0px 0px 1px 0px }
@@ -255,13 +254,12 @@ div#footer .w3c a:hover {
     border: 0px solid #000000;
     text-align: center;
     border-width: 0px 0px 1px 1px;
-    font-size: 14px;
-    font-family: Verdana;
-    font-weight: bold;
+    font: normal bold 14px Verdana ;
     color: #ffffff;
 	text-transform: uppercase;
 	background: url("../img/bg.gif") no-repeat bottom right #008CFF;
-
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bg.gif', sizingMethod='scale');
+-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bg.gif', sizingMethod='scale')";
 }
 .CSSTableGenerator tr:first-child td:first-child { border-width: 0px 1px 1px 0px }
 .CSSTableGenerator tr:first-child td:last-child { border-width: 0px 0px 1px 1px }
@@ -277,10 +275,8 @@ input[type="text"],input[type="button"],input[type="password"],
 input[type="file"],input[type="submit"],input[type="radio"],
 textarea, input[type="reset"],input[type="search"],input[type="checkbox"] {
 	line-height:normal !important;
-	background: #CCCCCC;
-	font-family: tahoma, helvetica, sans-serif;
-	font-style: normal;
-	font-size: 16px;
+	background: #CCCCCC;	
+	font: normal normal 16px tahoma, helvetica, sans-serif ;
 	color: #000000;
 	margin: 0.5em;
 	padding: 1px;
@@ -302,13 +298,13 @@ input[type="checkbox"]:hover
 }
 
 .form_labelstyle {
-	font-family: tahoma, helvetica, sans-serif;
-	font-style: bold;
-	font-size: 16px;
+
 	color: #000000;
+	font: normal bold 16px tahoma, helvetica, sans-serif ;	
 }
 
 select {
+
 	border: 1px solid #1F1F1F;
     padding:2px;
     margin: 0;
@@ -349,19 +345,63 @@ label:before {
     pointer-events:none;
     display:block;
 }
+/*******************************************************************/
+/*******************************************************************/
+/*******************************************************************/
+
+div#credits{
+margin:100px auto;
+width: 490px;
+height: 500px;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=77)";
+filter: alpha(opacity=77);
+-moz-opacity: 0.77;
+-khtml-opacity: 0.77;
+opacity: 0.77;
+border: 2px #000000 dashed;
+background-color: #c5e958;
+padding: 10px;
+color: #141590;
+font: normal normal 14px tahoma, helvetica, sans-serif ;	
+-moz-box-shadow: inset 0px 0px 0px 0px #888888;
+-webkit-box-shadow: inset 0px 0px 0px 0px #888888;
+box-shadow: inset 0px 0px 0px 0px #888888;
+transform:rotate(34deg) skew(48deg,130deg) rotateY(16deg) rotateZ(8deg) scale(0.8);
+-ms-transform:rotate(34deg) skew(48deg,130deg) rotateY(16deg) rotateZ(8deg) scale(0.8);
+transform:rotate(34deg) skew(48deg,130deg) rotateY(16deg) rotateZ(8deg) scale(0.8);
+letter-spacing:2px;
+}
+div#credits h1,h2,h3,h4{
+text-align:center;
+}
+div#credits li {
+list-style-type: square;
+text-align: center;
+margin: 15px;
+}
+div#credits a:hover {
+text-decoration: underline;
+color:#099AFF;
+}
+div#credits a:link,a:visited {
+color:#099AFF;
+}
+div#credits p {
+margin: 10px;
+text-align: left;
+}
+/*il bold nei credits */
+.bold {font-weight:bold;}
+
+hr { border: 0; height: 1px; background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); }
 
 
+.riferimenti {
+text-align:center;
+margin: 20px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+div#riferimenti li {
+list-style-type: none;
+text-align: center;
+}

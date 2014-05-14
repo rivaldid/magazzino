@@ -143,7 +143,8 @@ function _array2sql($table, $array, $insert = "INSERT INTO") {
                 
     //TODO: ensure no commas are in the values
   }
-            
+ 
+ 
   //$cols = implode(",",$columns);
   $values = implode(",",$data);
 
@@ -272,7 +273,7 @@ $classemysql = new MysqlClass();
 $classemysql->connetti();
 $tmp = $classemysql->myquery($sql);
 $output = "<select name=\"{$mask}\">\n";
-$output .= "<option selected=\"selected\" value=\"NULL\">OFF</option>\n";
+$output .= "<option selected=\"selected\" value=\"NULL\">null</option>\n";
 while ($riga = mysql_fetch_row($tmp)) {
 	$output .= "<option value=\"";
 	for ($i=0; $i<$n; $i++) {
@@ -298,7 +299,7 @@ $classemysql = new MysqlClass();
 $classemysql->connetti();
 $tmp = $classemysql->myquery($sql);
 $output = "<select name=\"{$mask}\">\n";
-$output .= "<option selected=\"selected\" value=\"NULL\">OFF</option>\n";
+$output .= "<option selected=\"selected\" value=\"NULL\">null</option>\n";
 while ($riga = mysql_fetch_row($tmp)) {
 	$output .= "<option value=\"{$riga[0]}\">";
 	for ($i=1; $i<$n; $i++) {
@@ -319,7 +320,7 @@ $classemysql = new MysqlClass();
 $classemysql->connetti();
 $tmp = $classemysql->myquery($sql);
 $output = "<select name=\"{$mask}\">\n";
-$output .= "<option selected=\"selected\" value=\"NULL\">OFF</option>\n";
+$output .= "<option selected=\"selected\" value=\"NULL\">null</option>\n";
 while ($riga = mysql_fetch_row($tmp)) {
 	$output .= "<option value=\"{$riga[0]} {$riga[1]}\">";
 	for ($i=1; $i<$n; $i++) {

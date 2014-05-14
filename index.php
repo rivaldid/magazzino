@@ -13,7 +13,30 @@
 	<!-- <script src="lib/jquery.tablesorter.pager.js"></script> -->
 	
 	
+	<!-- Lbreria Jquery e css per visualizzare l' help_icon -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
 <script type='text/javascript'>
+	/**		form help icon		**/
+$(function() {
+	$( "#dialog" ).dialog({
+	autoOpen: false,
+	show: {
+	effect: "blind",
+	duration: 10
+	},
+	hide: {
+	effect: "explode",
+	duration: 10
+	}
+	});
+$( "#opener" ).click(function() {
+	$( "#dialog" ).dialog( "open" );
+	});
+});
+
 
 	/** js per filtro           **/
 
