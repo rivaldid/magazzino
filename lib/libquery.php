@@ -1,6 +1,28 @@
 <?php
 
 
+// nuova
+function optionlist_proprieta($livello) {
+if ($livello == "")
+	$sql = "SELECT label FROM proprieta ORDER BY label;";
+else
+	$sql = "SELECT label FROM proprieta WHERE sel={$livello} ORDER BY label;";
+return optionlist_core_simple($sql,"proprieta".$livello,"1");
+}
+
+function optionlist_fornitore() {
+$sql = "SELECT label FROM proprieta WHERE sel='5' ORDER BY label;";
+return optionlist_core_simple($sql,"fornitore","1");
+}
+function optionlist_trasportatore() {
+$sql = "SELECT label FROM proprieta WHERE sel='5' ORDER BY label;";
+return optionlist_core_simple($sql,"trasportatore","1");
+}
+function optionlist_tipo_doc() {
+$sql = "SELECT label FROM proprieta WHERE sel='4' ORDER BY label;";
+return optionlist_core_simple($sql,"tipo_doc","1");
+}
+
 function optionlist_intestazioni($attivita) {
 $id_contatto = "id_contatto_".strtolower($attivita);
 if ($attivita == "")
@@ -12,14 +34,21 @@ return optionlist_core($sql,$id_contatto,"2");
 
 
 function optionlist_merce() {
-$sql = "SELECT id_merce,tags,id_vendor FROM MERCE ORDER BY tags,id_vendor;";
-return optionlist_core($sql,"option_id_merce","3");
+$sql = "SELECT * FROM MERCE ORDER BY tags;";
+return optionlist_core($sql,"option_id_merce","2");
 }
 
 function optionlist_id_merce() {
 $sql = "SELECT id_merce FROM MERCE ORDER BY id_merce;";
 return optionlist_core_simple($sql,"id_merce","1");
 }
+
+
+
+
+
+
+
 
 
 function optionlist_merce_da_tag_in_magazzino($tags) {
@@ -43,12 +72,7 @@ return optionlist_core_double($sql,"option_id_merce_posizione","5");
 }
 
 
-/* etichette:
- * [1-4] tags
- * 5 posizioni
- * 6 categorie documenti
- * 7 destinazioni
- */
+
 function optionlist_etichette($sel) {
 $sql = "SELECT label FROM etichette WHERE selettore=\"{$sel}\";";
 return optionlist_core_simple($sql,"listaetichette{$sel}","1");

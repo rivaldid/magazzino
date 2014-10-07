@@ -57,7 +57,19 @@ if (isset($_POST['submit'])) {
 				if ($data === 'NULL-NULL-NULL') $data = date('Y-m-d');
 				if (isset($_POST['note'])) $note = safe($_POST['note']);
 				
-				echo $callsql = "CALL SCARICO('{$id_richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data}','{$note}');";
+				
+				// VARIAZIONI
+				$richiedente = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$id_richiedente}\"","intestazione");
+				// CHIUSE VARIAZIONI
+				
+				
+				/* vecchio scarico --> CALL SCARICO('{$id_richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data}','{$note}');
+				 * 
+				 * nuovo scarico   --> CALL SCARICO(utente,richiedente, id_merce, quantita, posizione, destinazione, data_doc_scarico, data_scarico, note_scarico,@myvar);
+				 */
+				
+				
+				echo $callsql = "CALL SCARICO('Sistema','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data}',{$data}','{$note}',@myvar);";
 				echo call_core("scarico merce",$callsql);			
 				echo "<p><h2><a href=\"?page=scarico\">Nuovo scarico</a></h2></p>";
 				break;

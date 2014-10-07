@@ -122,26 +122,24 @@ $a = atitolo."Carico merce".ctitolo.accapo;
 $a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=carico")."\">".accapo;
 $a .= atable.accapo;
 	
-	// b) id_fornitore 
+	// b) fornitore 
 	if ($b == "")
-		$a .= atr.accapo.atd."Fornitore".ctd.atd.optionlist_intestazioni("Fornitore").ctd.ctr.accapo;
+		$a .= atr.accapo.atd."Fornitore".ctd.atd.optionlist_fornitore().ctd.ctr.accapo;
 	else {
-		$bb = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$b}\"","intestazione");
-		$a .= atr.accapo.atd."Fornitore".ctd.atd.$bb.ctd.ctr.accapo;
+		$a .= atr.accapo.atd."Fornitore".ctd.atd.$b.ctd.ctr.accapo;
 	}
 		
-	// c) id_trasportatore
+	// c) trasportatore
 	if (($c == "") OR ($c == "NULL"))
-		$a .= atr.accapo.atd."Trasportatore".ctd.atd.optionlist_intestazioni("Trasportatore").ctd.ctr.accapo;
+		$a .= atr.accapo.atd."Trasportatore".ctd.atd.optionlist_trasportatore().ctd.ctr.accapo;
 	else {
-		$cc = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$c}\"","intestazione");
-		$a .= atr.accapo.atd."Trasportatore".ctd.atd.$cc.ctd.ctr.accapo;
+		$a .= atr.accapo.atd."Trasportatore".ctd.atd.$c.ctd.ctr.accapo;
 	}
 		
-	// de) categoria & numero
+	// de) tipo_doc & num_doc
 	if ($e == "") {
 		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo;
-		$a .= atd.optionlist_etichette("6")."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
+		$a .= atd.optionlist_tipo_doc()."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
 	}
 	else 
 		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.$d." ".$e.ctd.accapo.ctr;
@@ -162,15 +160,13 @@ $a .= atable.accapo;
 	else 
 		$a .= atr.accapo.atd."Note carico".ctd.accapo.atd.$g.ctd.accapo.ctr.accapo;
 	
-	// hi) ordine
+	// h) ODA
 	if ($i == "") {
-		$a .= atr.accapo.atd."Tipo e numero ordine".ctd.accapo.atd.accapo;
-		$a .= "<input type=\"radio\" name=\"categoria_ordine\" value=\"ODA\" checked=\"checked\">ODA".accapo;
-		$a .= "<input type=\"radio\" name=\"categoria_ordine\" value=\"BDC\">BDC".accapo;
+		$a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.accapo;
 		$a .= "<input type=\"text\" name=\"numero_ordine\">".accapo.ctd.accapo.ctr.accapo;
 	}
 	else
-		$a .= atr.accapo.atd."Tipo e numero ordine".ctd.accapo.atd.$h." ".$i.ctd.accapo.ctr.accapo;
+		$a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.$h.ctd.accapo.ctr.accapo;
 	
 
 	
@@ -184,27 +180,18 @@ $a .= atable.accapo;
 	//tags
 	$a .= atr.accapo.atd."Nuovo modello tags merce".ctd.accapo.atd.accapo;
 	$a .= atable.accapo;
-	$a .= atr.accapo.atd."tag1 (cosa e')".ctd.accapo.atd.optionlist_etichette("1")."<input type=\"text\" name=\"testotag1\">".ctd.accapo.ctr.accapo;
-	$a .= atr.accapo.atd."tag2 (come e')".ctd.accapo.atd.optionlist_etichette("2")."<input type=\"text\" name=\"testotag2\">".ctd.accapo.ctr.accapo;
-	$a .= atr.accapo.atd."tag3 (quanto e')".ctd.accapo.atd.optionlist_etichette("3")."<input type=\"text\" name=\"testotag3\">".ctd.accapo.ctr.accapo;
-	$a .= atr.accapo.atd."lista altri tags".ctd.accapo.atd.optionlist_etichette("4")."<input type=\"text\" name=\"testotag4\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."tags (separati da virgola):".ctd.accapo.atd."<input type=\"text\" name=\"testotag1\">".ctd.accapo.ctr.accapo;
 
-	// id_vendor
-	$a .= atr.accapo.atd."Codice vendor".ctd.accapo.atd."<input type=\"text\" name=\"id_vendor\">".ctd.accapo.ctr.accapo;
-
-	// descrizione_merce
-	$a .= atr.accapo.atd."Descrizione merce".ctd.accapo.atd."<input type=\"text\" name=\"descrizione_merce\">".ctd.accapo.ctr.accapo;
-	$a .= ctable.accapo;
-	$a .= ctd.accapo.ctr.accapo;
-	
 	// quantita
 	$a .= atr.accapo.atd."Quantita'".ctd.accapo;
 	$a .= atd."<input type=\"text\" name=\"quantita\">".ctd.accapo.ctr.accapo;
 
 	// posizione
 	$a .= atr.accapo.atd."Posizione".ctd.accapo.atd.accapo;
-	$a .= optionlist_etichette("5")."<input type=\"text\" name=\"posizione\">";
+	$a .= optionlist_proprieta("2")."<input type=\"text\" name=\"posizione\">";
 	$a .= ctd.accapo.ctr.accapo;
+	
+	$a .= ctable.accapo;
 	
 $a .= fine_form;
 return $a;

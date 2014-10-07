@@ -5,20 +5,20 @@ session_start();
 if (isset($_POST['submit'])) {
 
 	// fornitore
-	if (!isset($_SESSION['id_fornitore']) OR !($_SESSION['id_fornitore']) OR ($_SESSION['id_fornitore'] == "NULL")) {
-		if (!isset($_POST['id_contatto_fornitore']) OR !($_POST['id_contatto_fornitore']) OR ($_POST['id_contatto_fornitore'] == "NULL"))
+	if (!isset($_SESSION['fornitore']) OR !($_SESSION['fornitore']) OR ($_SESSION['fornitore'] == "NULL")) {
+		if (!isset($_POST['fornitore']) OR !($_POST['fornitore']) OR ($_POST['fornitore'] == "NULL"))
 			killemall("intestazione fornitore");
-		$id_fornitore = safe($_POST['id_contatto_fornitore']);
-		$_SESSION['id_fornitore'] = $id_fornitore;
-	} else $id_fornitore = $_SESSION['id_fornitore'];
+		$id_fornitore = safe($_POST['fornitore']);
+		$_SESSION['fornitore'] = $id_fornitore;
+	} else $id_fornitore = $_SESSION['fornitore'];
 	
 	// categoria
-	if (!isset($_SESSION['categoria']) OR !($_SESSION['categoria']) OR ($_SESSION['categoria'] == "NULL")) {
-		if (!isset($_POST['listaetichette6']) OR !($_POST['listaetichette6']) OR ($_POST['listaetichette6'] == "NULL"))
+	if (!isset($_SESSION['tipo_doc']) OR !($_SESSION['tipo_doc']) OR ($_SESSION['tipo_doc'] == "NULL")) {
+		if (!isset($_POST['tipo_doc']) OR !($_POST['tipo_doc']) OR ($_POST['tipo_doc'] == "NULL"))
 			killemall("tipo di documento");
-		$categoria = safe($_POST['listaetichette6']);
-		$_SESSION['categoria'] = $categoria;
-	} else $categoria = $_SESSION['categoria'];
+		$categoria = safe($_POST['tipo_doc']);
+		$_SESSION['tipo_doc'] = $tipo_doc;
+	} else $tipo_doc = $_SESSION['tipo_doc'];
 	
 	// numero
 	if (!isset($_SESSION['numero']) OR !($_SESSION['numero']) OR ($_SESSION['numero'] == "NULL")) {
@@ -125,7 +125,19 @@ if (isset($_POST['submit'])) {
 			$id_trasportatore = NULL;
 	} else $id_trasportatore = $_SESSION['id_trasportatore'];
 	
-	echo $callsql = "CALL CARICO('{$id_fornitore}','{$categoria}','{$numero}','{$categoria_ordine}','{$numero_ordine}','{$id_merce}','{$tags}','{$id_vendor}','{$descrizione_merce}','{$quantita}','{$posizione}','{$data}','{$note}','{$id_trasportatore}');";
+	
+	// VARIAZIONI
+	$fornitore = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$id_fornitore}\"","intestazione");
+	$trasportatore = service_get_field("SELECT * FROM RUBRICA WHERE id_contatto=\"{$id_trasportatore}\"","intestazione");
+	// CHIUSE VARIAZIONI
+	
+	
+	/* vecchio carico --> CALL CARICO('{$id_fornitore}','{$categoria}','{$numero}','{$categoria_ordine}','{$numero_ordine}','{$id_merce}','{$tags}','{$id_vendor}','{$descrizione_merce}','{$quantita}','{$posizione}','{$data}','{$note}','{$id_trasportatore}');
+	 * 
+	 * nuovo carico   --> CALL CARICO(utente,fornitore,tipo_doc,num_doc,data_doc, NULL, tags, quantita, posizione, data_carico, note_carico, trasportatore, oda);
+	 */
+	 
+	echo $callsql = "CALL CARICO('Sistema','{$fornitore}','{$tipo_doc}','{$numero}','{$data}',NULL,'{$tags}','{$quantita}','{$posizione}','{$data}','{$note}','{$trasportatore}','{$numero_ordine}');";
 	echo call_core("carico merce",$callsql);
 	echo "<div class=\"CSSTableGenerator\" >".form_carico($id_fornitore,$id_trasportatore,$categoria,$numero,$data,$note,$categoria_ordine,$numero_ordine)."</div>";
 	
