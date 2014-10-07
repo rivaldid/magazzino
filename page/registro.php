@@ -2,13 +2,13 @@
 
 if (isset($_POST['submit'])) {
 	
-	if (!isset($_POST['id_contatto_']) OR !($_POST['id_contatto_']) OR ($_POST['id_contatto_'] == "NULL"))
+	if (!isset($_POST['contatto']) OR !($_POST['contatto']) OR ($_POST['contatto'] == "NULL"))
 		killemall("mittente documento");
-	$id_contatto = safe($_POST['id_contatto_']);
+	$contatto = safe($_POST['contatto']);
 	
-	if (!isset($_POST['listaetichette6']) OR !($_POST['listaetichette6']) OR ($_POST['listaetichette6'] == "NULL"))
+	if (!isset($_POST['tipo_doc']) OR !($_POST['tipo_doc']) OR ($_POST['tipo_doc'] == "NULL"))
 		killemall("tipo di documento");
-	$categoria = safe($_POST['listaetichette6']);
+	$tipo_doc = safe($_POST['tipo_doc']);
 	
 	if (!isset($_POST['numero']) OR !($_POST['numero']) OR ($_POST['numero'] == "NULL"))
 		killemall("numero di documento");
@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
 			killemall("caricamento scansione documento");
 	}
 	
-	$callsql = "CALL input_registro('{$id_contatto}','{$categoria}','{$numero}','{$gruppo}','{$data}','{$filename}');";
+	$callsql = "CALL input_registro('{$contatto}','{$tipo_doc}','{$numero}','{$gruppo}','{$data}','{$filename}','@myvar');";
 	echo call_core("aggiungi documento",$callsql);
 	echo "<p><h2><a href=\"?page=registro\">Nuovo inserimento</a></h2></p>";
 	
