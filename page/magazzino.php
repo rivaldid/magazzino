@@ -3,6 +3,7 @@
 echo "<form method=\"post\" class=\"excelForm\" onSubmit=\"javascript:return getData()\">
 <div class=\"CSSTableGenerator\" >".table_magazzino()."</div></form>";
 
+/*
 if (isset($_POST['submit'])) {
 	
 	// merce
@@ -25,6 +26,7 @@ if (isset($_POST['submit'])) {
 	echo "<p><h2><a href=\"?page=magazzino\">Nuovo moving</a></h2></p>";
 
 } else echo "<div class=\"CSSTableGenerator\" >".form_moving()."</div>";
+*/
 	
 ?>
 

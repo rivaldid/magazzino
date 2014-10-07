@@ -117,81 +117,43 @@ return $a;
 }
 
 
-function form_carico($b,$c,$d,$e,$f,$g,$h,$i) {
+function form_carico($b,$c,$d,$e,$f,$g,$h) {
 $a = atitolo."Carico merce".ctitolo.accapo;
 $a .= "<form name=\"carico\" method=\"post\" enctype=\"multipart/form-data\" action=\"".htmlentities("?page=carico")."\">".accapo;
 $a .= atable.accapo;
 	
 	// b) fornitore 
-	if ($b == "")
-		$a .= atr.accapo.atd."Fornitore".ctd.atd.optionlist_fornitore().ctd.ctr.accapo;
-	else {
-		$a .= atr.accapo.atd."Fornitore".ctd.atd.$b.ctd.ctr.accapo;
-	}
+	if ($b == "") $a .= atr.accapo.atd."Fornitore".ctd.atd.optionlist_fornitore().ctd.ctr.accapo;
+	else $a .= atr.accapo.atd."Fornitore".ctd.atd.$b.ctd.ctr.accapo;
 		
 	// c) trasportatore
-	if (($c == "") OR ($c == "NULL"))
-		$a .= atr.accapo.atd."Trasportatore".ctd.atd.optionlist_trasportatore().ctd.ctr.accapo;
-	else {
-		$a .= atr.accapo.atd."Trasportatore".ctd.atd.$c.ctd.ctr.accapo;
-	}
+	if (($c == "") OR ($c == "NULL")) $a .= atr.accapo.atd."Trasportatore".ctd.atd.optionlist_trasportatore().ctd.ctr.accapo;
+	else $a .= atr.accapo.atd."Trasportatore".ctd.atd.$c.ctd.ctr.accapo;
 		
 	// de) tipo_doc & num_doc
-	if ($e == "") {
-		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo;
-		$a .= atd.optionlist_tipo_doc()."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
-	}
-	else 
-		$a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.$d." ".$e.ctd.accapo.ctr;
+	if ($e == "") $a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.optionlist_tipo_doc()."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
+	else $a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.$d." ".$e.ctd.accapo.ctr;
 	
 	// f) data
-	if ($f == "") {
-		$a .= atr.accapo.atd."Data carico".ctd.accapo;
-		$a .= atd.date_picker("data").ctd.accapo.ctr.accapo;
-	}
-	else 
-		$a .= atr.accapo.atd."Data carico".ctd.accapo.atd.$f.ctd.accapo.ctr.accapo;
+	if ($f == "") $a .= atr.accapo.atd."Data carico".ctd.accapo.atd.date_picker("data").ctd.accapo.ctr.accapo;
+	else $a .= atr.accapo.atd."Data carico".ctd.accapo.atd.$f.ctd.accapo.ctr.accapo;
 	
 	// g) note
-	if ($g == "") {
-		$a .= atr.accapo.atd."Note carico".ctd.accapo;
-		$a .= atd."<input type=\"text\" name=\"note\">".ctd.accapo.ctr.accapo;
-	}
-	else 
-		$a .= atr.accapo.atd."Note carico".ctd.accapo.atd.$g.ctd.accapo.ctr.accapo;
+	if ($g == "") $a .= atr.accapo.atd."Note carico".ctd.accapo.atd."<input type=\"text\" name=\"note\">".ctd.accapo.ctr.accapo;
+	else $a .= atr.accapo.atd."Note carico".ctd.accapo.atd.$g.ctd.accapo.ctr.accapo;
 	
 	// h) ODA
-	if ($i == "") {
-		$a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.accapo;
-		$a .= "<input type=\"text\" name=\"numero_ordine\">".accapo.ctd.accapo.ctr.accapo;
-	}
-	else
-		$a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.$h.ctd.accapo.ctr.accapo;
-	
+	if ($h == "") $a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.accapo."<input type=\"text\" name=\"numero_ordine\">".accapo.ctd.accapo.ctr.accapo;
+	else $a .= atr.accapo.atd."Numero ODA".ctd.accapo.atd.$h.ctd.accapo.ctr.accapo;
 
-	
-	// ******************** CARICO PARTE STATICA ***************************
-	
-	// id_merce da modello
-	$a .= atr.accapo.atd."Scegli modello tags merce".ctd.accapo;
-	$a .= atd.accapo.optionlist_merce().accapo.ctd.accapo.ctr.accapo;
-	
-	// nuovo inserimento merce
 	//tags
-	$a .= atr.accapo.atd."Nuovo modello tags merce".ctd.accapo.atd.accapo;
-	$a .= atable.accapo;
-	$a .= atr.accapo.atd."tags (separati da virgola):".ctd.accapo.atd."<input type=\"text\" name=\"testotag1\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."Tags (separati da spazio)".ctd.accapo.atd."<input type=\"text\" name=\"tags\">".ctd.accapo.ctr.accapo;
 
 	// quantita
-	$a .= atr.accapo.atd."Quantita'".ctd.accapo;
-	$a .= atd."<input type=\"text\" name=\"quantita\">".ctd.accapo.ctr.accapo;
+	$a .= atr.accapo.atd."Quantita'".ctd.accapo.atd."<input type=\"text\" name=\"quantita\">".ctd.accapo.ctr.accapo;
 
 	// posizione
-	$a .= atr.accapo.atd."Posizione".ctd.accapo.atd.accapo;
-	$a .= optionlist_proprieta("2")."<input type=\"text\" name=\"posizione\">";
-	$a .= ctd.accapo.ctr.accapo;
-	
-	$a .= ctable.accapo;
+	$a .= atr.accapo.atd."Posizione".ctd.accapo.atd.accapo.optionlist_posizioni()." oppure <input type=\"text\" name=\"posizione\">".ctd.accapo.ctr.accapo;
 	
 $a .= fine_form;
 return $a;

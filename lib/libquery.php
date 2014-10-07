@@ -22,6 +22,10 @@ function optionlist_tipo_doc() {
 $sql = "SELECT label FROM proprieta WHERE sel='4' ORDER BY label;";
 return optionlist_core_simple($sql,"tipo_doc","1");
 }
+function optionlist_posizioni() {
+$sql = "SELECT label FROM proprieta WHERE sel='2' ORDER BY label;";
+return optionlist_core_simple($sql,"posizioni","1");
+}
 
 function optionlist_intestazioni($attivita) {
 $id_contatto = "id_contatto_".strtolower($attivita);
@@ -43,7 +47,12 @@ $sql = "SELECT id_merce FROM MERCE ORDER BY id_merce;";
 return optionlist_core_simple($sql,"id_merce","1");
 }
 
-
+function table_transiti() {
+$mask = "<th>Data</th><th>Direzione</th><th>Posizione</th><th>Documento</th>
+		<th>TAGS</th><th><Quantita/th><th>Note</th><th>ODA</th><th>Trasportatore</th>";
+$sql = "select data,status,posizione,documento,tags,quantita,note,ordine,trasportatore from TRANSITI;";
+return table_core("transiti",$sql,$mask);
+}
 
 
 
@@ -144,8 +153,9 @@ return table_core("etichette",$sql,$mask);
 
 
 function table_magazzino() {
-$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE quantita>0 ORDER BY posizione,tags,id_vendor;";
-$mask = "<th>Posizione</th><th>TAGS</th><th>Codice vendor</th><th>Giacenza</th><th>Descrizione</th>";
+//$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE quantita>0 ORDER BY posizione,tags,id_vendor;";
+$sql = "SELECT * FROM vista_magazzino2;";
+$mask = "<th>TAGS</th><th>Quantita</th><th>Lista posizioni</th>";
 return table_core("magazzino",$sql,$mask);
 }
 
