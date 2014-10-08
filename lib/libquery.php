@@ -54,7 +54,15 @@ $sql = "select data,status,posizione,documento,tags,quantita,note,ordine,traspor
 return table_core("transiti",$sql,$mask);
 }
 
-
+// scarico
+function optionlist_richiedente() {
+$sql = "SELECT label FROM proprieta WHERE sel='5' ORDER BY label;";
+return optionlist_core_simple($sql,"richiedente","1");
+}
+function optionlist_destinazione() {
+$sql = "SELECT label FROM proprieta WHERE sel='3' ORDER BY label;";
+return optionlist_core_simple($sql,"destinazione","1");
+}
 
 
 

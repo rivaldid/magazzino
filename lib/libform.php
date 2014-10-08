@@ -36,7 +36,7 @@ $a .= atable.accapo;
 	else $a .= atr.accapo.atd."Trasportatore".ctd.atd.$c.ctd.ctr.accapo;
 		
 	// de) tipo_doc & num_doc
-	if ($e == "") $a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.optionlist_tipo_doc()."<input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
+	if ($e == "") $a .= atr.accapo.atd."Tipo di documento".ctd.accapo.atd.optionlist_tipo_doc()." numero di documento <input type=\"text\" name=\"numero\">".ctd.accapo.ctr.accapo;
 	else $a .= atr.accapo.atd."Tipo e numero di documento".ctd.accapo.atd.$d." ".$e.ctd.accapo.ctr;
 	
 	// f) data
