@@ -49,7 +49,7 @@ return optionlist_core_simple($sql,"id_merce","1");
 
 function table_transiti() {
 $mask = "<th>Data</th><th>Direzione</th><th>Posizione</th><th>Documento</th>
-		<th>TAGS</th><th><Quantita/th><th>Note</th><th>ODA</th><th>Trasportatore</th>";
+		<th>TAGS</th><th>Quantita</th><th>Note</th><th>ODA</th><th>Trasportatore</th>";
 $sql = "select data,status,posizione,documento,tags,quantita,note,ordine,trasportatore from TRANSITI;";
 return table_core("transiti",$sql,$mask);
 }
