@@ -1,0 +1,18 @@
+table{
+	padding: 0.2em;
+	font: verdana; 
+}
+caption {
+	font-size: 300%;
+}
+thead {
+	font-size: 120%;
+}
+td {
+	border: 0.2em solid #d3d3d3;
+	background-color: #FFFFF0;
+}
+th {
+	background-color: #F0E68C;
+	border: 0.2em solid black;
+}
