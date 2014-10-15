@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * 
  * carico merce in magazzino, frontend per stored procedure 
  * 
  * 	CALL CARICO(utente, fornitore, tipo_doc, num_doc, data_doc, scansione, 
@@ -16,6 +17,7 @@
  * ad ogni submit verrà ricaricata la pagina con un avviso visivo in caso di dati mancanti
  * recuperando da $_SESSION ciò che intanto l'utente ha inserito
  * 
+ * 
  * STRUTTURA:
  * 		--> DEFINISCO VARIABILI
  * 		--> AVVIO RISORSE
@@ -30,6 +32,7 @@
  * 		--> FERMO RISORSE
  * 		--> VISUALIZZO PAGINA
  * 
+ * 
  */
 
 // --> DEFINISCO VARIABILI
@@ -39,6 +42,7 @@ $q2 = "SELECT * FROM vserv_tipodoc;";
 $q3 = "SELECT * FROM vserv_numdoc;";
 $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
+$registro = "aaa";
 
 // --> AVVIO RISORSE
 session_start();
@@ -55,6 +59,7 @@ foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 // --> TEST SUBMIT
 if (isset($_SESSION['submit'])) {
 	if (isset($_SESSION['fornitore'],$_SESSION['tipo_doc'],$_SESSION['num_doc'],$_SESSION['data_carico'],$_SESSION['tags'],$_SESSION['quantita'],$_SESSION['posizione'])) {
+		
 		// ------> inizializzo da $_SESSION
 		$fornitore = safe($_SESSION['fornitore']);
 		$tipo_doc = safe($_SESSION['tipo_doc']);
@@ -65,6 +70,7 @@ if (isset($_SESSION['submit'])) {
 		$posizione = safe($_SESSION['posizione']);
 		
 		// --> VALIDAZIONE DATI
+		
 		// ------> test input
 		if (isset($_SESSION['note_carico']))
 			$note_carico = safe($_SESSION['note_carico']);
@@ -80,35 +86,53 @@ if (isset($_SESSION['submit'])) {
 			$num_oda = safe($_SESSION['num_oda']);
 		else
 			$num_oda = NULL;
+			
+		if (isset($_SESSION['data_doc'])) 
+			$data_doc = safe($_SESSION['data_doc']);
+		else
+			$data_doc = NULL;
 		
 		// ------> test scansione
-		$query_doc = "SELECT EXISTS(SELECT 1 FROM REGISTRO WHERE contatto='{$fornitore}' AND tipo='{$tipo_doc}' AND numero='{$num_doc}')";
-		if(mysql_query($query_doc) == "1") {
-			$data_doc  = NULL;
-			$nome_doc = NULL;
-		} else {
-			if (isset($_SESSION['data_doc']))
-				$data_doc = safe($_SESSION['data_doc']);
-			else
-				$data_doc = NULL;
-			if (isset($_SESSION['nome_doc']))
-				$nome_doc = $tipo_doc."-".$fornitore."-".$num_doc.".".$extfile;
-			else
-				$nome_doc = NULL;
-		}
+		if ($_FILES['scansione']['size'] > 0) {
+			
+			$query_doc = "SELECT EXISTS(SELECT 1 FROM REGISTRO WHERE contatto='{$fornitore}' AND tipo='{$tipo_doc}' AND numero='{$num_doc}')";
+			$res_query_doc = mysql_query($query_doc);
+			if (!$res_query_doc) die('Errore nell\'interrogazione del db: '.mysql_error());
+			
+			switch ($res_query_doc) {
+				
+				// se ritorna 0 devo aggiungere il file
+				case "0":
+					$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
+					if (!(file_exists($registro."/".$nome_doc)))
+						move_uploaded_file($_FILES['scansione']['name'],$registro."/".$nome_doc);
+					break;
+
+				// altrimenti passo NULL alla stored procedure che collegherà il carico ad altro id_documento valorizzato
+				case "1":
+					$nome_doc = NULL;
+					$data_doc = NULL;
+
+				default:
+					$a .= "<h3>Rilevato un problema in fase di caricamento documento.</h3>\n";
+			}
+		
+			mysql_free_result($res_query_doc);
+			
+		} else $nome_doc = NULL;
 		
 		// --> CARICO
 		$call = "CALL CARICO('Web','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data}','{$note}','{$trasportatore}','{$num_oda}');";
 		$res_carico = mysql_query($call);
 		if ($res_query) 
-			$a .= "<h3>La query".$call." e' andata a buon fine</h3>";
+			$a .= "<h3>La query ".$call." e' andata a buon fine</h3>\n";
 		else 
 			die('Errore nell\'interrogazione del db: '.mysql_error());
 		
 		mysql_free_result($res_carico);
 		
 	} else
-		$a .= "<h3>Validazione dati fallita, carico non eseguito completare con i dati mancanti.</h3>";
+		$a .= "<h3>Validazione dati fallita, carico non eseguito completare con i dati mancanti.</h3>\n";
 		
 }
 
@@ -184,7 +208,10 @@ $a .= "<table>\n";
 		
 		$a .= "<tr>\n";
 		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-		$a .= "<td><input type='file' name='scansione'>\n<input type='hidden' name='action' value='upload'></td>\n";
+		$a .= "<td>\n";
+			$a .= "<input type='file' name='scansione'>\n";
+			//$a .= "<input type='hidden' name='action' value='upload'>\n";
+		$a .= "</td>\n";
 		$a .= "<td></td>\n";
 		$a .= "</tr>\n";
 		
@@ -229,8 +256,10 @@ $a .= "<table>\n";
 	$a .= "<tfoot>\n";
 		$a .= "<tr>\n";
 		$a .= "<td></td><td></td>\n";
-		$a .= "<td>\n<input type='reset' name='reset' value='Clear'>\n";
-		$a .= "<input type='submit' name='submit' value='Submit'>\n</td>\n";
+		$a .= "<td>\n";
+			$a .= "<input type='reset' name='reset' value='Clear'>\n";
+			$a .= "<input type='submit' name='submit' value='Submit'>\n";
+		$a .= "</td>\n";
 		$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
 	

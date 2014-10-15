@@ -17,4 +17,12 @@ function safe($value) {
 	return mysql_real_escape_string($value);
 }
 
+function epura_specialchars($string) {
+	return preg_replace('/[^A-Za-z0-9\. -]/', '', $string);
+}
+
+function getfilext($filename) {
+	return substr($filename, strrpos($filename, '.')+1);
+}
+
 ?>
