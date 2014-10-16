@@ -96,11 +96,13 @@ if (isset($_SESSION['submit'])) {
 		// ------> test scansione
 		if ($_FILES['scansione']['size'] > 0) {
 			
-			$query_doc = "SELECT EXISTS(SELECT 1 FROM REGISTRO WHERE contatto='{$fornitore}' AND tipo='{$tipo_doc}' AND numero='{$num_doc}')";
+			$query_doc = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
 			$res_query_doc = mysql_query($query_doc);
 			if (!$res_query_doc) die('Errore nell\'interrogazione del db: '.mysql_error());
+			$test_exists = mysql_fetch_assoc($res_query_doc);
+			mysql_free_result($res_query_doc);
 			
-			switch ($res_query_doc) {
+			switch ($test_exists['risultato']) {
 				
 				// se ritorna 0 devo aggiungere il file
 				case "0":
@@ -113,12 +115,11 @@ if (isset($_SESSION['submit'])) {
 				case "1":
 					$nome_doc = NULL;
 					$data_doc = NULL;
+					break;
 
 				default:
 					$a .= "<h3>Rilevato un problema in fase di caricamento documento.</h3>\n";
 			}
-		
-			mysql_free_result($res_query_doc);
 			
 		} else $nome_doc = NULL;
 		
