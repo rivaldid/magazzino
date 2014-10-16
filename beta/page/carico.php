@@ -23,9 +23,9 @@
  * 		--> AVVIO RISORSE
  * 		--> INIZIALIZZO $_SESSION DA $_POST
  * 		--> TEST SUBMIT
- * 		------> inizializzo da $_SESSION
- * 		--> VALIDAZIONE DATI
- *		------> test input
+ *		--> TEST INPUT
+ * 		------> $_SESSION campi obbligatori
+ * 		------> $_SESSION campi opzionali 
  * 		------> test scansione
  * 		--> CARICO
  * 		------> libero risorse
@@ -59,20 +59,22 @@ foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 // --> TEST SUBMIT
 if (isset($_SESSION['submit'])) {
-	if (isset($_SESSION['fornitore'],$_SESSION['tipo_doc'],$_SESSION['num_doc'],$_SESSION['data_carico'],$_SESSION['tags'],$_SESSION['quantita'],$_SESSION['posizione'])) {
+	
+	// --> TEST INPUT
+	if (isset($_SESSION['fornitore'], $_SESSION['tipo_doc'], $_SESSION['num_doc'], $_SESSION['data_carico'], $_SESSION['tags'], $_SESSION['quantita'], $_SESSION['posizione'])) {
 		
-		// ------> inizializzo da $_SESSION
+		// ------> $_SESSION campi obbligatori
 		$fornitore = safe($_SESSION['fornitore']);
 		$tipo_doc = safe($_SESSION['tipo_doc']);
 		$num_doc = safe($_SESSION['num_doc']);
+		
 		$data_carico = safe($_SESSION['data_carico']);
+		
 		$tags = safe($_SESSION['tags']);
 		$quantita = safe($_SESSION['quantita']);
 		$posizione = safe($_SESSION['posizione']);
 		
-		// --> VALIDAZIONE DATI
-		
-		// ------> test input
+		// ------> $_SESSION campi opzionali 
 		if (isset($_SESSION['note_carico']))
 			$note_carico = safe($_SESSION['note_carico']);
 		else
@@ -107,8 +109,14 @@ if (isset($_SESSION['submit'])) {
 				// se ritorna 0 devo aggiungere il file
 				case "0":
 					$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
-					if (!(file_exists($registro."/".$nome_doc)))
-						move_uploaded_file($_FILES['scansione']['name'],$registro."/".$nome_doc);
+					if (!(file_exists($registro."/".$nome_doc))) {
+						$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
+						if( $moved ) {
+						  $a .= "<h3>Invio con successo del documento ".$nome_doc."</h3>\n";
+						} else {
+						  $a .= "<h3>Documento ".$nome_doc." non inviato</h3>\n";
+						}
+					}
 					break;
 
 				// altrimenti passo NULL alla stored procedure che collegherà il carico ad altro id_documento valorizzato
@@ -136,10 +144,12 @@ if (isset($_SESSION['submit'])) {
 		
 		session_unset();
 		session_destroy();
-		
+	
+	// end test input
 	} else
 		$a .= "<h3>Validazione dati fallita, carico non eseguito completare con i dati mancanti.</h3>\n";
-		
+
+// end test submit		
 }
 
 // --> PRE & FORM
@@ -149,22 +159,22 @@ if (isset($_SESSION['fornitore']) AND (!empty($_SESSION['fornitore'])))
 else 
 	$fornitore = myoptlst("fornitore",$q1);
 
-if (isset($_SESSION['tipo_doc']) AND (!empty($_SESSION['fornitore']))) 
+if (isset($_SESSION['tipo_doc']) AND (!empty($_SESSION['tipo_doc']))) 
 	$tipo_doc = safe($_SESSION['tipo_doc']);
 else 
 	$tipo_doc = myoptlst("tipo_doc",$q2);
 
-if (isset($_SESSION['num_doc'])AND (!empty($_SESSION['fornitore']))) 
+if (isset($_SESSION['num_doc'])AND (!empty($_SESSION['num_doc']))) 
 	$num_doc = safe($_SESSION['num_doc']);
 else 
 	$num_doc = myoptlst("num_doc",$q3);
 
-if (isset($_SESSION['trasportatore'])AND (!empty($_SESSION['fornitore']))) 
+if (isset($_SESSION['trasportatore'])AND (!empty($_SESSION['trasportatore']))) 
 	$trasportatore = safe($_SESSION['trasportatore']);
 else 
 	$trasportatore = myoptlst("trasportatore",$q1);
 
-if (isset($_SESSION['num_oda'])AND (!empty($_SESSION['fornitore']))) 
+if (isset($_SESSION['num_oda'])AND (!empty($_SESSION['num_oda']))) 
 	$num_oda = safe($_SESSION['num_oda']);
 else 
 	$num_oda = myoptlst("num_oda",$q5);
@@ -219,10 +229,7 @@ $a .= "<table>\n";
 		
 		$a .= "<tr>\n";
 		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-		$a .= "<td>\n";
-			$a .= "<input type='file' name='scansione'>\n";
-			//$a .= "<input type='hidden' name='action' value='upload'>\n";
-		$a .= "</td>\n";
+		$a .= "<td><input type='file' name='scansione'></td>\n";
 		$a .= "<td></td>\n";
 		$a .= "</tr>\n";
 		
@@ -276,13 +283,6 @@ $a .= "<table>\n";
 	
 $a .= "</table>\n";
 $a .= "</form>\n";
-
-
-
-
-
-
-
 
 // --> FERMO RISORSE
 mysql_close($conn);
