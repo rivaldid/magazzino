@@ -1,158 +1,330 @@
 <?php
 
-session_start();
+/*
+ * 
+ * carico merce in magazzino, frontend per stored procedure 
+ * 
+ * 	CALL CARICO(utente, fornitore, tipo_doc, num_doc, data_doc, scansione, 
+ * 				tags, quantita, posizione, data_carico, note_carico, trasportatore, num_oda);
+ * 
+ * $_SESSION permette carichi multi passando di pagina in pagina qualora definiti
+ * 		fornitore - tipo_doc - num_doc - data_carico - note_carico - trasportatore - num_oda
+ * 
+ * $_SESSION permette anche il passaggio di altri campi obbligatori
+ * qualora parzialmente forniti per agevolare il completamento
+ * 		tags - quantita - posizione
+ * 
+ * ad ogni submit verrà ricaricata la pagina con un avviso visivo in caso di dati mancanti
+ * recuperando da $_SESSION ciò che intanto l'utente ha inserito
+ * 
+ * 
+ * STRUTTURA:
+ * 		--> DEFINISCO VARIABILI
+ * 		--> AVVIO RISORSE
+ * 		--> INIZIALIZZO $_SESSION DA $_POST
+ *		--> TEST FINE $_SESSION
+ *		--> INIZIALIZZO UTENTE
+ * 		--> TEST SUBMIT
+ * 		--> TEST UTENTE
+ *		--> TEST INPUT
+ * 		------> $_SESSION campi obbligatori
+ * 		------> $_SESSION campi opzionali 
+ * 		------> test scansione
+ * 		--> CARICO
+ * 		------> libero risorse
+ * 		--> PRE & FORM
+ * 		--> FERMO RISORSE
+ * 		--> VISUALIZZO PAGINA
+ * 
+ * 
+ */
+
+// --> DEFINISCO VARIABILI
 $a = "";
-
-// begin mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-	
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
-
-// quello che mi serve...
 $q1 = "SELECT * FROM vserv_contatti;";
 $q2 = "SELECT * FROM vserv_tipodoc;";
 $q3 = "SELECT * FROM vserv_numdoc;";
 $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
+$q6 = "SELECT * FROM vserv_utenti;";
+$registro = "aaa";
 
-$opt_fornitore = myoptlst("fornitore",$q1);
-$opt_trasportatore = myoptlst("trasportatore",$q1);
-$opt_tipo_doc = myoptlst("tipo_doc",$q2);
-$opt_num_doc = myoptlst("num_doc",$q3);
-$opt_posizione = myoptlst("posizione",$q4);
-$opt_num_oda = myoptlst("num_oda",$q5);
-// ...fine di quello che mi serve
+// --> AVVIO RISORSE
+session_start();
 
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
 
-// end mysql
-mysql_close($conn);
-	
-if (isset($_POST['submit'])) {
-	
-	foreach ($_POST AS $key => $value) $_SESSION['post'][$key] = $value;
-	
-	// corpo
-	$fornitore = $_SESSION['post']['fornitore'];
-	$tipo_doc = $_SESSION['post']['tipo_doc'];
-	$num_doc = $_SESSION['post']['num_doc'];
-	$data_doc = $_SESSION['post']['data_doc'];
-	$tags = $_SESSION['post']['tags'];
-	$quantita = $_SESSION['post']['quantita'];
-	$posizione = $_SESSION['post']['posizione'];
-	$data = $_SESSION['post']['data'];
-	$note = $_SESSION['post']['note'];
-	$trasportatore = $_SESSION['post']['trasportatore'];
-	$num_oda = $_SESSION['post']['num_oda'];
-	
-	$nome_doc = $tipo_doc.$fornitore.$num_doc;
-	echo $chiamata = "CALL CARICO('Sistema','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data}','{$note}','{$trasportatore}','{$num_oda}');";
-	
-} else {
-	
-	$a .= "<form name='carico' method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
-	$a .= "<table>\n";
-		$a .= "<caption>CARICO MERCE</caption>\n";
-		$a .= "<thead><tr>\n";
-			$a .= "<th>Descrizione</th>\n";
-			$a .= "<th>Inserimento</th>\n";
-			$a .= "<th>Suggerimento</th>\n";
-		$a .= "</tr></thead>\n";
-		$a .= "<tbody>\n";
-		
-			$a .= "<tr>\n";
-			$a .= "<td><label for='fornitore'>Fornitore</label></td>\n";
-			$a .= "<td><input type='text' name='fornitore'></td>\n";
-			$a .= "<td>".$opt_fornitore."</td>\n";
-			$a .= "</tr>\n";
-		
-			$a .= "<tr>\n";
-			$a .= "<td><label for='trasportatore'>Trasportatore</label></td>\n";
-			$a .= "<td><input type='text' name='trasportatore'></td>\n";
-			$a .= "<td>".$opt_trasportatore."</td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='tipo_doc'>Tipo documento</label></td>\n";
-			$a .= "<td><input type='text' name='tipo_doc'></td>\n";
-			$a .= "<td>".$opt_tipo_doc."</td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='num_doc'>Numero documento</label></td>\n";
-			$a .= "<td><input type='text' name='num_doc'></td>\n";
-			$a .= "<td>".$opt_num_doc."</td>\n";
-			$a .= "</tr>\n";
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-			$a .= "<tr>\n";
-			$a .= "<td><label for='data_doc'>Data documento</label></td>\n";
-			$a .= "<td><input name='data_doc' type='date' value='' class='date demo'/></td>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-			$a .= "<td><input type='file' name='scansione'>\n<input type='hidden' name='action' value='upload'></td>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='tags'>TAGS</label></td>\n";
-			$a .= "<td><textarea rows='4' cols='auto' name='tags'></textarea>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='quantita'>Quantita'</label></td>\n";
-			$a .= "<td><input type='text' name='quantita'></td>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='posizione'>Posizione</label></td>\n";
-			$a .= "<td><input type='text' name='posizione'></td>\n";
-			$a .= "<td>".$opt_posizione."</td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='data'>Data</label></td>\n";
-			$a .= "<td><input name='data' type='date' value='' class='date demo'/></td>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
-			
-			$a .= "<tr>\n";
-			$a .= "<td><label for='note'>Note</label></td>\n";
-			$a .= "<td><textarea rows='4' cols='auto' name='note'></textarea>\n";
-			$a .= "<td></td>\n";
-			$a .= "</tr>\n";
+// --> INIZIALIZZO $_SESSION DA $_POST
+foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
-			$a .= "<tr>\n";
-			$a .= "<td><label for='num_oda'>Numero ODA</label></td>\n";
-			$a .= "<td><input type='text' name='num_oda'></td>\n";
-			$a .= "<td>".$opt_num_oda."</td>\n";
-			$a .= "</tr>\n";
-		
-		$a .= "</tbody>\n";
-		
-		$a .= "<tfoot>\n";
-			$a .= "<tr>\n";
-			$a .= "<td></td><td></td>\n";
-			$a .= "<td>\n<input type='reset' name='reset' value='Clear'>\n";
-			$a .= "<input type='submit' name='submit' value='Submit'>\n</td>\n";
-			$a .= "</tr>\n";
-		$a .= "</tfoot>\n";
-		
-	$a .= "</table>\n";
-	$a .= "</form>\n";
-	
+// --> TEST FINE $_SESSION
+if (isset($_SESSION['stop'])) {
 	session_unset();
 	session_destroy();
 }
 
-echo $a;
-session_write_close();
-	
-?>
+// --> INIZIALIZZO UTENTE
+if (isset($_SESSION['utente']) AND (!empty($_SESSION['utente']))) 
+	$utente = safe($_SESSION['utente']);
+else 
+	$utente = myoptlst("utente",$q6);
 
+// --> TEST SUBMIT
+if (isset($_SESSION['submit'])) {
+	
+	// --> TEST UTENTE
+	if (isset($_SESSION['utente']) AND (!empty($_SESSION['utente']))) {
+	
+		// --> TEST INPUT
+		if (isset($_SESSION['fornitore'], $_SESSION['tipo_doc'], $_SESSION['num_doc'], $_SESSION['data_carico'], $_SESSION['tags'], $_SESSION['quantita'], $_SESSION['posizione'])) {
+			
+			// ------> $_SESSION campi obbligatori
+			$fornitore = safe($_SESSION['fornitore']);
+			$tipo_doc = safe($_SESSION['tipo_doc']);
+			$num_doc = safe($_SESSION['num_doc']);
+			
+			$data_carico = safe($_SESSION['data_carico']);
+			
+			$tags = safe($_SESSION['tags']);
+			$quantita = safe($_SESSION['quantita']);
+			$posizione = safe($_SESSION['posizione']);
+			
+			// ------> $_SESSION campi opzionali 
+			if (isset($_SESSION['note_carico']))
+				$note_carico = safe($_SESSION['note_carico']);
+			else
+				$note_carico = NULL;
+				
+			if (isset($_SESSION['trasportatore']))
+				$trasportatore = safe($_SESSION['trasportatore']);
+			else
+				$trasportatore = NULL;
+				
+			if (isset($_SESSION['num_oda']))
+				$num_oda = safe($_SESSION['num_oda']);
+			else
+				$num_oda = NULL;
+				
+			if (isset($_SESSION['data_doc'])) 
+				$data_doc = safe($_SESSION['data_doc']);
+			else
+				$data_doc = NULL;
+			
+			// ------> test scansione
+			if ($_FILES['scansione']['size'] > 0) {
+				
+				$query_doc = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
+				$res_query_doc = mysql_query($query_doc);
+				if (!$res_query_doc) die('Errore nell\'interrogazione del db: '.mysql_error());
+				$test_exists = mysql_fetch_assoc($res_query_doc);
+				mysql_free_result($res_query_doc);
+				
+				switch ($test_exists['risultato']) {
+					
+					// se ritorna 0 devo aggiungere il file
+					case "0":
+						$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
+						if (!(file_exists($registro."/".$nome_doc))) {
+							$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
+							if( $moved ) {
+							  $a .= "<h3>Invio con successo del documento ".$nome_doc."</h3>\n";
+							} else {
+							  $a .= "<h3>Documento ".$nome_doc." non inviato</h3>\n";
+							}
+						}
+						break;
+
+					// altrimenti passo NULL alla stored procedure che collegherà il carico ad altro id_documento valorizzato
+					case "1":
+						$nome_doc = NULL;
+						$data_doc = NULL;
+						break;
+
+					default:
+						$a .= "<h3>Rilevato un problema in fase di caricamento documento.</h3>\n";
+				}
+				
+			} else $nome_doc = NULL;
+			
+			// --> CARICO
+			$call = "CALL CARICO('Web','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data}','{$note}','{$trasportatore}','{$num_oda}');";
+			$res_carico = mysql_query($call);
+			if ($res_query) 
+				$a .= "<h3>La query ".$call." e' andata a buon fine</h3>\n";
+			else 
+				die('Errore nell\'interrogazione del db: '.mysql_error());
+			
+			// ------> libero risorse
+			mysql_free_result($res_carico);
+		
+		// end test input
+		} else
+			$a .= "<h3>Validazione dati fallita, carico non eseguito completare con i dati mancanti.</h3>\n";
+	
+	// end test utente
+	} else
+		$a .= "<h3>Mancata selezione utente per attivita' in corso.</h3>\n";
+
+// end test submit		
+}
+
+// --> PRE & FORM
+	
+if (isset($_SESSION['fornitore']) AND (!empty($_SESSION['fornitore']))) 
+	$fornitore = safe($_SESSION['fornitore']);
+else 
+	$fornitore = myoptlst("fornitore",$q1);
+
+if (isset($_SESSION['tipo_doc']) AND (!empty($_SESSION['tipo_doc']))) 
+	$tipo_doc = safe($_SESSION['tipo_doc']);
+else 
+	$tipo_doc = myoptlst("tipo_doc",$q2);
+
+if (isset($_SESSION['num_doc'])AND (!empty($_SESSION['num_doc']))) 
+	$num_doc = safe($_SESSION['num_doc']);
+else 
+	$num_doc = myoptlst("num_doc",$q3);
+
+if (isset($_SESSION['trasportatore'])AND (!empty($_SESSION['trasportatore']))) 
+	$trasportatore = safe($_SESSION['trasportatore']);
+else 
+	$trasportatore = myoptlst("trasportatore",$q1);
+
+if (isset($_SESSION['num_oda'])AND (!empty($_SESSION['num_oda']))) 
+	$num_oda = safe($_SESSION['num_oda']);
+else 
+	$num_oda = myoptlst("num_oda",$q5);
+
+if (isset($_SESSION['data_carico'])AND (!empty($_SESSION['data_carico']))) 
+	$data_carico = safe($_SESSION['data_carico']);
+else
+	$data_carico = NULL;
+
+$posizione = myoptlst("posizione",$q4);
+
+
+$a .= "<form name='carico' method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
+$a .= "<table>\n";
+	$a .= "<caption>CARICO MERCE</caption>\n";
+	$a .= "<thead><tr>\n";
+		$a .= "<th>Descrizione</th>\n";
+		$a .= "<th>Inserimento</th>\n";
+		$a .= "<th>Suggerimento</th>\n";
+	$a .= "</tr></thead>\n";
+	
+	$a .= "<tbody>\n";
+
+		$a .= "<tr>\n";
+		$a .= "<td><label for='utente'>Utente</label></td>\n";
+		$a .= "<td></td>\n";
+		$a .= "<td>".$utente."</td>\n";
+		$a .= "</tr>\n";
+			
+		$a .= "<tr>\n";
+		$a .= "<td><label for='fornitore'>Fornitore</label></td>\n";
+		$a .= "<td><input type='text' name='fornitore'></td>\n";
+		$a .= "<td>".$fornitore."</td>\n";
+		$a .= "</tr>\n";
+	
+		$a .= "<tr>\n";
+		$a .= "<td><label for='trasportatore'>Trasportatore</label></td>\n";
+		$a .= "<td><input type='text' name='trasportatore'></td>\n";
+		$a .= "<td>".$trasportatore."</td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='tipo_doc'>Tipo documento</label></td>\n";
+		$a .= "<td><input type='text' name='tipo_doc'></td>\n";
+		$a .= "<td>".$tipo_doc."</td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='num_doc'>Numero documento</label></td>\n";
+		$a .= "<td><input type='text' name='num_doc'></td>\n";
+		$a .= "<td>".$num_doc."</td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+		$a .= "<td><label for='data_doc'>Data documento</label></td>\n";
+		$a .= "<td><input name='data_doc' type='date' value='' class='date demo'/></td>\n";
+		$a .= "<td></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
+		$a .= "<td><input type='file' name='scansione'></td>\n";
+		$a .= "<td></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='tags'>TAGS</label></td>\n";
+		$a .= "<td><textarea rows='4' cols='auto' name='tags'></textarea>\n";
+		$a .= "<td></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='quantita'>Quantita'</label></td>\n";
+		$a .= "<td><input type='text' name='quantita'></td>\n";
+		$a .= "<td></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='posizione'>Posizione</label></td>\n";
+		$a .= "<td><input type='text' name='posizione'></td>\n";
+		$a .= "<td>".$posizione."</td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='data'>Data</label></td>\n";
+		$a .= "<td><input name='data' type='date' value='' class='date demo'/></td>\n";
+		$a .= "<td>".$data_carico."</td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='note'>Note</label></td>\n";
+		$a .= "<td><textarea rows='4' cols='auto' name='note'></textarea>\n";
+		$a .= "<td>\n";
+			$a .= "<p>Campo ad inserimento libero per dettagli vari mirati</p>\n";
+			$a .= "<p>al corretto recupero di informazioni a posteriori</p>\n";
+		$a .= "</td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+		$a .= "<td><label for='num_oda'>Numero ODA</label></td>\n";
+		$a .= "<td><input type='text' name='num_oda'></td>\n";
+		$a .= "<td>".$num_oda."</td>\n";
+		$a .= "</tr>\n";
+	
+	$a .= "</tbody>\n";
+	
+	$a .= "<tfoot>\n";
+		$a .= "<tr>\n";
+		$a .= "<td>Invio dati</td>\n";
+		$a .= "<td>\n";
+			$a .= "<input type='reset' name='reset' value='Clear'>\n";
+			$a .= "<input type='submit' name='stop' value='Stop'>\n";
+			$a .= "<input type='submit' name='submit' value='Submit'>\n";
+		$a .= "</td>\n";
+		$a .= "<td>\n";
+			$a .= "<p><b>Clear</b> per il reset dei dati appena inseriti</p>\n";
+			$a .= "<p><b>Stop</b> per il reset di tutti i dati della pagina</p>\n";
+			$a .= "<p><b>Submit</b> per l'invio dei dati al server</p>\n";
+		$a .= "</td>\n";
+		$a .= "</tr>\n";
+	$a .= "</tfoot>\n";
+	
+$a .= "</table>\n";
+$a .= "</form>\n";
+
+// --> FERMO RISORSE
+mysql_close($conn);
+session_write_close();
+
+// --> VISUALIZZO PAGINA
+echo $a;
+
+?>
