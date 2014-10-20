@@ -1,18 +1,6 @@
 <?php
 
-function myoptlst($name,$query) {
-$opt = "<select name='".$name."'>\n";
-$opt .= "<option selected='selected' value=''>Blank</option>\n";
-$res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-	$opt .= "<option value='".$row[0]."'>".$row[0]."</option>\n";
-}
-mysql_free_result($res);
-$opt .= "</select>";
-return $opt;
-}
-
+// pre
 function safe($value) {
 	return mysql_real_escape_string($value);
 }
@@ -23,6 +11,31 @@ function epura_specialchars($string) {
 
 function getfilext($filename) {
 	return substr($filename, strrpos($filename, '.')+1);
+}
+
+// trasforma special chars in &codice
+function safetohtml($value) {
+	return htmlspecialchars($value);
+}
+
+// trasforma &codice in special chars
+function safefromhtml($value) {
+	return htmlspecialchars_decode($value);
+}
+
+
+// fun
+function myoptlst($name,$query) {
+$opt = "<select name='".$name."'>\n";
+$opt .= "<option selected='selected' value=''>Blank</option>\n";
+$res = mysql_query($query);
+if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+	$opt .= "<option value='".safetohtml($row[0])."'>".safetohtml($row[0])."</option>\n";
+}
+mysql_free_result($res);
+$opt .= "</select>";
+return $opt;
 }
 
 ?>

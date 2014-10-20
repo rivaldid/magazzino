@@ -32,7 +32,7 @@ $a .= "<tbody>\n";
 while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 	$a .= "<tr>\n";
 	foreach ($row as $cname => $cvalue)
-		$a .= "<td>".$cvalue."</td>\n";
+		$a .= "<td>".safetohtml($cvalue)."</td>\n";
 	$a .= "</tr>\n";
 }
 

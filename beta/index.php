@@ -8,8 +8,8 @@
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 </head>
 <body>
-	
-<?php 
+
+<?php
 if ($_SERVER["QUERY_STRING"] != NULL) {
 	if (!empty($_GET["page"])) $page = sprintf("page/%s.php",$_GET["page"]);
 	if (!file_exists($page)) $page = sprintf("page/404.php");
@@ -18,8 +18,8 @@ if ($_SERVER["QUERY_STRING"] != NULL) {
 require_once 'lib/functions.php';
 include 'lib/menu.html';
 include $page;
-include 'lib/footer.html'; 
+include 'lib/footer.html';
 ?>
-	
+
 </body>
 </html>
