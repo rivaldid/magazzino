@@ -1,20 +1,28 @@
 table{
-	padding: 0.2em;
-	font: verdana; 
+	padding:0.2em;
+	font:verdana; 
 	margin-left:auto; 
     margin-right:auto;
 }
+
 caption {
-	font-size: 300%;
+	font-size:300%;
 }
+
+caption a{
+	text-decoration:none;
+}
+
 thead {
-	font-size: 120%;
+	font-size:120%;
 }
+
 td {
-	border: 0.2em solid #d3d3d3;
-	background-color: #FFFFF0;
+	border:0.2em solid #d3d3d3;
+	background-color:#FFFFF0;
 }
+
 th {
-	background-color: #F0E68C;
-	border: 0.2em solid black;
+	background-color:#F0E68C;
+	border:0.2em solid black;
 }
