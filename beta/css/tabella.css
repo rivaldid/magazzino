@@ -9,10 +9,6 @@ caption {
 	font-size:300%;
 }
 
-caption a{
-	text-decoration:none;
-}
-
 thead {
 	font-size:120%;
 }
@@ -25,4 +21,9 @@ td {
 th {
 	background-color:#F0E68C;
 	border:0.2em solid black;
+}
+
+a{
+	text-decoration:none;
+	color:#000;
 }

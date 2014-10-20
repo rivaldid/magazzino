@@ -169,25 +169,25 @@ else
 if (isset($_SESSION['submit'])) {
 
 	// 5a. validazione
-
+	
 	// 5aa. utente
-	if (is_null($utente) OR empty($utente)) {
+	if (is_null($utente) OR empty($utente) OR isoptlst($utente)) {
 		$a .= "<h3>Mancata selezione utente per attivita' in corso</h3>\n";
 		$valid = false;
 	}
 
 	// 5ab. tripla fornitore - tipo_doc - num_doc
-	if (is_null($fornitore) OR empty($fornitore)) {
+	if (is_null($fornitore) OR empty($fornitore) OR isoptlst($fornitore)) {
 		$a .= "<h3>Mancata selezione di un fornitore per attivita' in corso</h3>\n";
 		$valid = false;
 	}
 
-	if (is_null($tipo_doc) OR empty($tipo_doc)) {
+	if (is_null($tipo_doc) OR empty($tipo_doc) OR isoptlst($tipo_doc)) {
 		$a .= "<h3>Mancata selezione di un tipo di documento per attivita' in corso</h3>\n";
 		$valid = false;
 	}
 
-	if (is_null($num_doc) OR empty($num_doc)) {
+	if (is_null($num_doc) OR empty($num_doc) OR isoptlst($num_doc)) {
 		$a .= "<h3>Mancata selezione di un numero di documento per attivita' in corso</h3>\n";
 		$valid = false;
 	}
@@ -209,13 +209,14 @@ if (isset($_SESSION['submit'])) {
 		$valid = false;
 	}
 
-	if (is_null($posizione) OR empty($posizione)) {
+	if (is_null($posizione) OR empty($posizione) OR isoptlst($posizione)) {
 		$a .= "<h3>Mancata selezione di una posizione in magazzino per attivita' in corso</h3>\n";
 		$valid = false;
 	}
 
 	// 5ae. scansione
-	if (!(isset($_FILE['scansione'])) AND ($valid == true))
+	//if (!(isset($_FILE['scansione'])) AND ($valid == true))
+	if(isset($_FILES['scansione']) && count($_FILES['scansione']['error']) == 1 && $_FILES['scansione']['error'][0] > 0)
 		$a .= "<h3>Nessun file selezionato</h3>\n";
 	else
 		{

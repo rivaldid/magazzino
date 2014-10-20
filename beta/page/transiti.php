@@ -7,7 +7,7 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$query = "SELECT data,status,posizione,documento,tags,quantita,note,ordine,trasportatore FROM TRANSITI;";
+$query = "SELECT doc_ingresso,doc_ordine,data,status,posizione,documento,tags,quantita,note,ordine,trasportatore FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
@@ -32,9 +32,38 @@ $a .= "<tbody>\n";
 while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 	$a .= "<tr>\n";
 	foreach ($row as $cname => $cvalue)
-		$a .= "<td>".safetohtml($cvalue)."</td>\n";
+		switch ($cname) {
+			
+			case "0":
+				$doc_ingresso = $cvalue;
+				break;
+			
+			case "1":
+				$doc_ordine = $cvalue;
+				break;
+			
+			case "5":
+				if ($doc_ingresso != NULL)
+					$a .= "<td><a href=\"/magazzino/registro/".$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
+				else
+					$a .= "<td>".safetohtml($cvalue)."</td>\n";
+				break;
+			
+			case "9":
+				if ($doc_ordine != NULL)
+					$a .= "<td><a href=\"/magazzino/registro/".$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
+				else
+					$a .= "<td>".safetohtml($cvalue)."</td>\n";
+				break;
+			
+			default:
+				$a .= "<td>".safetohtml($cvalue)."</td>\n";
+			
+		} // end switch
+		
 	$a .= "</tr>\n";
-}
+	
+} // end foreach
 
 $a .= "</tbody>\n</table>\n";
 

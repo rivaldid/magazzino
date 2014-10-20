@@ -4,7 +4,7 @@
 	<title>GMDCTO</title>
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
 	<link rel="stylesheet" href="css/footer.css" type="text/css" />
-	<link rel="stylesheet" href="css/home.css" type="text/css" />
+	<link rel="stylesheet" href="css/main.css" type="text/css" />
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 </head>
 <body>

@@ -38,4 +38,14 @@ $opt .= "</select>";
 return $opt;
 }
 
+function isoptlst($value) {
+	//if (preg_match("<option selected='selected' value=''>Blank</option>",$value))
+	$mypattern = "<option selected='selected' value=''>Blank</option>";
+	if (strpos($value,$mypattern) !== false)
+		return true;
+	else
+		return false;
+}
+
+
 ?>
