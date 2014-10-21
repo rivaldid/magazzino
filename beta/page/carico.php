@@ -108,9 +108,9 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // 3. test $_SESSION
 if (isset($_SESSION['stop'])) {
+	$log .= remesg($msg9,"msg");
 	session_unset();
 	session_destroy();
-	$log .= remesg($msg9,"msg");
 }
 
 
