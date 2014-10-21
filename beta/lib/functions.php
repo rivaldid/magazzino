@@ -48,7 +48,11 @@ function isoptlst($value) {
 }
 
 function remesg($msg,$classe) {
-		return "<p class=\"".$classe."\">".$msg."</p>\n";
+	return "<p class=\"".$classe."\">".$msg."</p>\n";
+}
+
+function inputhided($name,$value) {
+	return "<input type='hidden' name='".$name."' value='".$value."'/>".$value;
 }
 
 

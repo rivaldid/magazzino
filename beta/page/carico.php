@@ -124,67 +124,67 @@ foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 // 4ba. tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['fornitore']) AND (!empty($_SESSION['fornitore'])))
-	$fornitore = safe($_SESSION['fornitore']);
+	$fornitore = inputhided("fornitore",safe($_SESSION['fornitore']));
 else
 	$fornitore = myoptlst("fornitore",$q1);
 
 if (isset($_SESSION['tipo_doc']) AND (!empty($_SESSION['tipo_doc'])))
-	$tipo_doc = safe($_SESSION['tipo_doc']);
+	$tipo_doc = inputhided("tipo_doc",safe($_SESSION['tipo_doc']));
 else
 	$tipo_doc = myoptlst("tipo_doc",$q2);
 
 if (isset($_SESSION['num_doc']) AND (!empty($_SESSION['num_doc'])))
-	$num_doc = safe($_SESSION['num_doc']);
+	$num_doc = inputhided("nome_doc",safe($_SESSION['num_doc']));
 else
 	$num_doc = myoptlst("num_doc",$q3);
 
 // 4bb. data carico
 if (isset($_SESSION['data_carico']) AND (!empty($_SESSION['data_carico'])))
-	$data_carico = safe($_SESSION['data_carico']);
+	$data_carico = inputhided("data_carico",safe($_SESSION['data_carico']));
 else
 	$data_carico = NULL;
 
 // 4bc. trasportatore - ODA - note
 if (isset($_SESSION['trasportatore'])AND (!empty($_SESSION['trasportatore'])))
-	$trasportatore = safe($_SESSION['trasportatore']);
+	$trasportatore = inputhided("trasportatore",safe($_SESSION['trasportatore']));
 else
 	$trasportatore = myoptlst("trasportatore",$q1);
 
 if (isset($_SESSION['num_oda'])AND (!empty($_SESSION['num_oda'])))
-	$num_oda = safe($_SESSION['num_oda']);
+	$num_oda = inputhided("num_oda",safe($_SESSION['num_oda']));
 else
 	$num_oda = myoptlst("num_oda",$q5);
 
 if (isset($_SESSION['note'])AND (!empty($_SESSION['note'])))
-	$note = safe($_SESSION['note']);
+	$note = inputhided("note",safe($_SESSION['note']));
 else
 	$note = NULL;
 
 // 4bd. data_doc
 if (isset($_SESSION['data_doc'])AND (!empty($_SESSION['data_doc'])))
-	$data_doc = safe($_SESSION['data_doc']);
+	$data_doc = inputhided("data_doc",safe($_SESSION['data_doc']));
 else
 	$data_doc = NULL;
 
 // 4be. utente
 if (isset($_SESSION['utente'])AND (!empty($_SESSION['utente'])))
-	$utente = safe($_SESSION['utente']);
+	$utente = inputhided("utente",safe($_SESSION['utente']));
 else
 	$utente = myoptlst("utente",$q6);
 
 // 4bf. tripla tags - quantita' - posizione
 if (isset($_SESSION['tags'])AND (!empty($_SESSION['tags'])))
-	$tags = safe($_SESSION['tags']);
+	$tags = inputhided("tags",safe($_SESSION['tags']));
 else
 	$tags = NULL;
 
 if (isset($_SESSION['quantita'])AND (!empty($_SESSION['quantita'])))
-	$quantita = safe($_SESSION['quantita']);
+	$quantita = inputhided("quantita",safe($_SESSION['quantita']));
 else
 	$quantita = NULL;
 
 if (isset($_SESSION['posizione'])AND (!empty($_SESSION['posizione'])))
-	$posizione = safe($_SESSION['posizione']);
+	$posizione = inputhided("posizione",safe($_SESSION['posizione']));
 else
 	$posizione = myoptlst("posizione",$q4);
 
