@@ -300,7 +300,7 @@ if (isset($_SESSION['submit'])) {
 
 
 // 6. form
-$a .= "<form name='carico' method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
+$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
 $a .= "<table>\n";
 
 	$a .= "<caption>CARICO MERCE</caption>\n";

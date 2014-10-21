@@ -13,19 +13,19 @@ border: 2px dashed red;
 #log p.err{
 font: italic bold 14px/30px Georgia, serif;
 padding: 0.1em;
-color: red; 
+color: #DF0101; 
 }
 
 #log p.warn{
 font: italic bold 14px/30px Georgia, serif;
 padding: 0.1em;
-color: green; 
+color: #FFBF00; 
 }
 
 #log p.msg{
 font: italic bold 14px/30px Georgia, serif;
 padding: 0.1em;
-color: green; 
+color: #31B404; 
 }
 
 
