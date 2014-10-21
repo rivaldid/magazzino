@@ -47,5 +47,9 @@ function isoptlst($value) {
 		return false;
 }
 
+function remesg($msg,$classe) {
+		return "<p class=\"".$classe."\">".$msg."</p>\n";
+}
+
 
 ?>

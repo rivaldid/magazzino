@@ -55,13 +55,37 @@
 
 
 // 	1. definizione variabili
+
 $a = "";
+$log = "";
+
 $q1 = "SELECT * FROM vserv_contatti;";
 $q2 = "SELECT * FROM vserv_tipodoc;";
 $q3 = "SELECT * FROM vserv_numdoc;";
 $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
 $q6 = "SELECT * FROM vserv_utenti;";
+
+$msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
+$msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (2)";
+$msg3 = "Mancata selezione di un tipo di documento per l'attivita' in corso (3)";
+$msg4 = "Mancata selezione di un numero di documento per l'attivita' in corso (4)";
+$msg5 = "Mancata selezione di una data cui far riferimento per l'attivita' in corso (5)";
+
+$msg6 = "Mancato inserimento di tags per contrassegnare la merce in carico (6)";
+$msg7 = "Mancato inserimento della quantita' per la merce in carico (7)";
+$msg8 = "Mancato inserimento della posizione in magazzino per la merce in carico (8)";
+
+$msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
+
+$msg10 = "Nessun file selezionato";
+$msg11 = "Nessun file caricato perche' presente sul db (11)";
+$msg12 = "Nessun file caricato perche' presente sul disco (12)";
+$msg13 = "Scansione del documento caricata correttamente";
+$msg14 = "Scansione del documento non caricata (14)";
+
+$msg15 = "Carico inserito correttamente";
+
 $registro = "aaa";
 $valid = true;
 $upload = true;
@@ -86,6 +110,7 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 if (isset($_SESSION['stop'])) {
 	session_unset();
 	session_destroy();
+	$log .= remesg($msg9,"msg");
 }
 
 
@@ -172,52 +197,52 @@ if (isset($_SESSION['submit'])) {
 	
 	// 5aa. utente
 	if (is_null($utente) OR empty($utente) OR isoptlst($utente)) {
-		$a .= "<h3>Mancata selezione utente per attivita' in corso</h3>\n";
+		$log .= remesg($msg1,"err");
 		$valid = false;
 	}
 
 	// 5ab. tripla fornitore - tipo_doc - num_doc
 	if (is_null($fornitore) OR empty($fornitore) OR isoptlst($fornitore)) {
-		$a .= "<h3>Mancata selezione di un fornitore per attivita' in corso</h3>\n";
+		$log .= remesg($msg2,"err");
 		$valid = false;
 	}
 
 	if (is_null($tipo_doc) OR empty($tipo_doc) OR isoptlst($tipo_doc)) {
-		$a .= "<h3>Mancata selezione di un tipo di documento per attivita' in corso</h3>\n";
+		$log .= remesg($msg3,"err");
 		$valid = false;
 	}
 
 	if (is_null($num_doc) OR empty($num_doc) OR isoptlst($num_doc)) {
-		$a .= "<h3>Mancata selezione di un numero di documento per attivita' in corso</h3>\n";
+		$log .= remesg($msg4,"err");
 		$valid = false;
 	}
 
 	// 5ac. data carico
 	if (is_null($data_carico) OR empty($data_carico)) {
-		$a .= "<h3>Mancata selezione di una data alla quale far riferimento per attivita' in corso</h3>\n";
+		$log .= remesg($msg5,"err");
 		$valid = false;
 	}
 
 	// 5ad. tripla tags - quantita' - posizione
 	if (is_null($tags) OR empty($tags)) {
-		$a .= "<h3>Mancata selezione di tags per contrassegnare attivita' in corso</h3>\n";
+		$log .= remesg($msg6,"err");
 		$valid = false;
 	}
 
 	if (is_null($quantita) OR empty($quantita)) {
-		$a .= "<h3>Mancata selezione di una quantita' per attivita' in corso</h3>\n";
+		$log .= remesg($msg7,"err");
 		$valid = false;
 	}
 
 	if (is_null($posizione) OR empty($posizione) OR isoptlst($posizione)) {
-		$a .= "<h3>Mancata selezione di una posizione in magazzino per attivita' in corso</h3>\n";
+		$log .= remesg($msg8,"err");
 		$valid = false;
 	}
 
 	// 5ae. scansione
 	//if (!(isset($_FILE['scansione'])) AND ($valid == true))
 	if(isset($_FILES['scansione']) && count($_FILES['scansione']['error']) == 1 && $_FILES['scansione']['error'][0] > 0)
-		$a .= "<h3>Nessun file selezionato</h3>\n";
+		$log .= remesg($msg10,"warn");
 	else
 		{
 
@@ -231,14 +256,14 @@ if (isset($_SESSION['submit'])) {
 			mysql_free_result($res_q7);
 
 			if ($exists_db['risultato'] == "1") {
-				$a .= "<h3>La scansione del documento risultata gia' presente sul db, controllare</h3>\n";
+				$log .= remesg($msg11,"err");
 				$upload = false;
 			}
 
 			// 5aeb. exists_file
 			$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
 			if (!(file_exists($registro."/".$nome_doc))) {
-				$a .= "<h3>La scansione del documento risulta gia' presente sulla cartella remota, controllare</h3>\n";
+				$log .= remesg($msg12,"err");
 				$upload = false;
 			}
 
@@ -246,9 +271,9 @@ if (isset($_SESSION['submit'])) {
 			if ($upload == true) {
 				$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
 				if( $moved )
-				  $a .= "<h3>Invio con successo del documento ".$nome_doc."</h3>\n";
+				  $log .= remesg($msg13,"err");
 				else
-				  $a .= "<h3>Documento ".$nome_doc." non inviato</h3>\n";
+				  $log .= remesg($msg14,"err");
 			} else
 				$nome_doc = NULL;
 		}
@@ -260,7 +285,7 @@ if (isset($_SESSION['submit'])) {
 		echo $call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
 		$res_carico = mysql_query($call);
 		if ($res_query)
-			$a .= "<h3>La query ".$call." e' andata a buon fine</h3>\n";
+			$log .= remesg($msg15,"msg");
 		else
 			die('Errore nell\'interrogazione del db: '.mysql_error());
 
@@ -399,6 +424,7 @@ session_write_close();
 
 
 // 8. stampo
+echo "<div id=\"log\">\n".$log."</div>\n";
 echo $a;
 
 
