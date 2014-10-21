@@ -51,7 +51,7 @@ function remesg($msg,$classe) {
 	return "<p class=\"".$classe."\">".$msg."</p>\n";
 }
 
-function inputhided($name,$value) {
+function input_hidden($name,$value) {
 	return "<input type='hidden' name='".$name."' value='".$value."'/>".$value;
 }
 

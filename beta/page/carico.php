@@ -30,7 +30,7 @@
  * 				4ba. tripla fornitore - tipo_doc - num_doc
  * 				4bb. data carico
  * 				4bc. trasportatore - ODA - note
- * 				4bd. data_doc
+ * 				4bd. data_doc - nome_doc
  * 				4be. utente
  * 				4bf. tripla tags - quantita' - posizione
  * 		5. test submit
@@ -109,6 +109,7 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // 3. test $_SESSION
 if (isset($_SESSION['stop'])) {
 	$log .= remesg($msg9,"msg");
+	unset($utente,$fornitore,$tipo_doc,$num_doc,$data_carico,$trasportatore,$num_oda,$note,$data_doc,$tags,$quantita,$posizione);
 	session_unset();
 	session_destroy();
 }
@@ -123,70 +124,75 @@ foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 // 4b. variabili da $_SESSION
 
 // 4ba. tripla fornitore - tipo_doc - num_doc
-if (isset($_SESSION['fornitore']) AND (!empty($_SESSION['fornitore'])))
-	$fornitore = inputhided("fornitore",safe($_SESSION['fornitore']));
+if (isset($_SESSION['fornitore'])AND(!empty($_SESSION['fornitore'])))
+	$fornitore = safe($_SESSION['fornitore']);
 else
-	$fornitore = myoptlst("fornitore",$q1);
+	$fornitore = NULL;
 
-if (isset($_SESSION['tipo_doc']) AND (!empty($_SESSION['tipo_doc'])))
-	$tipo_doc = inputhided("tipo_doc",safe($_SESSION['tipo_doc']));
+if (isset($_SESSION['tipo_doc'])AND(!empty($_SESSION['tipo_doc'])))
+	$tipo_doc = safe($_SESSION['tipo_doc']);
 else
-	$tipo_doc = myoptlst("tipo_doc",$q2);
+	$tipo_doc = NULL;
 
-if (isset($_SESSION['num_doc']) AND (!empty($_SESSION['num_doc'])))
-	$num_doc = inputhided("nome_doc",safe($_SESSION['num_doc']));
+if (isset($_SESSION['num_doc'])AND(!empty($_SESSION['num_doc'])))
+	$num_doc = safe($_SESSION['num_doc']);
 else
-	$num_doc = myoptlst("num_doc",$q3);
+	$num_doc = NULL;
 
 // 4bb. data carico
-if (isset($_SESSION['data_carico']) AND (!empty($_SESSION['data_carico'])))
-	$data_carico = inputhided("data_carico",safe($_SESSION['data_carico']));
+if (isset($_SESSION['data_carico'])AND(!empty($_SESSION['data_carico'])))
+	$data_carico = safe($_SESSION['data_carico']);
 else
 	$data_carico = NULL;
 
 // 4bc. trasportatore - ODA - note
-if (isset($_SESSION['trasportatore'])AND (!empty($_SESSION['trasportatore'])))
-	$trasportatore = inputhided("trasportatore",safe($_SESSION['trasportatore']));
+if (isset($_SESSION['trasportatore'])AND(!empty($_SESSION['trasportatore'])))
+	$trasportatore = safe($_SESSION['trasportatore']);
 else
-	$trasportatore = myoptlst("trasportatore",$q1);
+	$trasportatore = NULL;
 
-if (isset($_SESSION['num_oda'])AND (!empty($_SESSION['num_oda'])))
-	$num_oda = inputhided("num_oda",safe($_SESSION['num_oda']));
+if (isset($_SESSION['num_oda'])AND(!empty($_SESSION['num_oda'])))
+	$num_oda = safe($_SESSION['num_oda']);
 else
-	$num_oda = myoptlst("num_oda",$q5);
+	$num_oda = NULL;
 
-if (isset($_SESSION['note'])AND (!empty($_SESSION['note'])))
-	$note = inputhided("note",safe($_SESSION['note']));
+if (isset($_SESSION['note'])AND(!empty($_SESSION['note'])))
+	$note = safe($_SESSION['note']);
 else
 	$note = NULL;
 
-// 4bd. data_doc
-if (isset($_SESSION['data_doc'])AND (!empty($_SESSION['data_doc'])))
-	$data_doc = inputhided("data_doc",safe($_SESSION['data_doc']));
+// 4bd. data_doc - nome_doc
+if (isset($_SESSION['data_doc'])AND(!empty($_SESSION['data_doc'])))
+	$data_doc = safe($_SESSION['data_doc']);
 else
 	$data_doc = NULL;
 
-// 4be. utente
-if (isset($_SESSION['utente'])AND (!empty($_SESSION['utente'])))
-	$utente = inputhided("utente",safe($_SESSION['utente']));
+if (isset($_SESSION['nome_doc'])AND(!empty($_SESSION['nome_doc'])))
+	$nome_doc = safe($_SESSION['nome_doc']);
 else
-	$utente = myoptlst("utente",$q6);
+	$nome_doc = NULL;
+
+// 4be. utente
+if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+	$utente = safe($_SESSION['utente']);
+else
+	$utente = NULL;
 
 // 4bf. tripla tags - quantita' - posizione
-if (isset($_SESSION['tags'])AND (!empty($_SESSION['tags'])))
-	$tags = inputhided("tags",safe($_SESSION['tags']));
+if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
+	$tags = safe($_SESSION['tags']);
 else
 	$tags = NULL;
 
-if (isset($_SESSION['quantita'])AND (!empty($_SESSION['quantita'])))
-	$quantita = inputhided("quantita",safe($_SESSION['quantita']));
+if (isset($_SESSION['quantita'])AND(!empty($_SESSION['quantita'])))
+	$quantita = safe($_SESSION['quantita']);
 else
 	$quantita = NULL;
 
-if (isset($_SESSION['posizione'])AND (!empty($_SESSION['posizione'])))
-	$posizione = inputhided("posizione",safe($_SESSION['posizione']));
+if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
+	$posizione = safe($_SESSION['posizione']);
 else
-	$posizione = myoptlst("posizione",$q4);
+	$posizione = NULL;
 
 
 
@@ -196,23 +202,23 @@ if (isset($_SESSION['submit'])) {
 	// 5a. validazione
 	
 	// 5aa. utente
-	if (is_null($utente) OR empty($utente) OR isoptlst($utente)) {
+	if (is_null($utente) OR empty($utente)) {
 		$log .= remesg($msg1,"err");
 		$valid = false;
 	}
 
 	// 5ab. tripla fornitore - tipo_doc - num_doc
-	if (is_null($fornitore) OR empty($fornitore) OR isoptlst($fornitore)) {
+	if (is_null($fornitore) OR empty($fornitore)) {
 		$log .= remesg($msg2,"err");
 		$valid = false;
 	}
 
-	if (is_null($tipo_doc) OR empty($tipo_doc) OR isoptlst($tipo_doc)) {
+	if (is_null($tipo_doc) OR empty($tipo_doc)) {
 		$log .= remesg($msg3,"err");
 		$valid = false;
 	}
 
-	if (is_null($num_doc) OR empty($num_doc) OR isoptlst($num_doc)) {
+	if (is_null($num_doc) OR empty($num_doc)) {
 		$log .= remesg($msg4,"err");
 		$valid = false;
 	}
@@ -234,7 +240,7 @@ if (isset($_SESSION['submit'])) {
 		$valid = false;
 	}
 
-	if (is_null($posizione) OR empty($posizione) OR isoptlst($posizione)) {
+	if (is_null($posizione) OR empty($posizione)) {
 		$log .= remesg($msg8,"err");
 		$valid = false;
 	}
@@ -292,7 +298,7 @@ if (isset($_SESSION['submit'])) {
 		mysql_free_result($res_carico);
 
 		// 5c. reset tripla tags - quantita' - posizione
-		$tags = $quantita = $posizione = NULL;
+		unset($tags,$quantita,$posizione);
 
 	}
 }
@@ -331,83 +337,138 @@ $a .= "<table>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='utente'>Utente</label></td>\n";
-		$a .= "<td></td>\n";
-		$a .= "<td>".$utente."</td>\n";
+		if (is_null($utente)) {
+			$a .= "<td></td>\n";
+			$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
+		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='fornitore'>Fornitore</label></td>\n";
-		$a .= "<td><input type='text' name='fornitore'/></td>\n";
-		$a .= "<td>".$fornitore."</td>\n";
+		if (is_null($fornitore)) {
+			$a .= "<td><input type='text' name='fornitore'/></td>\n";
+			$a .= "<td>".myoptlst("fornitore",$q1)."</td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("fornitore",$fornitore)."</td>\n";	
+		}
 		$a .= "</tr>\n";
 
-		$a .= "<tr>\n";
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='trasportatore'>Trasportatore</label></td>\n";
-		$a .= "<td><input type='text' name='trasportatore'/></td>\n";
-		$a .= "<td>".$trasportatore."</td>\n";
+		if (is_null($trasportatore)) {
+			$a .= "<td><input type='text' name='trasportatore'/></td>\n";
+			$a .= "<td>".myoptlst("trasportatore",$q1)."</td>\n";	
+		} else {
+			$a .= "<td><label for='trasportatore'>Trasportatore</label></td>\n";
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("trasportatore",$trasportatore)."</td>\n";	
+		}
 		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
+		
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='tipo_doc'>Tipo documento</label></td>\n";
-		$a .= "<td><input type='text' name='tipo_doc'/></td>\n";
-		$a .= "<td>".$tipo_doc."</td>\n";
+		if (is_null($tipo_doc)) {
+			$a .= "<td><input type='text' name='tipo_doc'/></td>\n";
+			$a .= "<td>".myoptlst("tipo_doc",$q2)."</td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("tipo_doc",$tipo_doc)."</td>\n";	
+		}
 		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
+		
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='num_doc'>Numero documento</label></td>\n";
-		$a .= "<td><input type='text' name='num_doc'/></td>\n";
-		$a .= "<td>".$num_doc."</td>\n";
-		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
+		if (is_null($num_doc)) {
+			$a .= "<td><input type='text' name='num_doc'/></td>\n";
+			$a .= "<td>".myoptlst("num_doc",$q3)."</td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("num_doc",$num_doc)."</td>\n";	
+		}
+		$a .= "</tr>\n";	
+		
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='data_doc'>Data documento</label></td>\n";
-		$a .= "<td><input name='data_doc' type='date' value='' class='date'/></td>\n";
-		$a .= "<td></td>\n";
-		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
+		if (is_null($data_doc)) {
+			$a .= "<td></td>\n";
+			$a .= "<td><input name='data_doc' type='date' value='' class='date'/></td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("data_doc",$data_doc)."</td>\n";	
+		}
+		$a .= "</tr>\n";		
+		
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-		$a .= "<td><input type='file' name='scansione'/></td>\n";
-		$a .= "<td></td>\n";
-		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
-		$a .= "<td><label for='tags'>TAGS</label></td>\n";
+		if (is_null($nome_doc)) {
+			$a .= "<td></td>\n";
+			$a .= "<td><input type='file' name='scansione'/></td>\n";
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("nome_doc",$nome_doc)."</td>\n";	
+		}
+		$a .= "</tr>\n";			
+		
+		$a .= "<tr>\n";	
+		$a .= "<td><label for='tags'>TAGS merce</label></td>\n";
 		$a .= "<td><textarea rows='4' cols='auto' name='tags'></textarea></td>\n";
 		$a .= "<td></td>\n";
-		$a .= "</tr>\n";
+		$a .= "</tr>\n";		
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='quantita'>Quantita'</label></td>\n";
 		$a .= "<td><input type='text' name='quantita'/></td>\n";
 		$a .= "<td></td>\n";
 		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
+	
+		$a .= "<tr>\n";	
 		$a .= "<td><label for='posizione'>Posizione</label></td>\n";
-		$a .= "<td><input type='text' name='posizione'/></td>\n";
-		$a .= "<td>".$posizione."</td>\n";
-		$a .= "</tr>\n";
+		if (is_null($posizione)) {
+			$a .= "<td><input type='text' name='posizione'/></td>\n";
+			$a .= "<td>".myoptlst("posizione",$q4)."</td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("posizione",$posizione)."</td>\n";	
+		}
+		$a .= "</tr>\n";	
 
-		$a .= "<tr>\n";
-		$a .= "<td><label for='data'>Data</label></td>\n";
-		$a .= "<td><input name='data' type='date' value='' class='date'/></td>\n";
-		$a .= "<td>".$data_carico."</td>\n";
-		$a .= "</tr>\n";
+		$a .= "<tr>\n";	
+		$a .= "<td><label for='data'>Data carico</label></td>\n";
+		if (is_null($data_carico)) {
+			$a .= "<td></td>\n";
+			$a .= "<td><input name='data_carico' type='date' value='' class='date'/></td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("data_carico",$data_carico)."</td>\n";	
+		}
+		$a .= "</tr>\n";	
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='note'>Note</label></td>\n";
-		$a .= "<td><textarea rows='4' cols='auto' name='note'></textarea></td>\n";
+		if (is_null($note))
+			$a .= "<td><textarea rows='4' cols='auto' name='note'></textarea></td>\n";
+		else
+			$a .= input_hidden("note",$note);
 		$a .= "<td>\n";
 			$a .= "<p>Campo ad inserimento libero per dettagli vari mirati</p>\n";
 			$a .= "<p>al corretto recupero di informazioni a posteriori</p>\n";
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
-		$a .= "<td><label for='num_oda'>Numero ODA</label></td>\n";
-		$a .= "<td><input type='text' name='num_oda'/></td>\n";
-		$a .= "<td>".$num_oda."</td>\n";
+		
+		
+		$a .= "<tr>\n";	
+		$a .= "<td><label for='num_doc'>Numero ODA</label></td>\n";
+		if (is_null($num_oda)) {
+			$a .= "<td><input type='text' name='num_oda'/></td>\n";
+			$a .= "<td>".myoptlst("num_oda",$q5)."</td>\n";	
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("num_oda",$num_oda)."</td>\n";	
+		}
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
