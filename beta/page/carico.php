@@ -71,12 +71,13 @@
  * 				5ab. tripla fornitore - tipo_doc - num_doc
  * 				5ac. data carico
  * 				5ad. tripla tags - quantita' - posizione
- * 				5ae. scansione
- * 					5aea. exists_db
- * 					5aeb. exists_file
- * 					5aec. upload
- * 			5b. CARICO
- * 			5c. reset tripla tags - quantita' - posizione
+ * 			5b. test valid
+ * 				5ba. scansione
+ * 					5baa. exists_db
+ * 					5bab. exists_file
+ * 					5bac. upload
+ * 				5bb. CARICO
+ * 				5bc. reset tripla tags - quantita' - posizione
  * 		6. form
  * 		7. libero risorse
  * 		8. stampa
@@ -312,55 +313,53 @@ if (isset($_SESSION['submit'])) {
 		$log .= remesg($msg8,"err");
 		$valid = false;
 	}
-
-	// 5ae. scansione
-	if (empty($_FILES['scansione']['name'])) {
-		$log .= remesg($msg10,"warn");
-	}
-		
-	//if (!(isset($_FILE['scansione'])) AND ($valid == true))
-	//if(isset($_FILES['scansione']) && count($_FILES['scansione']['error']) == 1 && $_FILES['scansione']['error'][0] > 0)
-	//	$log .= remesg($msg10,"warn");
 	
-	else
+	
+	
+	// 5b. test valid
+	if ($valid == true) {
+		
+		// 5ba. scansione
+		if (empty($_FILES['scansione']['name'])) {
+			$log .= remesg($msg10,"warn");
+		} else
 		{
+			if ($_FILES['scansione']['size'] > 0) {
 
-		if ($_FILES['scansione']['size'] > 0) {
+				// 5baa. exists_db
+				$q7 = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
+				$res_q7 = mysql_query($q7);
+				if (!$res_q7) die('Errore nell\'interrogazione del db: '.mysql_error());
+				$exists_db = mysql_fetch_assoc($res_q7);
+				mysql_free_result($res_q7);
 
-			// 5aea. exists_db
-			$q7 = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
-			$res_q7 = mysql_query($q7);
-			if (!$res_q7) die('Errore nell\'interrogazione del db: '.mysql_error());
-			$exists_db = mysql_fetch_assoc($res_q7);
-			mysql_free_result($res_q7);
+				if ($exists_db['risultato'] == "1") {
+					$log .= remesg($msg11,"warn");
+					$upload = false;
+				}
 
-			if ($exists_db['risultato'] == "1") {
-				$log .= remesg($msg11,"warn");
-				$upload = false;
+				// 5bab. exists_file
+				$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
+				if (!(file_exists($registro."/".$nome_doc))) {
+					$log .= remesg($msg12,"warn");
+					$upload = false;
+				}
+
+				// 5bac. upload
+				if ($upload == true) {
+					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
+					if ($moved)
+					  $log .= remesg($msg13,"msg");
+					else
+					  $log .= remesg($msg14,"err");
+				} else
+					$nome_doc = NULL;
 			}
 
-			// 5aeb. exists_file
-			$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
-			if (!(file_exists($registro."/".$nome_doc))) {
-				$log .= remesg($msg12,"warn");
-				$upload = false;
-			}
-
-			// 5aec. upload
-			if ($upload == true) {
-				$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
-				if ($moved)
-				  $log .= remesg($msg13,"msg");
-				else
-				  $log .= remesg($msg14,"err");
-			} else
-				$nome_doc = NULL;
 		}
 
-	}
-
-	// 5b. CARICO
-	if ($valid == true) {
+		// 5bb. CARICO
+	
 		echo $call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
 		$res_carico = mysql_query($call);
 		if ($res_query)
@@ -370,7 +369,7 @@ if (isset($_SESSION['submit'])) {
 
 		mysql_free_result($res_carico);
 
-		// 5c. reset tripla tags - quantita' - posizione
+		// 5bc. reset tripla tags - quantita' - posizione
 		unset($tags,$quantita,$posizione);
 
 	}
