@@ -141,7 +141,7 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // 3. test $_SESSION
 if (isset($_SESSION['stop'])) {
 	$log .= remesg($msg9,"msg");
-	unset($utente,$fornitore,$tipo_doc,$num_doc,$data_carico,$trasportatore,$num_oda,$note,$data_doc,$tags,$quantita,$posizione);
+	//unset($utente,$fornitore,$tipo_doc,$num_doc,$data_carico,$trasportatore,$num_oda,$note,$data_doc,$tags,$quantita,$posizione);
 	session_unset();
 	session_destroy();
 }
@@ -314,9 +314,14 @@ if (isset($_SESSION['submit'])) {
 	}
 
 	// 5ae. scansione
-	//if (!(isset($_FILE['scansione'])) AND ($valid == true))
-	if(isset($_FILES['scansione']) && count($_FILES['scansione']['error']) == 1 && $_FILES['scansione']['error'][0] > 0)
+	if (empty($_FILES['scansione']['name'])) {
 		$log .= remesg($msg10,"warn");
+	}
+		
+	//if (!(isset($_FILE['scansione'])) AND ($valid == true))
+	//if(isset($_FILES['scansione']) && count($_FILES['scansione']['error']) == 1 && $_FILES['scansione']['error'][0] > 0)
+	//	$log .= remesg($msg10,"warn");
+	
 	else
 		{
 

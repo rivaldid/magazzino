@@ -5,25 +5,21 @@ text-align: center;
 }
 
 #log {
+font: italic bold 14px/30px Georgia, serif;
 text-align: center;
 margin: 0 auto;
+line-height: 1;
 }
 
 #log p.err{
-font: italic bold 14px/30px Georgia, serif;
-padding: 0.1em;
-color: #DF0101; 
+color: #DF0101;
 }
 
 #log p.warn{
-font: italic bold 14px/30px Georgia, serif;
-padding: 0.1em;
 color: #FFBF00; 
 }
 
 #log p.msg{
-font: italic bold 14px/30px Georgia, serif;
-padding: 0.1em;
 color: #31B404; 
 }
 
