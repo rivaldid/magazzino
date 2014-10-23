@@ -100,6 +100,9 @@ $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
 $q6 = "SELECT * FROM vserv_utenti;";
 
+$qbtags2 = "SELECT label from proprieta WHERE sel='1' and label LIKE 'UTP%' OR label LIKE 'FO%';";
+$qbtags3 = "SELECT label from proprieta WHERE sel='1' and label like '%M';";
+
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
 $msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (2)";
 $msg3 = "Mancata selezione di un tipo di documento per l'attivita' in corso (3)";
@@ -259,10 +262,15 @@ else
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
 	$tags = safe($_SESSION['itags']);
 else {
-	if (isset($_SESSION['stags'])AND(!empty($_SESSION['stags'])))
-		$tags = safe($_SESSION['stags']);
-	else
-		$tags = NULL;
+	if (isset($_SESSION['tag2']) AND (!empty($_SESSION['tag2'])) AND isset($_SESSION['tag3']) AND (!empty($_SESSION['tag3']))) {
+		$tags = safe($_SESSION['tag1'])." ".safe($_SESSION['tag2'])." ".safe($_SESSION['tag3']);
+	} else 
+	{
+		if (isset($_SESSION['stags'])AND(!empty($_SESSION['stags'])))
+			$tags = safe($_SESSION['stags']);
+		else
+			$tags = NULL;
+	}
 }
 
 if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
@@ -403,6 +411,9 @@ if (isset($_SESSION['submit'])) {
 		// 5bc. reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;
 		
+		$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
+		$_SESSION['tag1'] = $_SESSION['tag2'] = $_SESSION['tag3'] = NULL;
+		
 		$_POST['itags'] = $_POST['stags'] = NULL;
 		$_POST['iquantita'] = $_POST['squantita'] = NULL;
 		$_POST['iposizione'] = $_POST['sposizione'] = NULL;
@@ -527,7 +538,12 @@ $a .= "<table>\n";
 		$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 		if (is_null($tags)) {
 			$a .= "<td><textarea rows='4' cols='auto' name='itags'></textarea></td>\n";
-			$a .= "<td></td>\n";
+			$a .= "<td>\n";
+				$a .= remesg("Per bretelle rame/fibra:","msg");
+				$a .= input_hidden("tag1","BRETELLA")." - \n";
+				$a .= myoptlst("tag2",$qbtags2)." - \n";
+				$a .= myoptlst("tag3",$qbtags3)." \n";
+			$a .= "</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
