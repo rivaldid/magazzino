@@ -402,6 +402,14 @@ if (isset($_SESSION['submit'])) {
 		
 		// 5bc. reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;
+		
+		$_POST['itags'] = $_POST['stags'] = NULL;
+		$_POST['iquantita'] = $_POST['squantita'] = NULL;
+		$_POST['iposizione'] = $_POST['sposizione'] = NULL;
+		
+		$_SESSION['itags'] = $_SESSION['stags'] = NULL;
+		$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
+		$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
 
 	}
 }
@@ -424,14 +432,14 @@ $a .= "<table>\n";
 		$a .= "<tr>\n";
 		$a .= "<td>Invio dati</td>\n";
 		$a .= "<td>\n";
-			$a .= "<input type='reset' name='reset' value='Clear'/>\n";
-			$a .= "<input type='submit' name='stop' value='Stop'/>\n";
-			$a .= "<input type='submit' name='submit' value='Submit'/>\n";
+			$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
+			$a .= "<input type='submit' name='submit' value='Invia'/>\n";
+			$a .= "<input type='submit' name='stop' value='Fine'/>\n";
 		$a .= "</td>\n";
 		$a .= "<td>\n";
-			$a .= "<p><b>Clear</b> per il reset dei dati appena inseriti</p>\n";
-			$a .= "<p><b>Stop</b> per il reset di tutti i dati della pagina</p>\n";
-			$a .= "<p><b>Submit</b> per l'invio dei dati al server</p>\n";
+			$a .= remesg("<b>Azzera</b> per il reset dei dati inseriti","warn");
+			$a .= remesg("<b>Invia</b> per l'invio dei dati inseriti","msg");
+			$a .= remesg("<b>Fine</b> per terminare l'attivita' in corso","msg");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
@@ -566,8 +574,8 @@ $a .= "<table>\n";
 		else
 			$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 		$a .= "<td>\n";
-			$a .= "<p>Campo ad inserimento libero per dettagli vari mirati</p>\n";
-			$a .= "<p>al corretto recupero di informazioni a posteriori</p>\n";
+			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
+			$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 
