@@ -23,6 +23,9 @@ function safefromhtml($value) {
 	return htmlspecialchars_decode($value);
 }
 
+function testinteger($mixed) {
+	return preg_match('/^[\d]*$/',$mixed);
+}
 
 // fun
 function myoptlst($name,$query) {
