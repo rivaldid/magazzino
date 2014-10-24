@@ -100,8 +100,8 @@ $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
 $q6 = "SELECT * FROM vserv_utenti;";
 
-$qbtags2 = "SELECT label from proprieta WHERE sel='1' and label LIKE 'UTP%' OR label LIKE 'FO%';";
-$qbtags3 = "SELECT label from proprieta WHERE sel='1' and label like '%M';";
+$qbtags2 = "SELECT * FROM vserv_tags2;";
+$qbtags3 = "SELECT * FROM vserv_tags3;";
 
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
 $msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (2)";
