@@ -540,8 +540,8 @@ $a .= "<table>\n";
 			$a .= "<td><textarea rows='4' cols='auto' name='itags'></textarea></td>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
-				$a .= input_hidden("tag1","BRETELLA")." - \n";
-				$a .= myoptlst("tag2",$qbtags2)." - \n";
+				$a .= input_hidden("tag1","BRETELLA")." \n";
+				$a .= myoptlst("tag2",$qbtags2)." \n";
 				$a .= myoptlst("tag3",$qbtags3)." \n";
 			$a .= "</td>\n";
 		} else {
@@ -620,7 +620,14 @@ session_write_close();
 
 
 // 8. stampo
-echo "<div id=\"log\">\n".$log."</div>\n";
+echo "<div id=\"log\">\n";
+echo remesg("Notifiche","tit");
+if ($log == "")
+	echo remesg("nessuna notifica da visualizzare","msg");
+else
+	echo $log;
+echo "</div>\n";
+
 echo $a;
 
 

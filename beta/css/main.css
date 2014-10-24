@@ -1,3 +1,10 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: table;
+}
+
 #home {
 margin-left: auto;
 margin-right: auto;
@@ -7,21 +14,31 @@ text-align: center;
 #log {
 font: italic bold 14px/30px Georgia, serif;
 text-align: center;
-margin: 0 auto;
+margin: 90px auto;
 line-height: 1;
+
 }
 
 #log p.err{
+margin: 6px auto;
+padding: 5px;
 color: #DF0101;
 }
 
 #log p.warn{
+margin: 6px auto;
+padding: 5px;
 color: #FFBF00; 
 }
 
 #log p.msg{
+margin: 6px auto;
+padding: 5px;
 color: #31B404; 
 }
 
-
+#log p.tit{
+color: #585858;
+font-size: 20px;
+}
 
