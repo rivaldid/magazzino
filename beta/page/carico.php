@@ -98,7 +98,8 @@ $q2 = "SELECT * FROM vserv_tipodoc;";
 $q3 = "SELECT * FROM vserv_numdoc;";
 $q4 = "SELECT * FROM vserv_posizioni;";
 $q5 = "SELECT * FROM vserv_numoda;";
-$q6 = "SELECT * FROM vserv_utenti;";
+//$q6 = "SELECT * FROM vserv_utenti;";
+$magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
 
 $qbtags2 = "SELECT * FROM vserv_tags2;";
 $qbtags3 = "SELECT * FROM vserv_tags3;";
@@ -461,7 +462,8 @@ $a .= "<table>\n";
 		$a .= "<td><label for='utente'>Utente</label></td>\n";
 		if (is_null($utente)) {
 			$a .= "<td></td>\n";
-			$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
+			//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
+			$a .= "<td>\n".$magamanager."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
