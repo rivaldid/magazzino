@@ -88,7 +88,7 @@
 
 
 
-// 	1. definizione variabili
+// 1. definizione variabili
 
 $a = "";
 $log = "";

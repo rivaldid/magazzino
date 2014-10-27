@@ -58,5 +58,8 @@ function input_hidden($name,$value) {
 	return "<input type='hidden' name='".$name."' value='".$value."'/>".$value;
 }
 
+function noinput_hidden($name,$value) {
+	return "<input type='hidden' name='".$name."' value='".$value."'/>";
+}
 
 ?>
