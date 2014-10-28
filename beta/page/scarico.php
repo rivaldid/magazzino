@@ -18,6 +18,32 @@
  * 		5. libero risorse
  * 		6. stampo
  * 
+ * 		
+ * 		1. definizione variabili
+ * 		2. startup risorse
+ * 			2a. $_SESSION
+ * 			2b. mysql
+ * 		3. test $_SESSION
+ * 		4. $_SESSION null 
+ * 			4a. lista merce
+ * 		5. $_SESSION not null
+ * 			5a. test submit
+ * 				5aa. validazione
+ * 					5aaa. utente
+ * 					5aab. richidente
+ * 					5aac. id_merce (da query)
+ * 					5aad. quantita (max da query)
+ * 					5aae. posizione (da query)
+ * 					5aaf. data_doc_scarico
+ * 					5aag. note
+ * 				5ab. test valid
+ * 					5aba. genera doc scarico
+ * 					5abb. SCARICO
+ * 					5abc. reset
+ * 			5b. form scarico
+ * 			5c. libero risorse
+ * 		6. stampa
+ * 
  * 
  */
 	
