@@ -375,7 +375,7 @@ if (isset($_SESSION['submit'])) {
 				*/
 
 				// 5bab. exists_file
-				$nome_doc = epura_specialchars($tipo_doc)."-".epura_specialchars($fornitore)."-".epura_specialchars($num_doc).".".getfilext($_FILES['scansione']['name']);
+				$nome_doc = epura_specialchars(epura_space2underscore($tipo_doc))."-".epura_specialchars(epura_space2underscore($fornitore))."-".epura_specialchars(epura_space2underscore($num_doc)).".".getfilext($_FILES['scansione']['name']);
 				if (file_exists($registro."/".$nome_doc)) {
 					$log .= remesg($msg12,"warn");
 					$upload = false;
