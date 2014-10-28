@@ -57,7 +57,7 @@
  * 		2. startup risorse
  * 			2a. $_SESSION
  * 			2b. mysql
- * 		3. test $_SESSION
+ * 		3. test fine $_SESSION
  * 			3a. versa $_POST su $_SESSION
  * 		4. inizializza variabili
  * 			4a. tripla fornitore - tipo_doc - num_doc
@@ -146,7 +146,7 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 
-// 3. test $_SESSION
+// 3. test fine $_SESSION
 if (isset($_POST['stop'])) {
 	
 	$log .= remesg($msg9,"msg");
