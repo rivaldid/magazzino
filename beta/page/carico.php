@@ -398,7 +398,9 @@ if (isset($_SESSION['submit'])) {
 
 		$call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
 		$log .= remesg($call,"msg");
+
 		$res_carico = mysql_query($call);
+
 		if ($res_carico)
 			$log .= remesg($msg15,"msg");
 		else

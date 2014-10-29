@@ -15,26 +15,30 @@
  * 		2. startup risorse
  * 			2a. $_SESSION
  * 			2b. mysql
- * 		3. test $_SESSION
- * 		4. $_SESSION null 
- * 			4a. lista merce
- * 		5. $_SESSION not null
- * 			5a. test submit
- * 				5aa. validazione
- * 					5aaa. utente
- * 					5aab. richidente
- * 					5aac. id_merce (da query)
- * 					5aad. quantita (max da query)
- * 					5aae. posizione (da query)
- * 					5aaf. data_doc_scarico
- * 					5aag. note
- * 				5ab. test valid
- * 					5aba. genera doc scarico
- * 					5abb. SCARICO
- * 					5abc. reset
- * 			5b. form scarico
- * 			5c. libero risorse
- * 		6. stampa
+ * 		3. test fine $_SESSION 
+ * 		4. test scarico iniziato
+ * 
+ *		5. se $selezionato true 
+ * 			5a. inizializzo variabili
+ * 			5b. test submit
+ * 				5ba. validazione
+ * 					5baa. utente
+ * 					5bab. richiedente
+ * 					5bac. quantita
+ * 					5bad. destinazione
+ * 					5bae. data_doc_scarico
+ * 				5bb. test valid
+ * 					5bba. SCARICO
+ *					5bbb. test ritorno SCARICO
+ * 					5bbc. reset variabili
+ *			5c. form SCARICO
+ * 
+ *		6. se $selezionato false
+ *			6a. ricevo lista merce
+ *			6b. form lista merce
+ * 
+ * 		7. libero risorse
+ * 		8. stampa
  * 
  * 
  */
@@ -57,6 +61,11 @@ $msg5 = "Mancato inserimento di una destinazione per l'attivita' in corso(5)";
 $msg6 = "Mancata selezione di una data per l'attivita' in corso(6)";
 
 $msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
+
+$msg10 = "Scarico inviato al database";
+$msg11 = "Scarico effettuato correttamente";
+$msg12 = "Scarico non effettuato(12)";
+$msg13 = "Persa risposta del database(13)";
 
 
 
@@ -85,16 +94,19 @@ if (isset($_POST['stop'])) {
 }
 
 
-// 4. test $_SESSION['id_merce'] (per verifica di scarico iniziato)
-if (!isset($_SESSION['id_merce']) OR empty($_SESSION['id_merce']))
+// 4. test scarico iniziato
+if (!isset($_SESSION['id_merce']) OR empty($_SESSION['id_merce'])) {
+	
 	$selezionato = false;
+	
+}
 
 
-// 5. test $selezionato
+// 5. se $selezionato true
 if ($selezionato) {
 	
 	
-	// 5a. inizializza
+	// 5a. inizializzo variabili
 	
 	if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente']))) 
 		$utente = safe($_SESSION['utente']);
@@ -181,19 +193,69 @@ if ($selezionato) {
 		if (is_null($data_doc_scarico) OR empty($data_doc_scarico)) {
 			$log .= remesg($msg6,"err");
 			$valid = false;
-		} 
+		}
+		
+		
+		// 5bb. test valid
+		if ($valid) {
+			
+			
+			// 5bba. SCARICO
+			$call = "CALL SCARICO('{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
+			$log .= remesg($call,"msg");
+			
+			$result_scarico = mysql_query($call);
+			
+			if ($result_scarico)
+				$log .= remesg($msg10,"warn");
+			else
+				die('Errore nell\'interrogazione del db: '.mysql_error());
+			
+			$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
+			
+			
+			// 5bbb. test ritorno SCARICO
+			switch ($ritorno[0]) {
+				
+				case "0":
+					$log .= remesg($msg11,"msg");
+					break;
+				
+				case "1":
+					$log .= remesg($msg12,"err");
+					break;
+					
+				default:
+					$log .= remesg($msg13,"err");
+				
+			}
+			
+			
+			// 5bbc. reset variabili
+			$selezionato = false;
+			
+		} // fine test valid
 		
 	} // fine test submit
 	
-	
-// fine test $selezionato, quindi in caso !($selezionato)
-} else {
+	// 5c. form SCARICO
 	
 	
-	// 5c. ricevi lista merce
+	
+} // fine $selezionato true 
+
+
+// 6. se $selezionato false
+if (!($selezionato)) {
+	
+	
+	// 6a. ricevo lista merce
 	
 	$result_lista_merce = mysql_query($query_lista_merce);
 	if (!$result_lista_merce) die('Errore nell\'interrogazione del db: '.mysql_error());
+	
+	
+	// 6b. form lista merce
 	
 	$a .= "<table>\n";
 	$a .= "<caption>SCARICO MERCE</caption>\n";
@@ -237,18 +299,18 @@ if ($selezionato) {
 	mysql_free_result($result_lista_merce);
 
 	
-}
+} // fine $selezionato false
 
 
 
 
 
-// 5. libero risorse
+// 7. libero risorse
 mysql_close($conn);
 session_write_close();
 
 
-// 6. stampo
+// 8. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 if ($log == "")
