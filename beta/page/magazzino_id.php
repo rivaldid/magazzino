@@ -19,8 +19,8 @@ $a .= "<caption>STATO MAGAZZINO (<a href=\"?page=magazzino\">NOID</a>)</caption>
 $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
 	$a .= "<th>TAGS</th>\n";
-	$a .= "<th>Quantita'</th>\n";
-	$a .= "<th>Lista posizioni</th>\n";
+	$a .= "<th>Posizioni con parziali</th>\n";
+	$a .= "<th>Tot</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 	
