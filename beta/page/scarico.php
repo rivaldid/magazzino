@@ -15,10 +15,20 @@
  * 		2. startup risorse
  * 			2a. $_SESSION
  * 			2b. mysql
- * 		3. test fine $_SESSION 
+ *		3. test risorse
+ * 			3a. test $selezionato
+ *			3b. test fine $_SESSION 
  * 
  *		4. se $selezionato true 
  * 			4a. inizializzo variabili
+ *				4aa. da scarico step1
+ *				4ab. data_scarico
+ *				4ac. utente
+ *				4ad. richiedente
+ *				4ae. quantita
+ *				4af. destinazione
+ *				4ag. data_doc_scarico
+ *				4ah. note
  * 			4b. test submit
  * 				4ba. validazione
  * 					4baa. utente
@@ -29,12 +39,13 @@
  * 				4bb. test valid
  * 					4bba. SCARICO
  *					4bbb. test ritorno SCARICO
- * 					4bbc. reset variabili
- *			4c. form SCARICO
+ * 					4bbc. reset mysql connection
+ * 					4bbd. reset variabili
+ *			4c. form scarico step2
  * 
  *		5. se $selezionato false
  *			5a. ricevo lista merce
- *			5b. form lista merce
+ *			5b. form scarico step1
  * 
  * 		6. libero risorse
  * 		7. stampa
@@ -51,6 +62,7 @@ $selezionato = false;
 $valid = true;
 
 $q1 = "SELECT * FROM vserv_contatti;";
+$q4 = "SELECT * FROM vserv_posizioni;";
 
 $query_lista_merce = "SELECT * FROM vista_magazzino;";
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
@@ -58,16 +70,16 @@ $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Bla
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
 $msg2 = "Mancata selezione di un richiedente per l'attivita' in corso (2)";
 $msg3 = "Mancata selezione di una quantita' per l'attivita' in corso (3)";
-$msg4 = "Quantita' richiesta superiore alla giacenza in magazzino per quella posizione(4)";
-$msg5 = "Mancato inserimento di una destinazione per l'attivita' in corso(5)";
-$msg6 = "Mancata selezione di una data per l'attivita' in corso(6)";
+$msg4 = "Quantita' richiesta superiore alla giacenza in magazzino per quella posizione (4)";
+$msg5 = "Mancato inserimento di una destinazione per l'attivita' in corso (5)";
+$msg6 = "Mancata selezione di una data per l'attivita' in corso (6)";
 
 $msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
 
 $msg10 = "Scarico inviato al database";
 $msg11 = "Scarico effettuato correttamente";
-$msg12 = "Scarico non effettuato(12)";
-$msg13 = "Persa risposta del database(13)";
+$msg12 = "Scarico non effettuato (12)";
+$msg13 = "Persa risposta del database (13)";
 
 $msg14 = "Scarico terminato, ripristino i valori di default";
 
@@ -86,9 +98,13 @@ $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
+// 3. test risorse
 
-// 3. test fine $_SESSION
-if (isset($_POST['stop'])) {
+// 3a. test $selezionato
+if (isset($_POST['id_merce'])AND(!empty($_POST['id_merce']))) {
+	
+	// 3b. test fine $_SESSION
+	if (isset($_POST['stop'])) {
 	
 	$selezionato = false;
 	
@@ -100,19 +116,18 @@ if (isset($_POST['stop'])) {
 	/* generate new session id and delete old session in store */
 	session_regenerate_id(true);
 	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-	
-} else {
-	
-	if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce']))) {
+		
+	} else {
 		
 		$selezionato = true;
 		foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 		
-	} else {
-		
-		$selezionato = false;
-		
-	}	
+	}
+	
+} else {
+	
+	$selezionato = false;
+	
 }
 
 
@@ -122,54 +137,70 @@ if ($selezionato == true) {
 	
 	// 4a. inizializzo variabili
 	
+	// 4aa. da scarico step1
+	$id_merce = safe($_SESSION['id_merce']);
 	$tags = safe($_SESSION['tags']);
 	$posizione = safe($_SESSION['posizione']);
+	$maxquantita = safe($_SESSION['maxquantita']);
+	
+	// 4ab. data_scarico
 	$data_scarico = date("Y-m-d");
 	
+	// 4ac. utente
 	if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente']))) 
 		$utente = safe($_SESSION['utente']);
 	else
 		$utente = null;
-		
-	if (isset($_SESSION['richiedente'])AND(!empty($_SESSION['richiedente']))) 
-		$richiedente = safe($_SESSION['richiedente']);
-	else
-		$richiedente = null;
-		
-	if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce']))) 
-		$id_merce = safe($_SESSION['id_merce']);
-	else
-		$id_merce = null;
 	
-	if (isset($_SESSION['quantita'])AND(!empty($_SESSION['quantita']))) 
-		$quantita = safe($_SESSION['quantita']);
-	else
-		$quantita = null;
+	// 4ad. richiedente
+	if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
+		$richiedente = safe($_SESSION['irichiedente']);
+	else {
+		if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
+			$richiedente = safe($_SESSION['srichiedente']);
+		else
+			$richiedente = NULL;
+	}
+
+	// 4ae. quantita
+	if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
+		$quantita = safe($_SESSION['iquantita']);
+	else {
+		if (isset($_SESSION['squantita'])AND(!empty($_SESSION['squantita'])))
+			$quantita = safe($_SESSION['squantita']);
+		else
+			$quantita = NULL;
+	}
 	
-	if (isset($_SESSION['maxquantita'])AND(!empty($_SESSION['maxquantita']))) 
-		$maxquantita = safe($_SESSION['maxquantita']);
-	else
-		$maxquantita = null;
-		
-	if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione']))) 
-		$posizione = safe($_SESSION['posizione']);
-	else
-		$posizione = null;
+	// 4af. destinazione
+	if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
+		$destinazione = safe($_SESSION['idestinazione']);
+	else {
+		if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
+			$destinazione = safe($_SESSION['sdestinazione']);
+		else
+			$destinazione = NULL;
+	}
 	
-	if (isset($_SESSION['destinazione'])AND(!empty($_SESSION['destinazione'])))
-		$destinazione = safe($_SESSION['destinazione']);
-	else
-		$destinazione = null;
+	// 4ag. data_doc_scarico	
+	if (isset($_SESSION['idata_doc_scarico'])AND(!empty($_SESSION['idata_doc_scarico'])))
+		$data_doc_scarico = safe($_SESSION['idata_doc_scarico']);
+	else {
+		if (isset($_SESSION['sdata_doc_scarico'])AND(!empty($_SESSION['sdata_doc_scarico'])))
+			$data_doc_scarico = safe($_SESSION['sdata_doc_scarico']);
+		else
+			$data_doc_scarico = NULL;
+	}
 	
-	if (isset($_SESSION['data_doc_scarico'])AND(!empty($_SESSION['data_doc_scarico']))) 
-		$data_doc_scarico = safe($_SESSION['data_doc_scarico']);
-	else
-		$data_doc_scarico = null;
-	
-	if (isset($_SESSION['note'])AND(!empty($_SESSION['note']))) 
-		$note = safe($_SESSION['note']);
-	else
-		$note = null;
+	// 4ah. note
+	if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
+		$note = safe($_SESSION['inote']);
+	else {
+		if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
+			$note = safe($_SESSION['snote']);
+		else
+			$note = NULL;
+	}
 	
 	
 	// 4b. test submit
@@ -214,6 +245,7 @@ if ($selezionato == true) {
 		}
 		
 		
+		
 		// 4bb. test valid
 		if ($valid == true) {
 			
@@ -225,9 +257,9 @@ if ($selezionato == true) {
 			$result_scarico = mysql_query($call);
 			
 			if ($result_scarico)
-				$log .= remesg($msg10,"warn");
+				$log .= remesg($msg10,"msg");
 			else
-				die('Errore nell\'interrogazione del db: '.mysql_error());
+				die('Errore nell\'invio del comando di scarico al db: '.mysql_error());
 			
 			$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
 			
@@ -249,10 +281,20 @@ if ($selezionato == true) {
 			}
 			
 			
-			// 4bbc. reset variabili
+			// 4bbc. reset mysql connection
 			mysql_free_result($result_scarico);
+			mysql_close($conn);
 			
+			$conn = mysql_connect('localhost','magazzino','magauser');
+			if (!$conn) die('Errore di connessione: '.mysql_error());
+
+			$dbsel = mysql_select_db('magazzino', $conn);
+			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+			
+			
+			// 4bbd. reset variabili
 			$selezionato = false;
+			
 	
 			$log .= remesg($msg14,"msg");
 			$_SESSION = array();
@@ -267,70 +309,123 @@ if ($selezionato == true) {
 		
 	} // fine test submit
 	
-	// 4c. form SCARICO
-	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico")."'>\n";
-	$a .= "<table>\n";
+	// 4c. form scarico step2
+	if ($selezionato == true) {
+		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico")."'>\n";
+		$a .= "<table>\n";
 
-	$a .= "<caption>SCARICO MERCE STEP2</caption>\n";
+		$a .= "<caption>SCARICO MERCE STEP2</caption>\n";
 
-	$a .= "<thead><tr>\n";
-		$a .= "<th>Descrizione</th>\n";
-		$a .= "<th>Inserimento</th>\n";
-		$a .= "<th>Suggerimento</th>\n";
-	$a .= "</tr></thead>\n";
+		$a .= "<thead><tr>\n";
+			$a .= "<th>Descrizione</th>\n";
+			$a .= "<th>Inserimento</th>\n";
+			$a .= "<th>Suggerimento</th>\n";
+		$a .= "</tr></thead>\n";
 
-	$a .= "<tfoot>\n";
-		$a .= "<tr>\n";
-		$a .= "<td>Invio dati</td>\n";
-		$a .= "<td>\n";
-			$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
-			$a .= "<input type='submit' name='submit' value='Invia'/>\n";
-			$a .= "<input type='submit' name='stop' value='Fine'/>\n";
-		$a .= "</td>\n";
-		$a .= "<td>\n";
-			$a .= remesg("<b>Azzera</b> per il reset dei dati inseriti","warn");
-			$a .= remesg("<b>Invia</b> per l'invio dei dati inseriti","msg");
-			$a .= remesg("<b>Fine</b> per terminare l'attivita' in corso","msg");
-		$a .= "</td>\n";
-		$a .= "</tr>\n";
-	$a .= "</tfoot>\n";
+		$a .= "<tfoot>\n";
+			$a .= "<tr>\n";
+			$a .= "<td>Invio dati</td>\n";
+			$a .= "<td>\n";
+				$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
+				$a .= "<input type='submit' name='submit' value='Invia'/>\n";
+				$a .= "<input type='submit' name='stop' value='Fine'/>\n";
+			$a .= "</td>\n";
+			$a .= "<td>\n";
+				$a .= remesg("<b>Azzera</b> per il reset dei dati inseriti","warn");
+				$a .= remesg("<b>Invia</b> per l'invio dei dati inseriti","msg");
+				$a .= remesg("<b>Fine</b> per terminare l'attivita' in corso","msg");
+			$a .= "</td>\n";
+			$a .= "</tr>\n";
+		$a .= "</tfoot>\n";
 
-	$a .= "<tbody>\n";
+		$a .= "<tbody>\n";
 
-		$a .= "<tr>\n";
-		$a .= "<td><label for='utente'>Utente</label></td>\n";
-		if (is_null($utente)) {
+			$a .= "<tr>\n";
+			$a .= "<td><label for='utente'>Utente</label></td>\n";
+			if (is_null($utente)) {
+				$a .= "<td></td>\n";
+				//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
+				$a .= "<td>\n".$magamanager."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
+			}
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
+			if (is_null($richiedente)) {
+				$a .= "<td><input type='text' name='irichiedente'/></td>\n";
+				$a .= "<td>".myoptlst("srichiedente",$q1)."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
+			}
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='tags'>TAGS</label></td>\n";
 			$a .= "<td></td>\n";
-			//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
-			$a .= "<td>\n".$magamanager."</td>\n";
-		} else {
+			$a .= "<td>".noinput_hidden("id_merce",$id_merce).$tags."</td>\n";
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
+			if (is_null($quantita) OR ($quantita>$maxquantita)) {
+				$a .= "<td><input type='text' name='iquantita'/></td>\n";
+				$a .= "<td>Disponibilita': ".$maxquantita."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("squantita",$quantita)." di ".$maxquantita."</td>\n";
+			}
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='posizione'>Posizione</label></td>\n";
 			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
-		}
-		$a .= "</tr>\n";
+			$a .= "<td>".input_hidden("posizione",$posizione)."</td>\n";
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
+			if (is_null($destinazione)) {
+				$a .= "<td><input type='text' name='idestinazione'/></td>\n";
+				$a .= "<td>".myoptlst("sdestinazione",$q4)."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("sdestinazione",$destinazione)."</td>\n";
+			}
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
+			if (is_null($data_doc_scarico)) {
+				$a .= "<td></td>\n";
+				$a .= "<td><input name='idata_doc_scarico' type='date' value='' class='date'/></td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("sdata_doc_scarico",$data_doc_scarico)."</td>\n";
+			}
+			$a .= "</tr>\n";
+			
+			$a .= "<tr>\n";
+			$a .= "<td><label for='inote'>Note</label></td>\n";
+			if (is_null($note))
+				$a .= "<td><textarea rows='4' cols='auto' name='inote'></textarea></td>\n";
+			else
+				$a .= "<td>".input_hidden("snote",$note)."</td>\n";
+			$a .= "<td>\n";
+				$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
+				$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
+			$a .= "</td>\n";
+			$a .= "</tr>\n";
+			
 		
-		$a .= "<tr>\n";
-		$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
-		if (is_null($richiedente)) {
-			$a .= "<td><input type='text' name='irichiedente'/></td>\n";
-			$a .= "<td>".myoptlst("srichiedente",$q1)."</td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
-		}
-		$a .= "</tr>\n";
-		
-		$a .= "<tr>\n";
-		$a .= "<td><label for='tags'>TAGS</label></td>\n";
-		$a .= "<td></td>\n";
-		$a .= "<td>".noinput_hidden("id_merce",$id_merce).$tags."</td>\n";
-		$a .= "</tr>\n";
-	
-	$a .= "</tbody>\n";
+		$a .= "</tbody>\n";
 
-$a .= "</table>\n";
-$a .= "</form>\n";
-	
+		$a .= "</table>\n";
+		$a .= "</form>\n";
+	}
 	
 } // fine $selezionato true 
 
@@ -342,10 +437,10 @@ if ($selezionato == false) {
 	// 5a. ricevo lista merce
 	
 	$result_lista_merce = mysql_query($query_lista_merce);
-	if (!$result_lista_merce) die('Errore nell\'interrogazione del db: '.mysql_error());
+	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
 	
 	
-	// 5b. form lista merce
+	// 5b. form scarico step1
 	
 	$a .= "<table>\n";
 	$a .= "<caption>SCARICO MERCE STEP1</caption>\n";
@@ -386,6 +481,7 @@ if ($selezionato == false) {
 			}
 			
 		$a .= "<td><input type='submit' name='submit' value='Scarico'/></td>\n";
+		$a .= "</form>\n";
 		$a .= "</tr>\n";
 	}
 
