@@ -86,6 +86,7 @@ $msg14 = "Scarico terminato, ripristino i valori di default";
 
 
 // 2. startup risorse
+$a .= jsxdate;
 
 // 2a. $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
@@ -401,7 +402,8 @@ if ($selezionato == true) {
 			$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
 			if (is_null($data_doc_scarico)) {
 				$a .= "<td></td>\n";
-				$a .= "<td><input name='idata_doc_scarico' type='date' value='' class='date'/></td>\n";
+				//$a .= "<td><input name='idata_doc_scarico' type='date' value='' class='date'/></td>\n";
+				$a .= "<td><input type='text' class='datepicker' name='idata_doc_scarico'/></td>\n";
 			} else {
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("sdata_doc_scarico",$data_doc_scarico)."</td>\n";

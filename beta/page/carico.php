@@ -133,6 +133,7 @@ $upload = true;
 
 
 // 2. startup risorse
+$a .= jsxdate;
 
 // 2a. $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
@@ -520,7 +521,8 @@ $a .= "<table>\n";
 		$a .= "<td><label for='idata_doc'>Data documento</label></td>\n";
 		if (is_null($data_doc)) {
 			$a .= "<td></td>\n";
-			$a .= "<td><input name='idata_doc' type='date' value='' class='date'/></td>\n";
+			//$a .= "<td><input name='idata_doc' type='date' value='' class='date'/></td>\n";
+			$a .= "<td><input type='text' class='datepicker' name='idata_doc'/></td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sdata_doc",$data_doc)."</td>\n";
@@ -580,7 +582,8 @@ $a .= "<table>\n";
 		$a .= "<td><label for='idata'>Data carico</label></td>\n";
 		if (is_null($data_carico)) {
 			$a .= "<td></td>\n";
-			$a .= "<td><input name='idata_carico' type='date' value='' class='date'/></td>\n";
+			//$a .= "<td><input name='idata_carico' type='date' value='' class='date'/></td>\n";
+			$a .= "<td><input type='text' class='datepicker' name='idata_carico'/></td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sdata_carico",$data_carico)."</td>\n";
