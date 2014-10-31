@@ -2,11 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>GMDCTO</title>
-	<link rel="stylesheet" href="css/menu.css" type="text/css" />
-	<link rel="stylesheet" href="css/footer.css" type="text/css" />
-	<link rel="stylesheet" href="css/main.css" type="text/css" />
-	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
+<title>GMDCTO</title>
+<link rel="stylesheet" href="css/menu.css" type="text/css" />
+<link rel="stylesheet" href="css/footer.css" type="text/css" />
+<link rel="stylesheet" href="css/main.css" type="text/css" />
+<link rel="stylesheet" href="css/tabella.css" type="text/css" />
+<?php
+if ($_SERVER["QUERY_STRING"] != NULL) { 
+if (!empty($_GET["page"]) AND ($_GET["page"] == "transiti")) {
+require_once 'lib/js_header_table.php';
+}
+}
+?>
 </head>
 <body>
 
