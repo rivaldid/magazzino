@@ -15,7 +15,16 @@ $a = "";
 
 //print
 $a .= "<table>\n";
-$a .= "<caption>TRANSITI REGISTRATI</caption>\n";
+
+$a .= "<script type='text/javascript'>\n";
+$a .= "$(document).ready(function() { $('table').filterTable(); });\n";
+$a .= "$(document).ready(function() { $('table').tablesorter(); });\n";
+$a .= "</script>\n";
+
+$a .= "<caption>\n";
+$a .= "TRANSITI REGISTRATI\n";
+$a .= "</caption>\n";
+
 $a .= "<thead><tr>\n";
 	$a .= "<th>Utente</th>\n";
 	$a .= "<th>Data</th>\n";

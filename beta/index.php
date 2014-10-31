@@ -10,7 +10,7 @@
 <?php
 if ($_SERVER["QUERY_STRING"] != NULL) { 
 if (!empty($_GET["page"]) AND ($_GET["page"] == "transiti")) {
-require_once 'lib/js_header_table.php';
+require_once 'lib/js_header_table.html';
 }
 }
 ?>

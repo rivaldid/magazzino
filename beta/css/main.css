@@ -11,10 +11,6 @@ margin-right: auto;
 text-align: center;
 }
 
-#filtro {
-text-align: center;
-}
-
 #log {
 font: italic bold 14px/30px Georgia, serif;
 text-align: center;
@@ -45,4 +41,5 @@ color: #31B404;
 color: #585858;
 font-size: 20px;
 }
+
 
