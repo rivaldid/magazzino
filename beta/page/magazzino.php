@@ -14,6 +14,7 @@ if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 $a = "";
 
 //print
+$a .= jsxtable;
 $a .= "<table>\n";
 $a .= "<caption>STATO MAGAZZINO (<a href=\"?page=magazzino_id\">ID</a>)</caption>\n";
 $a .= "<thead><tr>\n";

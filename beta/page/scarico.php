@@ -442,6 +442,7 @@ if ($selezionato == false) {
 	
 	// 5b. form scarico step1
 	
+	$a .= jsxtable;
 	$a .= "<table>\n";
 	$a .= "<caption>SCARICO MERCE STEP1</caption>\n";
 	$a .= "<thead><tr>\n";

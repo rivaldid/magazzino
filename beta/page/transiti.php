@@ -14,12 +14,8 @@ if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 $a = "";
 
 //print
+$a .= jsxtable;
 $a .= "<table>\n";
-
-$a .= "<script type='text/javascript'>\n";
-$a .= "$(document).ready(function() { $('table').filterTable(); });\n";
-$a .= "$(document).ready(function() { $('table').tablesorter(); });\n";
-$a .= "</script>\n";
 
 $a .= "<caption>\n";
 $a .= "TRANSITI REGISTRATI\n";
