@@ -13,7 +13,6 @@
 	<script type="text/javascript" src="lib/jquery.filtertable.js"></script>
 	<script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
 	<script type="text/javascript" src="lib/jquery.ui.datepicker-it.js"></script>
-	<script type="text/javascript" src="lib/table2CSV.js"></script>
 </head>
 <body>
 

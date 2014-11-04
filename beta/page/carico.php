@@ -543,7 +543,7 @@ $a .= "<table>\n";
 		$a .= "<tr>\n";
 		$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 		if (is_null($tags)) {
-			$a .= "<td><textarea rows='4' cols='auto' name='itags'></textarea></td>\n";
+			$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
 				$a .= input_hidden("tag1","BRETELLA")." \n";
@@ -593,7 +593,7 @@ $a .= "<table>\n";
 		$a .= "<tr>\n";
 		$a .= "<td><label for='inote'>Note</label></td>\n";
 		if (is_null($note))
-			$a .= "<td><textarea rows='4' cols='auto' name='inote'></textarea></td>\n";
+			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 		else
 			$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 		$a .= "<td>\n";

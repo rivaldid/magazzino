@@ -294,10 +294,11 @@ if ($selezionato == true) {
 			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 			
 			// 4bbd. ritorno MDS
-			/*$b = "";
-			$b .= "<table>\n";
-			$b .= "<caption>MERCE SCARICATA</caption>\n";
+			include "lib/simple_html_dom.php";
 			
+			$b = "";
+			$b .= "<table id=\"exportcsv\">\n";
+			$b .= "<caption>MERCE SCARICATA</caption>\n";
 			$b .= "<tbody>\n";
 			
 			$b .= "<tr>\n<td>Operatore di accessi</td>\n<td>".$utente."</td>\n</tr>\n";
@@ -312,17 +313,9 @@ if ($selezionato == true) {
 			$b .= "<tr>\n<td>Firma</td>\n<td></td>\n</tr>\n";
 			
 			$b .= "</tbody>\n";
-			
 			$b .= "</table>\n";
 			
-			$a .= "<script type='text/javascript'>\n";
-			//$a .= "function getCSVData(){\n";
-			$a .= "var csv_value=$('".$b."').table2CSV({delivery:'value'});\n";
-			$a .= "$(\"#myexport\").val(csv_value);\n";
-			$a .= "}\n";
-			//$a .= "</script>\n";
-			*/
-			
+
 			
 			
 			// 4bbe. reset variabili
@@ -445,7 +438,7 @@ if ($selezionato == true) {
 			$a .= "<tr>\n";
 			$a .= "<td><label for='inote'>Note</label></td>\n";
 			if (is_null($note))
-				$a .= "<td><textarea rows='4' cols='auto' name='inote'></textarea></td>\n";
+				$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 			else
 				$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 			$a .= "<td>\n";
@@ -546,9 +539,6 @@ else
 echo "</div>\n";
 
 echo $a;
-
-
-
 
 ?>
 

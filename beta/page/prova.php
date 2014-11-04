@@ -1,3 +1,4 @@
+
 <?php
 
 	$a="";
@@ -14,7 +15,7 @@
 	
 	
 			$b = "";
-			$b .= "<table>\n";
+			$b .= "<table id=\"exportcsv\">\n";
 			$b .= "<caption>MERCE SCARICATA</caption>\n";
 			
 			$b .= "<tbody>\n";
@@ -27,33 +28,17 @@
 			$b .= "<tr>\n<td>Destinazione scarico</td>\n<td>".$destinazione."</td>\n</tr>\n";
 			$b .= "<tr>\n<td>Note</td>\n<td>".$note."</td>\n</tr>\n";
 			$b .= "<tr>\n<td>Data di riferimento scarico</td>\n<td>".$data_doc_scarico."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Torino il</td>\n<td>".$data_scarico."</td>\n</tr>\n";
+			$b .= "<tr>\n<td>Torino, il</td>\n<td>".$data_scarico."</td>\n</tr>\n";
 			$b .= "<tr>\n<td>Firma</td>\n<td></td>\n</tr>\n";
 			
 			$b .= "</tbody>\n";
 			
 			$b .= "</table>\n";
-			
-			
-	/*$a .= "<script type='text/javascript'>\n";
-	//$a .= "function getCSVData(){\n";
-	$a .= "var csv_value=$('".$b."').table2CSV({delivery:'value'});\n";
-	$a .= "$(\"#csv_text\").val(csv_value);\n";
-	$a .= "}\n";
-	//$a .= "</script>\n";
-	*/
 	
-	$file = $_REQUEST['fileName'];
-    $filename = $file."_".date("Y-m-d_H-i",time());
-    header("Content-type: application/vnd.ms-excel");
-    header("Content-disposition: csv" . date("Y-m-d") . ".csv");
-    header( "Content-disposition: filename=".$filename.".csv");
-    
-    //$csv_output=stripcslashes($_REQUEST['csv_text']);
-    $csv_output=$b;
-    
-    print $csv_output;
-    exit; 
-	
-	echo $a;
+	echo $b;
+			
+
+
 ?>
+
+
