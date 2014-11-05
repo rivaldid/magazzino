@@ -1,0 +1,46 @@
+table{
+	padding: 0.4em;
+	margin-left: auto; 
+    margin-right: auto;
+}
+
+td {
+padding: 0.3em;
+border: 1px solid #d3d3d3;
+}
+.bold {
+font: bold 16px Georgia;
+
+}
+.normal {
+font: normal 16px Georgia;
+
+}
+
+
+/********************************/
+
+.intestazione{
+border: 2px solid red;
+margin-bottom: 6em;
+line-height: 0.5em;
+
+}
+#logo {
+background-color: #DDD;
+width: 350px;
+height: 18px;
+text-align: right;
+}
+
+h1{
+color: #000000;
+font: bold 26px verdana;
+text-align: center;
+} 
+.intestazione h3{
+color: #000000;
+font: normal 16px verdana;
+} 
+
+/********************************/

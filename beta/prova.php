@@ -15,27 +15,33 @@
 	
 	$html = "";
 	
+	
+	$html .= "<div class=\"intestazione\">";
+		$html .= "<div id=\"logo\"><span style=\"font: bold 28px verdana;\">Poste</span><span style=\"font: normal 24px verdana;\">Italiane</span></div>";
+		$html .= "<h3>TI/GSI/GI/TO</h3>";
+		$html .= "<h3>DATA CENTER TORINO</h3>";
+		$html .= "<h3>Corso Tazzoli 235/4</h3>";
+		$html .= "<h3>10137 TORINO</h3>";
+	$html .= "</div>";
+	
 	$html .= "<table>";
-	$html .= "<caption>MODULO DI CONSEGNA MATERIALE</caption>";
-	$html .= "<tbody>";
-	$html .= "<tr><td></td><td></td></tr>\n";
-	$html .= "<tr><td>TI/GSI/GI/TO</td><td></td></tr>\n";
-	$html .= "<tr><td>DATA CENTER TORINO</td><td></td></tr>\n";
-	$html .= "<tr><td>Corso Tazzoli 235/4</td><td></td></tr>\n";
-	$html .= "<tr><td>10137 TORINO</td><td></td></tr>\n";
-	$html .= "<tr><td></td><td></td></tr>\n";
-	$html .= "<tr><td>Operatore di accessi</td><td>".$utente."</td></tr>";
-	$html .= "<tr><td>Struttura richiedente</td><td>".$richiedente."</td></tr>";
-	$html .= "<tr><td>Descrizione articolo</td><td>".$tags."</td></tr>";
-	$html .= "<tr><td>Quantita'</td><td>".$quantita."</td></tr>";
-	$html .= "<tr><td>Posizione di provenienza</td><td>".$posizione."</td></tr>";
-	$html .= "<tr><td>Destinazione materiale</td><td>".$destinazione."</td></tr>";
-	$html .= "<tr><td>Note</td><td>".$note."</td></tr>";
-	$html .= "<tr><td>Data di riferimento scarico</td><td>".$data_doc_scarico."</td></tr>";
-	$html .= "<tr><td>Torino il</td><td>".$data_scarico."</td></tr>";
-	$html .= "<tr><td></td><td></td></tr>\n";
-	$html .= "<tr><td>Firma</td><td></td></tr>";
-	$html .= "</tbody>";
+	$html .= "<caption><h1>Modulo di consegna materiale</h1></caption>";
+	$html .= "<tr><td class=\"bold\">Struttura richiedente</td><td class=\"normal\">".$richiedente."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Note</td><td class=\"normal\">".$note."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Operatore di accessi</td><td class=\"normal\">".$utente."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Data di riferimento scarico</td><td class=\"normal\">".$data_doc_scarico."</td></tr>";
+	$html .= "</table>";
+	
+	$html .= "<table>";	
+	$html .= "<tr><td class=\"bold\">Descrizione articolo</td><td class=\"normal\">".$tags."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Quantita'</td><td class=\"normal\">".$quantita."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Posizione di provenienza</td><td class=\"normal\">".$posizione."</td></tr>";
+	$html .= "<tr><td class=\"bold\">Destinazione materiale</td><td class=\"normal\">".$destinazione."</td></tr>";
+	$html .= "</table>";
+	
+	$html .= "<table>";	
+	$html .= "<tr><td>Torino il</td><td class=\"normal\">".$data_scarico."</td></tr>";
+	$html .= "<tr><td>Firma</td><td>_______________________________</td></tr>";
 	$html .= "</table>";
 
 
@@ -43,7 +49,11 @@
 //==============================================================
 //==============================================================
 include("lib/MPDF57/mpdf.php");
-$mpdf=new mPDF();
+$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);
+
+$stylesheet = file_get_contents('css/mds.css'); 
+$mpdf->WriteHTML($stylesheet,1); 
+
 $mpdf->WriteHTML($html);
 $mpdf->Output();
 exit;
