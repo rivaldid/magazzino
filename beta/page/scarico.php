@@ -61,6 +61,7 @@ $a = "";
 $log = "";
 $selezionato = false;
 $valid = true;
+$registro_mds = "/magazzino/registro_mds/";
 
 $q1 = "SELECT * FROM vserv_contatti;";
 $q4 = "SELECT * FROM vserv_posizioni;";
@@ -293,27 +294,54 @@ if ($selezionato == true) {
 			$dbsel = mysql_select_db('magazzino', $conn);
 			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 			
+			
 			// 4bbd. ritorno MDS
-			include "lib/simple_html_dom.php";
+			$report = "";
+			$html = "";
 			
-			$b = "";
-			$b .= "<table id=\"exportcsv\">\n";
-			$b .= "<caption>MERCE SCARICATA</caption>\n";
-			$b .= "<tbody>\n";
+			$html .= "<table>";
+			$html .= "<caption>MODULO DI CONSEGNA MATERIALE</caption>";
+			$html .= "<tbody>";
+			$html .= "<tr><td></td><td></td></tr>\n";
+			$html .= "<tr><td>TI/GSI/GI/TO</td><td></td></tr>\n";
+			$html .= "<tr><td>DATA CENTER TORINO</td><td></td></tr>\n";
+			$html .= "<tr><td>Corso Tazzoli 235/4</td><td></td></tr>\n";
+			$html .= "<tr><td>10137 TORINO</td><td></td></tr>\n";
+			$html .= "<tr><td></td><td></td></tr>\n";
+			$html .= "<tr><td>Operatore di accessi</td><td>".$utente."</td></tr>";
+			$html .= "<tr><td>Struttura richiedente</td><td>".$richiedente."</td></tr>";
+			$html .= "<tr><td>Descrizione articolo</td><td>".$tags."</td></tr>";
+			$html .= "<tr><td>Quantita'</td><td>".$quantita."</td></tr>";
+			$html .= "<tr><td>Posizione di provenienza</td><td>".$posizione."</td></tr>";
+			$html .= "<tr><td>Destinazione materiale</td><td>".$destinazione."</td></tr>";
+			$html .= "<tr><td>Note</td><td>".$note."</td></tr>";
+			$html .= "<tr><td>Data di riferimento scarico</td><td>".$data_doc_scarico."</td></tr>";
+			$html .= "<tr><td>Torino il</td><td>".$data_scarico."</td></tr>";
+			$html .= "<tr><td></td><td></td></tr>\n";
+			$html .= "<tr><td>Firma</td><td></td></tr>";
+			$html .= "</tbody>";
+			$html .= "</table>";
 			
-			$b .= "<tr>\n<td>Operatore di accessi</td>\n<td>".$utente."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Struttura richiedente</td>\n<td>".$richiedente."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Descrizione articolo</td>\n<td>".$tags."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Quantita'</td>\n<td>".$quantita."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Posizione di provenienza</td>\n<td>".$posizione."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Destinazione scarico</td>\n<td>".$destinazione."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Note</td>\n<td>".$note."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Data di riferimento scarico</td>\n<td>".$data_doc_scarico."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Torino il</td>\n<td>".$data_scarico."</td>\n</tr>\n";
-			$b .= "<tr>\n<td>Firma</td>\n<td></td>\n</tr>\n";
+			$report .= "<?php\n";
+			$report .= "//==============================================================\n";
+			$report .= "//==============================================================\n";
+			$report .= "//==============================================================\n";
+			$report .= "include(\"../beta/lib/MPDF57/mpdf.php\");\n";
+			$report .= "\$mpdf=new mPDF();\n";
+			$report .= "\$mpdf->WriteHTML(\"".$html."\");\n";
+			$report .= "\$mpdf->Output();\n";
+			$report .= "exit;\n";
+			$report .= "//==============================================================\n";
+			$report .= "//==============================================================\n";
+			$report .= "//==============================================================\n";
+			$report .= "?>\n";
 			
-			$b .= "</tbody>\n";
-			$b .= "</table>\n";
+			$filereport = $registro_mds."MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico.".php";
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'].$filereport,"w");
+			fwrite($fp,$report);
+			fclose($fp);
+			
+			$log .= remesg("<a href=\"".$filereport."\">Modulo di scarico</a> pronto per la stampa","msg");
 						
 			// 4bbe. reset variabili
 			$selezionato = false;
