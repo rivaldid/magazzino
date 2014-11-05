@@ -314,10 +314,7 @@ if ($selezionato == true) {
 			
 			$b .= "</tbody>\n";
 			$b .= "</table>\n";
-			
-
-			
-			
+						
 			// 4bbe. reset variabili
 			$selezionato = false;
 			
