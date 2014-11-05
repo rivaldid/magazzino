@@ -71,4 +71,12 @@ function noinput_hidden($name,$value) {
 	return "<input type='hidden' name='".$name."' value='".$value."'/>";
 }
 
+function logging($mixed) {
+$file = $_SERVER['DOCUMENT_ROOT']."/magazzino/beta/sp_pub.log";
+$flog = fopen($file,'a');
+$a = $mixed."\n";
+fwrite($flog,$a);
+fclose($flog);
+}
+
 ?>

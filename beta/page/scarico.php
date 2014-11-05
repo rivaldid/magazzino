@@ -38,6 +38,7 @@
  * 					4bae. data_doc_scarico
  * 				4bb. test valid
  * 					4bba. SCARICO
+ * 						4bbaa. logging
  *					4bbb. test ritorno SCARICO
  * 					4bbc. reset mysql connection
  * 					4bbd. ritorno MDS
@@ -266,7 +267,9 @@ if ($selezionato == true) {
 			
 			$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
 			
-			
+			// 4bbaa. logging
+			logging($call);
+						
 			// 4bbb. test ritorno SCARICO
 			switch ($ritorno[0]) {
 				

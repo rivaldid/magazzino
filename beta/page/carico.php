@@ -78,6 +78,7 @@
  * 					5bab. exists_file
  * 					5bac. upload
  * 				5bb. CARICO
+ * 					5bba. logging
  * 				5bc. reset tripla tags - quantita' - posizione
  * 		6. form
  * 		7. libero risorse
@@ -411,6 +412,9 @@ if (isset($_SESSION['submit'])) {
 		 * Warning: mysql_free_result() expects parameter 1 to be resource, boolean given in
 		 * You can't free the result of an INSERT query, since you can't free a boolean
 		 */
+		 
+		// 5bba. logging
+		logging($call);	
 		
 		// 5bc. reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;
