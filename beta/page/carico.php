@@ -90,44 +90,9 @@
 
 
 // 1. definizione variabili
-
 $a = "";
 $log = "";
 
-$q1 = "SELECT * FROM vserv_contatti;";
-$q2 = "SELECT * FROM vserv_tipodoc;";
-$q3 = "SELECT * FROM vserv_numdoc;";
-$q4 = "SELECT * FROM vserv_posizioni;";
-$q5 = "SELECT * FROM vserv_numoda;";
-//$q6 = "SELECT * FROM vserv_utenti;";
-$magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
-
-$qbtags2 = "SELECT * FROM vserv_tags2;";
-$qbtags3 = "SELECT * FROM vserv_tags3;";
-
-$msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
-$msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (2)";
-$msg3 = "Mancata selezione di un tipo di documento per l'attivita' in corso (3)";
-$msg4 = "Mancata selezione di un numero di documento per l'attivita' in corso (4)";
-$msg5 = "Mancata selezione di una data cui far riferimento per l'attivita' in corso (5)";
-
-$msg6 = "Mancato inserimento di tags per contrassegnare la merce in carico (6)";
-$msg7 = "Mancato inserimento della quantita' per la merce in carico (7)";
-$msg8 = "Mancato inserimento della posizione in magazzino per la merce in carico (8)";
-
-$msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
-
-$msg10 = "Nessun file selezionato";
-$msg11 = "Nessun file caricato perche' presente sul db (11)";
-$msg12 = "Nessun file caricato perche' presente sul disco (12)";
-$msg13 = "Scansione del documento caricata correttamente";
-$msg14 = "Scansione del documento non caricata (14)";
-
-$msg15 = "Carico inserito correttamente";
-
-$msg16 = "Inserimento errato del campo quantita' (16)";
-
-$registro = "aaa";
 $valid = true;
 $upload = true;
 
@@ -256,10 +221,13 @@ else
 	$nome_doc = NULL;
 
 // 4e. utente
-if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
-	$utente = safe($_SESSION['utente']);
-else
-	$utente = NULL;
+/*
+ * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+ * 		$utente = safe($_SESSION['utente']);
+ * else
+ * 		$utente = NULL;
+ */
+$utente = $_SERVER["AUTHENTICATE_UID"];
 
 // 4f. tripla tags - quantita' - posizione
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
@@ -304,6 +272,10 @@ if (isset($_SESSION['submit'])) {
 	// 5aa. utente
 	if (is_null($utente) OR empty($utente)) {
 		$log .= remesg($msg1,"err");
+		$valid = false;
+	}
+	if(!(in_array($utente, $enabled_users))){
+		$log .= remesg($msg17,"err");
 		$valid = false;
 	}
 
@@ -378,14 +350,14 @@ if (isset($_SESSION['submit'])) {
 
 				// 5bab. exists_file
 				$nome_doc = epura_specialchars(epura_space2underscore($tipo_doc))."-".epura_specialchars(epura_space2underscore($fornitore))."-".epura_specialchars(epura_space2underscore($num_doc)).".".getfilext($_FILES['scansione']['name']);
-				if (file_exists($registro."/".$nome_doc)) {
+				if (file_exists(registro.$nome_doc)) {
 					$log .= remesg($msg12,"warn");
 					$upload = false;
 				}
 
 				// 5bac. upload
 				if ($upload == true) {
-					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $registro."/".$nome_doc);
+					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], registro.$nome_doc);
 					if ($moved)
 					  $log .= remesg($msg13,"msg");
 					else
@@ -456,9 +428,9 @@ $a .= "<table>\n";
 			$a .= "<input type='submit' name='stop' value='Fine'/>\n";
 		$a .= "</td>\n";
 		$a .= "<td>\n";
-			$a .= remesg("<b>Azzera</b> per il reset dei dati inseriti","warn");
-			$a .= remesg("<b>Invia</b> per l'invio dei dati inseriti","msg");
-			$a .= remesg("<b>Fine</b> per terminare l'attivita' in corso","msg");
+			$a .= remesg($msg21,"msg");
+			$a .= remesg($msg22,"msg");
+			$a .= remesg($msg23,"msg");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
@@ -481,7 +453,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
 		if (is_null($fornitore)) {
 			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
-			$a .= "<td>".myoptlst("sfornitore",$q1)."</td>\n";
+			$a .= "<td>".myoptlst("sfornitore",$vserv_contatti)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sfornitore",$fornitore)."</td>\n";
@@ -492,7 +464,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='itrasportatore'>Trasportatore</label></td>\n";
 		if (is_null($trasportatore)) {
 			$a .= "<td><input type='text' name='itrasportatore'/></td>\n";
-			$a .= "<td>".myoptlst("strasportatore",$q1)."</td>\n";
+			$a .= "<td>".myoptlst("strasportatore",$vserv_contatti)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("strasportatore",$trasportatore)."</td>\n";
@@ -503,7 +475,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
 		if (is_null($tipo_doc)) {
 			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
-			$a .= "<td>".myoptlst("stipo_doc",$q2)."</td>\n";
+			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("stipo_doc",$tipo_doc)."</td>\n";
@@ -514,7 +486,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
 		if (is_null($num_doc)) {
 			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
-			$a .= "<td>".myoptlst("snum_doc",$q3)."</td>\n";
+			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("snum_doc",$num_doc)."</td>\n";
@@ -551,8 +523,8 @@ $a .= "<table>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
 				$a .= input_hidden("tag1","BRETELLA")." \n";
-				$a .= myoptlst("tag2",$qbtags2)." \n";
-				$a .= myoptlst("tag3",$qbtags3)." \n";
+				$a .= myoptlst("tag2",$vserv_tags2)." \n";
+				$a .= myoptlst("tag3",$vserv_tags3)." \n";
 			$a .= "</td>\n";
 		} else {
 			$a .= "<td></td>\n";
@@ -575,7 +547,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
 		if (is_null($posizione)) {
 			$a .= "<td><input type='text' name='iposizione'/></td>\n";
-			$a .= "<td>".myoptlst("sposizione",$q4)."</td>\n";
+			$a .= "<td>".myoptlst("sposizione",$vserv_posizioni)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sposizione",$posizione)."</td>\n";
@@ -601,8 +573,8 @@ $a .= "<table>\n";
 		else
 			$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 		$a .= "<td>\n";
-			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
-			$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
+			$a .= remesg($msg19,"msg");
+			$a .= remesg($msg20,"msg");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 
@@ -610,7 +582,7 @@ $a .= "<table>\n";
 		$a .= "<td><label for='inum_oda'>Numero ODA</label></td>\n";
 		if (is_null($num_oda)) {
 			$a .= "<td><input type='text' name='inum_oda'/></td>\n";
-			$a .= "<td>".myoptlst("num_oda",$q5)."</td>\n";
+			$a .= "<td>".myoptlst("num_oda",$vserv_numoda)."</td>\n";
 		} else {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("snum_oda",$num_oda)."</td>\n";
@@ -634,7 +606,7 @@ session_write_close();
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 if ($log == "")
-	echo remesg("nessuna notifica da visualizzare","msg");
+	echo remesg($msg18,"msg");
 else
 	echo $log;
 echo "</div>\n";

@@ -1,10 +1,5 @@
 <?php
-
-define("jsxtable","<script type='text/javascript'>\n$(document).ready(function() { $('table').filterTable(); });\n$(document).ready(function() { $('table').tablesorter(); });\n</script>\n");
-define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
-
-					
-
+		
 // pre
 function safe($value) {
 	return mysql_real_escape_string($value);

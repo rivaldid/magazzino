@@ -22,6 +22,7 @@ if ($_SERVER["QUERY_STRING"] != NULL) {
 	if (!file_exists($page)) $page = sprintf("page/404.php");
 } else $page = sprintf("page/home.php");
 
+require_once 'lib/vars.php';
 require_once 'lib/functions.php';
 include 'lib/menu.html';
 include $page;

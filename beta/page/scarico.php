@@ -63,31 +63,9 @@
 // 1. definizione variabili
 $a = "";
 $log = "";
+
 $selezionato = false;
 $valid = true;
-$registro_mds = "/magazzino/registro_mds/";
-
-$q1 = "SELECT * FROM vserv_contatti;";
-$q4 = "SELECT * FROM vserv_posizioni;";
-
-$query_lista_merce = "SELECT * FROM vista_magazzino;";
-$magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
-
-$msg1 = "Mancata selezione di un utente per l'attivita' in corso (1)";
-$msg2 = "Mancata selezione di un richiedente per l'attivita' in corso (2)";
-$msg3 = "Mancata selezione di una quantita' per l'attivita' in corso (3)";
-$msg4 = "Quantita' richiesta superiore alla giacenza in magazzino per quella posizione (4)";
-$msg5 = "Mancato inserimento di una destinazione per l'attivita' in corso (5)";
-$msg6 = "Mancata selezione di una data per l'attivita' in corso (6)";
-
-$msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
-
-$msg10 = "Scarico inviato al database";
-$msg11 = "Scarico effettuato correttamente";
-$msg12 = "Scarico non effettuato (12)";
-$msg13 = "Persa risposta del database (13)";
-
-$msg14 = "Scarico terminato, ripristino i valori di default";
 
 
 
@@ -154,10 +132,13 @@ if ($selezionato == true) {
 	$data_scarico = date("Y-m-d");
 	
 	// 4ac. utente
-	if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente']))) 
-		$utente = safe($_SESSION['utente']);
-	else
-		$utente = null;
+	/*
+	 * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+	 * 		$utente = safe($_SESSION['utente']);
+	 * else
+	 * 		$utente = NULL;
+	 */
+	$utente = $_SERVER["AUTHENTICATE_UID"];
 	
 	// 4ad. richiedente
 	if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
@@ -221,33 +202,37 @@ if ($selezionato == true) {
 			$log .= remesg($msg1,"err");
 			$valid = false;
 		}
+		if(!(in_array($utente, $enabled_users))){
+			$log .= remesg($msg17,"err");
+			$valid = false;
+		}
 		
 		// 4bab. richiedente
 		if (is_null($richiedente) OR empty($richiedente)) {
-			$log .= remesg($msg2,"err");
+			$log .= remesg($msg24,"err");
 			$valid = false;
 		}
 		
 		// 4bac. quantita
 		if (is_null($quantita) OR empty($quantita)) {
-			$log .= remesg($msg3,"err");
+			$log .= remesg($msg25,"err");
 			$valid = false;
 		} else {
 			if ($quantita>$maxquantita) {
-				$log .= remesg($msg4,"err");
+				$log .= remesg($msg26,"err");
 				$valid = false;
 			}
 		}
 			
 		// 4bad. destinazione
 		if (is_null($destinazione) OR empty($destinazione)) {
-			$log .= remesg($msg5,"err");
+			$log .= remesg($msg27,"err");
 			$valid = false;
 		} 
 		
 		// 4bae. data_doc_scarico
 		if (is_null($data_doc_scarico) OR empty($data_doc_scarico)) {
-			$log .= remesg($msg6,"err");
+			$log .= remesg($msg28,"err");
 			$valid = false;
 		}
 		
@@ -264,7 +249,7 @@ if ($selezionato == true) {
 			$result_scarico = mysql_query($call);
 			
 			if ($result_scarico)
-				$log .= remesg($msg10,"msg");
+				$log .= remesg($msg29,"msg");
 			else
 				die('Errore nell\'invio del comando di scarico al db: '.mysql_error());
 			
@@ -277,15 +262,15 @@ if ($selezionato == true) {
 			switch ($ritorno[0]) {
 				
 				case "0":
-					$log .= remesg($msg11,"msg");
+					$log .= remesg($msg30,"msg");
 					break;
 				
 				case "1":
-					$log .= remesg($msg12,"err");
+					$log .= remesg($msg31,"err");
 					break;
 					
 				default:
-					$log .= remesg($msg13,"err");
+					$log .= remesg($msg32,"err");
 				
 			}
 			
@@ -345,18 +330,18 @@ if ($selezionato == true) {
 			$report .= "?>\n";
 			
 			// 4bbdc. scrittura contenuti
-			$filereport = $registro_mds."MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico.".php";
-			$fp = fopen($_SERVER['DOCUMENT_ROOT'].$filereport,"w");
+			$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico.".php";
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
 			fwrite($fp,$report);
 			fclose($fp);
 			
-			$log .= remesg("<a href=\"".$filereport."\">Modulo di scarico</a> pronto per la stampa","msg");
+			$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
 						
 			// 4bbe. reset variabili
 			$selezionato = false;
 			
 	
-			$log .= remesg($msg14,"msg");
+			$log .= remesg($msg33,"msg");
 			$_SESSION = array();
 			session_unset();
 			session_destroy();
@@ -391,9 +376,9 @@ if ($selezionato == true) {
 				$a .= "<input type='submit' name='stop' value='Fine'/>\n";
 			$a .= "</td>\n";
 			$a .= "<td>\n";
-				$a .= remesg("<b>Azzera</b> per il reset dei dati inseriti","warn");
-				$a .= remesg("<b>Invia</b> per l'invio dei dati inseriti","msg");
-				$a .= remesg("<b>Fine</b> per terminare l'attivita' in corso","msg");
+				$a .= remesg($msg21,"msg");
+				$a .= remesg($msg22,"msg");
+				$a .= remesg($msg23,"msg");
 			$a .= "</td>\n";
 			$a .= "</tr>\n";
 		$a .= "</tfoot>\n";
@@ -416,7 +401,7 @@ if ($selezionato == true) {
 			$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
 			if (is_null($richiedente)) {
 				$a .= "<td><input type='text' name='irichiedente'/></td>\n";
-				$a .= "<td>".myoptlst("srichiedente",$q1)."</td>\n";
+				$a .= "<td>".myoptlst("srichiedente",$vserv_contatti)."</td>\n";
 			} else {
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
@@ -450,7 +435,7 @@ if ($selezionato == true) {
 			$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
 			if (is_null($destinazione)) {
 				$a .= "<td><input type='text' name='idestinazione'/></td>\n";
-				$a .= "<td>".myoptlst("sdestinazione",$q4)."</td>\n";
+				$a .= "<td>".myoptlst("sdestinazione",$vserv_posizioni)."</td>\n";
 			} else {
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("sdestinazione",$destinazione)."</td>\n";
@@ -497,7 +482,7 @@ if ($selezionato == false) {
 	
 	// 5a. ricevo lista merce
 	
-	$result_lista_merce = mysql_query($query_lista_merce);
+	$result_lista_merce = mysql_query($vista_magazzino);
 	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
 	
 	
@@ -566,7 +551,7 @@ session_write_close();
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 if ($log == "")
-	echo remesg("nessuna notifica da visualizzare","msg");
+	echo remesg($msg18,"msg");
 else
 	echo $log;
 echo "</div>\n";
