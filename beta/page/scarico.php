@@ -42,6 +42,9 @@
  *					4bbb. test ritorno SCARICO
  * 					4bbc. reset mysql connection
  * 					4bbd. ritorno MDS
+ * 						4bbda. definizione dati
+ * 						4bbdb. definizione pagina
+ * 						4bbdc. scrittura contenuti
  * 					4bbe. reset variabili
  *			4c. form scarico step2
  * 
@@ -302,6 +305,7 @@ if ($selezionato == true) {
 			$report = "";
 			$html = "";
 			
+			// 4bbda. definizione dati
 			$html .= "<table>";
 			$html .= "<caption>MODULO DI CONSEGNA MATERIALE</caption>";
 			$html .= "<tbody>";
@@ -325,6 +329,7 @@ if ($selezionato == true) {
 			$html .= "</tbody>";
 			$html .= "</table>";
 			
+			// 4bbdb. definizione pagina
 			$report .= "<?php\n";
 			$report .= "//==============================================================\n";
 			$report .= "//==============================================================\n";
@@ -339,6 +344,7 @@ if ($selezionato == true) {
 			$report .= "//==============================================================\n";
 			$report .= "?>\n";
 			
+			// 4bbdc. scrittura contenuti
 			$filereport = $registro_mds."MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico.".php";
 			$fp = fopen($_SERVER['DOCUMENT_ROOT'].$filereport,"w");
 			fwrite($fp,$report);
@@ -550,11 +556,10 @@ if ($selezionato == false) {
 
 
 
-
-
 // 6. libero risorse
 mysql_close($conn);
 session_write_close();
+
 
 
 // 7. stampo
