@@ -1,9 +1,9 @@
 <?php
-	
+
 //begin mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
-	
+
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
@@ -23,7 +23,7 @@ $a .= "<thead><tr>\n";
 	$a .= "<th>Tot</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
-	
+
 while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 	$a .= "<tr>\n";
 	foreach ($row as $cname => $cvalue)
@@ -39,6 +39,6 @@ mysql_free_result($res);
 
 // end mysql
 mysql_close($conn);
-	
+
 ?>
 

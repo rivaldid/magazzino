@@ -115,19 +115,19 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // 3. test fine $_SESSION
 if (isset($_POST['stop'])) {
-	
+
 	$log .= remesg($msg9,"msg");
-	
+
 	$_SESSION = array();
 	session_unset();
 	session_destroy();
-	
+
 	/* generate new session id and delete old session in store */
 	session_regenerate_id(true);
 	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-	
+
 	//$log .= remesg(session_status(),"msg");
-	
+
 } else {
 
 	// 3a. versa $_POST su $_SESSION
@@ -235,7 +235,7 @@ if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
 else {
 	if (isset($_SESSION['tag2']) AND (!empty($_SESSION['tag2'])) AND isset($_SESSION['tag3']) AND (!empty($_SESSION['tag3']))) {
 		$tags = safe($_SESSION['tag1'])." ".safe($_SESSION['tag2'])." ".safe($_SESSION['tag3']);
-	} else 
+	} else
 	{
 		if (isset($_SESSION['stags'])AND(!empty($_SESSION['stags'])))
 			$tags = safe($_SESSION['stags']);
@@ -311,7 +311,7 @@ if (isset($_SESSION['submit'])) {
 		$log .= remesg($msg7,"err");
 		$valid = false;
 	}
-	
+
 	if (!(testinteger($quantita))) {
 		$log .= remesg($msg16,"err");
 		$valid = false;
@@ -357,7 +357,7 @@ if (isset($_SESSION['submit'])) {
 				}
 
 				// 5bac. upload
-				if ($upload == true) {					
+				if ($upload == true) {
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
 					  $log .= remesg($msg13,"msg");
@@ -381,24 +381,24 @@ if (isset($_SESSION['submit'])) {
 		else
 			die('Errore nell\'interrogazione del db: '.mysql_error());
 
-		/* nb: fail @ mysql_free_result($res_carico); 
+		/* nb: fail @ mysql_free_result($res_carico);
 		 * Warning: mysql_free_result() expects parameter 1 to be resource, boolean given in
 		 * You can't free the result of an INSERT query, since you can't free a boolean
 		 */
-		 
+
 		// 5bba. logging
-		logging($call);	
-		
+		logging($call);
+
 		// 5bc. reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;
-		
+
 		$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
 		$_SESSION['tag1'] = $_SESSION['tag2'] = $_SESSION['tag3'] = NULL;
-		
+
 		$_POST['itags'] = $_POST['stags'] = NULL;
 		$_POST['iquantita'] = $_POST['squantita'] = NULL;
 		$_POST['iposizione'] = $_POST['sposizione'] = NULL;
-		
+
 		$_SESSION['itags'] = $_SESSION['stags'] = NULL;
 		$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
 		$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
