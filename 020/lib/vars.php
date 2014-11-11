@@ -3,8 +3,9 @@
 // costanti
 define("jsxtable","<script type='text/javascript'>\n$(document).ready(function() { $('table').filterTable(); });\n$(document).ready(function() { $('table').tablesorter(); });\n</script>\n");
 define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
-define("registro","/magazzino/registro/");
-define("registro_mds","/magazzino/registro_mds/");
+define("registro","/GMDCTO/registro/");
+define("registro_mds","/GMDCTO/registro_mds/");
+define("sp.log","/GMDCTO/sp.log");
 
 // query
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
@@ -20,7 +21,7 @@ $vista_magazzino = "SELECT * FROM vista_magazzino;";
 
 // variabili
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
-$enabled_users = array("Piscazzi","Manzo","Muratore");
+$enabled_users = array("PISCAZZI","MANZOGI9","MURATO48");
 
 // messaggi carico
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)";

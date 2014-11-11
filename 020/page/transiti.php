@@ -50,14 +50,14 @@ while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 			
 			case "6":
 				if ($doc_ingresso != NULL)
-					$a .= "<td><a href=\"/magazzino/registro/".$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
+					$a .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
 				else
 					$a .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
 			
 			case "10":
 				if ($doc_ordine != NULL)
-					$a .= "<td><a href=\"/magazzino/registro/".$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
+					$a .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
 				else
 					$a .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;

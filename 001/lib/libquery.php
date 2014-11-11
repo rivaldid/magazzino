@@ -145,7 +145,7 @@ return table_core("registro",$sql,$mask);
 
 function table_magazzino() {
 //$sql = "SELECT posizione,tags,id_vendor,quantita,descrizione FROM MAGAZZINO LEFT JOIN MERCE USING(id_merce) WHERE quantita>0 ORDER BY posizione,tags,id_vendor;";
-$sql = "SELECT * FROM vista_magazzino2;";
+$sql = "SELECT * FROM vserv_magazzino;";
 $mask = "<th>TAGS</th><th>Quantita</th><th>Lista posizioni</th>";
 return table_core("magazzino",$sql,$mask);
 }
