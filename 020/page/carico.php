@@ -350,14 +350,15 @@ if (isset($_SESSION['submit'])) {
 
 				// 5bab. exists_file
 				$nome_doc = epura_specialchars(epura_space2underscore($tipo_doc))."-".epura_specialchars(epura_space2underscore($fornitore))."-".epura_specialchars(epura_space2underscore($num_doc)).".".getfilext($_FILES['scansione']['name']);
-				if (file_exists(registro.$nome_doc)) {
+				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$nome_doc;
+				if (file_exists(registro.$filename)) {
 					$log .= remesg($msg12,"warn");
 					$upload = false;
 				}
 
 				// 5bac. upload
 				if ($upload == true) {					
-					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], registro.$nome_doc);
+					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
 					  $log .= remesg($msg13,"msg");
 					else
