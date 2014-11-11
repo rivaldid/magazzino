@@ -356,7 +356,7 @@ if (isset($_SESSION['submit'])) {
 				}
 
 				// 5bac. upload
-				if ($upload == true) {
+				if ($upload == true) {					
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], registro.$nome_doc);
 					if ($moved)
 					  $log .= remesg($msg13,"msg");

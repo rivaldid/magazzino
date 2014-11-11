@@ -1,2 +1,7 @@
 -- lifes goes on
-
+CALL CARICO('PISCAZZI','aaa','ccc','qwewrr','2014-11-12','ccc-aaa-qwewrr.pdf','aaa bvbb dddsac ','123','laddietro','2014-11-19','dsvsvsfd vbfsb','bbb','');
+CALL CARICO('PISCAZZI','bbbb','qqqqqqqqqq','5555555555','2014-11-13','qqqqqqqqqq-bbbb-5555555555.jpg','ffffffffffff','12','A2L09','2014-11-25','','','');
+CALL CARICO('PISCAZZI','eeeeeeeeeee','gggggggggggg','2222222','2014-11-30','gggggggggggg-eeeeeeeeeee-2222222.jpg','dfd rffb ','436','laddietro','2014-11-20','','','');
+CALL CARICO('PISCAZZI','rrrrrrrrrrrr','dddddddddddddd','87777777777777777','2014-11-19','dddddddddddddd-rrrrrrrrrrrr-87777777777777777.pdf','tgfbfgbhfg  df f ','3434','egfgbfeb','2014-11-20','','','');
+CALL CARICO('PISCAZZI','qqqqqqqqqq','ffffffffffffffff','321432134','2014-11-12','ffffffffffffffff-qqqqqqqqqq-321432134.jpg','rgrgdfg cbfbfd','67','A1L13','2014-11-12','','','');
+CALL CARICO('PISCAZZI','rfgrfggb','fbfbdbdfb','4444444444444','2014-11-13','fbfbdbdfb-rfgrfggb-4444444444444.pdf','fbfdbfb','34532','A1L11','2014-11-12','','','');

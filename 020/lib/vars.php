@@ -5,7 +5,8 @@ define("jsxtable","<script type='text/javascript'>\n$(document).ready(function()
 define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
 define("registro","/GMDCTO/registro/");
 define("registro_mds","/GMDCTO/registro_mds/");
-define("sp.log","/GMDCTO/sp.log");
+define("splog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/sp.log");
+define ("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
 
 // query
 $vserv_contatti = "SELECT * FROM vserv_contatti;";

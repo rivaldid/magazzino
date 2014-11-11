@@ -67,8 +67,7 @@ function noinput_hidden($name,$value) {
 }
 
 function logging($mixed) {
-$file = $_SERVER['DOCUMENT_ROOT'].sp.log;
-$flog = fopen($file,'a');
+$flog = fopen(splog,'a');
 $a = $mixed."\n";
 fwrite($flog,$a);
 fclose($flog);

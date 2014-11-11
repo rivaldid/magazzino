@@ -319,7 +319,7 @@ if ($selezionato == true) {
 			$report .= "//==============================================================\n";
 			$report .= "//==============================================================\n";
 			$report .= "//==============================================================\n";
-			$report .= "include(\"../beta/lib/MPDF57/mpdf.php\");\n";
+			$report .= "include(\"".lib_mpdf57."\");\n";
 			$report .= "\$mpdf=new mPDF();\n";
 			$report .= "\$mpdf->WriteHTML(\"".$html."\");\n";
 			$report .= "\$mpdf->Output();\n";
