@@ -401,7 +401,7 @@ if ($selezionato == true) {
 			$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
 			if (is_null($richiedente)) {
 				$a .= "<td><input type='text' name='irichiedente'/></td>\n";
-				$a .= "<td>".myoptlst("srichiedente",$vserv_contatti)."</td>\n";
+				$a .= "<td>".$richiedenti_merce."</td>\n";
 			} else {
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
