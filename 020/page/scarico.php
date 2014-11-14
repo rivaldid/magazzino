@@ -288,44 +288,23 @@ if ($selezionato == true) {
 
 			// 4bbd. ritorno MDS
 			$report = "";
-			$html = "";
 
-			// 4bbda. definizione dati
-			$html .= "<table>";
-			$html .= "<caption>MODULO DI CONSEGNA MATERIALE</caption>";
-			$html .= "<tbody>";
-			$html .= "<tr><td></td><td></td></tr>\n";
-			$html .= "<tr><td>TI/GSI/GI/TO</td><td></td></tr>\n";
-			$html .= "<tr><td>DATA CENTER TORINO</td><td></td></tr>\n";
-			$html .= "<tr><td>Corso Tazzoli 235/4</td><td></td></tr>\n";
-			$html .= "<tr><td>10137 TORINO</td><td></td></tr>\n";
-			$html .= "<tr><td></td><td></td></tr>\n";
-			$html .= "<tr><td>Operatore di accessi</td><td>".$utente."</td></tr>";
-			$html .= "<tr><td>Struttura richiedente</td><td>".$richiedente."</td></tr>";
-			$html .= "<tr><td>Descrizione articolo</td><td>".$tags."</td></tr>";
-			$html .= "<tr><td>Quantita'</td><td>".$quantita."</td></tr>";
-			$html .= "<tr><td>Posizione di provenienza</td><td>".$posizione."</td></tr>";
-			$html .= "<tr><td>Destinazione materiale</td><td>".$destinazione."</td></tr>";
-			$html .= "<tr><td>Note</td><td>".$note."</td></tr>";
-			$html .= "<tr><td>Data di riferimento scarico</td><td>".$data_doc_scarico."</td></tr>";
-			$html .= "<tr><td>Torino il</td><td>".$data_scarico."</td></tr>";
-			$html .= "<tr><td></td><td></td></tr>\n";
-			$html .= "<tr><td>Firma</td><td></td></tr>";
-			$html .= "</tbody>";
-			$html .= "</table>";
+			// 4bbda. definizione dati			
+			ob_start();
+			include 'lib/template_mds.php';
+			$corpo_html = ob_get_clean();
 
 			// 4bbdb. definizione pagina
 			$report .= "<?php\n";
-			$report .= "//==============================================================\n";
-			$report .= "//==============================================================\n";
+			$report .= "\$html = \"".addslashes($corpo_html)."\";";
 			$report .= "//==============================================================\n";
 			$report .= "include(\"".lib_mpdf57."\");\n";
-			$report .= "\$mpdf=new mPDF();\n";
-			$report .= "\$mpdf->WriteHTML(\"".$html."\");\n";
+			$report .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
+			$report .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+			$report .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";			
+			$report .= "\$mpdf->WriteHTML(\"\$html\");\n";
 			$report .= "\$mpdf->Output();\n";
 			$report .= "exit;\n";
-			$report .= "//==============================================================\n";
-			$report .= "//==============================================================\n";
 			$report .= "//==============================================================\n";
 			$report .= "?>\n";
 

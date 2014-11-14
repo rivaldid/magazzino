@@ -1,1 +1,11 @@
 -- lifes goes on
+CALL SCARICO('MURATO48','aaaaaaaaaaaa','46','12','A1L08','sala2 isola15','2014-11-29','2014-11-14','note notevoli a fare i compiti a casa. ref. lucazzi',@myvar);
+CALL SCARICO('MURATO48','aaaa','49','1','A1L11','cfdsv','2014-11-20','2014-11-14','v fd fd f',@myvar);
+CALL SCARICO('MURATO48','aaaaaaa','50','32','A2L01','sasad','2014-11-21','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','fvgvbvfebv','52','23','A2L03','A1L13','2014-11-04','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','mmmmmmmm','2','334','A2L05','sd','2014-11-19','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','zzzzz','6','21','A2L04','A2L01','2014-11-11','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','jjjjjjjj','52','32','A2L03','ujkhgj','2014-11-26','2014-11-14','bgf',@myvar);
+CALL SCARICO('MURATO48','bbbbbbbbbb','2','43','A2L05','A2L03','2014-11-19','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','PostemobileTec','54','342','P02','A2L05','2014-11-25','2014-11-14','',@myvar);
+CALL SCARICO('MURATO48','Facility','65','12','Z1L08','dsfcdsv','2014-11-19','2014-11-14','vbfs vs ',@myvar);
