@@ -29,7 +29,7 @@
 		</tr>
 	</table>
 	<table>
-		<tr><td>Torino il</td><td class="normal"><?php echo $data_scarico;?></td></tr>
+		<tr><td class="bold">Torino il</td><td class="normal"><?php echo $data_scarico;?></td></tr>
 		<tr><td class="firma">Firma</td><td></td></tr>
 	</table>
 

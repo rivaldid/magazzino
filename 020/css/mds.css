@@ -1,46 +1,40 @@
-#contenitore {
-border:1px solid red;
+#contenitore{
 width: 100%;
 height: 100%;
-
-
 }
+
 table{
-	padding: 1em;
-	text-align: left;
-   /* border: 1px solid red;*/
-    margin: 0 0 0 0;
-    width: 100%;
-    
+padding: 1em;
+text-align: left;
+margin: 0 0 0 0;
+width: 100%;
 }
 
-td {
+td{
 padding: 0.4em;
 border: 1px solid #d3d3d3;
-
 }
-.bold {
+
+.bold{
 font: bold 16px Georgia;
-
 }
-.normal {
+
+.normal{
 font: normal 16px Georgia;
-
 }
-.firma {
-padding: 0.7em;
 
+.firma{
+padding: 0.7em;
 }
 
 /********************************/
 
 .intestazione{
-/*border: 2px solid red;*/
 margin-bottom: 2em;
 line-height: 0.5em;
-
 }
-#logo {
+
+#logo{
 background-color: #DDD;
 width: 350px;
 height: 18px;
@@ -51,7 +45,8 @@ h1{
 color: #000000;
 font: bold 26px verdana;
 text-align: center;
-} 
+}
+
 .intestazione h3{
 color: #000000;
 font: normal 16px verdana;
