@@ -7,7 +7,7 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$query = "SELECT doc_ingresso,doc_ordine,utente,data,status,posizione,documento,tags,quantita,note,ordine,trasportatore FROM TRANSITI;";
+$query = "SELECT doc_ingresso,doc_ordine,utente,data,status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
@@ -31,7 +31,6 @@ $a .= "<thead><tr>\n";
 	$a .= "<th>Quantita'</th>\n";
 	$a .= "<th>Note</th>\n";
 	$a .= "<th>ODA</th>\n";
-	$a .= "<th>Trasportatore</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
