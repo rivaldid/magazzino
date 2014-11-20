@@ -16,7 +16,7 @@ $a = "";
 //print
 $a .= jsxtable;
 $a .= "<table>\n";
-$a .= "<caption>STATO MAGAZZINO (<a href=\"?page=magazzino\">NOID</a>)</caption>\n";
+$a .= "<caption>STATO MAGAZZINO (<a href=\"?page=magazzino_edit\">EDIT</a>) (<a href=\"?page=magazzino\">NOID</a>)</caption>\n";
 $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
 	$a .= "<th>TAGS</th>\n";
