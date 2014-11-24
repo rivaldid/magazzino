@@ -1,15 +1,90 @@
 <?php
 
-// definizione variabili
+/*
+ * modifica di merce in magazzino, script frontend per stored procedure
+ * aggiornamento_magazzino_merce(utente,
+ * tags1,id1,posizione1,quantita1,
+ * tags2,id2,posizione2,quantita2,
+ * data);
+ * 
+ * ALGORITMO:
+ * 	1. definizione variabili
+ * 	2. startup risorse
+ * 		2a. $_SESSION
+ * 		2b. mysql
+ * 	3. test risorse
+ * 		3a. test $selezionato
+ * 		3b. test fine $_SESSION
+ * 		
+ * 
+ */
+
+
+
+// 1. definizione variabili
 $a = "";
 $log = "";
 $quantita = "";
 $posizione = "";
 
-// startup $_SESSION
+$selezionato = false;
+
+
+
+// 2. startup risorse
+
+// 2a. $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
+// 2b. mysql
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
+
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+
+
+
+// 3. test risorse
+
+// 3a. test $selezionato
 if (isset($_POST['submit']) AND (!empty($_POST['edit_list']))) {
+	
+	// 3b. test fine $_SESSION
+	if (isset($_POST['stop'])) {
+		
+		$selezionato = false;
+		$log .= remesg($msg9,"msg");
+		$_SESSION = array();
+		session_unset();
+		session_destroy();
+	
+		/* generate new session id and delete old session in store */
+		session_regenerate_id(true);
+		
+		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+
+	} else {
+
+		$selezionato = true;
+		foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+
+	}
+
+} else {
+
+	$selezionato = false;
+
+}
+		
+
+
+
+	
+	
+	
+	
+	
 	
 //print
 $a .= "<table>\n";
@@ -32,6 +107,8 @@ foreach ($_POST['edit_list'] as $j) {
 		$lista_items .= "<option value='".$item."'>".$item."</option>\n";
 	$lista_items .= "</select>\n";
 	
+	
+	// magazzino id-posizione-quantita
 	/*
 	$k=0;
 	foreach($posizioni as $item) {
@@ -43,8 +120,8 @@ foreach ($_POST['edit_list'] as $j) {
 	*/
 	
 	
-	
 	$a .= "<tr>\n";
+	$a .= "<tr><td style='background-color:yellow;font-weight: bold;'>Modificando articolo #".$j."</td></tr>\n";
 	$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 	if (is_null($tags)) {
 		$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
@@ -61,7 +138,7 @@ foreach ($_POST['edit_list'] as $j) {
 	$a .= "</tr>\n";
 	
 	$a .= "<tr>\n";
-	$a .= "<td>Merce</td>\n";
+	$a .= "<td>Selezionare giacenza</td>\n";
 	$a .= "<td></td>\n";
 	$a .= "<td>".$lista_items."</td>\n";
 	$a .= "</tr>\n";
@@ -94,15 +171,10 @@ foreach ($_POST['edit_list'] as $j) {
 $a .= "</tbody>\n</table>\n";
 
 
-} else {
+//} else {
 
 
-//begin mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
 
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 $query = "SELECT * FROM vserv_magazzino_id;";
 $res = mysql_query($query);
@@ -136,6 +208,7 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	$i++;	
 	$a .= "</tr>\n";
 }
+
 $a .= "</form>\n";
 
 $a .= "</tbody>\n</table>\n";
@@ -146,7 +219,7 @@ mysql_free_result($res);
 mysql_close($conn);
 
 
-}
+//}
 
 // chiudo $_SESSION
 session_write_close();

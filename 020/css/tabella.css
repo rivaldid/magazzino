@@ -11,16 +11,28 @@ caption {
 
 thead {
 	font-size:120%;
+	
 }
 
+
+td:hover { 
+background: #6BA2F4; 
+
+} 
+
+
 td {
-	border:0.2em solid #d3d3d3;
+	width: auto;
+	border:0.1em solid #d3d3d3;
 	background-color:#FFFFF0;
 }
 
 th {
 	background-color:#F0E68C;
 	border:0.2em solid black;
+	background-image: url(../imgs/bg.gif); 
+	background-repeat: no-repeat;
+    background-position: left; 
 }
 
 a {
@@ -28,3 +40,21 @@ a {
 	color:#000;
 }
 
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
