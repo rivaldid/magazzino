@@ -15,19 +15,21 @@ thead {
 }
 
 
-td:hover { 
+td:hover.table { 
 background: #6BA2F4; 
 
 } 
 
 
 td {
-	width: auto;
 	border:0.1em solid #d3d3d3;
 	background-color:#FFFFF0;
 }
 
 th {
+	padding-left: 20px;
+	padding-right: 20px;
+	
 	background-color:#F0E68C;
 	border:0.2em solid black;
 	background-image: url(../imgs/bg.gif); 

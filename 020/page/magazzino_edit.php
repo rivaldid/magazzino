@@ -103,6 +103,7 @@ foreach ($_POST['edit_list'] as $j) {
 	$posizioni = explode(",",$_POST['posizioni'][$j]);
 	
 	$lista_items = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n";
+	
 	foreach($posizioni as $item)
 		$lista_items .= "<option value='".$item."'>".$item."</option>\n";
 	$lista_items .= "</select>\n";
