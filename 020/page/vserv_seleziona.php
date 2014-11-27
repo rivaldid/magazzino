@@ -28,11 +28,11 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	
 	foreach ($row as $cname => $cvalue) {
 		if ($cname == 'id_merce') {
-			$a .= "<td>\n<input type='checkbox' name='edit_list[]' value='".$i."'/>\n".input_hidden($cname."[".$i."]",$cvalue)."\n</td>\n";
+			$a .= "<td>\n<input type='checkbox' name='check_list[]' value='".$i."'/>\n".input_hidden($cname."[".$i."]",$cvalue)."\n</td>\n";
 			$a .= "<td>\n";
 			$a .= "<input type='submit' name='modifica' value='Modifica'/>\n";
 			$a .= "<input type='submit' name='scarica' value='Scarica'/>\n";
-			$a .= "<input type='reset' name='stop' value='Reset'/>\n";
+			$a .= "<input type='submit' name='stop' value='Reset'/>\n";
 			$a .= "</td>\n";
 		} else
 			$a .= "<td>".input_hidden($cname."[".$i."]",$cvalue)."</td>\n";

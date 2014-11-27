@@ -9,6 +9,8 @@ define("splog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/sp.log");
 define ("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
 
 // query
+define("vserv_magazzino", "SELECT * FROM vserv_magazzino_id;");
+
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
 $vserv_tipodoc = "SELECT * FROM vserv_tipodoc;";
 $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
@@ -19,7 +21,7 @@ $vserv_tags2 = "SELECT * FROM vserv_tags2;";
 $vserv_tags3 = "SELECT * FROM vserv_tags3;";
 
 $vista_magazzino = "SELECT * FROM vista_magazzino;";
-$vserv_magazzino = "SELECT * FROM vserv_magazzino_id;";
+//$vserv_magazzino = "SELECT * FROM vserv_magazzino_id;";
 
 // variabili
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
