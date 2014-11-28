@@ -7,7 +7,7 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$query = "SELECT doc_ingresso,doc_ordine,utente,data,status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
+$query = "SELECT doc_ingresso,doc_ordine,utente,datacenter.fancydate(data),status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
