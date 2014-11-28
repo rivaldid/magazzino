@@ -43,13 +43,49 @@ a {
 }
 
 */
-	
 
-	
-	
-	
-	
-	
+
+
+/* unvisited link */
+a:link {
+    color: #00A0F9;
+}
+
+/* visited link */
+a:visited {
+    color: #0000F9;
+}
+
+/* mouse over link */
+a:hover {
+    color: #FF00FF;
+}
+
+/* selected link */
+a:active {
+    color: #0000FF;
+}	
+
+
+input[type="submit"],input[type="reset"],input[type="text"], textarea, select  {
+	border: 1px solid #000000;
+    border-radius: 3px;
+    line-height: 18px;
+    box-shadow: px 2px 2px 3px #333;
+	font-size: 14px;
+
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover  {
+	background-color:#7A7A7A;
+}
+   
+   
+   
+input[type="submit"],input[type="reset"]:visited  {
+	background-color:transparent;
+}
+
 	body {
       font-family: "Ubuntu", "Trebuchet MS", sans-serif;
     }
@@ -62,6 +98,7 @@ a {
       border: 1px solid #999;
       font-size: 12px;
     }
+
     th {
       background-color: #eee;
     }
@@ -92,6 +129,6 @@ a {
       opacity: 0.5;
     }
 	
-	
+
 	
 	
