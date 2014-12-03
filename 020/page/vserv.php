@@ -24,12 +24,12 @@
 // definizione variabili
 $a = "";
 $log = "";
-$utente = $_SERVER["AUTHENTICATE_UID"];
 
 
 // startup risorse
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-$log .= remesg("Autenticato come ".$utente,"msg");
+$_SESSION['utente'] = $_SERVER["AUTHENTICATE_UID"];
+$log .= remesg("Autenticato come ".$_SESSION['utente'],"msg");
 
 
 // test stop
@@ -49,11 +49,11 @@ if (isset($_POST['stop'])) {
 // routing
 if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST['check_list']))) {
 	
-	foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+	//foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 	
 	// valorizzo $array_merce da $_SESSION['posizioni']
 	$j=0;
-	foreach ($_SESSION['check_list'] as $i) {
+	foreach ($_POST['check_list'] as $i) {
 		
 		$temp_merce = explode(",",$_SESSION['posizioni'][$i]);
 		
@@ -61,10 +61,10 @@ if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST
 			
 			$items = explode("(",$items);
 
-			$_SESSION[$j]['id_merce'] = $_SESSION['id_merce'][$i];
-			$_SESSION[$j]['posizione'] = $items[0];
-			$_SESSION[$j]['quantita'] = rtrim($items[1],")");
-			$_SESSION[$j]['tot'] = $_SESSION['tot'][$i];
+			$_SESSION['selected'][$j]['id_merce'] = $_SESSION['id_merce'][$i];
+			$_SESSION['selected'][$j]['posizione'] = $items[0];
+			$_SESSION['selected'][$j]['quantita'] = rtrim($items[1],")");
+			$_SESSION['selected'][$j]['tot'] = $_SESSION['tot'][$i];
 			
 			$j++;
 		}
@@ -74,14 +74,14 @@ if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST
 	
 	if (isset($_POST['modifica'])) {
 		
-		$_SESSION = vserv_magazzino_modifica($utente, $_SESSION);
+		vserv_magazzino_modifica();
 		
 	}
 		
 		
 	if (isset($_POST['scarica'])) {
 		
-		$_SESSION = vserv_magazzino_scarico($utente, $_SESSION);
+		vserv_magazzino_scarico();
 		
 	}
 		
@@ -89,7 +89,7 @@ if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST
 // else routing
 } else {
 
-	$_SESSION = vserv_magazzino_select($utente);
+	vserv_magazzino_select();
 
 }
 

@@ -79,7 +79,7 @@ fclose($flog);
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************
 // *********************************************************************
 
-function vserv_magazzino_select($utente) {
+function vserv_magazzino_select() {
 
 
 // variabili
@@ -147,7 +147,7 @@ mysql_close($conn);
 // ritorno pagina
 $_SESSION['contents'] = $a;
 $_SESSION['log'] = $log;
-return $_SESSION;
+return true;
 
 
 }
@@ -155,14 +155,14 @@ return $_SESSION;
 
 
 
-function vserv_magazzino_scarico($utente, array $array_session) {
+function vserv_magazzino_scarico() {
 	
-	print_r($array_session);
+	print_r($_SESSION);
 	
 }
 
 
-function vserv_magazzino_modifica($utente, array $array_session) {
+function vserv_magazzino_modifica() {
 	
 // variabili
 $a = "";
