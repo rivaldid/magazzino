@@ -1,6 +1,13 @@
 <?php
 
 /*
+ * ---------------------------------------------------------------------
+ * steps vserv:
+ * 	step1: selezionare da un elenco
+ * 	step2: terminare l'attività iniziata
+ * 	step3: reset $_SESSION
+ * ---------------------------------------------------------------------
+ * 
  * modifica di merce in magazzino, script frontend per stored procedure
  * aggiornamento_magazzino_merce(utente,
  * tags1,id1,posizione1,quantita1,
@@ -13,7 +20,10 @@
  * 	definizione variabili
  * 	alloco risorse
  * 	test stop
- * 	routing
+ * 		fill $_SESSION
+ * 		vserv switching
+ * 	test contents
+ * 		vserv select
  * 	libero risorse
  * 	stampo
  * 
@@ -22,6 +32,7 @@
 
 
 // definizione variabili
+// variabili locali per contenuti e log
 $a = "";
 $log = "";
 
@@ -32,76 +43,79 @@ $_SESSION['utente'] = $_SERVER["AUTHENTICATE_UID"];
 $log .= remesg("Autenticato come ".$_SESSION['utente'],"msg");
 
 
+// test step
+if (!isset($_SESSION['step'])) {
+	
+	$_SESSION['step'] = '1';
+	
+}
+
+
+// test attivita'
+if (isset($_POST['modifica']) OR (isset($_POST['scarica']))) {
+	
+	$_SESSION['step'] = '2';
+
+}
+
+
 // test stop
 if (isset($_POST['stop'])) {
-	
-	$log .= remesg($msg9,"msg");
-	$_SESSION = array();
-	session_unset();
-	session_destroy();
 
-	/* generate new session id and delete old session in store */
-	session_regenerate_id(true);
-	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+	$_SESSION['step'] = '3';
+
 }
 
 
-// routing
-if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST['check_list']))) {
-	
-	//foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
-	
-	// valorizzo $array_merce da $_SESSION['posizioni']
-	$j=0;
-	foreach ($_POST['check_list'] as $i) {
-		
-		$temp_merce = explode(",",$_SESSION['posizioni'][$i]);
-		
-		foreach ($temp_merce AS $items) {
-			
-			$items = explode("(",$items);
+// fill $_SESSION
+foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
-			$_SESSION['selected'][$j]['id_merce'] = $_SESSION['id_merce'][$i];
-			$_SESSION['selected'][$j]['posizione'] = $items[0];
-			$_SESSION['selected'][$j]['quantita'] = rtrim($items[1],")");
-			$_SESSION['selected'][$j]['tot'] = $_SESSION['tot'][$i];
-			
-			$j++;
+
+
+	
+// vserv switching
+switch ($_SESSION['step']) {
+	
+	case '1':
+		$log .= remesg("Magazzino in visualizzazione merce","msg");
+		vserv_magazzino_select();
+		break;
+	
+	case '2':
+		if (isset($_SESSION['modifica'])) {
+			$log .= remesg("Modifica merce","msg");
+			vserv_magazzino_modifica();	
+		}		
+		if (isset($_SESSION['scarica'])) {
+			$log .= remesg("Scarica merce","msg");
+			vserv_magazzino_scarico();	
 		}
-	}
+		break;
 	
-	// $_SESSION[indice] ([id_merce], [posizione], [quantita], [tot]);
+	case '3':
+		$log .= remesg($msg9,"msg");
+		
+		// azzero $_SESSION
+		$_SESSION = array();
+		session_unset();
+		session_destroy();
+
+		/* generate new session id and delete old session in store */
+		session_regenerate_id(true);
+		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+		
+		break;
 	
-	if (isset($_POST['modifica'])) {
+	default:
+		session_write_close();
 		
-		vserv_magazzino_modifica();
-		
-	}
-		
-		
-	if (isset($_POST['scarica'])) {
-		
-		vserv_magazzino_scarico();
-		
-	}
-		
-
-// else routing
-} else {
-
-	vserv_magazzino_select();
-
 }
 
-
-// libero risorse
-session_write_close();
-
-
-// stampo
 $a .= $_SESSION['contents'];
 $log .= $_SESSION['log'];
+session_write_close();
 
+// stampo
 echo "<div id='log'>\n";
 echo remesg("Notifiche","tit");
 if ($log == "")

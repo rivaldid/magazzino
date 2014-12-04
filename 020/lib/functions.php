@@ -154,42 +154,21 @@ return true;
 
 
 
-
 function vserv_magazzino_scarico() {
 	
-	print_r($_SESSION);
+print_r($_SESSION);
+$_SESSION['contents'] = "funzione scarico";
+return true;
 	
 }
 
 
 function vserv_magazzino_modifica() {
 	
-// variabili
-$a = "";
-$log = "";
-$i=0;
+print_r($_SESSION);
+$_SESSION['contents'] = "funzione modifica";
+return true;
 
-$a .= "<table>\n";
-
-//foreach ($array_session as $item) {
-
-for ($i=0; $i<count($array_session['check_list']); $i++) {
-	
-$a .= "<tr><td style='background-color:yellow;font-weight: bold;'>Modificando articolo #".$i."</td></tr>\n";
-$a .= "<tr><td>".$array_session[$i]['id_merce']."</td></tr>\n";
-//$a .= "<tr><td>".$array_session[$i]['tags']."</td></tr>\n";
-$a .= "<tr><td>".$array_session[$i]['posizione']."</td></tr>\n";
-$a .= "<tr><td>".$array_session[$i]['quantita']."</td></tr>\n";
-$a .= "<tr><td>".$array_session[$i]['tot']."</td></tr>\n";
-	
-}
-
-$a .= "</table>\n";
-
-// ritorno pagina
-$_SESSION['contents'] = $a;
-$_SESSION['log'] = $log;
-return $_SESSION;
 	
 }
 

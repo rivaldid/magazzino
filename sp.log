@@ -1,4 +1,1 @@
 -- lifes goes on
-CALL CARICO('MANZOGI9','Facility','Sistema','Aggiornamento Sistema','2014-12-01','','BRETELLA FO-SC-SC-50/125 10M','6','A2L05','2014-12-01','Carico invocato dal sistema per aggiornamento posizione magazzino','DHL Express','');
-CALL CARICO('MANZOGI9','Sistema','Sistema','Aggiornamento Sistema','2014-12-01','','blu','14','P01','2014-12-01','Carico invocato dal sistema per aggiornamento posizione magazzino','DHL Express','');
-CALL CARICO('MANZOGI9','Sistema','Sistema','Aggiornamento Sistema','2014-12-01','','giallo','13','P01','2014-12-01','Carico invocato dal sistema per aggiornamento posizione magazzino','DHL Express','');
