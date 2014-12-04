@@ -71,48 +71,46 @@ if (isset($_POST['stop'])) {
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 
-
-	
 // vserv switching
-switch ($_SESSION['step']) {
+if ($_SESSION['step'] == '1') {
 	
-	case '1':
-		$log .= remesg("Magazzino in visualizzazione merce","msg");
-		vserv_magazzino_select();
-		break;
+	$log .= remesg("Magazzino in visualizzazione merce","msg");
+	vserv_magazzino_select();
 	
-	case '2':
-		if (isset($_SESSION['modifica'])) {
-			$log .= remesg("Modifica merce","msg");
-			vserv_magazzino_modifica();	
-		}		
-		if (isset($_SESSION['scarica'])) {
-			$log .= remesg("Scarica merce","msg");
-			vserv_magazzino_scarico();	
-		}
-		break;
+} elseif ($_SESSION == '2') {
 	
-	case '3':
-		$log .= remesg($msg9,"msg");
-		
-		// azzero $_SESSION
-		$_SESSION = array();
-		session_unset();
-		session_destroy();
-
-		/* generate new session id and delete old session in store */
-		session_regenerate_id(true);
-		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-		
-		break;
+	if (isset($_SESSION['modifica'])) {
+		$log .= remesg("Modifica merce","msg");
+		vserv_magazzino_modifica();
+	}		
+	if (isset($_SESSION['scarica'])) {
+		$log .= remesg("Scarica merce","msg");
+		vserv_magazzino_scarico();	
+	}
 	
-	default:
-		session_write_close();
-		
 }
 
+
+if ($_SESSION['step'] == '3') {
+	
+	$log .= remesg($msg9,"msg");
+	
+	// reset $_SESSION
+	$_SESSION = array();
+	session_unset();
+	session_destroy();
+
+	/* generate new session id and delete old session in store */
+	session_regenerate_id(true);
+	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+	
+}
+
+	
 $a .= $_SESSION['contents'];
 $log .= $_SESSION['log'];
+
+// libero risorse
 session_write_close();
 
 // stampo

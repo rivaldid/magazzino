@@ -158,6 +158,8 @@ function vserv_magazzino_scarico() {
 	
 print_r($_SESSION);
 $_SESSION['contents'] = "funzione scarico";
+
+$_SESSION['step'] = '3';
 return true;
 	
 }
@@ -167,8 +169,9 @@ function vserv_magazzino_modifica() {
 	
 print_r($_SESSION);
 $_SESSION['contents'] = "funzione modifica";
-return true;
 
+$_SESSION['step'] = '3';
+return true;
 	
 }
 
