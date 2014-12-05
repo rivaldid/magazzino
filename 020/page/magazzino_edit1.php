@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+a.tooltip {outline:none; } a.tooltip strong {line-height:30px;} 
+a.tooltip:hover {text-decoration:none;} 
+a.tooltip span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:300px; line-height:16px; } 
+a.tooltip:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;} 
+.callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;} /*CSS3 extras*/ 
+a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
+</style>
+
+
   <title>Esempio x dario</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>
@@ -171,10 +181,25 @@
 <body>
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
+
+
+<!--First tooltip--> 
+<a href="#" class="tooltip"> Tooltip <span> 
+
+<img class="callout" src="imgs/callout.gif" /> 
+<strong>Most Light-weight Tooltip</strong>
+
+
+<br /> This is the easy-to-use Tooltip driven purely by CSS. </span> </a>
+
+
+
+
+
+
+
+
+
 <br />
 <br />
 <br />
@@ -5595,6 +5620,14 @@
       </tr>
     </tbody>
   </table>
+
+
+
+
+
+
+
+
 
 </body>
 </html>

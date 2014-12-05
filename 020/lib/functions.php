@@ -74,6 +74,32 @@ fclose($flog);
 }
 
 
+/*function split_record_posizioni($item) {
+	
+	// valorizzo $array_merce da $_SESSION['posizioni']
+	$j=0;
+	foreach ($_SESSION['check_list'] as $i) {
+		
+		$temp_merce = explode(",",$_SESSION['posizioni'][$i]);
+		
+		foreach ($temp_merce AS $items) {
+			
+			$items = explode("(",$items);
+
+			$_SESSION[$j]['id_merce'] = $_SESSION['id_merce'][$i];
+			$_SESSION[$j]['posizione'] = $items[0];
+			$_SESSION[$j]['quantita'] = rtrim($items[1],")");
+			$_SESSION[$j]['tot'] = $_SESSION['tot'][$i];
+			
+			$j++;
+		}
+	}
+	
+	// $_SESSION[indice] ([id_merce], [posizione], [quantita], [tot]);
+	
+}*/
+
+
 
 // *********************************************************************
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************
@@ -156,10 +182,9 @@ return true;
 
 function vserv_magazzino_scarico() {
 	
-print_r($_SESSION);
+//print_r($_SESSION);
+$_SESSION['log'] = remesg("scaricaaaaaaaaaaaaaaaaa!","warn");
 $_SESSION['contents'] = "funzione scarico";
-
-$_SESSION['step'] = '3';
 return true;
 	
 }
@@ -167,10 +192,9 @@ return true;
 
 function vserv_magazzino_modifica() {
 	
-print_r($_SESSION);
+//print_r($_SESSION);
+$_SESSION['log'] = remesg("modificaaaaaaaaaaaaaa!","warn");
 $_SESSION['contents'] = "funzione modifica";
-
-$_SESSION['step'] = '3';
 return true;
 	
 }

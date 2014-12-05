@@ -1,1 +1,2 @@
 -- lifes goes on
+CALL SCARICO('MANZOGI9','Facility','49','26','A2L11','SALA2','2014-12-05','2014-12-05','MOVING ARTE ANTICA',@myvar);
