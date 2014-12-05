@@ -77,7 +77,7 @@ input[type="submit"],input[type="reset"],input[type="text"], textarea, select  {
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover  {
-	background-color:#7A7A7A;
+	background-color:#DAE6F4;
 }
    
    
@@ -100,7 +100,7 @@ input[type="submit"],input[type="reset"]:visited  {
     }
 
     th {
-      background-color: #eee;
+      background-color: #DAE6F4;
     }
     th[data-sort]{
       cursor:pointer;

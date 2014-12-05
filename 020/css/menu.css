@@ -1,46 +1,56 @@
-#centeredmenu {
-   float:left;
-   width:100%;
-   background:#fff;
-   border-bottom:4px solid #000;
-   overflow:hidden;
-   position:relative;
+div.centeredmenu
+{
+    /*width:500px;margin:0 auto;*//*Uncomment this line to make the menu center-aligned.*/
+    text-align:center;
+    font-size:0;
+    height: 25px;  
+    *position:relative;*top:1px;/*Hacks for IE6 & IE7 */  
 }
-#centeredmenu ul {
-   clear:left;
-   float:left;
-   list-style:none;
-   margin:0;
-   padding:0;
-   position:relative;
-   left:50%;
-   text-align:center;
+
+div.centeredmenu a
+{
+    display: inline-block;
+    margin-right:6px; /* It specifies the distance between each tab */
+    background:#FFF url(../imgs/bg.gif) repeat-x 0 0;
+    padding-left:4px;
+    vertical-align:top;/*ChangeSet#1*/
+    text-decoration:none;
 }
-#centeredmenu ul li {
-   display:block;
-   float:left;
-   list-style:none;
-   margin:0;
-   padding:0;
-   position:relative;
-   right:50%;
+
+div.centeredmenu a span
+{
+    display: inline-block;
+    background:#FFF url(../imgs/bg.gif) repeat-x 100% 0;
+    padding: 0 20px;
+    text-decoration:none;
+    font: normal 14px Arial;
+    line-height: 25px;
+    color:#7087A9;
+    vertical-align:top;
 }
-#centeredmenu ul li a {
-   display:block;
-   margin:0 0 0 1px;
-   padding:15px 20px;
-   background:#ddd;
-   color:#000;
-   text-decoration:none;
-   line-height:1.3em;
+
+div.centeredmenu a:hover, div.centeredmenu a.current
+{
+    background:#FFF url(../imgs/bg.gif) repeat-x 0 -25px;
+    line-height: 26px;
 }
-#centeredmenu ul li a:hover {
-   background:#369;
-   color:#fff;
+
+div.centeredmenu a:hover span, div.centeredmenu a.current span
+{
+    background:#FFF url(../imgs/bg.gif) repeat-x 100% -25px;
+    line-height: 26px;
+    color:#244D8A;
 }
-#centeredmenu ul li a.active,
-#centeredmenu ul li a.active:hover {
-   color:#fff;
-   background:#000;
-   font-weight:bold;
+
+div.centeredMenuSub 
+{
+    height:10px;
+    border:1px solid #C2D5EF;
+    background:#eee url(../imgs/bg.gif) repeat-x 0 -50px;
 }
+
+
+
+
+
+

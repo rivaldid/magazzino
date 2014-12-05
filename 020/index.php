@@ -24,7 +24,7 @@ if ($_SERVER["QUERY_STRING"] != NULL) {
 
 require_once 'lib/vars.php';
 require_once 'lib/functions.php';
-include 'lib/menu.html';
+include 'lib/menu.php';
 include $page;
 include 'lib/footer.html';
 ?>
