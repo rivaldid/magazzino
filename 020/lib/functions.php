@@ -147,11 +147,12 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	
 	foreach ($row as $cname => $cvalue) {
 		if ($cname == 'id_merce') {
-			$a .= "<td>\n<input type='checkbox' name='check_list[]' value='".$i."'/>\n".input_hidden($cname."[".$i."]",$cvalue)."\n</td>\n";
+			$a .= "<td><input type='checkbox' name='check_list[]' value='".$i."'/>".$cvalue."</td>\n";
 			$a .= "<td>\n";
 			$a .= "<input type='submit' name='modifica' value='Modifica'/>\n";
 			$a .= "<input type='submit' name='scarica' value='Scarica'/>\n";
 			$a .= "<input type='submit' name='stop' value='Reset'/>\n";
+			$a .= noinput_hidden($cname."[".$i."]",$cvalue);
 			$a .= "</td>\n";
 		} else
 			$a .= "<td>".input_hidden($cname."[".$i."]",$cvalue)."</td>\n";
@@ -170,7 +171,7 @@ mysql_free_result($res);
 mysql_close($conn);
 
 
-// ritorno pagina
+// ritorno contenuti
 $_SESSION['contents'] = $a;
 $_SESSION['log'] = $log;
 return true;
@@ -181,10 +182,18 @@ return true;
 
 
 function vserv_magazzino_scarico() {
-	
-//print_r($_SESSION);
+
+// variabili
+$a = "";
+$log = "";
+
+
 $_SESSION['log'] = remesg("scaricaaaaaaaaaaaaaaaaa!","warn");
 $_SESSION['contents'] = "funzione scarico";
+
+
+
+
 return true;
 	
 }
@@ -192,9 +201,35 @@ return true;
 
 function vserv_magazzino_modifica() {
 	
-//print_r($_SESSION);
-$_SESSION['log'] = remesg("modificaaaaaaaaaaaaaa!","warn");
-$_SESSION['contents'] = "funzione modifica";
+// variabili
+$a = "";
+$log = "";
+
+
+$log .= remesg("Pagina di modifica merce presente in magazzino!","tit");
+
+$a .= "<table>\n";
+$a .= "<caption>MAGAZZINO</caption>\n";
+$a .= "<thead><tr>\n";
+	$a .= "<th>Descrizione</th>\n";
+	$a .= "<th>Inserimento</th>\n";
+	$a .= "<th>Suggerimento</th>\n";
+$a .= "</tr></thead>\n";
+$a .= "<tbody>\n";
+
+foreach ($_SESSION as $cname => $cvalue) {
+	
+	$a .= "<td>".$cname."</td>\n";
+	$a .= "<td></td>\n";
+	$a .= "<td>".$cvalue."</td>\n";
+	
+}
+
+$a .= "</tbody>\n</table>\n";
+
+// ritorno contenuti
+$_SESSION['contents'] = $a;
+$_SESSION['log'] = $log;
 return true;
 	
 }

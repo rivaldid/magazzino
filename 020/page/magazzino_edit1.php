@@ -194,15 +194,24 @@ a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
 
 
 
-
-
-
-
-
-
 <br />
 <br />
 <br />
+<div style="width: auto;
+height: auto;
+margin: 10px;
+border: 1px #C2D5EF solid;
+background-color: #e5edfa;
+padding: 18px;
+color: #002157;
+font-size: inherit;
+font-weight: inherit;
+font-family: inherit;
+font-style: inherit;
+text-decoration: inherit;
+-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+border-radius: 8px;">
   <table>
     <thead>
       <tr>
@@ -219,8 +228,34 @@ a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
 	
     <tbody>
       <tr>
+	 <?php function stampamsg($num) {
+
+$msg[1]="Utente non abilitato per l'attivita' in oggetto (errore 17)";
+
+$msg[2]="Mancata selezione di un fornitore per l'attivita' in corso (errore 2)";
+
+$msg[3]="Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)";
+
+$msg[4]="Mancata selezione di un numero di documento per l'attivita' in corso (errore 4)";
+
+$msg[5]="Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 5)";
+
+$msg[6]="Mancato inserimento di tags per contrassegnare la merce in carico (errore 6)";
+
+$msg[7]="Mancato inserimento della quantita' per la merce in carico (errore 7)";
+
+$msg[8]="Mancato inserimento della posizione in magazzino per la merce in carico (errore 8)";
+ 
+return "
+*<span>
+<img class=\"callout\" src=\"imgs/callout.gif\" />".$msg[$num]."</span> </a>";
+}   
+
+
+?>
         <td>Emmanuel</td>
-        <td class="name">Owen</td>
+        <td class="name">Owen <a href="#" class="tooltip"><?php echo stampamsg("1"); ?>
+</td>
         <td>Needham</td>
         <td>Pakistan</td>
         <td class="email">elit&#64;aliquetdiam.com</td>
@@ -5620,6 +5655,7 @@ a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
       </tr>
     </tbody>
   </table>
+  </div>
 
 
 

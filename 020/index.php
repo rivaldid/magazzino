@@ -25,9 +25,13 @@ if ($_SERVER["QUERY_STRING"] != NULL) {
 require_once 'lib/vars.php';
 require_once 'lib/functions.php';
 include 'lib/menu.php';
-include $page;
-include 'lib/footer.html';
 ?>
+
+<div id="contents">
+<?php include $page; ?>
+</div>
+
+<?php include 'lib/footer.html'; ?>
 
 </body>
 </html>

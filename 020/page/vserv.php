@@ -1,12 +1,6 @@
 <?php
 
 /*
- * ---------------------------------------------------------------------
- * steps vserv:
- * 	step1: selezionare da un elenco
- * 	step2: terminare l'attività iniziata
- * 	step3: reset $_SESSION
- * ---------------------------------------------------------------------
  * 
  * modifica di merce in magazzino, script frontend per stored procedure
  * aggiornamento_magazzino_merce(utente,
@@ -17,15 +11,28 @@
  * 
  * ALGORITMO:
  * 
- * 	definizione variabili locali
+ * 	definizione variabili main
  * 	startup risorse
- * 	importo da $_POST
- * 	test azione
- * 		modifica
- * 		scarica
- * 		reset
- * 	test $reset
- * 	test $selected
+ * 
+ * 	test1 (task)
+ * 		importo $_POST
+ * 		attiva $selected
+ * 
+ * 	test2 (stop)
+ * 		attivo $reset
+ * 
+ * 	test3 (!$reset !$selected)
+ * 		test31 modifica
+ * 		test32 scarica
+ * 
+ * 	test4 ($reset)
+ * 		reset $_SESSION
+ * 		disattivo $selected
+ * 
+ * 	test5 (!$selected)
+ * 		lista magazzino
+ *
+ * 	ritorno contenuti
  * 	libero risorse
  * 	stampo
  * 
@@ -33,7 +40,7 @@
 
 
 
-// definizione variabili locali
+// definizione variabili main
 $a = "";
 $log = "";
 $selected = false;
@@ -47,32 +54,50 @@ $log .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"],"msg");
 
 
 
-// test e importo $_POST
+// test1 (task)
 if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST['check_list']))) {
 
-	foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+	// importo $_POST
+	foreach ($_POST['check_list'] as $i => $j) {
+		
+		$_SESSION['id_merce'][$j] = $_POST['id_merce'][$j];
+		$_SESSION['tags'][$j] = $_POST['tags'][$j];
+		$_SESSION['posizioni'][$j] = $_POST['posizioni'][$j];
+		$_SESSION['tot'][$j] = $_POST['tot'][$j];
+		
+	}
+	
+	//foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+	
+	// attiva $selected
 	$selected = true;
 
-// altrimenti test stop
+// test2 (stop)
 } elseif (isset($_POST['stop'])) {
 
-		$reset = true;
+	// attivo $reset
+	$reset = true;
 
 }
 
 
 
-// test $selected
+// test3 (!$reset !$selected)
 if (!$reset AND $selected) {
 	
-	if (isset($_SESSION['modifica'])) vserv_magazzino_modifica();		
-	if (isset($_SESSION['scarica'])) vserv_magazzino_scarico();
+	// test31 modifica
+	if (isset($_SESSION['modifica'])) 
+		vserv_magazzino_modifica();		
+	
+	// test31 scarica
+	if (isset($_SESSION['scarica'])) 
+		vserv_magazzino_scarico();
 
 }
 
 	
 
-// test $reset
+// test4 ($reset)
 if ($reset) {
 	
 	$log .= remesg($msg9,"msg");
@@ -86,23 +111,27 @@ if ($reset) {
 	session_regenerate_id(true);
 	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 	
+	// disattivo $selected
 	$selected = false;
 	
 }
 	
 	
-// test $selected
+	
+// test5 (!$selected)
 if (!$selected) {
 	
+	// lista magazzino
 	$log .= remesg("Magazzino in visualizzazione merce","msg");
 	vserv_magazzino_select();
 	
 }
 
 
-// ritorno i dati
+// ritorno contenuti
 $a .= $_SESSION['contents'];
 $log .= $_SESSION['log'];
+
 
 
 // libero risorse
