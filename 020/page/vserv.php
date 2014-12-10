@@ -21,7 +21,7 @@
  * 	test2 (stop)
  * 		attivo $reset
  * 
- * 	test3 (!$reset !$selected)
+ * 	test3 (!$reset $selected)
  * 		test31 modifica
  * 		test32 scarica
  * 
@@ -82,7 +82,7 @@ if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST
 
 
 
-// test3 (!$reset !$selected)
+// test3 (!$reset $selected)
 if (!$reset AND $selected) {
 	
 	// test31 modifica

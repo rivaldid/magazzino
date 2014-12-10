@@ -1,6 +1,6 @@
 div.centeredmenu
 {
-    /*width:500px;margin:0 auto;*//*Uncomment this line to make the menu center-aligned.*/
+    margin:0 auto;/*Uncomment this line to make the menu center-aligned.*/
     text-align:center;
     font-size:0;
     height: 25px;  

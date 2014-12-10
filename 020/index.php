@@ -1,4 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+	
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -6,6 +8,7 @@
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
 	<link rel="stylesheet" href="css/footer.css" type="text/css" />
 	<link rel="stylesheet" href="css/main.css" type="text/css" />
+	<link rel="stylesheet" href="css/magazzino_edit1.css" type="text/css" />
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
 	<script type="text/javascript" src="lib/jquery.min.js"></script>
