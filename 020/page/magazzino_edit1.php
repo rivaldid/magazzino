@@ -8,12 +8,82 @@ a.tooltip span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; m
 a.tooltip:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;} 
 .callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;} /*CSS3 extras*/ 
 a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
+
+
+
+
+
+
+
+table.hovertable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.hovertable th {
+	background-color:#c3dde0;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.hovertable tr {
+	background-color:#d4e3e5;
+}
+table.hovertable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+
+
+
+<!--alternative rows-->
+table.altrowstable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #a9c6c9;
+	border-collapse: collapse;
+}
+table.altrowstable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.altrowstable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+.oddrowcolor{
+	background-color:#D400E2;
+}
+.evenrowcolor{
+	background-color:#FF8200;
+}
+
+
+
+
+
+
+
+
+
 </style>
 
 
-  <title>Esempio x dario</title>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>
+<title>Esempio x dario</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
   
   // Stupid jQuery table plugin.
 
@@ -174,9 +244,35 @@ a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
           th.eq(data.column).append('<span class="arrow">' + arrow +'</span>');
         });
     });
+	
+	
+	//alternative rows
+	function altRows(id){
+	if(document.getElementsByTagName){  
+		
+		var table = document.getElementById(id);  
+		var rows = table.getElementsByTagName("tr"); 
+		 
+		for(i = 0; i < rows.length; i++){          
+			if(i % 2 == 0){
+				rows[i].className = "evenrowcolor";
+			}else{
+				rows[i].className = "oddrowcolor";
+			}      
+		}
+	}
+}
+window.onload=function(){
+	altRows('alternatecolor');
+}
+
+	
+	
+	
+	
   </script>
  
-</head>
+ </head>
 
 <body>
 <br />
@@ -212,9 +308,10 @@ text-decoration: inherit;
 -webkit-border-radius: 8px;
 -moz-border-radius: 8px;
 border-radius: 8px;">
-  <table>
+  <table class="altrowstable" id="alternatecolor">
+  
     <thead>
-      <tr>
+       <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <th data-sort="string">First name</th>
         <th data-sort="string">Last name</th>
         <th data-sort="string">City</th>
@@ -225,10 +322,7 @@ border-radius: 8px;">
       </tr>
     </thead>
 	
-	
-    <tbody>
-      <tr>
-	 <?php function stampamsg($num) {
+<?php function stampamsg($num) {
 
 $msg[1]="Utente non abilitato per l'attivita' in oggetto (errore 17)";
 
@@ -252,17 +346,18 @@ return "
 }   
 
 
-?>
-        <td>Emmanuel</td>
-        <td class="name">Owen <a href="#" class="tooltip"><?php echo stampamsg("1"); ?>
-</td>
+?>	
+    <tbody>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+	    <td>Emmanuel</td>
+        <td class="name">Owen <a href="#" class="tooltip"><?php echo stampamsg("1"); ?></td>
         <td>Needham</td>
         <td>Pakistan</td>
         <td class="email">elit&#64;aliquetdiam.com</td>
         <td>Nov 18, 2011</td>
         <td>17321</td>
       </tr>
-      <tr>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <td>Stewart</td>
         <td class="name">Dillard</td>
         <td>South Portland</td>
@@ -271,7 +366,7 @@ return "
         <td>Dec 30, 2012</td>
         <td>94003</td>
       </tr>
-      <tr>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <td>Tana</td>
         <td class="name">Villarreal</td>
         <td>Waltham</td>
@@ -280,7 +375,7 @@ return "
         <td>Mar 25, 2012</td>
         <td>44041</td>
       </tr>
-      <tr>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <td>Wendy</td>
         <td class="name">Greer</td>
         <td>Bellflower</td>
@@ -289,7 +384,7 @@ return "
         <td>Mar 6, 2011</td>
         <td>80251</td>
       </tr>
-      <tr>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <td>Kenneth</td>
         <td class="name">Livingston</td>
         <td>Anaheim</td>
@@ -307,7 +402,7 @@ return "
         <td>Jul 22, 2012</td>
         <td>56903</td>
       </tr>
-      <tr>
+      <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
         <td>Lynn</td>
         <td class="name">Cooley</td>
         <td>Temecula</td>
