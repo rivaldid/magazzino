@@ -1,51 +1,3 @@
-/*table{
-	padding:0.2em;
-	font-family:Arial, Helvetica, sans-serif;
-	margin-left:auto; 
-    margin-right:auto;
-}
-
-caption {
-	font-size:300%;
-}
-
-thead {
-	font-size:120%;
-	
-}
-
-
-td:hover.table { 
-background: #6BA2F4; 
-
-} 
-
-
-td {
-	border:0.1em solid #d3d3d3;
-	background-color:#FFFFF0;
-}
-
-th {
-	padding-left: 20px;
-	padding-right: 20px;
-	
-	background-color:#F0E68C;
-	border:0.2em solid black;
-	background-image: url(../imgs/bg.gif); 
-	background-repeat: no-repeat;
-    background-position: left; 
-}
-
-a {
-	text-decoration:none;
-	color:#000;
-}
-
-*/
-
-
-
 /* unvisited link */
 a:link {
     color: #00A0F9;
@@ -86,50 +38,52 @@ input[type="submit"],input[type="reset"]:visited  {
 	background-color:transparent;
 }
 
-	body {
-      font-family: "Ubuntu", "Trebuchet MS", sans-serif;
-    }
-    table {
-      border-collapse: collapse;
-      margin: 1em auto;
-	  
-    }
-    th, td {
-      padding: 5px 10px;
-      border: 1px solid #999;
-      font-size: 12px;
-    }
+body {
+  font-family: "Ubuntu", "Trebuchet MS", sans-serif;
+}
+table {
+  border-collapse: collapse;
+  margin: 1em auto;
+  
+}
+th, td {
+  padding: 5px 10px;
+  border: 1px solid #999;
+  font-size: 12px;margin-right: 10px;
+}
 
-    th {
-      background-color: #DAE6F4;
-    }
-    th[data-sort]{
-      cursor:pointer;
-    }
+th {
+  background-color: #DAE6F4;
+ /* background: #DAE6F4 url('../imgs/upDown.gif') no-repeat right center;*/
 
-    /* just some random additional styles for a more real-world situation */
-    #msg {
-      color: #0a0;
-      text-align: center;
-    }
-    td.name {
-      font-weight: bold;
-    }
-    td.email {
-      color: #666;
-      text-decoration: underline;
-    }
-    /* zebra-striping seems to really slow down Opera sometimes */
-    tr:nth-child(even) > td {
-      background-color: #f9f9f7;
-    }
-    tr:nth-child(odd) > td {
-      background-color: #ffffff;
-    }
-    .disabled {
-      opacity: 0.5;
-    }
-	
+}
+th[data-sort]{
+  cursor:pointer;
+}
+
+/* just some random additional styles for a more real-world situation */
+#msg {
+  color: #0a0;
+  text-align: center;
+}
+td.name {
+  font-weight: bold;
+}
+td.email {
+  color: #666;
+  text-decoration: underline;
+}
+/* zebra-striping seems to really slow down Opera sometimes */
+tr:nth-child(even) > td {
+  background-color: #f9f9f7;
+}
+tr:nth-child(odd) > td {
+  background-color: #ffffff;
+}
+.disabled {
+  opacity: 0.5;
+}
+
 
 	
 

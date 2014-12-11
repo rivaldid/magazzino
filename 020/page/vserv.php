@@ -138,6 +138,8 @@ $a .= $_SESSION['contents'];
 $log .= $_SESSION['log'];
 
 // chiudo risorse
+unset($_SESSION['contents']);
+unset($_SESSION['log']);
 session_write_close();
 
 // stampo

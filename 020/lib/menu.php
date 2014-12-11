@@ -1,9 +1,4 @@
-
-<br />
-<br />
-<br />
-
-
+<div class="centeredMenuPre"> </div>
 <div class="centeredmenu">  
 	<a href="?page=home" class="<?php if ($_GET['page']=="home") echo 'current'; else echo 'style3';?>" id="normal" ><span>GM-DCTO</span></a>
 	<a href="?page=transiti" class="<?php if ($_GET['page']=="transiti") echo 'current'; else echo 'style3';?>" id="normal" ><span>Transiti</span></a>

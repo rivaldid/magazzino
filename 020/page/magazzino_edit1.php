@@ -66,13 +66,13 @@ return "
 <table class="altrowstable" id="alternatecolor">
     <thead>
        <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>City</th>
-        <th>Country</th>
-        <th>Email</th>
-        <th>Registered</th>
-        <th>ID</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>First name</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>Last name</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>City</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>Country</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>Email</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>Registered</th>
+        <th><span><img title="ordinamento" src="imgs/upDown.gif" /></span>ID</th>
       </tr>
     </thead>
     <tbody>

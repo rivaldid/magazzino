@@ -6,25 +6,16 @@ html, body {
 }
 
 #contents {
-margin-left: auto;
-margin-right: auto;
+margin: 20px 10px 10px 10px;
 text-align: center;
 width: auto;
 height: auto;
-margin: 10px;
-/*border: 1px #1e458a solid;
-background-color: #e5edfa;
-padding: 18px;
-color: #002157;
-font-size: inherit;
-font-weight: inherit;
-font-family: inherit;
-font-style: inherit;
-text-decoration: inherit;
--webkit-border-radius: 8px;
--moz-border-radius: 8px;
-border-radius: 8px;
-*/
+
+border: 1px #C2D5EF solid;
+position: relative;
+border-radius: 22px;
+background-color: #DFE5EA;
+padding: 1%;
 }
 
 #log {

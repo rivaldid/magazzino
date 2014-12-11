@@ -1,3 +1,8 @@
+div.centeredMenuPre{
+	width: 100%;
+	height: 100px;
+}
+
 div.centeredmenu
 {
     margin:0 auto;/*Uncomment this line to make the menu center-aligned.*/
