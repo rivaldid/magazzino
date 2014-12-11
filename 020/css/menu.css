@@ -1,8 +1,3 @@
-div.centeredMenuPre{
-	width: 100%;
-	height: 100px;
-}
-
 div.centeredmenu
 {
     margin:0 auto;/*Uncomment this line to make the menu center-aligned.*/
@@ -47,15 +42,15 @@ div.centeredmenu a:hover span, div.centeredmenu a.current span
     color:#244D8A;
 }
 
+div.centeredMenuPre{
+	width: 100%;
+	height: 100px;
+}
+
 div.centeredMenuSub 
 {
     height:10px;
     border:1px solid #C2D5EF;
     background:#eee url(../imgs/bg.gif) repeat-x 0 -50px;
 }
-
-
-
-
-
 

@@ -18,16 +18,20 @@ $a .= jsxtable;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
+/*$a .= "<caption>\n";
+$a .= "TRANSITI REGISTRATI\n";
+$a .= "</caption>\n";*/
+
 $a .= "<thead><tr>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Utente</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Data</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Direzione</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Posizione</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Documento</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />TAGS</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Quantita'</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />Note</span></th>\n";
-	$a .= "<th><span><img title='ordinamento' src='imgs/upDown.gif' />ODA</span></th>\n";
+	$a .= "<th><span><img class='upDownposition' title='ordinamento' src='imgs/upDown.gif' /></span>Utente</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Data</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Direzione</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Posizione</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Documento</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>TAGS</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Quantita'</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>Note</th>\n";
+	$a .= "<th><span><img class='upDownposition'  title='ordinamento' src='imgs/upDown.gif' /></span>ODA</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 

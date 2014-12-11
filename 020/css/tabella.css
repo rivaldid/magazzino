@@ -54,7 +54,6 @@ th, td {
 
 th {
   background-color: #DAE6F4;
- /* background: #DAE6F4 url('../imgs/upDown.gif') no-repeat right center;*/
 
 }
 th[data-sort]{
@@ -84,7 +83,9 @@ tr:nth-child(odd) > td {
   opacity: 0.5;
 }
 
-
+.upDownposition{
+border:1px solid red;display:inline;
+}
 	
 
 

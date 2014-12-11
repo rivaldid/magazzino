@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-	
-<html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
 	<title>GMDCTO</title>
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />

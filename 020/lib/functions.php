@@ -217,9 +217,10 @@ function vserv_magazzino_modifica() {
 // variabili
 $a = "";
 $log = "";
-$i=0;
 
+echo '<pre>';
 print_r($_SESSION);
+echo '</pre>';
 
 $log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
 
@@ -233,22 +234,17 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
+$i=0;
 
-foreach ($_SESSION as $cname[$i] => $cvalue) {
+echo count($_SESSION);
+
+
+foreach ($_SESSION as $cname => $cvalue) {
 	
 	$a .= "<tr>\n";
-	
-	if ($cname == "id_merce")
-		$a .= "<td>".$cvalue."</td>\n";
-		
-	if ($cname == "tags") 
-		$a .= "<td>".$cvalue."</td>\n";
-		
-	if ($cname == "posizioni") 
-		$a .= "<td>".$cvalue."</td>\n";
-		
-	if ($cname == "tot") 
-		$a .= "<td>".$cvalue."</td>\n";
+	$a .= "<td>".$cname."</td>\n";
+	$a .= "<td></td>\n";
+	$a .= "<td>".$cvalue[$i]."</td>\n";
 		
 	$a .= "</tr>\n";
 	$i++;
