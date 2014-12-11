@@ -9,134 +9,136 @@
  * data);
  * 
  * 
- * ALGORITMO:
+ * _____________________________________________________________________
  * 
- * 	definizione variabili main
- * 	startup risorse
+ * 			ALGORITMO
+ * _____________________________________________________________________
  * 
- * 	test1 (task)
- * 		importo $_POST
- * 		attiva $selected
  * 
- * 	test2 (stop)
- * 		attivo $reset
+ * 	[HEADPHP]
+ * 		inizializzo variabili
+ * 		inizializzo risorse
+ *	[/HEADPHP]
  * 
- * 	test3 (!$reset $selected)
- * 		test31 modifica
- * 		test32 scarica
  * 
- * 	test4 ($reset)
- * 		reset $_SESSION
- * 		disattivo $selected
- * 
- * 	test5 (!$selected)
- * 		lista magazzino
+ * 	[BODYPHP]
+ * 	[/BODYPHP]
  *
- * 	ritorno contenuti
- * 	libero risorse
- * 	stampo
+ * 
+ * 	[FOOTPHP]
+ * 		ritorno contenuti
+ * 		chiudo risorse
+ * 		stampo
+ * 	[/FOOTPHP]
+ * _____________________________________________________________________
  * 
  */
 
 
 
-// definizione variabili main
+
+// ******** HEADPHP ****************************************************
+
+// inizializzo variabili
 $a = "";
 $log = "";
-$selected = false;
-$reset = false;
 
-
-
-// startup risorse
+// inizializzo risorse
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 $log .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"],"msg");
 
 
 
-// test1 (task)
-if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST['check_list']))) {
+// ******** BODYPHP ****************************************************
 
-	// importo $_POST
-	foreach ($_POST['check_list'] as $i => $j) {
+// RESET
+// test stop
+if (isset($_POST['stop'])) {
+	
+	$log .= remesg($msg9,"msg");
+	reset_sessione();
+	
+}
+
+/* 
+ * PRE DATA
+ * Stabilisce se vi e' attivita' in corso, in tal caso girerebbe l'intero pacchetto post al session
+ * Altrimenti controlla se vi sono input validi per il lancio di una attivita, in tal caso
+ * 		valorizza l'attivita' a seconda del bottone premuto in form
+ * 		ricopia le tuple selezionate dal pacchetto post al session
+ * In caso di input non validi per il lancio di una attivita'
+ * 		stampa la tabella per la selezione della merce
+ * 
+ */
+ 
+if (isset($_SESSION['attivita'])) {
+	
+	foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;		
+	
+} else {
+	
+	if ((isset($_POST['modifica']) OR (isset($_POST['scarica']))) AND (!empty($_POST['check_list']))) {
 		
-		$_SESSION['id_merce'][$j] = $_POST['id_merce'][$j];
-		$_SESSION['tags'][$j] = $_POST['tags'][$j];
-		$_SESSION['posizioni'][$j] = $_POST['posizioni'][$j];
-		$_SESSION['tot'][$j] = $_POST['tot'][$j];
+		if (isset($_POST['modifica']))
+			$_SESSION['attivita'] = "modifica";
+		
+		if (isset($_POST['scarica']))
+			$_SESSION['attivita'] = "scarica";
+		
+		foreach ($_POST['check_list'] as $i => $j) {
+		
+			$_SESSION['id_merce'][$j] = $_POST['id_merce'][$j];
+			$_SESSION['tags'][$j] = $_POST['tags'][$j];
+			$_SESSION['posizioni'][$j] = $_POST['posizioni'][$j];
+			$_SESSION['tot'][$j] = $_POST['tot'][$j];
+		
+		}
+	
+	} else {
+		
+		$log .= remesg("Magazzino in visualizzazione merce","msg");
+		vserv_magazzino_select();
 		
 	}
 	
-	//foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+}
+
+/* DATA
+ * A questo punto ho l'array session valorizzato
+ * 		o con le tuple da mandare in processo
+ * 		o con i dati di una attivita' in corso
+ * quindi lancio l'attivita' con gli opportuni dati
+ * 
+ */
+
+if (isset($_SESSION['attivita'])) {
 	
-	// attiva $selected
-	$selected = true;
-
-// test2 (stop)
-} elseif (isset($_POST['stop'])) {
-
-	// attivo $reset
-	$reset = true;
-
+	switch ($_SESSION['attivita']) {
+		
+		case "modifica":
+			vserv_magazzino_modifica();
+			break;
+		
+		case "scarica":
+			vserv_magazzino_scarica();
+			break;
+		
+		default:
+			$log .= remesg("Attivita' non pervenuta","err");
+		
+	}
 }
 
 
 
-// test3 (!$reset $selected)
-if (!$reset AND $selected) {
-	
-	// test31 modifica
-	if (isset($_SESSION['modifica'])) 
-		vserv_magazzino_modifica();		
-	
-	// test31 scarica
-	if (isset($_SESSION['scarica'])) 
-		vserv_magazzino_scarico();
-
-}
-
-	
-
-// test4 ($reset)
-if ($reset) {
-	
-	$log .= remesg($msg9,"msg");
-	
-	// reset $_SESSION
-	$_SESSION = array();
-	session_unset();
-	session_destroy();
-
-	/* generate new session id and delete old session in store */
-	session_regenerate_id(true);
-	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-	
-	// disattivo $selected
-	$selected = false;
-	
-}
-	
-	
-	
-// test5 (!$selected)
-if (!$selected) {
-	
-	// lista magazzino
-	$log .= remesg("Magazzino in visualizzazione merce","msg");
-	vserv_magazzino_select();
-	
-}
-
+// ******** FOOTPHP ****************************************************
 
 // ritorno contenuti
 $a .= $_SESSION['contents'];
 $log .= $_SESSION['log'];
 
-
-
-// libero risorse
+// chiudo risorse
 session_write_close();
-
 
 // stampo
 echo "<div id='log'>\n";
@@ -148,6 +150,8 @@ else
 echo "</div>\n";
 
 echo $a;
+
+
 
 
 ?>

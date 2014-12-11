@@ -105,6 +105,19 @@ fclose($flog);
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************
 // *********************************************************************
 
+
+function reset_sessione() {
+// reset $_SESSION
+$_SESSION = array();
+session_unset();
+session_destroy();
+
+/* generate new session id and delete old session in store */
+session_regenerate_id(true);
+if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+return true;
+}
+
 function vserv_magazzino_select() {
 
 
@@ -204,9 +217,12 @@ function vserv_magazzino_modifica() {
 // variabili
 $a = "";
 $log = "";
+$i=0;
 
+print_r($_SESSION);
 
-$log .= remesg("Pagina di modifica merce presente in magazzino!","tit");
+$log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
+
 
 $a .= "<table>\n";
 $a .= "<caption>MAGAZZINO</caption>\n";
@@ -217,15 +233,29 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-foreach ($_SESSION as $cname => $cvalue) {
+
+foreach ($_SESSION as $cname[$i] => $cvalue) {
 	
-	$a .= "<td>".$cname."</td>\n";
-	$a .= "<td></td>\n";
-	$a .= "<td>".$cvalue."</td>\n";
+	$a .= "<tr>\n";
 	
+	if ($cname == "id_merce")
+		$a .= "<td>".$cvalue."</td>\n";
+		
+	if ($cname == "tags") 
+		$a .= "<td>".$cvalue."</td>\n";
+		
+	if ($cname == "posizioni") 
+		$a .= "<td>".$cvalue."</td>\n";
+		
+	if ($cname == "tot") 
+		$a .= "<td>".$cvalue."</td>\n";
+		
+	$a .= "</tr>\n";
+	$i++;
 }
 
 $a .= "</tbody>\n</table>\n";
+
 
 // ritorno contenuti
 $_SESSION['contents'] = $a;
