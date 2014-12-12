@@ -7,7 +7,7 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$query = "SELECT * FROM vista_documenti;";
+$query = "SELECT id_registro,file,contatto,documento,datacenter.fancydate(data) FROM vista_documenti;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
