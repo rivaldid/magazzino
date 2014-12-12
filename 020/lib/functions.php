@@ -115,6 +115,7 @@ session_destroy();
 /* generate new session id and delete old session in store */
 session_regenerate_id(true);
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+
 return true;
 }
 
@@ -158,20 +159,27 @@ $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities(
 while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	$a .= "<tr>\n";
 	
+	// primo td: la checkbox
+	$a .= "<td><input type='checkbox' name='check_list[]' value='";
 	foreach ($row as $cname => $cvalue) {
-		if ($cname == 'id_merce') {
-			$a .= "<td><input type='checkbox' name='check_list[]' value='".$i."'/>".$cvalue."</td>\n";
-			$a .= "<td>\n";
-			$a .= "<input type='submit' name='modifica' value='Modifica'/>\n";
-			$a .= "<input type='submit' name='scarica' value='Scarica'/>\n";
-			$a .= "<input type='submit' name='stop' value='Reset'/>\n";
-			$a .= noinput_hidden($cname."[".$i."]",$cvalue);
-			$a .= "</td>\n";
-		} else
-			$a .= "<td>".input_hidden($cname."[".$i."]",$cvalue)."</td>\n";
+		if ($cname == 'id_merce') $id_merce = $cvalue;
+		$a .= $cname."=".$cvalue.";;;";
+	}
+	$a .= "'/>".$id_merce."</td>\n";
+	
+	// secondo td: i bottoni azione
+	$a .= "<td>\n";
+		$a .= "<input type='submit' name='attivita' value='Modifica'/>\n";
+		$a .= "<input type='submit' name='attivita' value='Scarica'/>\n";
+		$a .= "<input type='submit' name='attivita' value='Reset'/>\n";
+	$a .= "</td>\n";
+	
+	// terzo td in poi: tags posizioni e tot
+	foreach ($row as $cname => $cvalue) {
+		if ($cname != 'id_merce')
+			$a .= "<td>".$cvalue."</td>\n";
 	}
 	
-	$i++;	
 	$a .= "</tr>\n";
 }
 $a .= "</form>\n";
@@ -200,13 +208,13 @@ function vserv_magazzino_scarico() {
 $a = "";
 $log = "";
 
+$_SESSION['begin'] = true;
+
+
+
 
 $_SESSION['log'] = remesg("scaricaaaaaaaaaaaaaaaaa!","warn");
 $_SESSION['contents'] = "funzione scarico";
-
-
-
-
 return true;
 	
 }
@@ -223,8 +231,9 @@ print_r($_SESSION);
 echo '</pre>';
 
 $log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
+$_SESSION['begin'] = true;
 
-
+/*
 $a .= "<table>\n";
 $a .= "<caption>MAGAZZINO</caption>\n";
 $a .= "<thead><tr>\n";
@@ -251,6 +260,7 @@ foreach ($_SESSION as $cname => $cvalue) {
 }
 
 $a .= "</tbody>\n</table>\n";
+*/
 
 
 // ritorno contenuti
