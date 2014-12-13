@@ -1,37 +1,42 @@
 <?php
 
 /*
- * 
+ *
  * modifica di merce in magazzino, script frontend per stored procedure
  * aggiornamento_magazzino_merce(utente,
  * tags1,id1,posizione1,quantita1,
  * tags2,id2,posizione2,quantita2,
  * data);
- * 
- * 
+ *
+ *
  * _____________________________________________________________________
- * 
+ *
  * 			ALGORITMO
  * _____________________________________________________________________
- * 
- * 
+ *
+ *
  * 	[HEADPHP]
  * 		inizializzo variabili
  * 		inizializzo risorse
  *	[/HEADPHP]
- * 
- * 
+ *
+ *
  * 	[BODYPHP]
+ *		import $_POST
+ *		test1: attivita and checklist
+ *			switch attivita
+ *		test2: not contents
+ *			select merce
  * 	[/BODYPHP]
  *
- * 
+ *
  * 	[FOOTPHP]
  * 		ritorno contenuti
  * 		chiudo risorse
  * 		stampo
  * 	[/FOOTPHP]
  * _____________________________________________________________________
- * 
+ *
  */
 
 
@@ -52,40 +57,42 @@ $log .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"],"msg");
 // ******** BODYPHP ****************************************************
 
 
-
+// import $_POST
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 
+// test attivita and checklist
+if (isset($_SESSION['attivita']) AND (!empty($_SESSION['check_list']))) {
 
-if (!isset($_SESSION['attivita']) OR (empty($_SESSION['check_list']))) {
-	
-	$log .= remesg("Magazzino in visualizzazione merce","msg");
-	vserv_magazzino_select();
-	
-} 
-
-
-if (isset($_SESSION['attivita'])) {
-	
+	// switch attivita
 	switch ($_SESSION['attivita']) {
-	
+
 		case "Modifica":
 			vserv_magazzino_modifica();
 			break;
-		
+
 		case "Scarica":
 			vserv_magazzino_scarico();
 			break;
-		
+
 		case "Reset":
 			$log .= remesg($msg9,"msg");
-			if (reset_sessione()) vserv_magazzino_select();
+			reset_sessione();
 			break;
-		
+
 		default:
 			$log .= remesg("Attivita' non pervenuta","err");
-		
+
 	}
+}
+
+// test not contents
+if (!isset($_SESSION['contents'])) {
+
+	// select merce
+	$log .= remesg("Magazzino in visualizzazione merce","msg");
+	vserv_magazzino_select();
+
 }
 
 
