@@ -74,30 +74,38 @@ fclose($flog);
 }
 
 
-/*function split_record_posizioni($item) {
-	
-	// valorizzo $array_merce da $_SESSION['posizioni']
-	$j=0;
-	foreach ($_SESSION['check_list'] as $i) {
-		
-		$temp_merce = explode(",",$_SESSION['posizioni'][$i]);
-		
-		foreach ($temp_merce AS $items) {
-			
-			$items = explode("(",$items);
+function split_record_posizioni($string23) {
 
-			$_SESSION[$j]['id_merce'] = $_SESSION['id_merce'][$i];
-			$_SESSION[$j]['posizione'] = $items[0];
-			$_SESSION[$j]['quantita'] = rtrim($items[1],")");
-			$_SESSION[$j]['tot'] = $_SESSION['tot'][$i];
-			
-			$j++;
-		}
+$string23 = explode(",",$string23);
+$i=0;
+
+/*
+if (preg_match("/,/i",$string23)) {
+
+	foreach ($string23 as $item) {
+		$substring23 = explode("(",$item);
+		$array23[$i]['posizione'] = $item[0];
+		$array23[$i]['quantita'] = rtrim($item[1],")");
+		$i++;
 	}
 	
-	// $_SESSION[indice] ([id_merce], [posizione], [quantita], [tot]);
+} else {
+	
+	$substring23 = explode("(",$string23);
+	$array23[$i]['posizione'] = $substring23[0];
+	$array23[$i]['quantita'] = rtrim($substring23[1],")");
 	
 }*/
+
+foreach ($string23 as $item) {
+	$subitem = explode("(",$item);
+	$array23[$i]['posizione'] = $subitem[0];
+	$array23[$i]['quantita'] = rtrim($subitem[1],")");
+	$i++;
+}
+
+return $array23;	
+}
 
 
 
@@ -142,8 +150,8 @@ if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 // impagino
 $a .= jsxtable;
-$a .= "<table>\n";
-$a .= "<caption>MAGAZZINO</caption>\n";
+$a .= jsaltrows;
+$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
 	$a .= "<th>Azione</th>\n";
@@ -153,19 +161,18 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-$i=0;
-
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=vserv")."'>\n";
 while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	$a .= "<tr>\n";
 	
 	// primo td: la checkbox
-	$a .= "<td><input type='checkbox' name='check_list[]' value='";
 	foreach ($row as $cname => $cvalue) {
 		if ($cname == 'id_merce') $id_merce = $cvalue;
-		$a .= $cname."=".$cvalue.";;;";
-	}
-	$a .= "'/>".$id_merce."</td>\n";
+		$item[$cname] = $cvalue;
+	}	
+	$value = htmlentities(serialize($item));
+	$a .= "<td><input type='checkbox' name='check_list[]' value='".$value."'/>".$id_merce."</td>\n";
+
 	
 	// secondo td: i bottoni azione
 	$a .= "<td>\n";
@@ -225,42 +232,74 @@ function vserv_magazzino_modifica() {
 // variabili
 $a = "";
 $log = "";
-
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
-
-$log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
-$_SESSION['begin'] = true;
-
-/*
-$a .= "<table>\n";
-$a .= "<caption>MAGAZZINO</caption>\n";
-$a .= "<thead><tr>\n";
-	$a .= "<th>Descrizione</th>\n";
-	$a .= "<th>Inserimento</th>\n";
-	$a .= "<th>Suggerimento</th>\n";
-$a .= "</tr></thead>\n";
-$a .= "<tbody>\n";
-
+$utente = $_SERVER["AUTHENTICATE_UID"];
 $i=0;
 
-echo count($_SESSION);
+$log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
 
 
-foreach ($_SESSION as $cname => $cvalue) {
+
+foreach ($_SESSION['check_list'] as $item) {
+	
+	// splitta
+	$item = unserialize($item);
+	$id_merce = safe($item['id_merce']);
+	$tags = safe($item['tags']);
+	$posizioni = safe($item['posizioni']);
+	$tot = safe($item['tot']);
+		
+	
+	$a .= jsxtable;
+	$a .= jsaltrows;
+	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
+	$a .= "<caption>Modifica tupla #".$id_merce."</caption>\n";
+	$a .= "<thead><tr>\n";
+		$a .= "<th>Descrizione</th>\n";
+		$a .= "<th>Inserimento</th>\n";
+		$a .= "<th>Suggerimento</th>\n";
+	$a .= "</tr></thead>\n";
+	$a .= "<tbody>\n";
+		
+	// tags merce
+	$a .= "<tr>\n";
+	$a .= "<td><label for='itags'>TAGS</label></td>\n";
+	if (is_null($tags)) {
+		$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
+		$a .= "<td>\n";
+			$a .= remesg("Per bretelle rame/fibra:","msg");
+			$a .= input_hidden("tag1","BRETELLA")." \n";
+			$a .= myoptlst("tag2",$vserv_tags2)." \n";
+			$a .= myoptlst("tag3",$vserv_tags3)." \n";
+		$a .= "</td>\n";
+	} else {
+		$a .= "<td></td>\n";
+		$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
+	}
+	$a .= "</tr>\n";
+
+	
+	$coppie = explode(",",$posizioni);
+	$a .= "<tr>\n";
+		$a .= "<td>Coppia posizione(quantita)</td>\n";
+		$a .= "<td></td>\n";
+		$a .= "<td>\n";
+			$a .= "<select name='posizione1'>\n<option selected='selected' value=''>Blank</option>\n";
+			foreach ($coppie as $coppia) {
+				$a .= "<option value='".$coppia."'>".$coppia."</option>\n";
+			}
+			$a .= "</select>\n";
+		$a .= "</td>\n";
+	$a .= "</tr>\n";
 	
 	$a .= "<tr>\n";
-	$a .= "<td>".$cname."</td>\n";
-	$a .= "<td></td>\n";
-	$a .= "<td>".$cvalue[$i]."</td>\n";
-		
+		$a .= "<td></td><td></td><td>".$tot."</td>\n";
 	$a .= "</tr>\n";
+	
 	$i++;
 }
-
+	
 $a .= "</tbody>\n</table>\n";
-*/
+
 
 
 // ritorno contenuti
