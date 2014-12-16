@@ -73,42 +73,6 @@ fwrite($flog,$a);
 fclose($flog);
 }
 
-
-function split_record_posizioni($string23) {
-
-$string23 = explode(",",$string23);
-$i=0;
-
-/*
-if (preg_match("/,/i",$string23)) {
-
-	foreach ($string23 as $item) {
-		$substring23 = explode("(",$item);
-		$array23[$i]['posizione'] = $item[0];
-		$array23[$i]['quantita'] = rtrim($item[1],")");
-		$i++;
-	}
-	
-} else {
-	
-	$substring23 = explode("(",$string23);
-	$array23[$i]['posizione'] = $substring23[0];
-	$array23[$i]['quantita'] = rtrim($substring23[1],")");
-	
-}*/
-
-foreach ($string23 as $item) {
-	$subitem = explode("(",$item);
-	$array23[$i]['posizione'] = $subitem[0];
-	$array23[$i]['quantita'] = rtrim($subitem[1],")");
-	$i++;
-}
-
-return $array23;	
-}
-
-
-
 // *********************************************************************
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************
 // *********************************************************************
@@ -126,6 +90,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 return true;
 }
+
 
 function vserv_magazzino_select() {
 
@@ -156,8 +121,8 @@ $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
 	$a .= "<th>Azione</th>\n";
 	$a .= "<th>TAGS</th>\n";
-	$a .= "<th>Posizioni con parziali</th>\n";
-	$a .= "<th>Tot</th>\n";
+	$a .= "<th>Posizioni</th>\n";
+	$a .= "<th>Quantita'</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
@@ -167,7 +132,22 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	
 	// primo td: la checkbox
 	foreach ($row as $cname => $cvalue) {
-		if ($cname == 'id_merce') $id_merce = $cvalue;
+		
+		switch ($cname) {
+			case "id_merce":
+				$id_merce = $cvalue;
+				break;
+			case "tags":
+				$tags = $cvalue;
+				break;
+			case "posizioni":
+				$posizioni = $cvalue;
+				break;
+			case "tot":
+				$tot = $cvalue;
+				break;
+		}
+		
 		$item[$cname] = $cvalue;
 	}	
 	$value = htmlentities(serialize($item));
@@ -182,10 +162,9 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	$a .= "</td>\n";
 	
 	// terzo td in poi: tags posizioni e tot
-	foreach ($row as $cname => $cvalue) {
-		if ($cname != 'id_merce')
-			$a .= "<td>".$cvalue."</td>\n";
-	}
+	$a .= "<td>".$tags."</td>\n";
+	$a .= "<td>".$posizioni."</td>\n";
+	$a .= "<td>".$tot."</td>\n";
 	
 	$a .= "</tr>\n";
 }
@@ -237,7 +216,15 @@ $i=0;
 
 $log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
 
-
+$a .= jsxtable;
+$a .= jsaltrows;
+$a .= "<table class='altrowstable' id='alternatecolor'>\n";
+$a .= "<thead><tr>\n";
+	$a .= "<th>ID</th>\n";
+	$a .= "<th>TAGS</th>\n";
+	$a .= "<th>Posizione</th>\n";
+$a .= "</tr></thead>\n";
+$a .= "<tbody>\n";
 
 foreach ($_SESSION['check_list'] as $item) {
 	
@@ -247,22 +234,13 @@ foreach ($_SESSION['check_list'] as $item) {
 	$tags = safe($item['tags']);
 	$posizioni = safe($item['posizioni']);
 	$tot = safe($item['tot']);
-		
 	
-	$a .= jsxtable;
-	$a .= jsaltrows;
-	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
-	$a .= "<caption>Modifica tupla #".$id_merce."</caption>\n";
-	$a .= "<thead><tr>\n";
-		$a .= "<th>Descrizione</th>\n";
-		$a .= "<th>Inserimento</th>\n";
-		$a .= "<th>Suggerimento</th>\n";
-	$a .= "</tr></thead>\n";
-	$a .= "<tbody>\n";
 		
-	// tags merce
+	// riga dati attuali
 	$a .= "<tr>\n";
-	$a .= "<td><label for='itags'>TAGS</label></td>\n";
+	
+	$a .= "<td>".$id_merce."</td>\n";
+	
 	if (is_null($tags)) {
 		$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
 		$a .= "<td>\n";
@@ -272,30 +250,21 @@ foreach ($_SESSION['check_list'] as $item) {
 			$a .= myoptlst("tag3",$vserv_tags3)." \n";
 		$a .= "</td>\n";
 	} else {
-		$a .= "<td></td>\n";
 		$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
 	}
-	$a .= "</tr>\n";
+	
 
 	
 	$coppie = explode(",",$posizioni);
-	$a .= "<tr>\n";
-		$a .= "<td>Coppia posizione(quantita)</td>\n";
-		$a .= "<td></td>\n";
-		$a .= "<td>\n";
-			$a .= "<select name='posizione1'>\n<option selected='selected' value=''>Blank</option>\n";
-			foreach ($coppie as $coppia) {
-				$a .= "<option value='".$coppia."'>".$coppia."</option>\n";
-			}
-			$a .= "</select>\n";
-		$a .= "</td>\n";
+	$a .= "<td>\n";
+		$a .= "<select name='posizione1'>\n<option selected='selected' value=''>Blank</option>\n";
+		foreach ($coppie as $coppia) {
+			$a .= "<option value='".$coppia."'>".$coppia."</option>\n";
+		}
+		$a .= "</select>\n";
+	$a .= "</td>\n";
+
 	$a .= "</tr>\n";
-	
-	$a .= "<tr>\n";
-		$a .= "<td></td><td></td><td>".$tot."</td>\n";
-	$a .= "</tr>\n";
-	
-	$i++;
 }
 	
 $a .= "</tbody>\n</table>\n";
