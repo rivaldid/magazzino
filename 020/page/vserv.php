@@ -52,6 +52,12 @@ $log = "";
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 $log .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"],"msg");
 
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
+
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+
 
 
 // ******** BODYPHP ****************************************************
@@ -107,6 +113,7 @@ $log .= $_SESSION['log'];
 unset($_SESSION['contents']);
 unset($_SESSION['log']);
 session_write_close();
+mysql_close($conn);
 
 // stampo
 echo "<div id='log'>\n";

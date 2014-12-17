@@ -99,14 +99,6 @@ function vserv_magazzino_select() {
 $a = "";
 $log = "";
 
-	
-// apro connessione
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
 
 // interrogo
 $res = mysql_query(vserv_magazzino);
@@ -174,10 +166,6 @@ $a .= "</tbody>\n</table>\n";
 mysql_free_result($res);
 
 
-// chiudo connessione
-mysql_close($conn);
-
-
 // ritorno contenuti
 $_SESSION['contents'] = $a;
 $_SESSION['log'] = $log;
@@ -207,31 +195,41 @@ return true;
 
 
 function vserv_magazzino_modifica() {
-	
+
 // variabili
 $a = "";
 $log = "";
 $utente = $_SERVER["AUTHENTICATE_UID"];
 $i=0;
 
-$log .= remesg("Pagina per la modifica di merce presente in magazzino","msg");
+$log .= remesg("Pagina per la modifica della merce presente in magazzino","msg");
 
-$a .= jsxtable;
-$a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
-	$a .= "<th>TAGS</th>\n";
-	$a .= "<th>Posizione</th>\n";
+	$a .= "<th>Descrizione</th>\n";
+	$a .= "<th>MERCE</th>\n";
+	$a .= "<th>POSIZIONI</th>\n";
 $a .= "</tr></thead>\n";
+
+$a .= "<tfoot>\n";
+	$a .= "<tr>\n";
+	$a .= "<td colspan='4'>\n";
+		$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
+		$a .= "<input type='submit' name='submit' value='Invia'/>\n";
+		$a .= "<input type='submit' name='stop' value='Interrompi'/>\n";
+	$a .= "</td>\n";
+	$a .= "</tr>\n";
+$a .= "</tfoot>\n";
+
 $a .= "<tbody>\n";
 
 foreach ($_SESSION['check_list'] as $item) {
 	
 	// splitta
 	$item = unserialize($item);
-	$id_merce = safe($item['id_merce']);
-	$tags = safe($item['tags']);
+	$id_merce1 = safe($item['id_merce']);
+	$tags1 = safe($item['tags']);
 	$posizioni = safe($item['posizioni']);
 	$tot = safe($item['tot']);
 	
@@ -239,25 +237,13 @@ foreach ($_SESSION['check_list'] as $item) {
 	// riga dati attuali
 	$a .= "<tr>\n";
 	
-	$a .= "<td>".$id_merce."</td>\n";
-	
-	if (is_null($tags)) {
-		$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
-		$a .= "<td>\n";
-			$a .= remesg("Per bretelle rame/fibra:","msg");
-			$a .= input_hidden("tag1","BRETELLA")." \n";
-			$a .= myoptlst("tag2",$vserv_tags2)." \n";
-			$a .= myoptlst("tag3",$vserv_tags3)." \n";
-		$a .= "</td>\n";
-	} else {
-		$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
-	}
-	
-
-	
+	$a .= "<td rowspan='2'>".input_hidden("id_merce1",$id_merce1)."</td>\n";
+	$a .= "<td>ELEMENTO</td>\n";
+	$a .= "<td>".$tags1."</td>\n";
+		
 	$coppie = explode(",",$posizioni);
 	$a .= "<td>\n";
-		$a .= "<select name='posizione1'>\n<option selected='selected' value=''>Blank</option>\n";
+		$a .= "<select name='coppia1'>\n<option selected='selected' value=''>Blank</option>\n";
 		foreach ($coppie as $coppia) {
 			$a .= "<option value='".$coppia."'>".$coppia."</option>\n";
 		}
@@ -265,10 +251,28 @@ foreach ($_SESSION['check_list'] as $item) {
 	$a .= "</td>\n";
 
 	$a .= "</tr>\n";
+	
+	// riga dati input
+	$a .= "<tr>\n";
+	
+	$a .= "<td>AGGIORNAMENTO</td>\n";
+	
+	$a .= "<td>\n";
+		$a .= "<textarea rows='4' cols='25' name='tags2'></textarea>\n";
+		$a .= remesg("Per bretelle rame/fibra:","msg");
+		$a .= input_hidden("tag1","BRETELLA")." \n";
+		$a .= myoptlst("tag2",vserv_tags2)." \n";
+		$a .= myoptlst("tag3",vserv_tags3)." \n";
+	$a .= "</td>\n";
+	
+	$a .= "<td></td>\n";
+	
+	
+	
+	$a .= "</tr>\n";
 }
 	
 $a .= "</tbody>\n</table>\n";
-
 
 
 // ritorno contenuti

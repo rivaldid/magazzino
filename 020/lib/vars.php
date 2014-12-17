@@ -12,14 +12,14 @@ define ("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
 // query
 define("vserv_magazzino", "SELECT * FROM vserv_magazzino_id;");
 
+define("vserv_tags2", "SELECT * FROM vserv_tags2;");
+define("vserv_tags3", "SELECT * FROM vserv_tags3;");
+
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
 $vserv_tipodoc = "SELECT * FROM vserv_tipodoc;";
 $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
 $vserv_posizioni = "SELECT * FROM vserv_posizioni;";
 $vserv_numoda = "SELECT * FROM vserv_numoda;";
-
-$vserv_tags2 = "SELECT * FROM vserv_tags2;";
-$vserv_tags3 = "SELECT * FROM vserv_tags3;";
 
 $vista_magazzino = "SELECT * FROM vista_magazzino;";
 //$vserv_magazzino = "SELECT * FROM vserv_magazzino_id;";

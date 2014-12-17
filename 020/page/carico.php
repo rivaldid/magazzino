@@ -410,9 +410,12 @@ if (isset($_SESSION['submit'])) {
 
 // 6. form
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
-$a .= "<table>\n";
+$a .= jsaltrows;
+$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-	$a .= "<caption>CARICO MERCE</caption>\n";
+	//$a .= "<caption>CARICO MERCE</caption>\n";
+	$log .= remesg("Pagina per il carico della merce in magazzino","msg");
+	$log .= remesg("Identificato come ".$utente,"msg");
 
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Descrizione</th>\n";
@@ -524,8 +527,8 @@ $a .= "<table>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
 				$a .= input_hidden("tag1","BRETELLA")." \n";
-				$a .= myoptlst("tag2",$vserv_tags2)." \n";
-				$a .= myoptlst("tag3",$vserv_tags3)." \n";
+				$a .= myoptlst("tag2",vserv_tags2)." \n";
+				$a .= myoptlst("tag3",vserv_tags3)." \n";
 			$a .= "</td>\n";
 		} else {
 			$a .= "<td></td>\n";
