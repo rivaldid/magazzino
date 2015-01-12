@@ -73,6 +73,13 @@ fwrite($flog,$a);
 fclose($flog);
 }
 
+function logging2($mixed,$logfile) {
+$flog = fopen($logfile,'a');
+$a = $mixed."\n";
+fwrite($flog,$a);
+fclose($flog);
+}
+
 // *********************************************************************
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************
 // *********************************************************************

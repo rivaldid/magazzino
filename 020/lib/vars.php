@@ -8,7 +8,8 @@ define("jsxtop","<script type='text/javascript'>\n $(function() { $(window).scro
 
 define("registro","/GMDCTO/registro/");
 define("registro_mds","/GMDCTO/registro_mds/");
-define("splog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/sp.log");
+define("splog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/log/sp.log");
+define("accesslog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/log/login.log");
 define ("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
 
 // query

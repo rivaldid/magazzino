@@ -387,7 +387,7 @@ if (isset($_SESSION['submit'])) {
 		 */
 
 		// 5bba. logging
-		logging($call);
+		logging2($call,splog);
 
 		// 5bc. reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;

@@ -256,7 +256,7 @@ if ($selezionato == true) {
 			$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
 
 			// 4bbaa. logging
-			logging($call);
+			logging2($call,splog);
 
 			// 4bbb. test ritorno SCARICO
 			switch ($ritorno[0]) {
