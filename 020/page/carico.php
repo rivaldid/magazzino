@@ -415,7 +415,6 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	//$a .= "<caption>CARICO MERCE</caption>\n";
 	$log .= remesg("Pagina per il carico della merce in magazzino","msg");
-	$log .= remesg("Identificato come ".$utente,"msg");
 
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Descrizione</th>\n";
