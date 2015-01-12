@@ -100,19 +100,28 @@ return true;
 
 
 function vserv_magazzino_select() {
+	
+/*
+ * ALGORITMO:
+ * 		1. definizione variabili (locali)
+ * 		2. interrogazione
+ * 		3. impaginazione
+ * 		4. ritorno contenuti
+ * 
+ */
 
 
-// variabili
+// definizione variabili (locali)
 $a = "";
 $log = "";
 
 
-// interrogo
+// interrogazione
 $res = mysql_query(vserv_magazzino);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
-// impagino
+// impaginazione
 $a .= jsxtable;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
@@ -177,7 +186,6 @@ mysql_free_result($res);
 $_SESSION['contents'] = $a;
 $_SESSION['log'] = $log;
 return true;
-
 
 }
 
