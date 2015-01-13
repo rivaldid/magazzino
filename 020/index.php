@@ -28,10 +28,9 @@ include 'lib/menu.php';
 ?>
 
 <div id="contents">
-<?php
-	logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s'),accesslog);
-	echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
-	include $page; 
+<?php 
+echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+include $page; 
 ?>
 </div>
 

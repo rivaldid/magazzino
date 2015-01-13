@@ -1,5 +1,6 @@
 <?php
 
+logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
 
 
 /*
@@ -85,7 +86,6 @@
  * 		8. stampa
  *
  */
-
 
 
 

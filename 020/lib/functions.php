@@ -79,6 +79,7 @@ $a = $mixed."\n";
 fwrite($flog,$a);
 fclose($flog);
 }
+// logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
 
 // *********************************************************************
 // ************* FUNZIONI PER PAGINA MAGAZZINO *************************

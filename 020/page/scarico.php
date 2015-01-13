@@ -1,5 +1,7 @@
 <?php
 
+logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
+
 
 /*
  * scarico merce da magazzino, script frontend per stored procedure
