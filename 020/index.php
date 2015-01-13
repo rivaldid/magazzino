@@ -5,7 +5,6 @@
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
 	<link rel="stylesheet" href="css/footer.css" type="text/css" />
 	<link rel="stylesheet" href="css/main.css" type="text/css" />
-	<link rel="stylesheet" href="css/magazzino_edit1.css" type="text/css" />
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
 	<script type="text/javascript" src="lib/jquery.min.js"></script>
@@ -28,10 +27,7 @@ include 'lib/menu.php';
 ?>
 
 <div id="contents">
-<?php 
-echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
-include $page; 
-?>
+<?php include $page; ?>
 </div>
 
 <?php include 'lib/footer.html'; ?>

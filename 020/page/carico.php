@@ -608,10 +608,13 @@ session_write_close();
 // 8. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
-if ($log == "")
-	echo remesg($msg18,"msg");
-else
-	echo $log;
+echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+if (isset($log)) {
+	if ($log == "")
+		echo remesg($msg18,"msg");
+	else
+		echo $log;
+}
 echo "</div>\n";
 
 echo $a;

@@ -338,9 +338,10 @@ if ($selezionato == true) {
 	// 4c. form scarico step2
 	if ($selezionato == true) {
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico")."'>\n";
-		$a .= "<table>\n";
+		$a .= jsaltrows;
+		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-		$a .= "<caption>SCARICO MERCE STEP2</caption>\n";
+		$log .= remesg("Completare lo scarico sulla merce indicata","msg");
 
 		$a .= "<thead><tr>\n";
 			$a .= "<th>Descrizione</th>\n";
@@ -470,8 +471,9 @@ if ($selezionato == false) {
 	// 5b. form scarico step1
 
 	$a .= jsxtable;
-	$a .= "<table>\n";
-	$a .= "<caption>SCARICO MERCE STEP1</caption>\n";
+	$a .= jsaltrows;
+	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
+	$log .= remesg("Lista estesa del contenuto del magazzino","msg");
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Posizione</th>\n";
 		$a .= "<th>TAGS</th>\n";
@@ -531,12 +533,14 @@ session_write_close();
 // 7. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
-if ($log == "")
-	echo remesg($msg18,"msg");
-else
-	echo $log;
+echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+if (isset($log)) {
+	if ($log == "")
+		echo remesg($msg18,"msg");
+	else
+		echo $log;
+}
 echo "</div>\n";
-
 echo $a;
 
 ?>

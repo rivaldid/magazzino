@@ -19,32 +19,31 @@ a:active {
 }	
 #top{
     width:100px;
-        border:1px solid #d2d2d2;
-        background:#f7f7f7;
-        text-align:center;
-        padding:5px;
-        position:fixed;
-        bottom:10px;
-        right:10px;
-        cursor:pointer;
-        display:none;
-        color:#333;
-        font-family:verdana;
-        font-size:12px;
+	border:1px solid #d2d2d2;
+	background:#f7f7f7;
+	text-align:center;
+	padding:5px;
+	position:fixed;
+	bottom:10px;
+	right:10px;
+	cursor:pointer;
+	display:none;
+	color:#333;
+	font-family:verdana;
+	font-size:12px;
 }
+
 input[type="submit"],input[type="reset"],input[type="text"], textarea, select  {
 	border: 1px solid #000000;
     border-radius: 3px;
     line-height: 18px;
     box-shadow: px 2px 2px 3px #333;
 	font-size: 14px;
-
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover  {
 	background-color:#DAE6F4;
 }
-   
    
    
 input[type="submit"],input[type="reset"]:visited  {
@@ -54,11 +53,13 @@ input[type="submit"],input[type="reset"]:visited  {
 body {
   font-family: "Ubuntu", "Trebuchet MS", sans-serif;
 }
+
 table {
   border-collapse: collapse;
   margin: 1em auto;
   
 }
+
 th, td {
   padding: 5px 10px;
   border: 1px solid #999;
@@ -78,27 +79,83 @@ th[data-sort]{
   color: #0a0;
   text-align: center;
 }
+
 td.name {
   font-weight: bold;
 }
+
 td.email {
   color: #666;
   text-decoration: underline;
 }
+
 /* zebra-striping seems to really slow down Opera sometimes */
 tr:nth-child(even) > td {
   background-color: #f9f9f7;
 }
+
 tr:nth-child(odd) > td {
   background-color: #ffffff;
 }
+
 .disabled {
   opacity: 0.5;
 }
 
+/* css davide */
+table.altrowstable {
+font-family: verdana,arial,sans-serif;
+font-size:11px;
+color:#333333;
+border-width: 1px;
+border-color: #a9c6c9;
+border-collapse: collapse;
+}
 
+table.altrowstable th {
+border-width: 1px;
+padding: 8px 19px 8px 8px;
+border-style: solid;
+border-color: #a9c6c9;
+}
 
-	
+table.altrowstable td {
+border-width: 1px;
+padding: 8px;
+border-style: solid;
+border-color: #a9c6c9;
+}
+
+.oddrowcolor{
+background-color:#E0F174;
+}
+
+.evenrowcolor{
+background-color:#379CDA;
+}
+
+tr.evenrowcolor:hover td,
+tr.oddrowcolor:hover td {
+  background: #FFF563;
+}
+
+a.tooltip {outline:none; } a.tooltip strong {line-height:30px;} 
+a.tooltip:hover {text-decoration:none;} 
+a.tooltip span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:300px; line-height:16px; } 
+a.tooltip:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;} 
+.callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;} /*CSS3 extras*/ 
+a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
+
+div#borderRadius{
+border: 1px #C2D5EF solid;
+position: relative;
+border-radius: 22px;
+width: auto;
+background-color: #DFE5EA;
+width: auto;
+margin: auto;
+padding: 2%;
+}
 	
 	
 	

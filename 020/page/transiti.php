@@ -72,6 +72,16 @@ while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 
 $a .= "</tbody>\n</table>\n";
 
+echo "<div id=\"log\">\n";
+echo remesg("Notifiche","tit");
+echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+if (isset($log)) {
+	if ($log == "")
+		echo remesg($msg18,"msg");
+	else
+		echo $log;
+}
+echo "</div>\n";
 echo $a;
 
 mysql_free_result($res);
