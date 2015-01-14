@@ -1,5 +1,5 @@
 <?php
-logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
+logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");

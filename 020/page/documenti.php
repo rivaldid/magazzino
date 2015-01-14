@@ -1,5 +1,7 @@
 <?php
 
+logging2(occhiomalocchio(basename(__FILE__)),accesslog);
+
 //begin mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());

@@ -1,6 +1,6 @@
 <?php
 
-logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
+logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 //begin mysql
 $conn = mysql_connect('localhost','magazzino','magauser');

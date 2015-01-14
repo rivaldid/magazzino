@@ -79,7 +79,9 @@ $a = $mixed."\n";
 fwrite($flog,$a);
 fclose($flog);
 }
-// logging2("UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename(__FILE__),accesslog);
 
+function occhiomalocchio($path) {
+return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename($path,".php");
+} // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 ?>
