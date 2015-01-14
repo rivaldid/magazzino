@@ -16,21 +16,17 @@
 	</table>
 	<table>
 		<tr>
-			<td class="bold">Merce</td>
-			<td><?php echo $tags;?></td>
-			<td class="bold">Quantita'</td>
-			<td><?php echo $quantita;?></td>
-		</tr>
-		<tr>
-			<td class="bold">Posizione di prelievo</td>
-			<td><?php echo $posizione;?></td>
-			<td class="bold">Posizione di destinazione</td>
-			<td><?php echo $destinazione;?></td>
+			<td class="bold"><?php echo $quantita;?></td>
+			<td class="normal"><?php echo $tags;?></td>
+			<td class="normal">da <?php echo $posizione;?></td>
+			<td class="bold">a <?php echo $destinazione;?></td>
 		</tr>
 	</table>
 	<table>
-		<tr><td class="bold">Torino il</td><td class="normal"><?php echo $data_scarico;?></td></tr>
-		<tr><td class="firma">Firma</td><td></td></tr>
+		<tr>
+			<td class="normal">Torino, <?php echo $data_scarico;?></td></tr>
+			<td class="firma">Firma</td>
+		</tr>
 	</table>
 
 </div>
