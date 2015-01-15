@@ -271,7 +271,7 @@ if (isset($_SESSION['submit'])) {
 
 	// 5aa. utente
 	if (is_null($utente) OR empty($utente)) {
-		$log .= remesg($msg1,"err");
+		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso (errore 1)","err");
 		$valid = false;
 	}
 	if(!(in_array($utente, $enabled_users))){
@@ -281,44 +281,47 @@ if (isset($_SESSION['submit'])) {
 
 	// 5ab. tripla fornitore - tipo_doc - num_doc
 	if (is_null($fornitore) OR empty($fornitore)) {
-		$log .= remesg($msg2,"err");
+		$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
 		$valid = false;
 	}
 
 	if (is_null($tipo_doc) OR empty($tipo_doc)) {
-		$log .= remesg($msg3,"err");
+		$log .= remesg("Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)","err");
+		$valid = false;
+	} elseif (strcmp($tipo_doc,"Sistema")==0) {
+		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema (errore 4)","err");
 		$valid = false;
 	}
 
 	if (is_null($num_doc) OR empty($num_doc)) {
-		$log .= remesg($msg4,"err");
+		$log .= remesg("Mancata selezione di un numero di documento per l'attivita' in corso (errore 5)","err");
 		$valid = false;
 	}
 
 	// 5ac. data carico
 	if (is_null($data_carico) OR empty($data_carico)) {
-		$log .= remesg($msg5,"err");
+		$log .= remesg("Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 6)","err");
 		$valid = false;
 	}
 
 	// 5ad. tripla tags - quantita' - posizione
 	if (is_null($tags) OR empty($tags)) {
-		$log .= remesg($msg6,"err");
+		$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
 		$valid = false;
 	}
 
 	if (is_null($quantita) OR empty($quantita)) {
-		$log .= remesg($msg7,"err");
+		$log .= remesg("Mancato inserimento della quantita' per la merce in carico (errore 8)","err");
 		$valid = false;
 	}
 
 	if (!(testinteger($quantita))) {
-		$log .= remesg($msg16,"err");
+		$log .= remesg("Inserimento errato del campo quantita' (errore 9)","err");
 		$valid = false;
 	}
 
 	if (is_null($posizione) OR empty($posizione)) {
-		$log .= remesg($msg8,"err");
+		$log .= remesg("Mancato inserimento della posizione in magazzino per la merce in carico (errore 10)","err");
 		$valid = false;
 	}
 

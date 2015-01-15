@@ -20,7 +20,7 @@ define("vserv_tags2", "SELECT * FROM vserv_tags2;");
 define("vserv_tags3", "SELECT * FROM vserv_tags3;");
 
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
-$vserv_tipodoc = "SELECT * FROM vserv_tipodoc;";
+$vserv_tipodoc = "SELECT * FROM vserv_tipodoc WHERE label!='Sistema';";
 $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
 $vserv_posizioni = "SELECT * FROM vserv_posizioni;";
 $vserv_numoda = "SELECT * FROM vserv_numoda;";
@@ -34,15 +34,15 @@ $richiedenti_merce = "<select name='srichiedente'>\n<option selected='selected' 
 $enabled_users = array("PISCAZZI","MANZOGI9","MURATO48");
 
 // messaggi carico
-$msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)";
-$msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (errore 2)";
-$msg3 = "Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)";
-$msg4 = "Mancata selezione di un numero di documento per l'attivita' in corso (errore 4)";
-$msg5 = "Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 5)";
+$msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)"; //carico
+$msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (errore 2)"; //carico
+$msg3 = "Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)"; //carico
+$msg4 = "Mancata selezione di un numero di documento per l'attivita' in corso (errore 4)"; //carico
+$msg5 = "Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 5)"; //carico
 
-$msg6 = "Mancato inserimento di tags per contrassegnare la merce in carico (errore 6)";
-$msg7 = "Mancato inserimento della quantita' per la merce in carico (errore 7)";
-$msg8 = "Mancato inserimento della posizione in magazzino per la merce in carico (errore 8)";
+$msg6 = "Mancato inserimento di tags per contrassegnare la merce in carico (errore 6)"; //carico
+$msg7 = "Mancato inserimento della quantita' per la merce in carico (errore 7)";//carico
+$msg8 = "Mancato inserimento della posizione in magazzino per la merce in carico (errore 8)";//carico
 
 $msg9 = "Sessione terminata, tutti i campi sono stati azzerati";
 
@@ -53,7 +53,7 @@ $msg13 = "Scansione del documento caricata correttamente";
 $msg14 = "Scansione del documento non caricata (errore 14)";
 
 $msg15 = "Carico inserito correttamente";
-$msg16 = "Inserimento errato del campo quantita' (errore 16)";
+$msg16 = "Inserimento errato del campo quantita' (errore 16)"; //carico
 
 $msg17 = "Utente non abilitato per l'attivita' in oggetto (errore 17)";
 
