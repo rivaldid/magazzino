@@ -75,7 +75,7 @@ fclose($flog);
 
 function logging2($mixed,$logfile) {
 $flog = fopen($logfile,'a');
-$a = $mixed."\n";
+$a = $mixed.PHP_EOL;
 fwrite($flog,$a);
 fclose($flog);
 }
