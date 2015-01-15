@@ -83,5 +83,6 @@ fclose($flog);
 function occhiomalocchio($path) {
 return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename($path,".php");
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
+// $_SERVER['HTTP_USER_AGENT']
 
 ?>

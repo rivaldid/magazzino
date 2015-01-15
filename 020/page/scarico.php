@@ -2,7 +2,6 @@
 
 logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
-
 /*
  * scarico merce da magazzino, script frontend per stored procedure
  * CALL SCARICO(utente, richiedente, id_merce, quantita, posizione,
