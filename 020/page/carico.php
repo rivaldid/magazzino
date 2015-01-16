@@ -254,8 +254,8 @@ else {
 
 
 
-// test add
-if ((isset($_SESSION['add'])) OR (isset($_SESSION['finish']))) {
+// test add|save
+if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// validazione
 
@@ -318,7 +318,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['finish']))) {
 
 
 	// test valid
-	if ($valid == true) {
+	if ($valid) {
 
 		// scansione
 		if (empty($_FILES['scansione']['name'])) {
@@ -365,7 +365,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['finish']))) {
 		// CARICO
 
 		$call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
-		$log .= remesg($call,"msg");
+		//$log .= remesg($call,"msg");
 
 		$res_carico = mysql_query($call);
 
@@ -383,22 +383,29 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['finish']))) {
 		logging2($call,splog);
 
 		// reset tripla tags - quantita' - posizione
-		$tags = $quantita = $posizione = NULL;
+		//$tags = $quantita = $posizione = NULL;
+		unset($tags, $quantita, $posizione);
+		unset($_SESSION['tag1'], $_SESSION['tag2'], $_SESSION['tag3']);
+		unset($_SESSION['itags'], $_SESSION['iquantita'], $_SESSION['iposizione']);
+		unset($_SESSION['stags'], $_SESSION['squantita'], $_SESSION['sposizione']);
 
-		$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
-		$_SESSION['tag1'] = $_SESSION['tag2'] = $_SESSION['tag3'] = NULL;
+		//$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
+		//$_SESSION['tag1'] = $_SESSION['tag2'] = $_SESSION['tag3'] = NULL;
 
-		$_POST['itags'] = $_POST['stags'] = NULL;
-		$_POST['iquantita'] = $_POST['squantita'] = NULL;
-		$_POST['iposizione'] = $_POST['sposizione'] = NULL;
+		//$_POST['itags'] = $_POST['stags'] = NULL;
+		//$_POST['iquantita'] = $_POST['squantita'] = NULL;
+		//$_POST['iposizione'] = $_POST['sposizione'] = NULL;
 
-		$_SESSION['itags'] = $_SESSION['stags'] = NULL;
-		$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
-		$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
+		//$_SESSION['itags'] = $_SESSION['stags'] = NULL;
+		//$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
+		//$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
 		
 		
-		// test finish
-		if (isset($_SESSION['finish'])) {
+		// test save: ho salvato i dati quindi resetto
+		if (isset($_SESSION['save'])) {
+			// reset variabili lato client
+			unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
+			// reset sessione lato server
 			reset_sessione();
 		}
 
@@ -427,7 +434,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "<td colspan='3'>\n";
 			$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
 			$a .= "<input type='submit' name='add' value='Salva e continua'/>\n";
-			$a .= "<input type='submit' name='finish' value='Salva'/>\n";
+			$a .= "<input type='submit' name='save' value='Salva'/>\n";
 			$a .= "<input type='submit' name='stop' value='Esci senza salvare'/>\n";
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
@@ -437,86 +444,89 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='utente'>Utente</label></td>\n";
-		if (is_null($utente)) {
+		if (isset($utente)) {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
+		} else {
 			$a .= "<td></td>\n";
 			//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
 			$a .= "<td>\n".$magamanager."</td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
-		if (is_null($fornitore)) {
-			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
-			$a .= "<td>".myoptlst("sfornitore",$vserv_contatti)."</td>\n";
-		} else {
+		if (isset($fornitore)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sfornitore",$fornitore)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
+			$a .= "<td>".myoptlst("sfornitore",$vserv_contatti)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='itrasportatore'>Trasportatore</label></td>\n";
-		if (is_null($trasportatore)) {
-			$a .= "<td><input type='text' name='itrasportatore'/></td>\n";
-			$a .= "<td>".myoptlst("strasportatore",$vserv_contatti)."</td>\n";
-		} else {
+		if (isset($trasportatore)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("strasportatore",$trasportatore)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='itrasportatore'/></td>\n";
+			$a .= "<td>".myoptlst("strasportatore",$vserv_contatti)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
-		if (is_null($tipo_doc)) {
-			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
-			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
-		} else {
+		if (isset($tipo_doc)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("stipo_doc",$tipo_doc)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
+			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
-		if (is_null($num_doc)) {
-			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
-			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
-		} else {
+		if (isset($num_doc)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("snum_doc",$num_doc)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
+			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='idata_doc'>Data documento</label></td>\n";
-		if (is_null($data_doc)) {
+		if (isset($data_doc)) {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("sdata_doc",$data_doc)."</td>\n";
+		} else {
 			$a .= "<td></td>\n";
 			//$a .= "<td><input name='idata_doc' type='date' value='' class='date'/></td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='idata_doc'/></td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("sdata_doc",$data_doc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-		if (is_null($nome_doc)) {
-			$a .= "<td></td>\n";
-			$a .= "<td><input type='file' name='scansione'/></td>\n";
-		} else {
+		if (isset($nome_doc)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("nome_doc",$nome_doc)."</td>\n";
+		} else {
+			$a .= "<td></td>\n";
+			$a .= "<td><input type='file' name='scansione'/></td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
-		if (is_null($tags)) {
+		if (isset($tags)) {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
+		} else {
 			$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
@@ -524,52 +534,54 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 				$a .= myoptlst("tag2",vserv_tags2)." \n";
 				$a .= myoptlst("tag3",vserv_tags3)." \n";
 			$a .= "</td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
-		if (is_null($quantita) OR (!(testinteger($quantita)))) {
+		if (isset($quantita)) {
+			if (testinteger($quantita)) {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("squantita",$quantita)."</td>\n";
+			} else {
+				$a .= "<td><input type='text' name='iquantita'/></td>\n";
+				$a .= "<td></td>\n";
+			}
+		} else {
 			$a .= "<td><input type='text' name='iquantita'/></td>\n";
 			$a .= "<td></td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("squantita",$quantita)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
-		if (is_null($posizione)) {
-			$a .= "<td><input type='text' name='iposizione'/></td>\n";
-			$a .= "<td>".myoptlst("sposizione",$vserv_posizioni)."</td>\n";
-		} else {
+		if (isset($posizione)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sposizione",$posizione)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='iposizione'/></td>\n";
+			$a .= "<td>".myoptlst("sposizione",$vserv_posizioni)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='idata'>Data carico</label></td>\n";
-		if (is_null($data_carico)) {
+		if (isset($data_carico)) {
+			$a .= "<td></td>\n";
+			$a .= "<td>".input_hidden("sdata_carico",$data_carico)."</td>\n";
+		} else {
 			$a .= "<td></td>\n";
 			//$a .= "<td><input name='idata_carico' type='date' value='' class='date'/></td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='idata_carico'/></td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("sdata_carico",$data_carico)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='inote'>Note</label></td>\n";
-		if (is_null($note))
-			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
-		else
+		if (isset($note))
 			$a .= "<td>".input_hidden("snote",$note)."</td>\n";
+		else
+			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 		$a .= "<td>\n";
 			$a .= remesg($msg19,"msg");
 			$a .= remesg($msg20,"msg");
@@ -578,12 +590,12 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 		$a .= "<tr>\n";
 		$a .= "<td><label for='inum_oda'>Numero ODA</label></td>\n";
-		if (is_null($num_oda)) {
-			$a .= "<td><input type='text' name='inum_oda'/></td>\n";
-			$a .= "<td>".myoptlst("num_oda",$vserv_numoda)."</td>\n";
-		} else {
+		if (isset($num_oda)) {
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("snum_oda",$num_oda)."</td>\n";
+		} else {
+			$a .= "<td><input type='text' name='inum_oda'/></td>\n";
+			$a .= "<td>".myoptlst("num_oda",$vserv_numoda)."</td>\n";
 		}
 		$a .= "</tr>\n";
 

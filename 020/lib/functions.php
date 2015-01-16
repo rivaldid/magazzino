@@ -83,14 +83,13 @@ fclose($flog);
 function occhiomalocchio($path) {
 return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename($path,".php");
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
-// $_SERVER['HTTP_USER_AGENT']
 
 
 function reset_sessione() {
 // reset $_SESSION
 $_SESSION = array();
-session_unset();
-session_destroy();
+session_unset(); // tronca solo i dati 
+session_destroy(); // distrugge lato server
 
 /* generate new session id and delete old session in store */
 session_regenerate_id(true);

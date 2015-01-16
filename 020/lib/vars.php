@@ -2,9 +2,10 @@
 
 // costanti js
 define("jsxtable","<script type='text/javascript'>\n$(document).ready(function() { $('table').filterTable(); });\n$(document).ready(function() { $('table').tablesorter(); });\n</script>\n");
-define("jsxdate","<script type='text/javascript'>\n$(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n</script>\n");
-define("jsaltrows","<script type='text/javascript'>\nfunction altRows(id){ if(document.getElementsByTagName){ var table = document.getElementById(id); var rows = table.getElementsByTagName(\"tr\"); for(i = 0; i < rows.length; i++){ if(i % 2 == 0){ rows[i].className = \"evenrowcolor\"; }else{ rows[i].className = \"oddrowcolor\"; } } } } window.onload=function(){ altRows('alternatecolor'); }\n</script>\n");
-define("jsxtop","<script type='text/javascript'>\n$(function() { $(window).scroll(function() { if($(this).scrollTop() != 0) { $('#top').fadeIn(); } else { $('#top').fadeOut(); } }); $('#top').click(function() { $('body,html').animate({scrollTop:0},800); }); });\n</script>\n");
+define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
+define("jsaltrows","<script type='text/javascript'>\n  function altRows(id){ if(document.getElementsByTagName){ var table = document.getElementById(id); var rows = table.getElementsByTagName(\"tr\"); for(i = 0; i < rows.length; i++){ if(i % 2 == 0){ rows[i].className = \"evenrowcolor\"; }else{ rows[i].className = \"oddrowcolor\"; } } } } window.onload=function(){ altRows('alternatecolor'); } </script>\n");
+define("jsxtop","<script type='text/javascript'>\n $(function() { $(window).scroll(function() { if($(this).scrollTop() != 0) { $('#top').fadeIn(); } else { $('#top').fadeOut(); } }); $('#top').click(function() { $('body,html').animate({scrollTop:0},800); }); }); </script>\n");
+
 
 // costanti path
 define("registro","/GMDCTO/registro/");
@@ -31,7 +32,7 @@ $vista_magazzino = "SELECT * FROM vista_magazzino;";
 // variabili
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
 $richiedenti_merce = "<select name='srichiedente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Facility'>Facility</option>\n<option value='Immobiliare'>Immobiliare</option>\n<option value='PostemobileTLC'>PostemobileTLC</option>\n<option value='PostemobileTec'>PostemobileTec</option></select>\n";
-$enabled_users = array("PISCAZZI","MANZOGI9","MURATO48");
+$enabled_users = array("PISCAZZI","MANZOGI9","MURATO48","LORUSSO6");
 
 // messaggi carico
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)"; //carico
