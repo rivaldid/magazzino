@@ -87,59 +87,39 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  *
  */
 
+ 
 
-
-// 1. definizione variabili
-$a = "";
-$log = "";
-
-$valid = true;
-$upload = true;
-
-
-
-// 2. startup risorse
-$a .= jsxdate;
-
-// 2a. $_SESSION
+// inizializzo risorse: $_SESSION  mysql
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
-// 2b. mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
-
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 
-// 3. test fine $_SESSION
-if (isset($_POST['stop'])) {
+// inizializzo variabili
+foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+$a = "";
+$log = "";
 
-	$log .= remesg($msg9,"msg");
 
-	$_SESSION = array();
-	session_unset();
-	session_destroy();
 
-	/* generate new session id and delete old session in store */
-	session_regenerate_id(true);
-	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-
-	//$log .= remesg(session_status(),"msg");
-
-} else {
-
-	// 3a. versa $_POST su $_SESSION
-	foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
-
+// test stop
+if (isset($_SESSION['stop'])) {
+	reset_sessione();
 }
 
 
 
-// 4. inizializza variabili
+// valorizzo variabili
+$valid = true;
+$upload = true;
 
-// 4a. tripla fornitore - tipo_doc - num_doc
+
+
+// tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
 	$fornitore = safe($_SESSION['ifornitore']);
 else {
@@ -167,7 +147,9 @@ else {
 		$num_doc = NULL;
 }
 
-// 4b. data carico
+
+
+// data carico
 if (isset($_SESSION['idata_carico'])AND(!empty($_SESSION['idata_carico'])))
 	$data_carico = safe($_SESSION['idata_carico']);
 else {
@@ -177,7 +159,9 @@ else {
 		$data_carico = NULL;
 }
 
-// 4c. trasportatore - ODA - note
+
+
+// trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
 	$trasportatore = safe($_SESSION['itrasportatore']);
 else {
@@ -205,7 +189,9 @@ else {
 		$note = NULL;
 }
 
-// 4d. data_doc - nome_doc
+
+
+// data_doc - nome_doc
 if (isset($_SESSION['idata_doc'])AND(!empty($_SESSION['idata_doc'])))
 	$data_doc = safe($_SESSION['idata_doc']);
 else {
@@ -220,7 +206,9 @@ if (isset($_SESSION['nome_doc'])AND(!empty($_SESSION['nome_doc'])))
 else
 	$nome_doc = NULL;
 
-// 4e. utente
+
+
+// utente
 /*
  * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
  * 		$utente = safe($_SESSION['utente']);
@@ -229,7 +217,9 @@ else
  */
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
-// 4f. tripla tags - quantita' - posizione
+
+
+// tripla tags - quantita' - posizione
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
 	$tags = safe($_SESSION['itags']);
 else {
@@ -264,12 +254,12 @@ else {
 
 
 
-// 5. test submit
-if (isset($_SESSION['submit'])) {
+// test add
+if ((isset($_SESSION['add'])) OR (isset($_SESSION['finish']))) {
 
-	// 5a. validazione
+	// validazione
 
-	// 5aa. utente
+	// utente
 	if (is_null($utente) OR empty($utente)) {
 		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso (errore 1)","err");
 		$valid = false;
@@ -279,7 +269,7 @@ if (isset($_SESSION['submit'])) {
 		$valid = false;
 	}
 
-	// 5ab. tripla fornitore - tipo_doc - num_doc
+	// tripla fornitore - tipo_doc - num_doc
 	if (is_null($fornitore) OR empty($fornitore)) {
 		$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
 		$valid = false;
@@ -298,13 +288,13 @@ if (isset($_SESSION['submit'])) {
 		$valid = false;
 	}
 
-	// 5ac. data carico
+	// data carico
 	if (is_null($data_carico) OR empty($data_carico)) {
 		$log .= remesg("Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 6)","err");
 		$valid = false;
 	}
 
-	// 5ad. tripla tags - quantita' - posizione
+	// tripla tags - quantita' - posizione
 	if (is_null($tags) OR empty($tags)) {
 		$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
 		$valid = false;
@@ -327,10 +317,10 @@ if (isset($_SESSION['submit'])) {
 
 
 
-	// 5b. test valid
+	// test valid
 	if ($valid == true) {
 
-		// 5ba. scansione
+		// scansione
 		if (empty($_FILES['scansione']['name'])) {
 			$log .= remesg($msg10,"warn");
 		} else
@@ -338,7 +328,7 @@ if (isset($_SESSION['submit'])) {
 			if ($_FILES['scansione']['size'] > 0) {
 
 				/*
-				// 5baa. exists_db
+				// exists_db
 				$q7 = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
 				$res_q7 = mysql_query($q7);
 				if (!$res_q7) die('Errore nell\'interrogazione del db: '.mysql_error());
@@ -351,7 +341,7 @@ if (isset($_SESSION['submit'])) {
 				}
 				*/
 
-				// 5bab. exists_file
+				// exists_file
 				$nome_doc = epura_specialchars(epura_space2underscore($tipo_doc))."-".epura_specialchars(epura_space2underscore($fornitore))."-".epura_specialchars(epura_space2underscore($num_doc)).".".getfilext($_FILES['scansione']['name']);
 				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$nome_doc;
 				if (file_exists(registro.$filename)) {
@@ -359,7 +349,7 @@ if (isset($_SESSION['submit'])) {
 					$upload = false;
 				}
 
-				// 5bac. upload
+				// upload
 				if ($upload == true) {
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
@@ -372,7 +362,7 @@ if (isset($_SESSION['submit'])) {
 
 		}
 
-		// 5bb. CARICO
+		// CARICO
 
 		$call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
 		$log .= remesg($call,"msg");
@@ -389,10 +379,10 @@ if (isset($_SESSION['submit'])) {
 		 * You can't free the result of an INSERT query, since you can't free a boolean
 		 */
 
-		// 5bba. logging
+		// logging
 		logging2($call,splog);
 
-		// 5bc. reset tripla tags - quantita' - posizione
+		// reset tripla tags - quantita' - posizione
 		$tags = $quantita = $posizione = NULL;
 
 		$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
@@ -405,14 +395,21 @@ if (isset($_SESSION['submit'])) {
 		$_SESSION['itags'] = $_SESSION['stags'] = NULL;
 		$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
 		$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
+		
+		
+		// test finish
+		if (isset($_SESSION['finish'])) {
+			reset_sessione();
+		}
 
 	}
 }
 
 
 
-// 6. form
+// form
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
+$a .= jsxdate;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
@@ -427,16 +424,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	$a .= "<tfoot>\n";
 		$a .= "<tr>\n";
-		$a .= "<td>Invio dati</td>\n";
-		$a .= "<td>\n";
-			$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
-			$a .= "<input type='submit' name='submit' value='Invia'/>\n";
-			$a .= "<input type='submit' name='stop' value='Fine'/>\n";
-		$a .= "</td>\n";
-		$a .= "<td>\n";
-			$a .= remesg($msg21,"msg");
-			$a .= remesg($msg22,"msg");
-			$a .= remesg($msg23,"msg");
+		$a .= "<td colspan='3'>\n";
+			$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
+			$a .= "<input type='submit' name='add' value='Salva e continua'/>\n";
+			$a .= "<input type='submit' name='finish' value='Salva'/>\n";
+			$a .= "<input type='submit' name='stop' value='Esci senza salvare'/>\n";
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
@@ -602,13 +594,13 @@ $a .= "</form>\n";
 
 
 
-// 7. libero risorse
+// libero risorse
 mysql_close($conn);
 session_write_close();
 
 
 
-// 8. stampo
+// stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");

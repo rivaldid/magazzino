@@ -12,6 +12,26 @@
 	<script type="text/javascript" src="lib/jquery.filtertable.js"></script>
 	<script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
 	<script type="text/javascript" src="lib/jquery.ui.datepicker-it.js"></script>
+	<script>
+$(document).ready(function () {
+    var str = "";
+    for (i = 0; i < 25; i++) {
+        a = i + 1;
+        str += "<tr><td><input type='checkbox' id='checkall' name='mydata' value=" + a + "></td><td>a" + a + "</td><td>name" + a + "</td></tr>";
+    }
+    $("#flow-table > tbody").append(str);
+    oTableStaticFlow = $('#flow-table').dataTable({
+        "aoColumnDefs": [{
+            'bSortable': false,
+            'aTargets': [0]
+        }],
+    });
+
+    $("#flowcheckall").click(function () {
+        $('#flow-table tbody input[type="checkbox"]').prop('checked', this.checked);
+    });
+});
+</script>   
 </head>
 <body>
 

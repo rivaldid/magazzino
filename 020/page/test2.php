@@ -1,3 +1,31 @@
+
+
+
+
+
+	<h1>DataTable Check All Example</h1>
+<table class="display dataTable" id="flow-table" border="1">
+    <thead>
+        <th class="check">
+            <input type="checkbox" id="flowcheckall" value="" />&nbsp;All
+        </th>
+        <th>Name</th>
+        <!-- <th>Cookie</th> -->
+        <th>Priority</th>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
 <?php
 
 function reset_sessione() {

@@ -85,4 +85,19 @@ return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".bas
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 // $_SERVER['HTTP_USER_AGENT']
 
+
+function reset_sessione() {
+// reset $_SESSION
+$_SESSION = array();
+session_unset();
+session_destroy();
+
+/* generate new session id and delete old session in store */
+session_regenerate_id(true);
+if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+
+return true;
+}
+
+
 ?>
