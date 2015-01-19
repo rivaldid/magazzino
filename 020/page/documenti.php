@@ -17,12 +17,14 @@ $a = "";
 
 //print
 $a .= jsxtable;
-$a .= "<table>\n";
+$a .= jsaltrows;
+$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-$a .= "<caption>\n";
-$a .= "DOCUMENTI REGISTRATI\n";
-$a .= "</caption>\n";
-
+/*
+	$a .= "<caption>\n";
+	$a .= "DOCUMENTI REGISTRATI\n";
+	$a .= "</caption>\n";
+*/
 $a .= "<thead><tr>\n";
 	$a .= "<th>Contatto</th>\n";
 	$a .= "<th>Numero di documento</th>\n";

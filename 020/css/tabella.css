@@ -127,11 +127,11 @@ border-color: #a9c6c9;
 }
 
 .oddrowcolor{
-background-color:#E0F174;
+background-color:#DDD; /*ex giallo hover tabella in IE 8*/
 }
 
 .evenrowcolor{
-background-color:#379CDA;
+background-color:#cccccc; /*ex blu hover tabella in IE 8*/
 }
 
 tr.evenrowcolor:hover td,
