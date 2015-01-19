@@ -23,7 +23,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  *
  *
  * MINI-ALGORITMO DI VALORIZZAZIONE VARIABILI
- * $_POST funge solo da corriere di dati tra una istanza e l'altra,
+ * $_POST viene usato come corriere per il passaggio dei valori nella pagina,
  * dopo il foreach punto 4a, valorizzo $_SESSION['myvar'] partendo
  * da due tipi della stessa variabile, imyvar ed smyvar
  * a seconda che sia un inserimento manuale o un suggerimento
@@ -47,77 +47,81 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * o da inserimento manuale(imyvar)
  * o da option list(smyvar)
  * altrimenti
- * disabili l'inserimento manuale
+ * disabiliti l'inserimento manuale
  * mi mostri cio' che sto utilizzando
  * me la passi come input nascosto per il $_POST
  *
  *
  *
  * ALGORITMO:
- * 		1. definizione variabili
- * 		2. startup risorse
- * 			2a. $_SESSION
- * 			2b. mysql
- * 		3. test fine $_SESSION
- * 			3a. versa $_POST su $_SESSION
- * 		4. inizializza variabili
- * 			4a. tripla fornitore - tipo_doc - num_doc
- * 			4b. data carico
- * 			4c. trasportatore - ODA - note
- * 			4d. data_doc - nome_doc
- * 			4e. utente
- * 			4f. tripla tags - quantita' - posizione
- * 		5. test submit
- * 			5a. validazione
- * 				5aa. utente
- * 				5ab. tripla fornitore - tipo_doc - num_doc
- * 				5ac. data carico
- * 				5ad. tripla tags - quantita' - posizione
- * 			5b. test valid
- * 				5ba. scansione
- * 					5baa. exists_db
- * 					5bab. exists_file
- * 					5bac. upload
- * 				5bb. CARICO
- * 					5bba. logging
- * 				5bc. reset tripla tags - quantita' - posizione
- * 		6. form
- * 		7. libero risorse
- * 		8. stampa
+ * 
+ * 
+ * 		1. inizializzo risorse
+ * 
+ * 			$_SESSION
+ * 			mysql
+ * 			variabili
+ * 				globali
+ * 				tripla fornitore - tipo_doc - num_doc
+ * 				data carico
+ * 				trasportatore - ODA - note
+ * 				data_doc - nome_doc
+ * 				utente (deprecato)
+ * 				tripla tags - quantita' - posizione
+ * 		
+ * 		2. test bottoni
+ * 
+ * 			stop
+ * 				reset variabili server
+ * 
+ * 			add||save
+ * 				validazione
+ * 					utente
+ * 					tripla fornitore - tipo_doc - num_doc
+ * 					data carico
+ * 					reset tripla tags - quantita' - posizione
+ * 		
+ *				3. test valid
+ * 					scansione
+ * 						exists_db (deprecato)
+ * 						exists_file
+ * 						upload
+ * 					CARICO
+ * 					logging
+ * 					reset tripla tags - quantita' - posizione client
+ * 					test save
+ * 						reset altre variabili client
+ * 						reset variabili server
+ * 		
+ * 		4. form
+ * 		5. termino risorse
+ * 		6. stampo
+ * 
  *
  */
 
  
 
-// inizializzo risorse: $_SESSION  mysql
+// 1. inizializzo risorse
+
+// $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
+// mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
+// variabili
 
-
-// inizializzo variabili
+// globali
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 $a = "";
 $log = "";
 
-
-
-// test stop
-if (isset($_SESSION['stop'])) {
-	reset_sessione();
-}
-
-
-
-// valorizzo variabili
 $valid = true;
 $upload = true;
-
-
 
 // tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
@@ -147,8 +151,6 @@ else {
 		$num_doc = NULL;
 }
 
-
-
 // data carico
 if (isset($_SESSION['idata_carico'])AND(!empty($_SESSION['idata_carico'])))
 	$data_carico = safe($_SESSION['idata_carico']);
@@ -158,8 +160,6 @@ else {
 	else
 		$data_carico = NULL;
 }
-
-
 
 // trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
@@ -189,8 +189,6 @@ else {
 		$note = NULL;
 }
 
-
-
 // data_doc - nome_doc
 if (isset($_SESSION['idata_doc'])AND(!empty($_SESSION['idata_doc'])))
 	$data_doc = safe($_SESSION['idata_doc']);
@@ -206,8 +204,6 @@ if (isset($_SESSION['nome_doc'])AND(!empty($_SESSION['nome_doc'])))
 else
 	$nome_doc = NULL;
 
-
-
 // utente
 /*
  * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
@@ -216,8 +212,6 @@ else
  * 		$utente = NULL;
  */
 $utente = $_SERVER["AUTHENTICATE_UID"];
-
-
 
 // tripla tags - quantita' - posizione
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
@@ -254,7 +248,15 @@ else {
 
 
 
-// test add|save
+// 2. test bottoni
+
+// stop
+if (isset($_SESSION['stop'])) {
+	// reset variabili server
+	reset_sessione();
+}
+
+// add||save
 if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// validazione
@@ -317,7 +319,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 
 
-	// test valid
+	// 3. test valid
 	if ($valid) {
 
 		// scansione
@@ -382,30 +384,17 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		// logging
 		logging2($call,splog);
 
-		// reset tripla tags - quantita' - posizione
-		//$tags = $quantita = $posizione = NULL;
+		// reset tripla tags - quantita' - posizione client
 		unset($tags, $quantita, $posizione);
 		unset($_SESSION['tag1'], $_SESSION['tag2'], $_SESSION['tag3']);
 		unset($_SESSION['itags'], $_SESSION['iquantita'], $_SESSION['iposizione']);
-		unset($_SESSION['stags'], $_SESSION['squantita'], $_SESSION['sposizione']);
-
-		//$_POST['tag1'] = $_POST['tag2'] = $_POST['tag3'] = NULL;
-		//$_SESSION['tag1'] = $_SESSION['tag2'] = $_SESSION['tag3'] = NULL;
-
-		//$_POST['itags'] = $_POST['stags'] = NULL;
-		//$_POST['iquantita'] = $_POST['squantita'] = NULL;
-		//$_POST['iposizione'] = $_POST['sposizione'] = NULL;
-
-		//$_SESSION['itags'] = $_SESSION['stags'] = NULL;
-		//$_SESSION['iquantita'] = $_SESSION['squantita'] = NULL;
-		//$_SESSION['iposizione'] = $_SESSION['sposizione'] = NULL;
+		unset($_SESSION['stags'], $_SESSION['squantita'], $_SESSION['sposizione']);		
 		
-		
-		// test save: ho salvato i dati quindi resetto
+		// test save
 		if (isset($_SESSION['save'])) {
-			// reset variabili lato client
+			// reset altre variabili client
 			unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
-			// reset sessione lato server
+			// reset variabili server
 			reset_sessione();
 		}
 
@@ -414,7 +403,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 
 
-// form
+// 4. form
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
 $a .= jsxdate;
 $a .= jsaltrows;
@@ -606,13 +595,13 @@ $a .= "</form>\n";
 
 
 
-// libero risorse
+// 5. termino risorse
 mysql_close($conn);
 session_write_close();
 
 
 
-// stampo
+// 6. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
