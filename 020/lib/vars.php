@@ -56,7 +56,7 @@ $msg14 = "Scansione del documento non caricata (errore 14)";
 $msg15 = "Carico inserito correttamente";
 $msg16 = "Inserimento errato del campo quantita' (errore 16)"; //carico
 
-$msg17 = "Utente non abilitato per l'attivita' in oggetto (errore 17)";
+$msg17 = "Utente non abilitato per l'attivita' in oggetto (errore 17)";//s
 
 $msg18 = "Nessuna notifica da visualizzare";
 
@@ -68,7 +68,7 @@ $msg22 = "<b>Invia</b> per l'invio dei dati inseriti";
 $msg23 = "<b>Fine</b> per terminare l'attivita' in corso";
 
 // messaggi scarico
-$msg24 = "Mancata selezione di un richiedente per l'attivita' in corso (errore 24)";
+$msg24 = "Mancata selezione di un richiedente per l'attivita' in corso (errore 24)";//s
 $msg25 = "Mancata selezione di una quantita' per l'attivita' in corso (errore 25)";
 $msg26 = "Quantita' richiesta superiore alla giacenza in magazzino per quella posizione (errore 26)";
 $msg27 = "Mancato inserimento di una destinazione per l'attivita' in corso (errore 27)";
