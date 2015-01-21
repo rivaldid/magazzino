@@ -62,7 +62,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 
 
-// 1. inizializzo risorse: $_SESSION mysql variabili
+// 1. inizializzo risorse
 
 // 11. $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
@@ -235,31 +235,30 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// 2221. SCARICO
 		$call = "CALL SCARICO('{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
-		$log .= remesg($call,"msg");
+		//$log .= remesg($call,"msg");
 
-		$result_scarico = mysql_query($call);
+		$res_scarico = mysql_query($call);
 
-		if ($result_scarico)
+		if ($res_scarico)
 			$log .= remesg("Scarico inviato al database","msg");
 		else
-			die('Errore nell\'invio del comando di scarico al db: '.mysql_error());
+			die('Errore nell\'invio dei dati al db: '.mysql_error());
 
-		$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
-		mysql_free_result($result_scarico);
+		$ritorno = mysql_fetch_array($res_scarico, MYSQL_NUM);
+		mysql_free_result($res_scarico);
 		
 		// 2222. logging
 		logging2($call,splog);
-
 		
 		// 2223. test ritorno
 		if ($ritorno[0]=="0") {
+			
+			$log .= remesg("Scarico completato correttamente","msg");
 					
 			// 2224. reset mysql connection
 			mysql_close($conn);
-
 			$conn = mysql_connect('localhost','magazzino','magauser');
 			if (!$conn) die('Errore di connessione: '.mysql_error());
-
 			$dbsel = mysql_select_db('magazzino', $conn);
 			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
@@ -332,7 +331,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			}
 			 
-		} else logging2("-- ultimo scarico non riuscito",splog);
+		} else {
+			
+			logging2("-- ultimo scarico non riuscito",splog);
+			$log .= remesg("Scarico non riuscito, ripete l'operazione","err");
+			
+		}
 
 
 	// 223. test not valid

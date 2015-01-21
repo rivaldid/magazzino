@@ -372,9 +372,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$res_carico = mysql_query($call);
 
 		if ($res_carico)
-			$log .= remesg($msg15,"msg");
+			$log .= remesg("Carico inviato il database","msg");
 		else
-			die('Errore nell\'interrogazione del db: '.mysql_error());
+			die('Errore nell\'invio dei dati al db: '.mysql_error());
 
 		/* nb: fail @ mysql_free_result($res_carico);
 		 * Warning: mysql_free_result() expects parameter 1 to be resource, boolean given in
