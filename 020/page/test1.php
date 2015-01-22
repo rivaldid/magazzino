@@ -65,6 +65,16 @@ return "
 
 ?>	
 
+
+
+
+
+
+
+
+
+
+
 <table class="altrowstable" id="alternatecolor">
     <thead>
        <tr>
@@ -312,6 +322,18 @@ return "
 
    </tbody>
  </table>
+ 
+ <H2>questo è codice html e php</H2>
+ <br />
+  echo &lt;p&gt;paragrafo&lt;/p&gt;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 </div>
 <script type="text/javascript">
   $(function() {
