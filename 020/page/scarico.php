@@ -61,290 +61,282 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 
 
+// 1. definizione variabili
+$a = "";
+$log = "";
 
-// 1. inizializzo risorse
+$selezionato = false;
+$valid = true;
 
-// 11. $_SESSION
+
+
+// 2. startup risorse
+$a .= jsxdate;
+
+// 2a. $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
-// 12. mysql
+// 2b. mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
 
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-// 13. variabili
 
-// 131. generiche
-$a = "";
-$log = "";
+// 3. test risorse
 
-$valid = true;
+// 3a. test $selezionato
+if (isset($_POST['id_merce'])AND(!empty($_POST['id_merce']))) {
 
-foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+	// 3b. test fine $_SESSION
+	if (isset($_POST['stop'])) {
 
-// 132. data_scarico
-$data_scarico = date("Y-m-d");
+	$selezionato = false;
 
-// 133. utente
-/*
- * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
- * 		$utente = safe($_SESSION['utente']);
- * else
- * 		$utente = NULL;
- */
-$utente = $_SERVER["AUTHENTICATE_UID"];
+	$log .= remesg($msg9,"msg");
+	$_SESSION = array();
+	session_unset();
+	session_destroy();
 
-// 134. richiedente
-if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
-	$richiedente = safe($_SESSION['irichiedente']);
-else {
-	if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
-		$richiedente = safe($_SESSION['srichiedente']);
-	else
-		$richiedente = NULL;
-}
+	/* generate new session id and delete old session in store */
+	session_regenerate_id(true);
+	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
-// 135. quantita
-if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
-	$quantita = safe($_SESSION['iquantita']);
-else {
-	if (isset($_SESSION['squantita'])AND(!empty($_SESSION['squantita'])))
-		$quantita = safe($_SESSION['squantita']);
-	else
-		$quantita = NULL;
-}
-
-// 136. destinazione
-if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
-	$destinazione = safe($_SESSION['idestinazione']);
-else {
-	if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
-		$destinazione = safe($_SESSION['sdestinazione']);
-	else
-		$destinazione = NULL;
-}
-
-// 137. data_doc_scarico
-if (isset($_SESSION['idata_doc_scarico'])AND(!empty($_SESSION['idata_doc_scarico'])))
-	$data_doc_scarico = safe($_SESSION['idata_doc_scarico']);
-else {
-	if (isset($_SESSION['sdata_doc_scarico'])AND(!empty($_SESSION['sdata_doc_scarico'])))
-		$data_doc_scarico = safe($_SESSION['sdata_doc_scarico']);
-	else
-		$data_doc_scarico = NULL;
-}
-
-// 138. note
-if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
-	$note = safe($_SESSION['inote']);
-else {
-	if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
-		$note = safe($_SESSION['snote']);
-	else
-		$note = NULL;
-}
-
-// 139. id_merce - tags - posizione - maxquantita
-if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
-	$id_merce = safe($_SESSION['id_merce']);
-else {
-	$id_merce = NULL;
-}
-
-if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = safe($_SESSION['tags']);
-else {
-	$tags = NULL;
-}
-
-if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = safe($_SESSION['posizione']);
-else {
-	$posizione = NULL;
-}
-
-if (isset($_SESSION['maxquantita'])AND(!empty($_SESSION['maxquantita'])))
-	$maxquantita = safe($_SESSION['maxquantita']);
-else {
-	$maxquantita = NULL;
-}
-
-
-// 2. test bottoni
-
-// 21. test stop
-if (isset($_SESSION['stop'])) {
-	// reset variabili server
-	reset_sessione();
-}
-
-// 22. test add||save
-if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
-	
-	// 221. validazione
-	
-	// 2211. id_merce(sentinella)
-	if (is_null($id_merce) OR empty($id_merce)) {
-		$log .= remesg("Selezione merce non andata a buon fine, ricominciare l'attivita'","err");
-		$valid = false;
-	}
-	
-	// 2212. utente
-	if (is_null($utente) OR empty($utente)) {
-		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso","err");
-		$valid = false;
-	}
-	if(!(in_array($utente, $enabled_users))){
-		$log .= remesg("Utente non abilitato per l'attivita' in oggetto","err");
-		$valid = false;
-	}
-	
-	// 2213. richiedente
-	if (is_null($richiedente) OR empty($richiedente)) {
-		$log .= remesg("Mancata selezione di un richiedente per l'attivita' in corso","err");
-		$valid = false;
-	}
-	
-	// 2214. quantita
-	if (is_null($quantita) OR empty($quantita)) {
-		$log .= remesg("Mancata selezione di una quantita' per l'attivita' in corso","err");
-		$valid = false;
 	} else {
-		if ($quantita>$maxquantita) {
-			$log .= remesg("Quantita' richiesta superiore alla giacenza in magazzino per quella posizione","err");
+
+		$selezionato = true;
+		foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+
+	}
+
+} else {
+
+	$selezionato = false;
+
+}
+
+
+// 4. se $selezionato true
+if ($selezionato == true) {
+
+
+	// 4a. inizializzo variabili
+
+	// 4aa. da scarico step1
+	$id_merce = safe($_SESSION['id_merce']);
+	$tags = safe($_SESSION['tags']);
+	$posizione = safe($_SESSION['posizione']);
+	$maxquantita = safe($_SESSION['maxquantita']);
+
+	// 4ab. data_scarico
+	$data_scarico = date("Y-m-d");
+
+	// 4ac. utente
+	/*
+	 * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+	 * 		$utente = safe($_SESSION['utente']);
+	 * else
+	 * 		$utente = NULL;
+	 */
+	$utente = $_SERVER["AUTHENTICATE_UID"];
+
+	// 4ad. richiedente
+	if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
+		$richiedente = safe($_SESSION['irichiedente']);
+	else {
+		if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
+			$richiedente = safe($_SESSION['srichiedente']);
+		else
+			$richiedente = NULL;
+	}
+
+	// 4ae. quantita
+	if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
+		$quantita = safe($_SESSION['iquantita']);
+	else {
+		if (isset($_SESSION['squantita'])AND(!empty($_SESSION['squantita'])))
+			$quantita = safe($_SESSION['squantita']);
+		else
+			$quantita = NULL;
+	}
+
+	// 4af. destinazione
+	if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
+		$destinazione = safe($_SESSION['idestinazione']);
+	else {
+		if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
+			$destinazione = safe($_SESSION['sdestinazione']);
+		else
+			$destinazione = NULL;
+	}
+
+	// 4ag. data_doc_scarico
+	if (isset($_SESSION['idata_doc_scarico'])AND(!empty($_SESSION['idata_doc_scarico'])))
+		$data_doc_scarico = safe($_SESSION['idata_doc_scarico']);
+	else {
+		if (isset($_SESSION['sdata_doc_scarico'])AND(!empty($_SESSION['sdata_doc_scarico'])))
+			$data_doc_scarico = safe($_SESSION['sdata_doc_scarico']);
+		else
+			$data_doc_scarico = NULL;
+	}
+
+	// 4ah. note
+	if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
+		$note = safe($_SESSION['inote']);
+	else {
+		if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
+			$note = safe($_SESSION['snote']);
+		else
+			$note = NULL;
+	}
+
+
+	// 4b. test submit
+	if (isset($_SESSION['submit'])) {
+
+
+		// 4ba. validazione
+
+		// 4baa. utente
+		if (is_null($utente) OR empty($utente)) {
+			$log .= remesg($msg1,"err");
 			$valid = false;
 		}
-	}
-	
-	// 2215. destinazione
-	if (is_null($destinazione) OR empty($destinazione)) {
-		$log .= remesg("Mancato inserimento di una destinazione per l'attivita' in corso","err");
-		$valid = false;
-	}
+		if(!(in_array($utente, $enabled_users))){
+			$log .= remesg($msg17,"err");
+			$valid = false;
+		}
 
-	// 2216. data_doc_scarico
-	if (is_null($data_doc_scarico) OR empty($data_doc_scarico)) {
-		$log .= remesg("Mancata selezione di una data per l'attivita' in corso","err");
-		$valid = false;
-	}
-	
-	// 222. test valid
-	if ($valid) {
+		// 4bab. richiedente
+		if (is_null($richiedente) OR empty($richiedente)) {
+			$log .= remesg($msg24,"err");
+			$valid = false;
+		}
 
-		// 2221. SCARICO
-		$call = "CALL SCARICO('{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
-		//$log .= remesg($call,"msg");
+		// 4bac. quantita
+		if (is_null($quantita) OR empty($quantita)) {
+			$log .= remesg($msg25,"err");
+			$valid = false;
+		} else {
+			if ($quantita>$maxquantita) {
+				$log .= remesg($msg26,"err");
+				$valid = false;
+			}
+		}
 
-		$res_scarico = mysql_query($call);
+		// 4bad. destinazione
+		if (is_null($destinazione) OR empty($destinazione)) {
+			$log .= remesg($msg27,"err");
+			$valid = false;
+		}
 
-		if ($res_scarico)
-			$log .= remesg("Scarico inviato al database","msg");
-		else
-			die('Errore nell\'invio dei dati al db: '.mysql_error());
+		// 4bae. data_doc_scarico
+		if (is_null($data_doc_scarico) OR empty($data_doc_scarico)) {
+			$log .= remesg($msg28,"err");
+			$valid = false;
+		}
 
-		$ritorno = mysql_fetch_array($res_scarico, MYSQL_NUM);
-		mysql_free_result($res_scarico);
-		
-		// 2222. logging
-		logging2($call,splog);
-		
-		// 2223. test ritorno
-		if ($ritorno[0]=="0") {
-			
-			$log .= remesg("Scarico completato correttamente","msg");
-					
-			// 2224. reset mysql connection
+
+
+		// 4bb. test valid
+		if ($valid == true) {
+
+
+			// 4bba. SCARICO
+			$call = "CALL SCARICO('{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
+			$log .= remesg($call,"msg");
+
+			$result_scarico = mysql_query($call);
+
+			if ($result_scarico)
+				$log .= remesg($msg29,"msg");
+			else
+				die('Errore nell\'invio del comando di scarico al db: '.mysql_error());
+
+			$ritorno = mysql_fetch_array($result_scarico, MYSQL_NUM);
+
+			// 4bbaa. logging
+			logging2($call,splog);
+
+			// 4bbb. test ritorno SCARICO
+			switch ($ritorno[0]) {
+
+				case "0":
+					$log .= remesg($msg30,"msg");
+					break;
+
+				case "1":
+					$log .= remesg($msg31,"err");
+					break;
+
+				default:
+					$log .= remesg($msg32,"err");
+
+			}
+
+
+			// 4bbc. reset mysql connection
+			mysql_free_result($result_scarico);
 			mysql_close($conn);
+
 			$conn = mysql_connect('localhost','magazzino','magauser');
 			if (!$conn) die('Errore di connessione: '.mysql_error());
+
 			$dbsel = mysql_select_db('magazzino', $conn);
 			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
-			// 2225. MDS
-			
-			// 22251. test not exists
-			if (!(isset($_SESSION['mds'])) OR empty($_SESSION['mds'])) {
-				
-				// 222511. create
-				ob_start();
-				include 'lib/template_mds1.php';
-				$corpo_html = ob_get_clean();
-				$_SESSION['mds'] = "<?php\n"."\$html = \"".addslashes($corpo_html)."\n";
-				unset($corpo_html);
-				$log .= remesg("Creato modulo di scarico","msg");
-			
-			}
-				
-			// 22252. append
+			// 4bbd. ritorno MDS
+			$report = "";
+
+			// 4bbda. definizione dati			
 			ob_start();
-			include 'lib/template_mds2.php';
+			include 'lib/template_mds.php';
 			$corpo_html = ob_get_clean();
-			$_SESSION['mds'] .= addslashes($corpo_html)."\n";
-			unset($corpo_html);
-			$log .= remesg("Aggiunti valori al modulo di scarico","msg");
-					
-			// 22253. reset id_merce - tags - posizione - maxquantita
-			unset($id_merce,$tags,$posizione,$maxquantita);
-			unset($_SESSION['id_merce'],$_SESSION['tags'],$_SESSION['posizione'],$_SESSION['maxquantita']);
-			
-			// 22254. reset quantita - destinazione
-			unset($quantita,$destinazione);
-			unset($_SESSION['quantita'],$_SESSION['destinazione']);
-			
-			// 22255. test save
-			if(isset($_SESSION['save'])) {
-				
-				// 222551. finish
-				ob_start();
-				include 'lib/template_mds3.php';
-				$corpo_html = ob_get_clean();
-				$_SESSION['mds'] .= addslashes($corpo_html)."\";\n";
-				$_SESSION['mds'] .= "//==============================================================\n";
-				$_SESSION['mds'] .= "include(\"".lib_mpdf57."\");\n";
-				$_SESSION['mds'] .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
-				$_SESSION['mds'] .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
-				$_SESSION['mds'] .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";			
-				$_SESSION['mds'] .= "\$mpdf->WriteHTML(\"\$html\");\n";
-				$_SESSION['mds'] .= "\$mpdf->Output();\n";
-				$_SESSION['mds'] .= "exit;\n";
-				$_SESSION['mds'] .= "//==============================================================\n";
-				unset($corpo_html);
-				$log .= remesg("Terminato modulo di scarico","msg");
-				
-				// 222552. write
-				$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
-				$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
-				fwrite($fp,$_SESSION['mds']);
-				fclose($fp);
 
-				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
-				
-				// 222553. reset richiedente - data_doc_scarico - note
-				unset($richiedente,$data_doc_scarico,$note);
-				unset($_SESSION['richiedente'],$_SESSION['data_doc_scarico'],$_SESSION['note']);
-				
-				// 222554. reset sessione server
-				reset_sessione();
+			// 4bbdb. definizione pagina
+			$report .= "<?php\n";
+			$report .= "\$html = \"".addslashes($corpo_html)."\";";
+			$report .= "//==============================================================\n";
+			$report .= "include(\"".lib_mpdf57."\");\n";
+			$report .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
+			$report .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+			$report .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";			
+			$report .= "\$mpdf->WriteHTML(\"\$html\");\n";
+			$report .= "\$mpdf->Output();\n";
+			$report .= "exit;\n";
+			$report .= "//==============================================================\n";
+			$report .= "?>\n";
 
-			}
-			 
-		} else {
-			
-			logging2("-- ultimo scarico non riuscito",splog);
-			$log .= remesg("Scarico non riuscito, ripete l'operazione","err");
-			
-		}
+			// 4bbdc. scrittura contenuti
+			$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico.".php";
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
+			fwrite($fp,$report);
+			fclose($fp);
+
+			$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
+
+			// 4bbe. reset variabili
+			$selezionato = false;
 
 
-	// 223. test not valid
-	} else {
-		
-		// 2231. form input scarico
+			$log .= remesg($msg33,"msg");
+			$_SESSION = array();
+			session_unset();
+			session_destroy();
+
+			/* generate new session id and delete old session in store */
+			session_regenerate_id(true);
+			if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+
+		} // fine test valid
+
+	} // fine test submit
+
+	// 4c. form scarico step2
+	if ($selezionato == true) {
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico")."'>\n";
-		$a .= jsxdate;
 		$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
@@ -358,11 +350,16 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		$a .= "<tfoot>\n";
 			$a .= "<tr>\n";
-			$a .= "<td colspan='3'>\n";
-				$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
-				$a .= "<input type='submit' name='add' value='Salva e continua'/>\n";
-				$a .= "<input type='submit' name='save' value='Salva'/>\n";
-				$a .= "<input type='submit' name='stop' value='Esci senza salvare'/>\n";
+			$a .= "<td>Invio dati</td>\n";
+			$a .= "<td>\n";
+				$a .= "<input type='reset' name='reset' value='Azzera'/>\n";
+				$a .= "<input type='submit' name='submit' value='Invia'/>\n";
+				$a .= "<input type='submit' name='stop' value='Fine'/>\n";
+			$a .= "</td>\n";
+			$a .= "<td>\n";
+				$a .= remesg($msg21,"msg");
+				$a .= remesg($msg22,"msg");
+				$a .= remesg($msg23,"msg");
 			$a .= "</td>\n";
 			$a .= "</tr>\n";
 		$a .= "</tfoot>\n";
@@ -371,25 +368,24 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='utente'>Utente</label></td>\n";
-			if (isset($utente)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
-			} else {
+			if (is_null($utente)) {
 				$a .= "<td></td>\n";
 				//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
 				$a .= "<td>\n".$magamanager."</td>\n";
-
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
-			if (isset($richiedente)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
-			} else {
+			if (is_null($richiedente)) {
 				$a .= "<td><input type='text' name='irichiedente'/></td>\n";
 				$a .= "<td>".$richiedenti_merce."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
@@ -401,12 +397,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
-			if (isset($quantita) AND ($quantita<$maxquantita)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("squantita",$quantita)." di ".$maxquantita."</td>\n";
-			} else {
+			if (is_null($quantita) OR ($quantita>$maxquantita)) {
 				$a .= "<td><input type='text' name='iquantita'/></td>\n";
 				$a .= "<td>Disponibilita': ".$maxquantita."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("squantita",$quantita)." di ".$maxquantita."</td>\n";
 			}
 			$a .= "</tr>\n";
 
@@ -418,33 +414,33 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
-			if (isset($destinazione)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("sdestinazione",$destinazione)."</td>\n";
-			} else {
+			if (is_null($destinazione)) {
 				$a .= "<td><input type='text' name='idestinazione'/></td>\n";
 				$a .= "<td>".myoptlst("sdestinazione",$vserv_posizioni)."</td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("sdestinazione",$destinazione)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
-			if (isset($data_doc_scarico)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("sdata_doc_scarico",$data_doc_scarico)."</td>\n";
-			} else {
+			if (is_null($data_doc_scarico)) {
 				$a .= "<td></td>\n";
 				//$a .= "<td><input name='idata_doc_scarico' type='date' value='' class='date'/></td>\n";
 				$a .= "<td><input type='text' class='datepicker' name='idata_doc_scarico'/></td>\n";
+			} else {
+				$a .= "<td></td>\n";
+				$a .= "<td>".input_hidden("sdata_doc_scarico",$data_doc_scarico)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='inote'>Note</label></td>\n";
-			if (isset($note))
-				$a .= "<td>".input_hidden("snote",$note)."</td>\n";
-			else
+			if (is_null($note))
 				$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
+			else
+				$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
 				$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
@@ -456,22 +452,23 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		$a .= "</table>\n";
 		$a .= "</form>\n";
-		
 	}
 
-}
-
-//print_r($_SESSION['mds']);
+} // fine $selezionato true
 
 
-// 3. test contenuti
-if (is_null($a) OR empty($a)) {
+// 5. se $selezionato false
+if ($selezionato == false) {
 
-	// 31. ricevo lista merce
+
+	// 5a. ricevo lista merce
+
 	$result_lista_merce = mysql_query($vista_magazzino);
 	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
 
-	// 32. form selezione
+
+	// 5b. form scarico step1
+
 	$a .= jsxtable;
 	$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
@@ -512,30 +509,33 @@ if (is_null($a) OR empty($a)) {
 					$a .= "";
 			}
 
-		$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
+		$a .= "<td><input type='submit' name='submit' value='Scarico'/></td>\n";
 		$a .= "</form>\n";
 		$a .= "</tr>\n";
 	}
 
 	$a .= "</tbody>\n</table>\n";
-	
+
 	mysql_free_result($result_lista_merce);
 
-}
+
+} // fine $selezionato false
 
 
-// 4. libero risorse
+
+// 6. libero risorse
 mysql_close($conn);
 session_write_close();
 
 
-// 5. stampo
+
+// 7. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
 if (isset($log)) {
 	if ($log == "")
-		echo remesg("Nessuna notifica da visualizzare","msg");
+		echo remesg($msg18,"msg");
 	else
 		echo $log;
 }
