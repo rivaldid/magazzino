@@ -116,12 +116,24 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // variabili
 
 // globali
-foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+if (isset($_GET["debug"]))
+	$DEBUG=true;
+else
+	$DEBUG=false;
+
 $a = "";
 $log = "";
 
 $valid = true;
 $upload = true;
+
+if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
+if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+
+foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+
+if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
+if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 // tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
@@ -133,6 +145,12 @@ else {
 		$fornitore = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($fornitore)) $log .= remesg("Valore fornitore: ".$fornitore,"debug");
+	if (isset($ifornitore)) $log .= remesg("Inserimento fornitore: ".$ifornitore,"debug");
+	if (isset($sfornitore)) $log .= remesg("Suggerimento fornitore: ".$sfornitore,"debug");
+}
+
 if (isset($_SESSION['itipo_doc'])AND(!empty($_SESSION['itipo_doc'])))
 	$tipo_doc = safe($_SESSION['itipo_doc']);
 else {
@@ -142,6 +160,12 @@ else {
 		$tipo_doc = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($tipo_doc)) $log .= remesg("Valore tipo_doc: ".$tipo_doc,"debug");
+	if (isset($itipo_doc)) $log .= remesg("Inserimento tipo_doc: ".$itipo_doc,"debug");
+	if (isset($stipo_doc)) $log .= remesg("Suggerimento tipo_doc: ".$stipo_doc,"debug");
+}
+
 if (isset($_SESSION['inum_doc'])AND(!empty($_SESSION['inum_doc'])))
 	$num_doc = safe($_SESSION['inum_doc']);
 else {
@@ -149,6 +173,12 @@ else {
 		$num_doc = safe($_SESSION['snum_doc']);
 	else
 		$num_doc = NULL;
+}
+
+if ($DEBUG) {
+	if (isset($num_doc)) $log .= remesg("Valore num_doc: ".$num_doc,"debug");
+	if (isset($inum_doc)) $log .= remesg("Inserimento num_doc: ".$inum_doc,"debug");
+	if (isset($snum_doc)) $log .= remesg("Suggerimento num_doc: ".$snum_doc,"debug");
 }
 
 // data carico
@@ -161,6 +191,12 @@ else {
 		$data_carico = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($data_carico)) $log .= remesg("Valore data_carico: ".$data_carico,"debug");
+	if (isset($idata_carico)) $log .= remesg("Inserimento data_carico: ".$idata_carico,"debug");
+	if (isset($sdata_carico)) $log .= remesg("Suggerimento data_carico: ".$sdata_carico,"debug");
+}
+
 // trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
 	$trasportatore = safe($_SESSION['itrasportatore']);
@@ -169,6 +205,12 @@ else {
 		$trasportatore = safe($_SESSION['strasportatore']);
 	else
 		$trasportatore = NULL;
+}
+
+if ($DEBUG) {
+	if (isset($trasportatore)) $log .= remesg("Valore trasportatore: ".$trasportatore,"debug");
+	if (isset($itrasportatore)) $log .= remesg("Inserimento trasportatore: ".$itrasportatore,"debug");
+	if (isset($strasportatore)) $log .= remesg("Suggerimento trasportatore: ".$strasportatore,"debug");
 }
 
 if (isset($_SESSION['inum_oda'])AND(!empty($_SESSION['inum_oda'])))
@@ -180,6 +222,12 @@ else {
 		$num_oda = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($num_oda)) $log .= remesg("Valore num_oda: ".$num_oda,"debug");
+	if (isset($inum_oda)) $log .= remesg("Inserimento num_oda: ".$inum_oda,"debug");
+	if (isset($snum_oda)) $log .= remesg("Suggerimento num_oda: ".$snum_oda,"debug");
+}
+
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
 	$note = safe($_SESSION['inote']);
 else {
@@ -187,6 +235,12 @@ else {
 		$note = safe($_SESSION['snote']);
 	else
 		$note = NULL;
+}
+
+if ($DEBUG) {
+	if (isset($note)) $log .= remesg("Valore note: ".$note,"debug");
+	if (isset($inote)) $log .= remesg("Inserimento note: ".$inote,"debug");
+	if (isset($snote)) $log .= remesg("Suggerimento note: ".$snote,"debug");
 }
 
 // data_doc - nome_doc
@@ -199,10 +253,20 @@ else {
 		$data_doc = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($data_doc)) $log .= remesg("Valore data_doc: ".$data_doc,"debug");
+	if (isset($idata_doc)) $log .= remesg("Inserimento data_doc: ".$idata_doc,"debug");
+	if (isset($sdata_doc)) $log .= remesg("Suggerimento data_doc: ".$sdata_doc,"debug");
+}
+
 if (isset($_SESSION['nome_doc'])AND(!empty($_SESSION['nome_doc'])))
 	$nome_doc = safe($_SESSION['nome_doc']);
 else
 	$nome_doc = NULL;
+
+if ($DEBUG) {
+	if (isset($nome_doc)) $log .= remesg("Valore nome_doc: ".$nome_doc,"debug");
+}
 
 // utente
 /*
@@ -228,6 +292,11 @@ else {
 	}
 }
 
+if ($DEBUG) {
+	if (isset($itags)) $log .= remesg("Inserimento tags: ".$itags,"debug");
+	if (isset($tags)) $log .= remesg("Valore tags: ".$tags,"debug");
+}
+
 if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
 	$quantita = safe($_SESSION['iquantita']);
 else {
@@ -237,6 +306,12 @@ else {
 		$quantita = NULL;
 }
 
+if ($DEBUG) {
+	if (isset($quantita)) $log .= remesg("Valore quantita: ".$quantita,"debug");
+	if (isset($iquantita)) $log .= remesg("Inserimento quantita: ".$iquantita,"debug");
+	if (isset($squantita)) $log .= remesg("Suggerimento quantita: ".$squantita,"debug");
+}
+
 if (isset($_SESSION['iposizione'])AND(!empty($_SESSION['iposizione'])))
 	$posizione = safe($_SESSION['iposizione']);
 else {
@@ -244,6 +319,12 @@ else {
 		$posizione = safe($_SESSION['sposizione']);
 	else
 		$posizione = NULL;
+}
+
+if ($DEBUG) {
+	if (isset($posizione)) $log .= remesg("Valore posizione: ".$posizione,"debug");
+	if (isset($iposizione)) $log .= remesg("Inserimento posizione: ".$iposizione,"debug");
+	if (isset($sposizione)) $log .= remesg("Suggerimento posizione: ".$sposizione,"debug");
 }
 
 
@@ -266,16 +347,23 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso (errore 1)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
 	if(!(in_array($utente, $enabled_users))){
-		$log .= remesg($msg17,"err");
+		$log .= remesg("Utente non abilitato per l'attivita' in oggetto (errore 17)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// tripla fornitore - tipo_doc - num_doc
 	if (is_null($fornitore) OR empty($fornitore)) {
 		$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($tipo_doc) OR empty($tipo_doc)) {
 		$log .= remesg("Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)","err");
@@ -284,11 +372,15 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema (errore 4)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($num_doc) OR empty($num_doc)) {
 		$log .= remesg("Mancata selezione di un numero di documento per l'attivita' in corso (errore 5)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// data carico
 	if (is_null($data_carico) OR empty($data_carico)) {
@@ -301,21 +393,29 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($quantita) OR empty($quantita)) {
 		$log .= remesg("Mancato inserimento della quantita' per la merce in carico (errore 8)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (!(testinteger($quantita))) {
 		$log .= remesg("Inserimento errato del campo quantita' (errore 9)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($posizione) OR empty($posizione)) {
 		$log .= remesg("Mancato inserimento della posizione in magazzino per la merce in carico (errore 10)","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 
 
@@ -324,7 +424,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// scansione
 		if (empty($_FILES['scansione']['name'])) {
-			$log .= remesg($msg10,"warn");
+			$log .= remesg("Nessun file selezionato","warn");
 		} else
 		{
 			if ($_FILES['scansione']['size'] > 0) {
@@ -338,7 +438,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				mysql_free_result($res_q7);
 
 				if ($exists_db['risultato'] == "1") {
-					$log .= remesg($msg11,"warn");
+					$log .= remesg("Nessun file caricato perche' presente sul db","warn");
 					$upload = false;
 				}
 				*/
@@ -347,7 +447,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$nome_doc = epura_specialchars(epura_space2underscore($tipo_doc))."-".epura_specialchars(epura_space2underscore($fornitore))."-".epura_specialchars(epura_space2underscore($num_doc)).".".getfilext($_FILES['scansione']['name']);
 				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$nome_doc;
 				if (file_exists(registro.$filename)) {
-					$log .= remesg($msg12,"warn");
+					$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
 					$upload = false;
 				}
 
@@ -355,9 +455,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				if ($upload == true) {
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
-					  $log .= remesg($msg13,"msg");
+					  $log .= remesg("Scansione del documento caricata correttamente","msg");
 					else
-					  $log .= remesg($msg14,"err");
+					  $log .= remesg("Scansione del documento non caricata","err");
 				} else
 					$nome_doc = NULL;
 			}
@@ -367,7 +467,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		// CARICO
 
 		$call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
-		//$log .= remesg($call,"msg");
+		if ($DEBUG) $log .= remesg($call,"debug");
 
 		$res_carico = mysql_query($call);
 
@@ -404,7 +504,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 
 // 4. form
-$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico")."'>\n";
+$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico");
+if ($DEBUG) $a .= "&debug";
+$a .= "'>\n";
 $a .= jsxdate;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
@@ -572,8 +674,8 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		else
 			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 		$a .= "<td>\n";
-			$a .= remesg($msg19,"msg");
-			$a .= remesg($msg20,"msg");
+			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
+			$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 
@@ -607,7 +709,7 @@ echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
 if (isset($log)) {
 	if ($log == "")
-		echo remesg($msg18,"msg");
+		echo remesg("Nessuna notifica da visualizzare","msg");
 	else
 		echo $log;
 }
