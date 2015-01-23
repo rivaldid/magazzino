@@ -34,13 +34,13 @@ color: #DF0101;
 #log p.warn{
 margin: 6px auto;
 padding: 5px;
-color: #FFBF00; 
+color: #FFBF00;
 }
 
 #log p.msg{
 margin: 6px auto;
 padding: 5px;
-color: #31B404; 
+color: #31B404;
 }
 
 #log p.tit{

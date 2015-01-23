@@ -3,8 +3,8 @@ div.centeredmenu
     margin:0 auto;/*Uncomment this line to make the menu center-aligned.*/
     text-align:center;
     font-size:0;
-    height: 25px;  
-    *position:relative;*top:1px;/*Hacks for IE6 & IE7 */  
+    height: 25px;
+    *position:relative;*top:1px;/*Hacks for IE6 & IE7 */
 }
 
 div.centeredmenu a
@@ -52,7 +52,7 @@ div.centeredMenuPre
     margin-top: 10px;
 }
 
-div.centeredMenuSub 
+div.centeredMenuSub
 {
     height:10px;
     border:1px solid #C2D5EF;

@@ -1,5 +1,5 @@
 <?php
-		
+
 // pre
 function safe($value) {
 	return mysql_real_escape_string($value);
@@ -84,11 +84,10 @@ function occhiomalocchio($path) {
 return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename($path,".php");
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
-
 function reset_sessione() {
 // reset $_SESSION
 $_SESSION = array();
-session_unset(); // tronca solo i dati 
+session_unset(); // tronca solo i dati
 session_destroy(); // distrugge lato server
 
 /* generate new session id and delete old session in store */
@@ -96,6 +95,12 @@ session_regenerate_id(true);
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 return true;
+}
+
+function user2name($utente) {
+foreach (array("Piscazzi","Manzo","Muratore","Lorusso") as $name)
+	if (strcasecmp(substr($utente,0,4),substr($name,0,4)) == 0)
+		return $name;
 }
 
 

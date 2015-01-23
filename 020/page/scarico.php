@@ -12,10 +12,10 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  *
  *
  * ALGORITMO:
- * 
- * 
+ *
+ *
  *	1. inizializzo risorse
- * 
+ *
  * 		11. $_SESSION
  * 		12. mysql
  * 		13. variabili
@@ -30,7 +30,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 			139. id_merce - tags - posizione - maxquantita
  *
  *	2. test bottoni
- * 
+ *
  * 		21. test stop
  * 			211. test MDS iniziato
  * 				2111. finish mds
@@ -61,18 +61,18 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 					22263. reset sessione server
  *			223. test not valid
  * 				2231. form input scarico
- * 	
+ *
  *	3. test contenuti
- * 		
+ *
  * 		31. ricevo lista merce
  * 		32. form selezione
- * 
+ *
  * 	4. libero risorse
- * 	
+ *
  * 	5. stampo
  *
- * 
- * 
+ *
+ *
  */
 
 
@@ -95,7 +95,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-	
+
 $a = "";
 $log = "";
 $valid = true;
@@ -238,10 +238,10 @@ if ($DEBUG) {
 // 21. test stop
 if (isset($_SESSION['stop'])) {
 	if ($DEBUG) $log .= remesg("Valore tasto STOP: ".$_SESSION['stop'],"debug");
-	
+
 	// 211. test MDS iniziato
 	if (isset($_SESSION['mds'])AND(!empty($_SESSION['mds']))) {
-		
+
 		// 2111. finish mds
 		ob_start();
 		include 'lib/template_mds3.php';
@@ -256,10 +256,10 @@ if (isset($_SESSION['stop'])) {
 		$_SESSION['mds'] .= "\$mpdf->Output();\n";
 		$_SESSION['mds'] .= "exit;\n";
 		$_SESSION['mds'] .= "//==============================================================\n";
-		
+
 		if ($DEBUG) $log .= remesg("Coda MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
 		if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
-		
+
 		unset($corpo_html);
 		$log .= remesg("Terminato modulo di scarico","msg");
 
@@ -270,19 +270,19 @@ if (isset($_SESSION['stop'])) {
 		fclose($fp);
 
 		$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
-		
+
 	}
-	
+
 	// 212. reset variabili server
 	reset_sessione();
 }
 
 // 22. test add||save
 if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
-	
+
 	if (isset($_SESSION['add']))
 		if ($DEBUG) $log .= remesg("Valore tasto ADD: ".$_SESSION['add'],"debug");
-	
+
 	if (isset($_SESSION['save']))
 		if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_SESSION['save'],"debug");
 
@@ -293,7 +293,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Selezione merce non andata a buon fine, ricominciare l'attivita'","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 2212. utente
@@ -305,7 +305,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Utente non abilitato per l'attivita' in oggetto","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 2213. richiedente
@@ -313,7 +313,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di un richiedente per l'attivita' in corso","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 2214. quantita
@@ -326,7 +326,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$valid = false;
 		}
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 2215. destinazione
@@ -334,7 +334,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancato inserimento di una destinazione per l'attivita' in corso","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 2216. data_doc_scarico
@@ -342,7 +342,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di una data per l'attivita' in corso","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// 222. test valid
@@ -367,7 +367,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// 2223. test ritorno
 		if ($DEBUG) $log .= remesg("Ritorno sp: ".$ritorno[0],"debug");
-		
+
 		if ($ritorno[0]=="0") {
 
 			$log .= remesg("Scarico completato correttamente","msg");
@@ -390,10 +390,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				include 'lib/template_mds1.php';
 				$corpo_html = ob_get_clean();
 				$_SESSION['mds'] = "<?php\n"."\$html = \"".addslashes($corpo_html)."\n";
-				
+
 				if ($DEBUG) $log .= remesg("Testa MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
 				if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
-				
+
 				unset($corpo_html);
 				$log .= remesg("Creato modulo di scarico","msg");
 
@@ -404,10 +404,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			include 'lib/template_mds2.php';
 			$corpo_html = ob_get_clean();
 			$_SESSION['mds'] .= addslashes($corpo_html)."\n";
-			
+
 			if ($DEBUG) $log .= remesg("Corpo MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
 			if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
-			
+
 			unset($corpo_html);
 			$log .= remesg("Aggiunti valori al modulo di scarico","msg");
 
@@ -418,7 +418,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			unset($_SESSION['quantita'],$_SESSION['destinazione']);
 			unset($_SESSION['iquantita'],$_SESSION['idestinazione']);
 			unset($_SESSION['squantita'],$_SESSION['sdestinazione']);
-			
+
 			// lascio richiedente, data_doc_scarico, note
 
 			// 2226. test save
@@ -438,10 +438,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$_SESSION['mds'] .= "\$mpdf->Output();\n";
 				$_SESSION['mds'] .= "exit;\n";
 				$_SESSION['mds'] .= "//==============================================================\n";
-				
+
 				if ($DEBUG) $log .= remesg("Coda MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
 				if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
-				
+
 				unset($corpo_html);
 				$log .= remesg("Terminato modulo di scarico","msg");
 

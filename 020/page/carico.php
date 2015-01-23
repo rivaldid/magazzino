@@ -54,10 +54,10 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  *
  *
  * ALGORITMO:
- * 
- * 
+ *
+ *
  * 		1. inizializzo risorse
- * 
+ *
  * 			$_SESSION
  * 			mysql
  * 			variabili
@@ -68,19 +68,19 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 				data_doc - nome_doc
  * 				utente (deprecato)
  * 				tripla tags - quantita' - posizione
- * 		
+ *
  * 		2. test bottoni
- * 
+ *
  * 			stop
  * 				reset variabili server
- * 
+ *
  * 			add||save
  * 				validazione
  * 					utente
  * 					tripla fornitore - tipo_doc - num_doc
  * 					data carico
  * 					reset tripla tags - quantita' - posizione
- * 		
+ *
  *				3. test valid
  * 					scansione
  * 						exists_db (deprecato)
@@ -92,15 +92,15 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 					test save
  * 						reset altre variabili client
  * 						reset variabili server
- * 		
+ *
  * 		4. form
  * 		5. termino risorse
  * 		6. stampo
- * 
+ *
  *
  */
 
- 
+
 
 // 1. inizializzo risorse
 
@@ -347,14 +347,14 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso (errore 1)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	if(!(in_array($utente, $enabled_users))){
 		$log .= remesg("Utente non abilitato per l'attivita' in oggetto (errore 17)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// tripla fornitore - tipo_doc - num_doc
@@ -362,7 +362,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($tipo_doc) OR empty($tipo_doc)) {
@@ -372,14 +372,14 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema (errore 4)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($num_doc) OR empty($num_doc)) {
 		$log .= remesg("Mancata selezione di un numero di documento per l'attivita' in corso (errore 5)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// data carico
@@ -393,28 +393,28 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($quantita) OR empty($quantita)) {
 		$log .= remesg("Mancato inserimento della quantita' per la merce in carico (errore 8)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (!(testinteger($quantita))) {
 		$log .= remesg("Inserimento errato del campo quantita' (errore 9)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($posizione) OR empty($posizione)) {
 		$log .= remesg("Mancato inserimento della posizione in magazzino per la merce in carico (errore 10)","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 
@@ -488,8 +488,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		unset($tags, $quantita, $posizione);
 		unset($_SESSION['tag1'], $_SESSION['tag2'], $_SESSION['tag3']);
 		unset($_SESSION['itags'], $_SESSION['iquantita'], $_SESSION['iposizione']);
-		unset($_SESSION['stags'], $_SESSION['squantita'], $_SESSION['sposizione']);		
-		
+		unset($_SESSION['stags'], $_SESSION['squantita'], $_SESSION['sposizione']);
+
 		// test save
 		if (isset($_SESSION['save'])) {
 			// reset altre variabili client
