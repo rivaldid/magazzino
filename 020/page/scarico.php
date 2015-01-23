@@ -32,7 +32,10 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  *	2. test bottoni
  * 
  * 		21. test stop
- * 			211. reset variabili server
+ * 			211. test MDS iniziato
+ * 				2111. finish mds
+ * 				2112. write mds
+ * 			212. reset variabili server
  * 		22. test add||save
  *			221. validazione
  * 				2211. id_merce(sentinella)
@@ -235,7 +238,42 @@ if ($DEBUG) {
 // 21. test stop
 if (isset($_SESSION['stop'])) {
 	if ($DEBUG) $log .= remesg("Valore tasto STOP: ".$_SESSION['stop'],"debug");
-	// 211. reset variabili server
+	
+	// 211. test MDS iniziato
+	if (isset($_SESSION['mds'])AND(!empty($_SESSION['mds']))) {
+		
+		// 2111. finish mds
+		ob_start();
+		include 'lib/template_mds3.php';
+		$corpo_html = ob_get_clean();
+		$_SESSION['mds'] .= addslashes($corpo_html)."\";\n";
+		$_SESSION['mds'] .= "//==============================================================\n";
+		$_SESSION['mds'] .= "include(\"".lib_mpdf57."\");\n";
+		$_SESSION['mds'] .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
+		$_SESSION['mds'] .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+		$_SESSION['mds'] .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
+		$_SESSION['mds'] .= "\$mpdf->WriteHTML(\"\$html\");\n";
+		$_SESSION['mds'] .= "\$mpdf->Output();\n";
+		$_SESSION['mds'] .= "exit;\n";
+		$_SESSION['mds'] .= "//==============================================================\n";
+		
+		if ($DEBUG) $log .= remesg("Coda MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
+		if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
+		
+		unset($corpo_html);
+		$log .= remesg("Terminato modulo di scarico","msg");
+
+		// 2112. write mds
+		$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
+		$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
+		fwrite($fp,$_SESSION['mds']);
+		fclose($fp);
+
+		$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
+		
+	}
+	
+	// 212. reset variabili server
 	reset_sessione();
 }
 
@@ -386,7 +424,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			// 2226. test save
 			if(isset($_SESSION['save'])) {
 
-				// 22261. finish
+				// 22261. finish mds
 				ob_start();
 				include 'lib/template_mds3.php';
 				$corpo_html = ob_get_clean();
@@ -407,7 +445,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				unset($corpo_html);
 				$log .= remesg("Terminato modulo di scarico","msg");
 
-				// 22262. write
+				// 22262. write mds
 				$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
 				$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
 				fwrite($fp,$_SESSION['mds']);
