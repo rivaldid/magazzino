@@ -32,7 +32,7 @@ $vista_magazzino = "SELECT * FROM vista_magazzino;";
 // variabili
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
 $richiedenti_merce = "<select name='srichiedente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Facility'>Facility</option>\n<option value='Immobiliare'>Immobiliare</option>\n<option value='PostemobileTLC'>PostemobileTLC</option>\n<option value='PostemobileTec'>PostemobileTec</option></select>\n";
-$enabled_users = array("PISCAZZI","MANZOGI9","MURATO48","LORUSSO6");
+$enabled_users = array("PISCAZZI","MANZOGI9","MURATO48","LORUSSO6","VILARDID");
 
 // messaggi carico
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)"; //carico

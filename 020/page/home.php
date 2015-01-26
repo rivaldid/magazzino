@@ -12,4 +12,4 @@ if (isset($log)) {
 echo "</div>\n";
 ?>
 <h1>Gestione Magazzino DataCenter Torino</h1>
-<img src="imgs/maga.png" alt="Homepage" />
+<a href="/GMDCTO"><img src="imgs/maga.png" alt="Homepage" /></a>

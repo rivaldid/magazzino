@@ -98,7 +98,7 @@ return true;
 }
 
 function user2name($utente) {
-foreach (array("Piscazzi","Manzo","Muratore","Lorusso") as $name)
+foreach (array("Piscazzi","Manzo","Muratore","Lorusso","Vilardi") as $name)
 	if (strcasecmp(substr($utente,0,4),substr($name,0,4)) == 0)
 		return $name;
 }

@@ -26,11 +26,11 @@ include '../020/lib/menu.php';
 <div id="log">
 <?php
 
-logging2(occhiomalocchio("registro_mds"),accesslog);
+logging2(occhiomalocchio("logs"),accesslog);
 
 setlocale(LC_TIME, 'it_IT.UTF-8');
 
-echo remesg("Lista dei moduli di scarico generati","tit");
+echo remesg("Lista dei log","tit");
 
 if ($handle = opendir('.')) {
 
