@@ -2,6 +2,9 @@
 
 logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
+$a = "";
+$log = "";
+
 //begin mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
@@ -13,12 +16,13 @@ $query = "SELECT * FROM vserv_magazzino_id;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
-$a = "";
-
 //print
 $a .= jsxtable;
-$a .= "<table>\n";
-$a .= "<caption>STATO MAGAZZINO (<a href=\"?page=magazzino_edit\">EDIT</a>) (<a href=\"?page=magazzino\">NOID</a>)</caption>\n";
+$a .= jsaltrows;
+$a .= "<table class='altrowstable' id='alternatecolor'>\n";
+
+$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","msg");
+
 $a .= "<thead><tr>\n";
 	$a .= "<th>ID</th>\n";
 	$a .= "<th>TAGS</th>\n";
