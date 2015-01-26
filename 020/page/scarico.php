@@ -659,6 +659,7 @@ session_write_close();
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+echo remesg("Visualizza i <a href=\"http://10.98.2.159/GMDCTO/registro_mds/\">moduli di scarico</a> generati","msg");
 if (isset($log)) {
 	if ($log == "")
 		echo remesg("Nessuna notifica da visualizzare","msg");
