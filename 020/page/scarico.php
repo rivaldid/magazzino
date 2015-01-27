@@ -314,7 +314,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 2213. richiedente
 	if (is_null($richiedente) OR empty($richiedente)) {
-		$log .= remesg("Mancata selezione di un richiedente per l'attivita' in corso","err");
+		//$log .= remesg("Mancata selezione di un richiedente per l'attivita' in corso","err");
 		$valid = false;
 	}
 
@@ -322,7 +322,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 2214. quantita
 	if (is_null($quantita) OR empty($quantita)) {
-		$log .= remesg("Mancata selezione di una quantita' per l'attivita' in corso","err");
+		//$log .= remesg("Mancata selezione di una quantita' per l'attivita' in corso","err");
 		$valid = false;
 	} else {
 		if ($quantita>$maxquantita) {
@@ -335,7 +335,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 2215. destinazione
 	if (is_null($destinazione) OR empty($destinazione)) {
-		$log .= remesg("Mancato inserimento di una destinazione per l'attivita' in corso","err");
+		//$log .= remesg("Mancato inserimento di una destinazione per l'attivita' in corso","err");
 		$valid = false;
 	}
 
@@ -343,7 +343,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 2216. data_doc_scarico
 	if (is_null($data_doc_scarico) OR empty($data_doc_scarico)) {
-		$log .= remesg("Mancata selezione di una data per l'attivita' in corso","err");
+		//$log .= remesg("Mancata selezione di una data per l'attivita' in corso","err");
 		$valid = false;
 	}
 
@@ -514,11 +514,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
+			//$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
 			if (isset($richiedente)) {
+				$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("srichiedente",$richiedente)."</td>\n";
 			} else {
+				$a .= "<td><label for='irichiedente'>Richiedente ".add_tooltip("Campo richiedente obbligatorio")."</label></td>\n";
 				$a .= "<td><input type='text' name='irichiedente'/></td>\n";
 				$a .= "<td>".$richiedenti_merce."</td>\n";
 			}
@@ -531,11 +533,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
+			//$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
 			if (isset($quantita) AND ($quantita<$maxquantita)) {
+				$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("squantita",$quantita)." di ".$maxquantita."</td>\n";
 			} else {
+				$a .= "<td><label for='iquantita'>Quantita' ".add_tooltip("Campo quantita' obbligatorio e al piu' uguale alla giacenza in magazzino per quella posizione")."</label></td>\n";
 				$a .= "<td><input type='text' name='iquantita'/></td>\n";
 				$a .= "<td>Disponibilita': ".$maxquantita."</td>\n";
 			}
@@ -548,22 +552,26 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
+			//$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
 			if (isset($destinazione)) {
+				$a .= "<td><label for='idestinazione'>Destinazione</label></td>\n";
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("sdestinazione",$destinazione)."</td>\n";
 			} else {
+				$a .= "<td><label for='idestinazione'>Destinazione ".add_tooltip("Campo destinazione obbligatorio")."</label></td>\n";
 				$a .= "<td><input type='text' name='idestinazione'/></td>\n";
 				$a .= "<td>".myoptlst("sdestinazione",$vserv_posizioni)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
+			//$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
 			if (isset($data_doc_scarico)) {
+				$a .= "<td><label for='idata_doc_scarico'>Data documento</label></td>\n";
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("sdata_doc_scarico",$data_doc_scarico)."</td>\n";
 			} else {
+				$a .= "<td><label for='idata_doc_scarico'>Data documento ".add_tooltip("Campo data documento obbligatorio")."</label></td>\n";
 				$a .= "<td></td>\n";
 				//$a .= "<td><input name='idata_doc_scarico' type='date' value='' class='date'/></td>\n";
 				$a .= "<td><input type='text' class='datepicker' name='idata_doc_scarico'/></td>\n";

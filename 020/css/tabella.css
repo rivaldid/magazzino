@@ -141,7 +141,8 @@ tr.oddrowcolor:hover td {
 
 .tooltip {
 	outline:none;
-	text-decoration:none; 
+	text-decoration:none;
+	color:red;
 } 
 
 .tooltip span {
