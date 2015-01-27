@@ -26,6 +26,9 @@ $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
 $vserv_posizioni = "SELECT * FROM vserv_posizioni;";
 $vserv_numoda = "SELECT * FROM vserv_numoda;";
 
+$vserv_gruppi_doc = "SELECT * FROM vserv_gruppi_doc;";
+
+
 $vista_magazzino = "SELECT * FROM vista_magazzino;";
 //$vserv_magazzino = "SELECT * FROM vserv_magazzino_id;";
 

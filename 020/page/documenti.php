@@ -61,60 +61,34 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='ifornitore'>Mittente documento</label></td>\n";
-		if (isset($mittente)) {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("sfornitore",$mittente)."</td>\n";
-		} else {
-			$a .= "<td><input type='text' name='imittente'/></td>\n";
-			$a .= "<td>".myoptlst("smittente",$vserv_contatti)."</td>\n";
-		}
+		$a .= "<td><label for='mittente'>Mittente documento</label></td>\n";
+		$a .= "<td><input type='text' name='mittente'/></td>\n";
+		$a .= "<td>".myoptlst("mittente",$vserv_contatti)."</td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
-		if (isset($tipo_doc)) {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("stipo_doc",$tipo_doc)."</td>\n";
-		} else {
-			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
-			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
-		}
+		$a .= "<td><label for='tipo_doc'>Tipo documento</label></td>\n";
+		$a .= "<td><input type='text' name='tipo_doc'/></td>\n";
+		$a .= "<td>".myoptlst("tipo_doc",$vserv_tipodoc)."</td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
-		if (isset($num_doc)) {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("snum_doc",$num_doc)."</td>\n";
-		} else {
-			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
-			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
-		}
+		$a .= "<td><label for='num_doc'>Numero documento</label></td>\n";
+		$a .= "<td><input type='text' name='num_doc'/></td>\n";
+		$a .= "<td>".myoptlst("num_doc",$vserv_numdoc)."</td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='idata_doc'>Data documento</label></td>\n";
-		if (isset($data_doc)) {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("sdata_doc",$data_doc)."</td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			//$a .= "<td><input name='idata_doc' type='date' value='' class='date'/></td>\n";
-			$a .= "<td><input type='text' class='datepicker' name='idata_doc'/></td>\n";
-		}
+		$a .= "<td><label for='data_doc'>Data e documento</label></td>\n";
+		$a .= "<td><input type='text' class='datepicker' name='data_doc'/></td>\n";
+		$a .= "<td><input type='file' name='scansione'/></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+		$a .= "<td><label for='associazione'>Associazione</label></td>\n";
+		$a .= "<td>".myoptlst("associazione",$vserv_gruppi_doc)."</td>\n";
 		$a .= "</tr>\n";
 
-		$a .= "<tr>\n";
-		$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
-		if (isset($nome_doc)) {
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("nome_doc",$nome_doc)."</td>\n";
-		} else {
-			$a .= "<td></td>\n";
-			$a .= "<td><input type='file' name='scansione'/></td>\n";
-		}
-		$a .= "</tr>\n";
 	$a .= "</tbody>\n";
 
 $a .= "</table>\n";

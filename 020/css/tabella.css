@@ -70,7 +70,7 @@ th {
   background: #DAE6F4 url("../imgs/upDown.gif") no-repeat right center;
 
 }
-th[data-sort]{
+th[data-sort] {
   cursor:pointer;
 }
 
@@ -126,11 +126,11 @@ border-style: solid;
 border-color: #a9c6c9;
 }
 
-.oddrowcolor{
+.oddrowcolor {
 background-color:#DDD; /*ex giallo hover tabella in IE 8*/
 }
 
-.evenrowcolor{
+.evenrowcolor {
 background-color:#cccccc; /*ex blu hover tabella in IE 8*/
 }
 
@@ -139,14 +139,41 @@ tr.oddrowcolor:hover td {
   background: #FFF563;
 }
 
-a.tooltip {outline:none; } a.tooltip strong {line-height:30px;}
-a.tooltip:hover {text-decoration:none;}
-a.tooltip span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:300px; line-height:16px; }
-a.tooltip:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
-.callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;} /*CSS3 extras*/
-a.tooltip span { border-radius:4px; box-shadow: 5px 5px 8px #CCC; }
+.tooltip {
+	outline:none;
+	text-decoration:none; 
+} 
 
-div#borderRadius{
+.tooltip span {
+	/*z-index:10;*/
+	display:none;
+	padding:14px 20px;
+	margin-top:-30px;
+	margin-left:28px; 
+	width:300px;
+	height: 40px;
+	/*line-height:16px;*/
+	border-radius:4px; 
+	box-shadow: 5px 5px 8px #CCC;
+}
+
+.tooltip:hover span {
+	display:inline; 
+	position:absolute; 
+	color:#111; 
+	border:1px solid #DCA; 
+	background:#FFFAF0;
+}
+
+.callout {
+	/*z-index:20;*/
+	position:absolute;
+	top:30px;
+	border:0;
+	left:-12px;
+} /*CSS3 extras*/
+
+/*div#borderRadius{
 border: 1px #C2D5EF solid;
 position: relative;
 border-radius: 22px;
@@ -155,7 +182,7 @@ background-color: #DFE5EA;
 width: auto;
 margin: auto;
 padding: 2%;
-}
+}*/
 
 
 

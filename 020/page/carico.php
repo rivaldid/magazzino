@@ -333,8 +333,13 @@ if ($DEBUG) {
 
 // stop
 if (isset($_SESSION['stop'])) {
+	// reset variabili client
+	unset($tags, $quantita, $posizione);
+	unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
 	// reset variabili server
 	reset_sessione();
+	// alert
+	$log .= remesg("Sessione terminata","msg");
 }
 
 // add||save
@@ -359,14 +364,14 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// tripla fornitore - tipo_doc - num_doc
 	if (is_null($fornitore) OR empty($fornitore)) {
-		$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
+		//$log .= remesg("Mancata selezione di un fornitore per l'attivita' in corso (errore 2)","err");
 		$valid = false;
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($tipo_doc) OR empty($tipo_doc)) {
-		$log .= remesg("Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)","err");
+		//$log .= remesg("Mancata selezione di un tipo di documento per l'attivita' in corso (errore 3)","err");
 		$valid = false;
 	} elseif (strcmp($tipo_doc,"Sistema")==0) {
 		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema (errore 4)","err");
@@ -376,7 +381,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($num_doc) OR empty($num_doc)) {
-		$log .= remesg("Mancata selezione di un numero di documento per l'attivita' in corso (errore 5)","err");
+		//$log .= remesg("Mancata selezione di un numero di documento per l'attivita' in corso (errore 5)","err");
 		$valid = false;
 	}
 
@@ -384,34 +389,34 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// data carico
 	if (is_null($data_carico) OR empty($data_carico)) {
-		$log .= remesg("Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 6)","err");
+		//$log .= remesg("Mancata selezione di una data cui far riferimento per l'attivita' in corso (errore 6)","err");
 		$valid = false;
 	}
 
 	// tripla tags - quantita' - posizione
 	if (is_null($tags) OR empty($tags)) {
-		$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
+		//$log .= remesg("Mancato inserimento di tags per contrassegnare la merce in carico (errore 7)","err");
 		$valid = false;
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($quantita) OR empty($quantita)) {
-		$log .= remesg("Mancato inserimento della quantita' per la merce in carico (errore 8)","err");
+		//$log .= remesg("Mancato inserimento della quantita' per la merce in carico (errore 8)","err");
 		$valid = false;
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (!(testinteger($quantita))) {
-		$log .= remesg("Inserimento errato del campo quantita' (errore 9)","err");
+		//$log .= remesg("Inserimento errato del campo quantita' (errore 9)","err");
 		$valid = false;
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	if (is_null($posizione) OR empty($posizione)) {
-		$log .= remesg("Mancato inserimento della posizione in magazzino per la merce in carico (errore 10)","err");
+		//$log .= remesg("Mancato inserimento della posizione in magazzino per la merce in carico (errore 10)","err");
 		$valid = false;
 	}
 
@@ -546,11 +551,13 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
+		//$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
 		if (isset($fornitore)) {
+			$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sfornitore",$fornitore)."</td>\n";
 		} else {
+			$a .= "<td><label for='ifornitore'>Fornitore ".add_tooltip("Campo fornitore obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
 			$a .= "<td>".myoptlst("sfornitore",$vserv_contatti)."</td>\n";
 		}
@@ -568,22 +575,26 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
+		//$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
 		if (isset($tipo_doc)) {
+			$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("stipo_doc",$tipo_doc)."</td>\n";
 		} else {
+			$a .= "<td><label for='itipo_doc'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
 			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
+		//$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
 		if (isset($num_doc)) {
+			$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("snum_doc",$num_doc)."</td>\n";
 		} else {
+			$a .= "<td><label for='inum_doc'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
 			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
 		}
@@ -613,11 +624,13 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
+		//$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 		if (isset($tags)) {
+			$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("stags",$tags)."</td>\n";
 		} else {
+			$a .= "<td><label for='itags'>TAGS merce ".add_tooltip("Campo tags merce obbligatorio")."</label></td>\n";
 			$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
 			$a .= "<td>\n";
 				$a .= remesg("Per bretelle rame/fibra:","msg");
@@ -629,38 +642,45 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
+		//$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
 		if (isset($quantita)) {
 			if (testinteger($quantita)) {
+				$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
 				$a .= "<td></td>\n";
 				$a .= "<td>".input_hidden("squantita",$quantita)."</td>\n";
 			} else {
+				$a .= "<td><label for='iquantita'>Quantita' ".add_tooltip("Campo quantita' di tipo numerico")."</label></td>\n";
 				$a .= "<td><input type='text' name='iquantita'/></td>\n";
 				$a .= "<td></td>\n";
 			}
 		} else {
+			$a .= "<td><label for='iquantita'>Quantita' ".add_tooltip("Campo quantita' obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='iquantita'/></td>\n";
 			$a .= "<td></td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
+		//$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
 		if (isset($posizione)) {
+			$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sposizione",$posizione)."</td>\n";
 		} else {
+			$a .= "<td><label for='iposizione'>Posizione ".add_tooltip("Campo posizione obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='iposizione'/></td>\n";
 			$a .= "<td>".myoptlst("sposizione",$vserv_posizioni)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='idata'>Data carico</label></td>\n";
+		//$a .= "<td><label for='idata'>Data carico</label></td>\n";
 		if (isset($data_carico)) {
+			$a .= "<td><label for='idata'>Data carico</label></td>\n";
 			$a .= "<td></td>\n";
 			$a .= "<td>".input_hidden("sdata_carico",$data_carico)."</td>\n";
 		} else {
+			$a .= "<td><label for='idata'>Data carico ".add_tooltip("Campo data carico obbligatorio")."</label></td>\n";
 			$a .= "<td></td>\n";
 			//$a .= "<td><input name='idata_carico' type='date' value='' class='date'/></td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='idata_carico'/></td>\n";

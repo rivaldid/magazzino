@@ -36,6 +36,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 				2111. finish mds
  * 				2112. write mds
  * 			212. reset variabili server
+ * 			213. alert
  * 		22. test add||save
  *			221. validazione
  * 				2211. id_merce(sentinella)
@@ -275,6 +276,9 @@ if (isset($_SESSION['stop'])) {
 
 	// 212. reset variabili server
 	reset_sessione();
+	
+	// 213. alert
+	$log .= remesg("Sessione terminata","msg");
 }
 
 // 22. test add||save

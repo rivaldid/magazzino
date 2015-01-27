@@ -103,5 +103,8 @@ foreach (array("Piscazzi","Manzo","Muratore","Lorusso","Vilardi") as $name)
 		return $name;
 }
 
+function add_tooltip($msg) {
+return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gif\" />".$msg."</span></a>";
+}
 
 ?>
