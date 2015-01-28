@@ -2,24 +2,36 @@
 
 logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
-//begin mysql
+
+// inizializza risorse
+
+//  mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
 
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$query = "SELECT doc_ingresso,doc_ordine,utente,datacenter.fancydate(data),status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
+// variabili
+if (isset($_GET["debug"]))
+	$DEBUG=true;
+else
+	$DEBUG=false;
+
+$a = "";
+$log = "";
+
+
+// interrogazione
+$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
-$a = "";
 
-//print
+// risultati
 $a .= jsxtable;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
-
 
 $a .= "<thead><tr>\n";
 	$a .= "<th>Utente</th>\n";
@@ -68,10 +80,17 @@ while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 
 	$a .= "</tr>\n";
 
-} // end foreach
+} // end while
 
 $a .= "</tbody>\n</table>\n";
 
+
+// termino risorse
+mysql_free_result($res);
+mysql_close($conn);
+
+
+// stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
@@ -84,10 +103,6 @@ if (isset($log)) {
 echo "</div>\n";
 echo $a;
 
-mysql_free_result($res);
-
-// end mysql
-mysql_close($conn);
 
 ?>
 

@@ -143,6 +143,7 @@ tr.oddrowcolor:hover td {
 	outline:none;
 	text-decoration:none;
 	color:red;
+	font-weight: bold;
 } 
 
 .tooltip span {
