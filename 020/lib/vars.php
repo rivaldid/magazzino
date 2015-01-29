@@ -26,11 +26,9 @@ $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
 $vserv_posizioni = "SELECT * FROM vserv_posizioni;";
 $vserv_numoda = "SELECT * FROM vserv_numoda;";
 
-$vserv_gruppi_doc = "SELECT * FROM vserv_gruppi_doc;";
-
+$vserv_gruppi_doc = "SELECT gruppo,documento,DATE_FORMAT(data,'%d/%m/%Y') FROM vserv_gruppi_doc;";
 
 $vista_magazzino = "SELECT * FROM vista_magazzino;";
-//$vserv_magazzino = "SELECT * FROM vserv_magazzino_id;";
 
 // variabili
 $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Piscazzi'>Piscazzi</option>\n<option value='Manzo'>Manzo</option>\n<option value='Muratore'>Muratore</option>\n</select>\n";
