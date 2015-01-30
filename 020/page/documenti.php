@@ -32,9 +32,20 @@ $upload = true;
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
-if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
-
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
+
+if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
+if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
+
+
+// utente
+/*
+ * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+ * 		$utente = safe($_SESSION['utente']);
+ * else
+ * 		$utente = NULL;
+ */
+$utente = $_SERVER["AUTHENTICATE_UID"];
 
 // id_registro
 if (isset($_SESSION['id_registro'])AND(!empty($_SESSION['id_registro'])))
@@ -96,6 +107,12 @@ if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
 else
 	$scansione = NULL;
 	
+
+// nuovo inserimento
+$log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
+if ($DEBUG) $log .= "&debug";
+$log .= "'>\n<input type='submit' name='add' value='Aggiungi nuovo'/>\n</form>\n";
+	
 	
 
 // 2. test bottoni
@@ -123,6 +140,61 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_SESSION['save'],"debug");
 	
 	// validazione
+	
+	// utente
+	if (is_null($utente) OR empty($utente)) {
+		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso","err");
+		$valid = false;
+	}
+	if(!(in_array($utente, $enabled_users))){
+		$log .= remesg("Utente non abilitato per l'attivita' in oggetto","err");
+		$valid = false;
+	}
+
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
+	// id_registro
+	if (is_null($id_registro) OR empty($id_registro)) {
+		$log .= remesg("Selezione documento non andata a buon fine, ricominciare l'attivita'","err");
+		$valid = false;
+	}
+
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+
+	// mittente
+	if (is_null($mittente) OR empty($mittente)) {
+		$log .= remesg("Mancato inserimento del mittente per il documento","err");
+		$valid = false;
+	}
+
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
+	// tipo
+	if (is_null($tipo) OR empty($tipo)) {
+		$log .= remesg("Mancata selezione di un tipo di documento","err");
+		$valid = false;
+	} elseif (strcmp($tipo,"Sistema")==0) {
+		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema","err");
+		$valid = false;
+	}
+
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+
+	// numero
+	if (is_null($numero) OR empty($numero)) {
+		$log .= remesg("Mancata selezione di un numero di documento","err");
+		$valid = false;
+	}
+
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+
+	// data
+	if (is_null($data) OR empty($data)) {
+		$log .= remesg("Mancata selezione di una data cui far riferimento il documento","err");
+		$valid = false;
+	}
+
+	
 	
 	// test valid
 	if ($valid) {
@@ -159,40 +231,45 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= "<tbody>\n";
 
 				$a .= "<tr>\n";
-				$a .= "<td><label for='mittente'>Mittente documento</label></td>\n";
 				if (isset($mittente)) {
+					$a .= "<td><label for='mittente'>Mittente documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("mittente",$mittente)."</td>\n";
 				} else {
+					$a .= "<td><label for='mittente'>Mittente documento ".add_tooltip("Campo mittente documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='imittente'></td>\n";
 					$a .= "<td>".myoptlst("smittente",$vserv_contatti)."</td>\n";
 				}
 				$a .= "</tr>\n";
 				
 				$a .= "<tr>\n";
-				$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
+				
 				if (isset($tipo)) {
+					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("tipo",$tipo)."</td>\n";
 				} else {
+					$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
 					$a .= "<td><input type='text' name='itipo'></td>\n";
 					$a .= "<td>".myoptlst("stipo",$vserv_tipodoc)."</td>\n";
 				}
 				$a .= "</tr>\n";
 
 				$a .= "<tr>\n";
-				$a .= "<td><label for='numero'>Numero documento</label></td>\n";
 				if (isset($numero)) {
+					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("numero",$numero)."</td>\n";
 				} else {
+					$a .= "<td><label for='numero'>Numero documento</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
 					$a .= "<td>".myoptlst("snumero",$vserv_numdoc)."</td>\n";
 				}
 				$a .= "</tr>\n";
 
 				$a .= "<tr>\n";
-				$a .= "<td><label for='data'>Data documento</label></td>\n";
 				if (isset($data)) {
+					$a .= "<td><label for='data'>Data documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("idata",$data)."</td>\n";
 				} else {
+					$a .= "<td><label for='data'>Data documento ".add_tooltip("Campo data documento obbligatorio")."</label></td>\n";
 					$a .= "<td colspan='2'><input type='text' class='datepicker' name='sdata'/></td>\n";
 				}
 				$a .= "</tr>\n";
@@ -260,7 +337,7 @@ if (is_null($a) OR empty($a)) {
 
 	while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 		$a .= "<tr>\n";
-		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti_add");
+		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		foreach ($row as $cname => $cvalue)
@@ -277,14 +354,14 @@ if (is_null($a) OR empty($a)) {
 				
 				case "2":
 					if ($data != NULL) {
-						$a .= noinput_hidden("data",$data)."\n";
+						$a .= noinput_hidden("sdata",$data)."\n";
 						$a .= "<td>".$cvalue."</td>\n";
 					} else
 						$a .= "<td><input type='submit' name='add' value='Aggiungi data'/></td>\n";
 					break;	
 									
 				case "3":
-					$a .= "<td>".input_hidden("mittente",$cvalue)."</td>\n";
+					$a .= "<td>".input_hidden("smittente",$cvalue)."</td>\n";
 					break;
 				
 				case "4":
@@ -292,15 +369,15 @@ if (is_null($a) OR empty($a)) {
 					break;
 
 				case "5":
-					$a .= noinput_hidden("tipo",$cvalue)."\n";
+					$a .= noinput_hidden("stipo",$cvalue)."\n";
 					break;
 
 				case "6":
-					$a .= noinput_hidden("numero",$cvalue)."\n";
+					$a .= noinput_hidden("snumero",$cvalue)."\n";
 					break;
 				
 				case "7":
-					$a .= noinput_hidden("gruppo",$cvalue)."\n";
+					$a .= noinput_hidden("sgruppo",$cvalue)."\n";
 					break;
 
 				case "8":
@@ -325,12 +402,15 @@ if (is_null($a) OR empty($a)) {
 	
 }
 
-// termino risorse
+
+
+// 4. termino risorse
 mysql_close($conn);
 session_write_close();
 
 
-// stampo
+
+// 5. stampo
 echo "<div id=\"log\">\n";
 echo remesg("Notifiche","tit");
 echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");

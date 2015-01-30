@@ -8,6 +8,17 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * destinazione, data_doc_scarico, data_scarico, note_scarico,@myvar);
  *
  * lo SCARICO ritorna un valore, 0 se andato a buon fine 1 altrimenti
+ * 
+ * valorizzazione variabili:
+ * le variabili provengono da $_SESSION
+ * possono essere valorizzare da ingresso diretto $_SESSION['myvar']
+ * possono essere valorizzare da input manuale $_SESSION['imyvar']
+ * possono essere valorizzare da input selezionato $_SESSION['smyvar']
+ * $myvar proviene da $_SESSION['myvar'] in un primo istante
+ * $myvar viene sovrascritto da $_SESSION['imyvar'] o $_SESSION['smyvar']
+ * se $_SESSION['imyvar'] non definita
+ * input fase: $_SESSION['myvar'] or $_SESSION['imyvar'] or $_SESSION['smyvar']
+ * output fase: $myvar
  *
  *
  *
