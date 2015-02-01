@@ -193,13 +193,26 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$log .= remesg("Mancata selezione di una data cui far riferimento il documento","err");
 		$valid = false;
 	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
+	// scansione
+	if (empty($_FILES['scansione']['name'])) {
+		$log .= remesg("Nessun file selezionato","err");
+		$valid = false;
+	}
+	if ($_FILES['scansione']['size'] == 0) {
+		$log .= remesg("File selezionato vuoto o non valido","err");
+		$valid = false;
+	}
+	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 	
 	
 	// test valid
 	if ($valid) {
 		
-		echo "mo faccio la query";
+		$log .= remesg("mo faccio la query","warn");
 		
 	} else {
 		
