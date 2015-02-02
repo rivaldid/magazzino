@@ -81,16 +81,6 @@ else {
 		$numero = NULL;
 }
 
-// gruppo
-if (isset($_SESSION['igruppo'])AND(!empty($_SESSION['igruppo'])))
-	$gruppo = safe($_SESSION['igruppo']);
-else {
-	if (isset($_SESSION['sgruppo'])AND(!empty($_SESSION['sgruppo'])))
-		$gruppo = safe($_SESSION['sgruppo']);
-	else
-		$gruppo = NULL;
-}
-
 // data
 if (isset($_SESSION['idata'])AND(!empty($_SESSION['idata'])))
 	$data = safe($_SESSION['idata']);
@@ -99,6 +89,24 @@ else {
 		$data = safe($_SESSION['sdata']);
 	else
 		$data = NULL;
+}
+
+// selgruppo: link_id_registro - gruppo
+if (isset($_SESSION['selgruppo'])AND(!empty($_SESSION['selgruppo']))) {
+	$foo = unserialize($_SESSION['selgruppo']);
+	$link_id_registro = safe($foo[0]);
+	$gruppo = safe($foo[1]);
+} else {
+	$link_id_registro = NULL;
+	$gruppo = NULL;
+}
+
+if ($DEBUG) {
+	if (isset($link_id_registro)) $log .= remesg("id_registro da cui prendere il gruppo: ".$link_id_registro,"debug");
+	else $log .= remesg("link_id_registro nullo","debug");
+		
+	if (isset($gruppo)) $log .= remesg("Valore gruppo ottenuto da lista di selezione: ".$gruppo,"debug");
+	else $log .= remesg("gruppo nullo","debug");
 }
 
 // scansione
@@ -200,8 +208,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	if (empty($_FILES['scansione']['name'])) {
 		$log .= remesg("Nessun file selezionato","err");
 		$valid = false;
-	}
-	if ($_FILES['scansione']['size'] == 0) {
+	} elseif ($_FILES['scansione']['size'] == 0) {
 		$log .= remesg("File selezionato vuoto o non valido","err");
 		$valid = false;
 	}
@@ -257,10 +264,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				
 				if (isset($tipo)) {
-					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
+					$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("tipo",$tipo)."</td>\n";
 				} else {
-					$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
+					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='itipo'></td>\n";
 					$a .= "<td>".myoptlst("stipo",$vserv_tipodoc)."</td>\n";
 				}
@@ -268,10 +275,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				$a .= "<tr>\n";
 				if (isset($numero)) {
-					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
+					$a .= "<td><label for='numero'>Numero documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("numero",$numero)."</td>\n";
 				} else {
-					$a .= "<td><label for='numero'>Numero documento</label></td>\n";
+					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
 					$a .= "<td>".myoptlst("snumero",$vserv_numdoc)."</td>\n";
 				}
@@ -288,10 +295,11 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "</tr>\n";
 
 				$a .= "<tr>\n";
-				$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
 				if (isset($scansione)) {
+					$a .= "<td><label for='scansione'>Scansione documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("scansione",$scansione)."</td>\n";
 				} else {
+					$a .= "<td><label for='scansione'>Scansione documento ".add_tooltip("Selezionare una scansione del documento")."</label></td>\n";
 					$a .= "<td colspan='2'><input type='file' name='scansione'/></td>\n";
 				}
 				$a .= "</tr>\n";
@@ -299,15 +307,24 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
 				if (isset($gruppo)) {
-					$a .= "<td colspan='2'>".input_hidden("gruppo",$gruppo)."</td>\n";
+					$a .= noinput_hidden("gruppo",$gruppo);
+					$temp = single_field_query("SELECT COUNT(*) FROM REGISTRO WHERE gruppo='".$gruppo."';");
+					$a .= "<td colspan='2'>";
+					if ($temp == "1") $a .= "se stesso";
+					else $a .= $temp." documenti";
+					$a .= "</td>\n";
 				} else {
 					$a .= "<td colspan='2'>\n";
-						$a .= "<select name='gruppo'>\n";
+						$a .= "<select name='selgruppo'>\n";
 						$a .= "<option selected='selected' value=''>Blank</option>\n";
 						$res = mysql_query($vserv_gruppi_doc);
 						if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 						while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-							$a .= "<option value='".safetohtml($row[0])."'>".safetohtml($row[1])." (del ".safetohtml($row[2]).")</option>\n";
+							$foo[0] = safetohtml($row[0]);
+							$foo[1] = safetohtml($row[1]);
+							$a .= "<option value='".htmlentities(serialize($foo))."'>".safetohtml($row[2]);
+							if (!empty($row[3])) $a .= " (del ".safetohtml($row[3]).")";
+							$a .= "</option>\n";
 						}
 						mysql_free_result($res);
 						$a .= "</select>";

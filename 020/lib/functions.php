@@ -45,6 +45,15 @@ $opt .= "</select>";
 return $opt;
 }
 
+function single_field_query($query) {
+$res = mysql_query($query);
+if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+$output = mysql_fetch_array($res, MYSQL_NUM);
+mysql_free_result($res);
+return $output[0];
+}
+
+
 function isoptlst($value) {
 	//if (preg_match("<option selected='selected' value=''>Blank</option>",$value))
 	$mypattern = "<option selected='selected' value=''>Blank</option>";

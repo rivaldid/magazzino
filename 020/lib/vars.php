@@ -26,7 +26,7 @@ $vserv_numdoc = "SELECT * FROM vserv_numdoc;";
 $vserv_posizioni = "SELECT * FROM vserv_posizioni;";
 $vserv_numoda = "SELECT * FROM vserv_numoda;";
 
-$vserv_gruppi_doc = "SELECT gruppo,documento,DATE_FORMAT(data,'%d/%m/%Y') FROM vserv_gruppi_doc;";
+$vserv_gruppi_doc = "SELECT id_registro,gruppo,documento,DATE_FORMAT(data,'%d/%m/%Y') FROM vserv_gruppi_doc;";
 
 $vista_magazzino = "SELECT * FROM vista_magazzino;";
 
