@@ -91,17 +91,7 @@ mysql_close($conn);
 
 
 // stampo
-echo "<div id=\"log\">\n";
-echo remesg("Notifiche","tit");
-echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
-if (isset($log)) {
-	if ($log == "")
-		echo remesg($msg18,"msg");
-	else
-		echo $log;
-}
-echo "</div>\n";
-echo $a;
+echo makepage($a, $log);
 
 
 ?>

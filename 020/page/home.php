@@ -1,15 +1,13 @@
 <?php
+
 logging2(occhiomalocchio(basename(__FILE__)),accesslog);
-echo "<div id=\"log\">\n";
-echo remesg("Notifiche","tit");
-echo remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
-if (isset($log)) {
-	if ($log == "")
-		echo remesg($msg18,"msg");
-	else
-		echo $log;
-}
-echo "</div>\n";
+
+$a = ""; $log = "";
+
+$a .= "<h1>Gestione Magazzino DataCenter Torino</h1>\n";
+$a .= "<a href=\"/GMDCTO\"><img src=\"imgs/maga.png\" alt=\"Homepage\" /></a>\n";
+
+echo makepage($a, $log);
+
 ?>
-<h1>Gestione Magazzino DataCenter Torino</h1>
-<a href="/GMDCTO"><img src="imgs/maga.png" alt="Homepage" /></a>
+

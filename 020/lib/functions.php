@@ -116,4 +116,19 @@ function add_tooltip($msg) {
 return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gif\" />".$msg."</span></a>";
 }
 
+function makepage($a, $log) {
+$o = "<div id=\"log\">\n";
+$o .= remesg("Notifiche","tit");
+$o .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+if (isset($log)) {
+	if (empty($log))
+		$o .= remesg("Nessuna notifica da visualizzare","msg");
+	else
+		$o .= $log;
+}
+$o .= "</div>\n";
+$o .= $a;
+return $o;
+}
+
 ?>
