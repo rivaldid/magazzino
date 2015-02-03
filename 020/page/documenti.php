@@ -304,8 +304,18 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				}
 				$a .= "</tr>\n";
 
+				// gruppo
 				$a .= "<tr>\n";
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
+				
+				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
+					$a .= "<td colspan='2'>";
+					
+					$a .= "</td>\n";
+				}
+				
+				
+				// ************************************************************
 				if (isset($gruppo)) {
 					$a .= noinput_hidden("gruppo",$gruppo);
 					$temp = single_field_query("SELECT COUNT(*) FROM REGISTRO WHERE gruppo='".$gruppo."';");
@@ -330,6 +340,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 						$a .= "</select>";
 					$a .= "</td>\n";
 				}
+				// ************************************************************
+				
+				
+				
 				$a .= "</tr>\n";
 
 			$a .= "</tbody>\n";
