@@ -60,19 +60,20 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * 				2221. SCARICO
  * 				2222. logging
  * 				2223. test ritorno
- * 				2224. reset mysql connection
- * 				2225. MDS
- * 					22251. test not exists
- * 						222511. create
- * 					22252. append
- * 					22253. reset id_merce - tags - posizione - maxquantita
- * 					22254. reset quantita - destinazione
- * 				2226. test save
- * 					22261. finish mds
- * 					22262. write mds
- * 					22263. reset sessione server
- *			223. test not valid
- * 				2231. form input scarico
+ * 				2224. MDS
+ * 					22241. test not exists
+ * 						222411. create
+ * 					22242. append
+ * 					22243. reset id_merce - tags - posizione - maxquantita
+ * 					22244. reset quantita - destinazione
+ * 				2225. test save
+ * 					22251. finish mds
+ * 					22252. write mds
+ * 					22253. reset sessione server
+ * 				2226. scarico non riuscito
+ * 			223. reset mysql connection
+ *			224. test not valid
+ * 				2241. form input scarico
  *
  *	3. test contenuti
  *
@@ -387,20 +388,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			$log .= remesg("Scarico completato correttamente","msg");
 
-			// 2224. reset mysql connection
-			mysql_close($conn);
-			$conn = mysql_connect('localhost','magazzino','magauser');
-			if (!$conn) die('Errore di connessione: '.mysql_error());
-			$dbsel = mysql_select_db('magazzino', $conn);
-			if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+			// 2224. MDS
 
-
-			// 2225. MDS
-
-			// 22251. test not exists
+			// 22241. test not exists
 			if (!(isset($_SESSION['mds'])) OR empty($_SESSION['mds'])) {
 
-				// 222511. create
+				// 222411. create
 				ob_start();
 				include 'lib/template_mds1.php';
 				$corpo_html = ob_get_clean();
@@ -414,7 +407,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			}
 
-			// 22252. append
+			// 22242. append
 			ob_start();
 			include 'lib/template_mds2.php';
 			$corpo_html = ob_get_clean();
@@ -426,20 +419,20 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			unset($corpo_html);
 			$log .= remesg("Aggiunti valori al modulo di scarico","msg");
 
-			// 22253. reset id_merce - tags - posizione - maxquantita
+			// 22243. reset id_merce - tags - posizione - maxquantita
 			unset($_SESSION['id_merce'],$_SESSION['tags'],$_SESSION['posizione'],$_SESSION['maxquantita']);
 
-			// 22254. reset quantita - destinazione
+			// 22244. reset quantita - destinazione
 			unset($_SESSION['quantita'],$_SESSION['destinazione']);
 			unset($_SESSION['iquantita'],$_SESSION['idestinazione']);
 			unset($_SESSION['squantita'],$_SESSION['sdestinazione']);
 
 			// lascio richiedente, data_doc_scarico, note
 
-			// 2226. test save
+			// 2225. test save
 			if(isset($_SESSION['save'])) {
 
-				// 22261. finish mds
+				// 22251. finish mds
 				ob_start();
 				include 'lib/template_mds3.php';
 				$corpo_html = ob_get_clean();
@@ -460,7 +453,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				unset($corpo_html);
 				$log .= remesg("Terminato modulo di scarico","msg");
 
-				// 22262. write mds
+				// 22252. write mds
 				$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
 				$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
 				fwrite($fp,$_SESSION['mds']);
@@ -468,22 +461,30 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
 
-				// 22263. reset sessione server
+				// 22253. reset sessione server
 				reset_sessione();
 
 			}
 
 		} else {
-
+			
+			// 2226. scarico non riuscito
 			logging2("-- ultimo scarico non riuscito",splog);
 			$log .= remesg("Scarico non riuscito, ripete l'operazione","err");
 
 		}
+	
+	// 223. reset mysql connection
+	mysql_close($conn);
+	$conn = mysql_connect('localhost','magazzino','magauser');
+	if (!$conn) die('Errore di connessione: '.mysql_error());
+	$dbsel = mysql_select_db('magazzino', $conn);
+	if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-	// 223. test not valid
+	// 224. test not valid
 	} else {
 
-		// 2231. form input scarico
+		// 2241. form input scarico
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
