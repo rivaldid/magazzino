@@ -47,11 +47,13 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
  */
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
+/*
 // id_registro
 if (isset($_SESSION['id_registro'])AND(!empty($_SESSION['id_registro'])))
 	$id_registro = safe($_SESSION['id_registro']);
 else
 	$id_registro = NULL;
+*/
 
 // tripla mittente - tipo - numero
 if (isset($_SESSION['imittente'])AND(!empty($_SESSION['imittente'])))
@@ -91,11 +93,10 @@ else {
 		$data = NULL;
 }
 
-// selgruppo: link_id_registro - gruppo
-if (isset($_SESSION['selgruppo'])AND(!empty($_SESSION['selgruppo']))) {
-	$foo = unserialize($_SESSION['selgruppo']);
-	$link_id_registro = safe($foo[0]);
-	$gruppo = safe($foo[1]);
+// link_id_registro - gruppo
+if (isset($_SESSION['link_id_registro'])AND(!empty($_SESSION['link_id_registro']))) {
+	$link_id_registro = safe($_SESSION['link_id_registro']);
+	$gruppo = single_field_query("SELECT gruppo FROM REGISTRO WHERE id_registro='".$link_id_registro."';");
 } else {
 	$link_id_registro = NULL;
 	$gruppo = NULL;
@@ -104,8 +105,8 @@ if (isset($_SESSION['selgruppo'])AND(!empty($_SESSION['selgruppo']))) {
 if ($DEBUG) {
 	if (isset($link_id_registro)) $log .= remesg("id_registro da cui prendere il gruppo: ".$link_id_registro,"debug");
 	else $log .= remesg("link_id_registro nullo","debug");
-		
-	if (isset($gruppo)) $log .= remesg("Valore gruppo ottenuto da lista di selezione: ".$gruppo,"debug");
+
+	if (isset($gruppo)) $log .= remesg("gruppo ottenuto: ".$gruppo,"debug");
 	else $log .= remesg("gruppo nullo","debug");
 }
 
@@ -161,17 +162,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 	
-	// id_registro
-	if (is_null($id_registro) OR empty($id_registro)) {
-		$log .= remesg("Selezione documento non andata a buon fine, ricominciare l'attivita'","err");
-		$valid = false;
-	}
-
-	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-
 	// mittente
 	if (is_null($mittente) OR empty($mittente)) {
-		$log .= remesg("Mancato inserimento del mittente per il documento","err");
+		//$log .= remesg("Mancato inserimento del mittente per il documento","err");
 		$valid = false;
 	}
 
@@ -179,7 +172,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	
 	// tipo
 	if (is_null($tipo) OR empty($tipo)) {
-		$log .= remesg("Mancata selezione di un tipo di documento","err");
+		//$log .= remesg("Mancata selezione di un tipo di documento","err");
 		$valid = false;
 	} elseif (strcmp($tipo,"Sistema")==0) {
 		$log .= remesg("La selezione del tipo di documento Sistema e' riservata alle sole attivita' di sistema","err");
@@ -190,7 +183,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// numero
 	if (is_null($numero) OR empty($numero)) {
-		$log .= remesg("Mancata selezione di un numero di documento","err");
+		//$log .= remesg("Mancata selezione di un numero di documento","err");
 		$valid = false;
 	}
 
@@ -198,7 +191,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// data
 	if (is_null($data) OR empty($data)) {
-		$log .= remesg("Mancata selezione di una data cui far riferimento il documento","err");
+		//$log .= remesg("Mancata selezione di una data cui far riferimento il documento","err");
 		$valid = false;
 	}
 	
@@ -219,10 +212,110 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	// test valid
 	if ($valid) {
 		
-		$log .= remesg("mo faccio la query","warn");
+		// case $valid
+
+		// scansione
+		if (empty($_FILES['scansione']['name'])) {
+			$log .= remesg("Nessun file selezionato","warn");
+		} else
+		{
+			if ($_FILES['scansione']['size'] > 0) {
+
+				/*
+				// exists_db
+				$q7 = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
+				$res_q7 = mysql_query($q7);
+				if (!$res_q7) die('Errore nell\'interrogazione del db: '.mysql_error());
+				$exists_db = mysql_fetch_assoc($res_q7);
+				mysql_free_result($res_q7);
+
+				if ($exists_db['risultato'] == "1") {
+					$log .= remesg("Nessun file caricato perche' presente sul db","warn");
+					$upload = false;
+				}
+				*/
+
+				// exists_file
+				$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
+				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
+				if (file_exists(registro.$filename)) {
+					$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
+					$upload = false;
+				}
+
+				// upload
+				if ($upload == true) {
+					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
+					if ($moved)
+					  $log .= remesg("Scansione del documento caricata correttamente","msg");
+					else
+					  $log .= remesg("Scansione del documento non caricata","err");
+				} else
+					$scansione = NULL;
+					
+		
+				// sp
+				if (is_null($gruppo) OR empty($gruppo)) {
+					$new_gruppo = single_field_query("SELECT MAX(gruppo)+1 FROM REGISTRO;");
+
+
+					// call_link
+					$call_link = "CALL aggiornamento_registro('{$link_id_registro}','{$new_gruppo}',NULL,NULL,@myvar)";
+					
+					if ($DEBUG) $log .= remesg($call_link,"debug");
+					$res = mysql_query($call_link);
+
+					if ($res)
+						$log .= remesg("Collegamento a documento creato nel database","msg");
+					else
+						die('Errore nell\'invio dei dati al db: '.mysql_error());
+					
+					logging2($call_link,splog);	
+					mysql_free_result($res);
+					
+					
+					// call
+					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar)";
+				
+					if ($DEBUG) $log .= remesg($call,"debug");
+					$res = mysql_query($call);
+
+					if ($res)
+						$log .= remesg("Documento creato nel database","msg");
+					else
+						die('Errore nell\'invio dei dati al db: '.mysql_error());
+					
+					logging2($call,splog);
+					
+				} else {
+					
+					// single call
+					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar)";
+					
+					if ($DEBUG) $log .= remesg($call,"debug");
+					$res = mysql_query($call);
+
+					if ($res)
+						$log .= remesg("Documento creato nel database","msg");
+					else
+						die('Errore nell\'invio dei dati al db: '.mysql_error());
+					
+					logging2($call,splog);
+					
+				}
+				
+				// reset
+				unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
+				reset_sessione();
+
+
+			} // end test size>0
+
+		} // end test name file not empty
 		
 	} else {
 		
+		// case not $valid
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
@@ -253,7 +346,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				if (isset($mittente)) {
 					$a .= "<td><label for='mittente'>Mittente documento</label></td>\n";
-					$a .= "<td colspan='2'>".input_hidden("mittente",$mittente)."</td>\n";
+					$a .= "<td colspan='2'>".input_hidden("smittente",$mittente)."</td>\n";
 				} else {
 					$a .= "<td><label for='mittente'>Mittente documento ".add_tooltip("Campo mittente documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='imittente'></td>\n";
@@ -265,7 +358,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				
 				if (isset($tipo)) {
 					$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
-					$a .= "<td colspan='2'>".input_hidden("tipo",$tipo)."</td>\n";
+					$a .= "<td colspan='2'>".input_hidden("stipo",$tipo)."</td>\n";
 				} else {
 					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='itipo'></td>\n";
@@ -276,7 +369,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				if (isset($numero)) {
 					$a .= "<td><label for='numero'>Numero documento</label></td>\n";
-					$a .= "<td colspan='2'>".input_hidden("numero",$numero)."</td>\n";
+					$a .= "<td colspan='2'>".input_hidden("snumero",$numero)."</td>\n";
 				} else {
 					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
@@ -287,7 +380,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				if (isset($data)) {
 					$a .= "<td><label for='data'>Data documento</label></td>\n";
-					$a .= "<td colspan='2'>".input_hidden("idata",$data)."</td>\n";
+					$a .= "<td colspan='2'>".input_hidden("sdata",$data)."</td>\n";
 				} else {
 					$a .= "<td><label for='data'>Data documento ".add_tooltip("Campo data documento obbligatorio")."</label></td>\n";
 					$a .= "<td colspan='2'><input type='text' class='datepicker' name='sdata'/></td>\n";
@@ -307,43 +400,33 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				// gruppo
 				$a .= "<tr>\n";
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
-				
+				$a .= "<td colspan='2'>";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
-					$a .= "<td colspan='2'>";
 					
-					$a .= "</td>\n";
-				}
+					$a .= single_field_query("SELECT documento FROM vserv_gruppi_doc WHERE id_registro='".$link_id_registro."';");
+					if ((isset($gruppo)AND(!empty($gruppo))))
+						$a .= noinput_hidden("gruppo",$gruppo);
+					else 
+						$a .= noinput_hidden("link_id_registro",$link_id_registro);
 				
-				
-				// ************************************************************
-				if (isset($gruppo)) {
-					$a .= noinput_hidden("gruppo",$gruppo);
-					$temp = single_field_query("SELECT COUNT(*) FROM REGISTRO WHERE gruppo='".$gruppo."';");
-					$a .= "<td colspan='2'>";
-					if ($temp == "1") $a .= "se stesso";
-					else $a .= $temp." documenti";
-					$a .= "</td>\n";
 				} else {
-					$a .= "<td colspan='2'>\n";
-						$a .= "<select name='selgruppo'>\n";
-						$a .= "<option selected='selected' value=''>Blank</option>\n";
-						$res = mysql_query($vserv_gruppi_doc);
-						if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
-						while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-							$foo[0] = safetohtml($row[0]);
-							$foo[1] = safetohtml($row[1]);
-							$a .= "<option value='".htmlentities(serialize($foo))."'>".safetohtml($row[2]);
-							if (!empty($row[3])) $a .= " (del ".safetohtml($row[3]).")";
-							$a .= "</option>\n";
-						}
-						mysql_free_result($res);
-						$a .= "</select>";
-					$a .= "</td>\n";
+					
+					$a .= "<select name='link_id_registro'>\n";
+					$a .= "<option selected='selected' value=''>Blank</option>\n";
+					$res = mysql_query($vserv_gruppi_doc);
+					if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+					
+					while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+						$a .= "<option value='".$row[0]."'>".$row[2];
+						if (!empty($row[3])) $a .= " (del ".$row[3].")";
+						$a .= "</option>\n";
+					}
+					
+					mysql_free_result($res);
+					$a .= "</select>";
+					
 				}
-				// ************************************************************
-				
-				
-				
+				$a .= "</td>\n";				
 				$a .= "</tr>\n";
 
 			$a .= "</tbody>\n";
