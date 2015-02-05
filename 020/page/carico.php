@@ -706,7 +706,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td>".input_hidden("snum_oda",$num_oda)."</td>\n";
 		} else {
 			$a .= "<td><input type='text' name='inum_oda'/></td>\n";
-			$a .= "<td>".myoptlst("num_oda",$vserv_numoda)."</td>\n";
+			$a .= "<td>".myoptlst("inum_oda",$vserv_numoda)."</td>\n";
 		}
 		$a .= "</tr>\n";
 

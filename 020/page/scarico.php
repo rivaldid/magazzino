@@ -113,6 +113,8 @@ $a = "";
 $log = "";
 $valid = true;
 
+$log .= remesg("Visualizza <a href=\"?page=lista_scarichi&ultimi\">ultimi scarichi</a> o <a href=\"?page=lista_scarichi\">tutti</a>","msg");
+
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 

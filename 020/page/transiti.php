@@ -23,7 +23,7 @@ $log = "";
 
 
 // interrogazione
-$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,tags,quantita,note,ordine FROM TRANSITI;";
+$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
@@ -35,10 +35,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 $a .= "<thead><tr>\n";
 	$a .= "<th>Utente</th>\n";
-	$a .= "<th>Data</th>\n";
+	$a .= "<th>Data transito</th>\n";
 	$a .= "<th>Direzione</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Documento</th>\n";
+	$a .= "<th>Data documento</th>\n";
 	$a .= "<th>TAGS</th>\n";
 	$a .= "<th>Quantita'</th>\n";
 	$a .= "<th>Note</th>\n";
