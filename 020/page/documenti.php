@@ -198,12 +198,14 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// scansione
-	if (empty($_FILES['scansione']['name'])) {
-		$log .= remesg("Nessun file selezionato","err");
-		$valid = false;
-	} elseif ($_FILES['scansione']['size'] == 0) {
-		$log .= remesg("File selezionato vuoto o non valido","err");
-		$valid = false;
+	if (is_null($scansione) OR empty($scansione)) {
+		if (empty($_FILES['scansione']['name'])) {
+			$log .= remesg("Nessun file selezionato","err");
+			$valid = false;
+		} elseif ($_FILES['scansione']['size'] == 0) {
+			$log .= remesg("File selezionato vuoto o non valido","err");
+			$valid = false;
+		}
 	}
 	
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
@@ -260,7 +262,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 
 					// call_link
-					$call_link = "CALL aggiornamento_registro('{$link_id_registro}','{$new_gruppo}',NULL,NULL,@myvar)";
+					$call_link = "CALL aggiornamento_registro('{$link_id_registro}','{$new_gruppo}',NULL,NULL,@myvar);";
 					
 					if ($DEBUG) $log .= remesg($call_link,"debug");
 					$res = mysql_query($call_link);
@@ -275,7 +277,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 					
 					
 					// call
-					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar)";
+					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
 				
 					if ($DEBUG) $log .= remesg($call,"debug");
 					$res = mysql_query($call);
@@ -290,7 +292,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					
 					// single call
-					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar)";
+					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
 					
 					if ($DEBUG) $log .= remesg($call,"debug");
 					$res = mysql_query($call);
@@ -509,7 +511,7 @@ if (is_null($a) OR empty($a)) {
 
 				case "8":
 					if ($cvalue != NULL) {
-						$a .= noinput_hidden("file",$cvalue)."\n";
+						$a .= noinput_hidden("scansione",$cvalue)."\n";
 						$a .= "<td><a href=\"".registro.$cvalue."\">".safetohtml($cvalue)."</a></td>\n";
 					} else
 						$a .= "<td><input type='submit' name='add' value='Aggiungi scansione'/></td>\n";
