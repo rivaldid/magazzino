@@ -120,7 +120,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-
+	
 $a = "";
 $log = "";
 
@@ -133,6 +133,25 @@ if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
+if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
+
+// reintegro
+if (isset($_GET["reintegro"])) {
+	$_SESSION['ifornitore'] = "Accessi";
+	$_SESSION['itipo_doc'] = "Reintegro";
+	$_SESSION['inum_doc'] = single_field_query("SELECT next_reintegro_doc();");
+	$_SESSION['idata_doc'] = date('Y-m-d');
+	
+	if ($DEBUG) {
+		$log .= remesg("Reintegro, valore fornitore: ".$_SESSION['ifornitore'],"debug");
+		$log .= remesg("Reintegro, valore tipo_doc: ".$_SESSION['itipo_doc'],"debug");
+		$log .= remesg("Reintegro, valore num_doc: ".$_SESSION['inum_doc'],"debug");
+		$log .= remesg("Reintegro, valore data_doc: ".$_SESSION['idata_doc'],"debug");
+	}
+}
+
+$log .= remesg("Aggiungi un <a href=\"?page=carico&reintegro\">reintegro</a> merce","msg");
+
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 // tripla fornitore - tipo_doc - num_doc
