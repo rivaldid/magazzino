@@ -12,7 +12,8 @@ define("registro","/GMDCTO/registro/");
 define("registro_mds","/GMDCTO/registro_mds/");
 define("splog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/log/sp.log");
 define("accesslog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/log/login.log");
-define ("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
+define("lib_mpdf57","../020/lib/MPDF57/mpdf.php");
+define("ricerche","/GMDCTO/ricerche/");
 
 // query
 define("vserv_magazzino", "SELECT * FROM vserv_magazzino_id;");

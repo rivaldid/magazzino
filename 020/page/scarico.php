@@ -8,7 +8,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
  * destinazione, data_doc_scarico, data_scarico, note_scarico,@myvar);
  *
  * lo SCARICO ritorna un valore, 0 se andato a buon fine 1 altrimenti
- * 
+ *
  * valorizzazione variabili:
  * le variabili provengono da $_SESSION
  * possono essere valorizzare da ingresso diretto $_SESSION['myvar']
@@ -290,7 +290,7 @@ if (isset($_SESSION['stop'])) {
 
 	// 212. reset variabili server
 	reset_sessione();
-	
+
 	// 213. alert
 	$log .= remesg("Sessione terminata","msg");
 }
@@ -469,13 +469,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			}
 
 		} else {
-			
+
 			// 2226. scarico non riuscito
 			logging2("-- ultimo scarico non riuscito",splog);
 			$log .= remesg("Scarico non riuscito, ripete l'operazione","err");
 
 		}
-	
+
 	// 223. reset mysql connection
 	mysql_close($conn);
 	$conn = mysql_connect('localhost','magazzino','magauser');

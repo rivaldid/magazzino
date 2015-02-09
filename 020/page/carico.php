@@ -120,7 +120,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-	
+
 $a = "";
 $log = "";
 
@@ -141,7 +141,7 @@ if (isset($_GET["reintegro"])) {
 	$_SESSION['itipo_doc'] = "Reintegro";
 	$_SESSION['inum_doc'] = single_field_query("SELECT next_reintegro_doc();");
 	$_SESSION['idata_doc'] = date('Y-m-d');
-	
+
 	if ($DEBUG) {
 		$log .= remesg("Reintegro, valore fornitore: ".$_SESSION['ifornitore'],"debug");
 		$log .= remesg("Reintegro, valore tipo_doc: ".$_SESSION['itipo_doc'],"debug");
