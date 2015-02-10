@@ -115,28 +115,28 @@ if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
 	$scansione = safe($_SESSION['scansione']);
 else
 	$scansione = NULL;
-	
+
 
 // nuovo inserimento
 $log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 if ($DEBUG) $log .= "&debug";
 $log .= "'>\n<input type='submit' name='add' value='Aggiungi nuovo'/>\n</form>\n";
-	
-	
+
+
 
 // 2. test bottoni
 
 // test stop
 if (isset($_SESSION['stop'])) {
-	
+
 	if ($DEBUG) $log .= remesg("Valore tasto STOP: ".$_SESSION['stop'],"debug");
-	
+
 	// reset variabili server
 	reset_sessione();
-	
+
 	// alert
 	$log .= remesg("Sessione terminata","msg");
-	
+
 }
 
 // test add||save
@@ -147,9 +147,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	if (isset($_SESSION['save']))
 		if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_SESSION['save'],"debug");
-	
+
 	// validazione
-	
+
 	// utente
 	if (is_null($utente) OR empty($utente)) {
 		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso","err");
@@ -161,7 +161,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	// mittente
 	if (is_null($mittente) OR empty($mittente)) {
 		//$log .= remesg("Mancato inserimento del mittente per il documento","err");
@@ -169,7 +169,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	}
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	// tipo
 	if (is_null($tipo) OR empty($tipo)) {
 		//$log .= remesg("Mancata selezione di un tipo di documento","err");
@@ -194,7 +194,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		//$log .= remesg("Mancata selezione di una data cui far riferimento il documento","err");
 		$valid = false;
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// scansione
@@ -207,13 +207,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$valid = false;
 		}
 	}
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
-	
+
+
 	// test valid
 	if ($valid) {
-		
+
 		// case $valid
 
 		// scansione
@@ -254,58 +254,63 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 					  $log .= remesg("Scansione del documento non caricata","err");
 				} else
 					$scansione = NULL;
-					
-		
+
+
 				// sp
 				if (is_null($gruppo) OR empty($gruppo)) {
+
 					$new_gruppo = single_field_query("SELECT MAX(gruppo)+1 FROM REGISTRO;");
 
+					if (isset($link_id_registro)AND(!empty($link_id_registro))) {
 
-					// call_link
-					$call_link = "CALL aggiornamento_registro('{$link_id_registro}','{$new_gruppo}',NULL,NULL,@myvar);";
-					
-					if ($DEBUG) $log .= remesg($call_link,"debug");
-					$res = mysql_query($call_link);
+						// call_link
+						$call_link = "CALL aggiornamento_registro('{$link_id_registro}',NULL,NULL,NULL,'{$new_gruppo}',NULL,NULL,@myvar);";
 
-					if ($res)
-						$log .= remesg("Collegamento a documento creato nel database","msg");
-					else
-						die('Errore nell\'invio dei dati al db: '.mysql_error());
-					
-					logging2($call_link,splog);	
-					mysql_free_result($res);
-					
-					
+						if ($DEBUG) $log .= remesg($call_link,"debug");
+						$res = mysql_query($call_link);
+
+						if ($res)
+							$log .= remesg("Collegamento a documento creato nel database","msg");
+						else
+							die('Errore in creazione collegamento a documento: '.mysql_error());
+
+						logging2($call_link,splog);
+						mysql_free_result($res);
+
+					}
+
 					// call
-					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
-				
+					$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
+
 					if ($DEBUG) $log .= remesg($call,"debug");
 					$res = mysql_query($call);
 
 					if ($res)
 						$log .= remesg("Documento creato nel database","msg");
 					else
-						die('Errore nell\'invio dei dati al db: '.mysql_error());
-					
+						die('Errore in creazione documento dopo aggiornamento: '.mysql_error());
+
 					logging2($call,splog);
-					
+					mysql_free_result($res);
+
 				} else {
-					
+
 					// single call
-					$call = "CALL input_registro('{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
-					
+					$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
+
 					if ($DEBUG) $log .= remesg($call,"debug");
 					$res = mysql_query($call);
 
 					if ($res)
 						$log .= remesg("Documento creato nel database","msg");
 					else
-						die('Errore nell\'invio dei dati al db: '.mysql_error());
-					
+						die('Errore in creazione documento: '.mysql_error());
+
 					logging2($call,splog);
-					
+					mysql_free_result($res);
+
 				}
-				
+
 				// reset
 				unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
 				reset_sessione();
@@ -314,9 +319,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			} // end test size>0
 
 		} // end test name file not empty
-		
+
 	} else {
-		
+
 		// case not $valid
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 		if ($DEBUG) $a .= "&debug";
@@ -355,9 +360,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 					$a .= "<td>".myoptlst("smittente",$vserv_contatti)."</td>\n";
 				}
 				$a .= "</tr>\n";
-				
+
 				$a .= "<tr>\n";
-				
+
 				if (isset($tipo)) {
 					$a .= "<td><label for='tipo'>Tipo documento</label></td>\n";
 					$a .= "<td colspan='2'>".input_hidden("stipo",$tipo)."</td>\n";
@@ -404,41 +409,49 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
 				$a .= "<td colspan='2'>";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
-					
+
 					$a .= single_field_query("SELECT documento FROM vserv_gruppi_doc WHERE id_registro='".$link_id_registro."';");
 					if ((isset($gruppo)AND(!empty($gruppo))))
 						$a .= noinput_hidden("gruppo",$gruppo);
-					else 
+					else
 						$a .= noinput_hidden("link_id_registro",$link_id_registro);
-				
+
 				} else {
-					
+
 					$a .= "<select name='link_id_registro'>\n";
 					$a .= "<option selected='selected' value=''>Blank</option>\n";
 					$res = mysql_query($vserv_gruppi_doc);
-					if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
-					
+					if (!$res) die('Errore in lista documenti: '.mysql_error());
+
 					while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 						$a .= "<option value='".$row[0]."'>".$row[2];
 						if (!empty($row[3])) $a .= " (del ".$row[3].")";
 						$a .= "</option>\n";
 					}
-					
+
 					mysql_free_result($res);
 					$a .= "</select>";
-					
+
 				}
-				$a .= "</td>\n";				
+				$a .= "</td>\n";
 				$a .= "</tr>\n";
 
 			$a .= "</tbody>\n";
 
 		$a .= "</table>\n";
 		$a .= "</form>\n";
-		
+
 	}
-	
+
 }
+
+
+// reset mysql connection
+mysql_close($conn);
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 
@@ -448,7 +461,7 @@ if (is_null($a) OR empty($a)) {
 	// interrogazione
 	$query = "SELECT id_registro,data,DATE_FORMAT(data,'%d/%m/%Y'),contatto,CONCAT_WS(' - ',tipo,numero,gruppo) as documento,tipo,numero,gruppo,file FROM REGISTRO WHERE NOT tipo='MDS' AND NOT tipo='Sistema' ORDER BY data DESC;";
 	$res = mysql_query($query);
-	if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+	if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());
 
 
 	// risultati
@@ -470,7 +483,7 @@ if (is_null($a) OR empty($a)) {
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		foreach ($row as $cname => $cvalue)
-		
+
 			switch ($cname) {
 
 				case "0":
@@ -480,19 +493,19 @@ if (is_null($a) OR empty($a)) {
 				case "1":
 					$data = $cvalue;
 					break;
-				
+
 				case "2":
 					if ($data != NULL) {
 						$a .= noinput_hidden("sdata",$data)."\n";
 						$a .= "<td>".$cvalue."</td>\n";
 					} else
 						$a .= "<td><input type='submit' name='add' value='Aggiungi data'/></td>\n";
-					break;	
-									
+					break;
+
 				case "3":
 					$a .= "<td>".input_hidden("smittente",$cvalue)."</td>\n";
 					break;
-				
+
 				case "4":
 					$a .= "<td>".$cvalue."</td>\n";
 					break;
@@ -504,7 +517,7 @@ if (is_null($a) OR empty($a)) {
 				case "6":
 					$a .= noinput_hidden("snumero",$cvalue)."\n";
 					break;
-				
+
 				case "7":
 					$a .= noinput_hidden("sgruppo",$cvalue)."\n";
 					break;
@@ -528,7 +541,7 @@ if (is_null($a) OR empty($a)) {
 
 	$a .= "</tbody>\n</table>\n";
 	mysql_free_result($res);
-	
+
 }
 
 

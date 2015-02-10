@@ -68,32 +68,36 @@ if (isset($_POST['invia'])) {
 	
 	if (isset($data1,$data2)) {
 	
+	
+		//  ******************* PDF *******************
+	
 		// interrogazione
 		$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE data BETWEEN '{$data1}' AND '{$data2}' OR data_doc BETWEEN '{$data1}' AND '{$data2}';";
 		$res = mysql_query($query);
 		if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 		// risultati
-		$search = "<div id='contenitore'>\n";
-		$search .= "<table class='altrowstable' id='alternatecolor'>\n";
+		$pdf = "<div id='contenitore'>\n";
+		$pdf .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-		$search .= "<thead><tr>\n";
-			$search .= "<th>Utente</th>\n";
-			$search .= "<th>Data transito</th>\n";
-			$search .= "<th>Direzione</th>\n";
-			$search .= "<th>Posizione</th>\n";
-			$search .= "<th>Documento</th>\n";
-			$search .= "<th>Data documento</th>\n";
-			$search .= "<th>TAGS</th>\n";
-			$search .= "<th>Quantita'</th>\n";
-			$search .= "<th>Note</th>\n";
-			$search .= "<th>ODA</th>\n";
-		$search .= "</tr></thead>\n";
+		$pdf .= "<thead><tr>\n";
+			$pdf .= "<th>Utente</th>\n";
+			$pdf .= "<th>Data transito</th>\n";
+			$pdf .= "<th>Direzione</th>\n";
+			$pdf .= "<th>Posizione</th>\n";
+			$pdf .= "<th>Documento</th>\n";
+			$pdf .= "<th>Data documento</th>\n";
+			$pdf .= "<th>TAGS</th>\n";
+			$pdf .= "<th>Quantita'</th>\n";
+			$pdf .= "<th>Note</th>\n";
+			$pdf .= "<th>ODA</th>\n";
+		$pdf .= "</tr></thead>\n";
 		
-		$search .= "<tbody>\n";
+		$pdf .= "<tbody>\n";
 
 		while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-			$search .= "<tr>\n";
+						
+			$pdf .= "<tr>\n";
 			foreach ($row as $cname => $cvalue)
 				switch ($cname) {
 
@@ -107,32 +111,32 @@ if (isset($_POST['invia'])) {
 
 					case "6":
 						if ($doc_ingresso != NULL)
-							$search .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
+							$pdf .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
 						else
-							$search .= "<td>".safetohtml($cvalue)."</td>\n";
+							$pdf .= "<td>".safetohtml($cvalue)."</td>\n";
 						break;
 
 					case "10":
 						if ($doc_ordine != NULL)
-							$search .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
+							$pdf .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
 						else
-							$search .= "<td>".safetohtml($cvalue)."</td>\n";
+							$pdf .= "<td>".safetohtml($cvalue)."</td>\n";
 						break;
 
 					default:
-						$search .= "<td>".safetohtml($cvalue)."</td>\n";
+						$pdf .= "<td>".safetohtml($cvalue)."</td>\n";
 
 				} // end switch
 
-			$search .= "</tr>\n";	
+			$pdf .= "</tr>\n";	
 			
 		} // end while
 		
-		$search .= "</tbody>\n</table>\n</div>\n";
-		
+		$pdf .= "</tbody>\n</table>\n</div>\n";
+				
 		
 		// crea pdf
-		$export = "<?php\n"."\$html = \"".addslashes($search)."\";\n";
+		$export = "<?php\n"."\$html = \"".addslashes($pdf)."\";\n";
 		$export .= "//==============================================================\n";
 		$export .= "include(\"".lib_mpdf57."\");\n";
 		$export .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
@@ -146,14 +150,27 @@ if (isset($_POST['invia'])) {
 		
 		
 		// salva pdf
-		$nome_export = "ricerca__".date("Y-m-d__H.m.s")."__".rand().".php";
-		$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$nome_export,"w");
+		$nome_export_pdf = "ricerca__".date("Y-m-d__H.m.s")."__".rand().".php";
+		$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$nome_export_pdf,"w");
 		fwrite($fp,$export);
 		fclose($fp);
 
-		$log .= remesg("<a href=\"".ricerche.$nome_export."\">Ricerca</a> pronta per la stampa","msg");
-
-
+		$log .= remesg("<a href=\"".ricerche.$nome_export_pdf."\">Ricerca</a> pronta per la stampa","msg");
+		mysql_free_result($res);
+		
+		
+		//  ******************* CSV  *******************
+		
+		// interrogazione
+		$query = "SELECT utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE data BETWEEN '{$data1}' AND '{$data2}' OR data_doc BETWEEN '{$data1}' AND '{$data2}';";
+		$csv = array("Utente","Data transito","Direzione","Posizione","Documento","Data documento","TAGS","Quantita","Note","ODA");
+		
+		
+		// risultati per csv
+		print_r($csv);
+		//download_send_headers("ricerca__".date("Y-m-d__H.m.s")."__".rand().".csv");
+		//$log .= remesg(array2csv($csv),"msg");
+		//die();
 			
 	} // end test date
 	

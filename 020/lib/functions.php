@@ -36,7 +36,7 @@ function myoptlst($name,$query) {
 $opt = "<select name='".$name."'>\n";
 $opt .= "<option selected='selected' value=''>Blank</option>\n";
 $res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());
 while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 	$opt .= "<option value='".safetohtml($row[0])."'>".safetohtml($row[0])."</option>\n";
 }
@@ -47,7 +47,7 @@ return $opt;
 
 function single_field_query($query) {
 $res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());
 $output = mysql_fetch_array($res, MYSQL_NUM);
 mysql_free_result($res);
 return $output[0];
@@ -130,5 +130,44 @@ $o .= "</div>\n";
 $o .= $a;
 return $o;
 }
+
+
+
+function array2csv(array &$array)
+{
+   if (count($array) == 0) {
+     return null;
+   }
+   ob_start();
+   
+   $df = fopen("php://output",'w');
+   
+   fputcsv($df, array_keys(reset($array)));
+   foreach ($array as $row) {
+      fputcsv($df, $row);
+   }
+   fclose($df);
+   return ob_get_clean();
+}
+
+function download_send_headers($filename) {
+    // disable caching
+    $now = gmdate("D, d M Y H:i:s");
+    header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+    header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+    header("Last-Modified: {$now} GMT");
+
+    // force download  
+    header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/download");
+
+    // disposition / encoding on response body
+    header("Content-Disposition: attachment;filename={$filename}");
+    header("Content-Transfer-Encoding: binary");
+}
+
+
+
 
 ?>
