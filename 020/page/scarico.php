@@ -114,6 +114,7 @@ $log = "";
 $valid = true;
 
 $log .= remesg("Visualizza <a href=\"?page=lista_scarichi&ultimi\">ultimi scarichi</a> o <a href=\"?page=lista_scarichi\">tutti</a>","msg");
+$log .= remesg("Visualizza i <a href=\"".registro_mds."\">moduli di scarico</a> generati","msg");
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
