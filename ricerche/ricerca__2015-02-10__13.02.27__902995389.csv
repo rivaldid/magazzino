@@ -1,1 +1,0 @@
-doc_ingresso,doc_ordine,utente,"DATE_FORMAT(data,'%d/%m/%Y')",status,posizione,documento,"DATE_FORMAT(data_doc,'%d/%m/%Y')",tags,quantita,note,ordine

@@ -16,11 +16,18 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
+// log
+if (isset($_GET["id"])) {
+	$query = "SELECT * FROM vserv_magazzino_id;";
+	$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","msg");
+} else {
+	$query = "SELECT * FROM vserv_magazzino;";
+	$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","msg");
+}
+
+$log .= remesg("Aggiornamento <a href=\"?page=aggiornamento_magazzino\">posizione o quantita'</a> in magazzino","msg");
 
 // interrogazione
-if (isset($_GET["id"])) $query = "SELECT * FROM vserv_magazzino_id;";
-else $query = "SELECT * FROM vserv_magazzino;";
-
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
@@ -29,10 +36,6 @@ if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 $a .= jsxtable;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
-
-if (isset($_GET["id"])) $log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","msg");
-else $log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","msg");
-
 $a .= "<thead><tr>\n";
 	if (isset($_GET["id"])) $a .= "<th>ID</th>\n";
 	$a .= "<th>TAGS</th>\n";

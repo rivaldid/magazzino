@@ -248,6 +248,12 @@ if ($DEBUG) {
 	if (isset($maxquantita)) $log .= remesg("Valore maxquantita: ".$maxquantita,"debug");
 }
 
+// 140. num_mds
+if (isset($_SESSION['num_mds'])AND(!empty($_SESSION['num_mds'])))
+	$num_mds = safe($_SESSION['num_mds']);
+else
+	$num_mds = single_field_query("SELECT next_mds_doc();");
+
 
 // 2. test bottoni
 
@@ -366,9 +372,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 222. test valid
 	if ($valid) {
-
+		
 		// 2221. SCARICO
-		$call = "CALL SCARICO('{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
+		$call = "CALL SCARICO('{$num_mds}','{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
 		if ($DEBUG) $log .= remesg($call,"debug");
 
 		$res_scarico = mysql_query($call);

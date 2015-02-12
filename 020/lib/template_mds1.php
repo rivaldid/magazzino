@@ -8,7 +8,7 @@
 	<h3>10137 TORINO</h3>
 </div>
 <table>
-	<caption><h1>Modulo di consegna materiale</h1></caption>
+	<caption><h1>Modulo di consegna materiale <?php echo $num_mds;?></h1></caption>
 	<tr><td class="bold">Struttura richiedente</td><td class="normal"><?php echo $richiedente;?></td></tr>
 	<tr><td class="bold">Note</td><td class="normal"><?php echo $note;?></td></tr>
 	<tr><td class="bold">Operatore di accessi</td><td class="normal"><?php echo user2name($utente);?></td></tr>
