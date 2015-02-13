@@ -18,7 +18,6 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // variabili
 $a = ""; $log = "";
 $valid = true;
-$done = false;
 
 if (isset($_GET["debug"]))
 	$DEBUG=true;
@@ -29,6 +28,8 @@ foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
+
+if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","msg");
 
@@ -87,70 +88,37 @@ if (isset($_SESSION['add'])) {
 	
 	// validazione
 	if (is_null($posizione) OR empty($posizione)) $valid = false;
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
 	if (is_null($id_merce) OR empty($id_merce)) $valid = false;
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
 	if (is_null($quantita) OR empty($quantita)) $valid = false;
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 	
 	if ((is_null($nuova_posizione) OR empty($nuova_posizione)) AND 
 		(is_null($nuova_quantita) OR empty($nuova_quantita))) 
 		$valid = false;
 	
+	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
+	
 	if ($DEBUG) $log .= remesg("Valore nuova posizione: ".$nuova_posizione,"debug");
-	if ($DEBUG) $log .= remesg("Valore nuova posizione: ".$nuova_quantita,"debug");
+	if ($DEBUG) $log .= remesg("Valore nuova quantita: ".$nuova_quantita,"debug");
 	
 	
 	if ($valid) {	
-	
-	
-		// aggiornamento posizione
-		if (isset($nuova_posizione)) {
-			
-			$call = "CALL aggiornamento_magazzino_posizione('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$data}');";
-			$res = mysql_query($call);
-			
-			// logging
-			logging2($call,splog);
-
-			if ($res)
-				$log .= remesg("Aggiornamento posizione inviato al database","msg");
-			else
-				die('Errore nell\'invio della nuova posizione al db: '.mysql_error());
-
-			//mysql_free_result($res);
-			$done = true;
-			
-		}
-
-
-		// reset mysql connection
-		mysql_close($conn);
-		$conn = mysql_connect('localhost','magazzino','magauser');
-		if (!$conn) die('Errore di connessione: '.mysql_error());
-		$dbsel = mysql_select_db('magazzino', $conn);
-		if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 		
+		// call
+		$call = "CALL aggiornamento_magazzino('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
+		$res = mysql_query($call);
 		
-		// aggiornamento quantita
-		if (isset($nuova_quantita)) {
-			
-			$call = "CALL aggiornamento_magazzino_quantita('{$utente}','{$id_merce}','{$posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
-			$res = mysql_query($call);
-			
-			// logging
-			logging2($call,splog);
-
-			if ($res)
-				$log .= remesg("Aggiornamento quantita' inviato al database","msg");
-			else
-				die('Errore nell\'invio della nuova quantita\' al db: '.mysql_error());
-
-			//mysql_free_result($res);
-			$done = true;
-
-		}
+		if ($res)
+			$log .= remesg("Aggiornamento magazzino inviato al database","msg");
+		else
+			die('Errore nell\'invio dell\'aggiornamento al db: '.mysql_error());
 		
-		if (!$done)
-			$log .= remesg("Nessun aggiornamento eseguito, rivedere i dati immessi","err");
-		
+		logging2($call,splog);
+				
 		// reset
 		reset_sessione();
 	
