@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="css/main.css" type="text/css" />
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css" />
 	<script type="text/javascript" src="lib/jquery.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-ui.js"></script>
 	<script type="text/javascript" src="lib/jquery.filtertable.js"></script>

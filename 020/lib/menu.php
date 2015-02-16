@@ -7,5 +7,6 @@
 	<a href="http://10.98.2.159/GMDCTO/020/?page=carico" class="<?php if ($dest=="carico") echo 'current'; else echo 'style3';?>" id="normal" ><span>Carico</span></a>
 	<a href="http://10.98.2.159/GMDCTO/020/?page=scarico" class="<?php if ($dest=="scarico") echo 'current'; else echo 'style3';?>" id="normal" ><span>Scarico</span></a>
 	<a href="http://10.98.2.159/GMDCTO/020/?page=documenti" class="<?php if ($dest=="documenti") echo 'current'; else echo 'style3';?>" id="normal" ><span>Documenti</span></a>
+	<a href="http://10.98.2.159/GMDCTO/020/?page=ricerca" class="<?php if ($dest=="ricerca") echo 'current'; else echo 'style3';?>" id="normal" ><span><div class="fa fa-search"></div> Ricerca</span></a>
 </div>
 <div class="centeredMenuSub"> </div>
