@@ -36,6 +36,8 @@ $magamanager = "<select name='utente'>\n<option selected='selected' value=''>Bla
 $richiedenti_merce = "<select name='srichiedente'>\n<option selected='selected' value=''>Blank</option>\n<option value='Facility'>Facility</option>\n<option value='Immobiliare'>Immobiliare</option>\n<option value='PostemobileTLC'>PostemobileTLC</option>\n<option value='PostemobileTec'>PostemobileTec</option></select>\n";
 $enabled_users = array("PISCAZZI","MANZOGI9","MURATO48","LORUSSO6","VILARDID");
 
+$obiettivi_ricerca = "<select name='obiettivo'>\n<option selected='selected' value='transiti'>Transiti</option>\n<option value='documenti'>Documenti</option>\n</select>\n";
+
 // messaggi carico
 $msg1 = "Mancata selezione di un utente per l'attivita' in corso (errore 1)"; //carico
 $msg2 = "Mancata selezione di un fornitore per l'attivita' in corso (errore 2)"; //carico

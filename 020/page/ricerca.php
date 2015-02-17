@@ -190,17 +190,17 @@ $a .= jsxdate;
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=ricerca");
 if ($DEBUG) $a .= "&debug";
 $a .= "'>\n";
-$a .= "<table class='altrowstable' id='alternatecolor' width='80%' >\n";
+$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
 $a .= "<thead><tr >\n";
-	$a .= "<th colspan='2'>Ricerca documento per criterio</th>\n";
+	$a .= "<th colspan='2'>Ricerca</th>\n";
 $a .= "</tr></thead>\n";
 
 $a .= "<tfoot>\n";
 	$a .= "<tr>\n";
 	$a .= "<td colspan='2'>\n";
 		$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
-		$a .= "<input type='submit' name='cerca_doc' value='Avvia'/>\n";
+		$a .= "<input type='submit' name='invia' value='Invia'/>\n";
 	$a .= "</td>\n";
 	$a .= "</tr>\n";
 $a .= "</tfoot>\n";
@@ -208,19 +208,29 @@ $a .= "</tfoot>\n";
 $a .= "<tbody>\n";
 
 	$a .= "<tr>\n";
-		$a .= "<td>per Intervallo</td>\n";
-		$a .= "<td><input type='text' class='datepicker' name='data_doc1'/> - <input type='text' class='datepicker' name='data_doc2'/></td>\n";
+		$a .= "<td>Obiettivo ricerca</td>\n";
+		$a .= "<td>".$obiettivi_ricerca."</td>\n";
 	$a .= "</tr>\n";
 	
 	$a .= "<tr>\n";
-		$a .= "<td>per Numero</td>\n";
+		$a .= "<td>numero documento o parte di esso</td>\n";
 		$a .= "<td><input type='text' name='num_doc'/></td>\n";
+	$a .= "</tr>\n";
+
+	$a .= "<tr>\n";
+		$a .= "<td>mittente documento</td>\n";
+		$a .= "<td><input type='text' name='mittente'/></td>\n";
+	$a .= "</tr>\n";
+	
+	$a .= "<tr>\n";
+
 	$a .= "</tr>\n";
 	
 	$a .= "<tr>\n";
 		$a .= "<td>per Mittente</td>\n";
 		$a .= "<td><input type='text' name='mittente'/></td>\n";
 	$a .= "</tr>\n";
+	$a .= "<td><input type='text' class='datepicker' name='data_doc1'/> - <input type='text' class='datepicker' name='data_doc2'/></td>\n";
 
 $a .= "</tbody>\n";
 
@@ -231,7 +241,7 @@ $a .= "</table></form>\n";
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=ricerca");
 if ($DEBUG) $a .= "&debug";
 $a .= "'>\n";
-$a .= "<table class='altrowstable' id='alternatecolor' width='80%' >\n";
+$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
 $a .= "<thead><tr >\n";
 	$a .= "<th colspan='2'>Ricerca transito per criterio</th>\n";
@@ -241,7 +251,7 @@ $a .= "<tfoot>\n";
 	$a .= "<tr>\n";
 	$a .= "<td colspan='2'>\n";
 		$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
-		$a .= "<input type='submit' name='cerca_transito' value='Avvia'/>\n";
+		$a .= "<input type='submit' name='cerca_transito' value='Invia'/>\n";
 	$a .= "</td>\n";
 	$a .= "</tr>\n";
 $a .= "</tfoot>\n";
