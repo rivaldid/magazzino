@@ -64,7 +64,35 @@ function isoptlst($value) {
 }
 
 function remesg($msg,$classe) {
-	return "<p class=\"".$classe."\">".$msg."</p>\n";
+	switch ($classe) {
+		
+		case "msg":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-info\"></i> ".$msg."</p>\n";
+			break;
+		
+		case "warn":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-exclamation\"></i> ".$msg."</p>\n";
+			break;
+		
+		case "err":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-exclamation-triangle\"></i> ".$msg."</p>\n";
+			break;
+		
+		case "tit":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-envelope-o\"></i> ".$msg."</p>\n";
+			break;
+		
+		case "debug":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-bug\"></i> ".$msg."</p>\n";
+			break;
+		
+		default:
+			$result = "<p class=\"".$classe."\">".$msg."</p>\n";
+			
+			
+	}
+	
+	return $result;
 }
 
 function input_hidden($name,$value) {
