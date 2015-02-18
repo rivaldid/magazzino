@@ -43,6 +43,12 @@ padding: 5px;
 color: #31B404;
 }
 
+#log p.out{
+margin: 6px auto;
+padding: 5px;
+color: #3366CC;
+}
+
 #log p.tit{
 color: #585858;
 font-size: 20px;

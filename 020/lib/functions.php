@@ -86,6 +86,10 @@ function remesg($msg,$classe) {
 			$result = "<p class=\"".$classe."\"><i class=\"fa fa-bug\"></i> ".$msg."</p>\n";
 			break;
 		
+		case "out":
+			$result = "<p class=\"".$classe."\"><i class=\"fa fa-thumbs-o-up\"></i> ".$msg."</p>\n";
+			break;
+		
 		default:
 			$result = "<p class=\"".$classe."\">".$msg."</p>\n";
 			
@@ -160,7 +164,7 @@ return $o;
 }
 
 
-
+/*
 function array2csv(array &$array)
 {
    if (count($array) == 0) {
@@ -194,7 +198,61 @@ function download_send_headers($filename) {
     header("Content-Disposition: attachment;filename={$filename}");
     header("Content-Transfer-Encoding: binary");
 }
+*/
 
+
+function stampe($template,$query) {
+
+// inizializzo risorse
+$a = "";
+$data = date("d/m/Y");
+$utente = $_SERVER["AUTHENTICATE_UID"];
+ob_start();
+include 'lib/template_ricerca1.php';
+
+
+// interrogazione
+$res = mysql_query($query);
+if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+
+
+// risultati
+$corpo_html = ob_get_clean();
+$a .= "<?php\n"."\$html = \"".addslashes($corpo_html);
+
+while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+	$a .= "<tr>\n";
+	foreach ($row as $cname => $cvalue)
+		$a .= "<td>".$cvalue."</td>\n";
+	$a .= "</tr>\n";
+}
+		
+$a .= "</table>\n</div>\";\n";
+$a .= "//==============================================================\n";
+$a .= "include(\"".lib_mpdf57."\");\n";
+$a .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
+$a .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+$a .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
+$a .= "\$mpdf->WriteHTML(\"\$html\");\n";
+$a .= "\$mpdf->Output();\n";
+$a .= "exit;\n";
+$a .= "//==============================================================\n";
+$a .= "?>";
+
+
+// salvo risultato
+$nome_export_pdf = "ricerca__".$utente."__".date("Y-m-d__H.m.s")."__".rand().".php";
+$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$nome_export_pdf,"w");
+fwrite($fp,$a);
+fclose($fp);
+
+
+// termino risorse
+mysql_free_result($res);
+
+return $nome_export_pdf;
+
+}
 
 
 
