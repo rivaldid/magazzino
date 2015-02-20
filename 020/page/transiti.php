@@ -20,12 +20,20 @@ else
 
 $a = "";
 $log = "";
+$riga = "";
 
 
 // interrogazione
 $query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI;";
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+
+
+// inizializzo pdf
+ob_start();
+$export = "<?php\n\$html = \"";
+include 'lib/template_export_pdf.php';
+$export .= addslashes(ob_get_clean());
 
 
 // risultati
@@ -48,7 +56,7 @@ $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
 while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-	$a .= "<tr>\n";
+	$riga .= "<tr>\n";
 	foreach ($row as $cname => $cvalue)
 		switch ($cname) {
 
@@ -62,33 +70,57 @@ while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 
 			case "6":
 				if ($doc_ingresso != NULL)
-					$a .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
+					$riga .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
 				else
-					$a .= "<td>".safetohtml($cvalue)."</td>\n";
+					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
 
 			case "10":
 				if ($doc_ordine != NULL)
-					$a .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
+					$riga .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
 				else
-					$a .= "<td>".safetohtml($cvalue)."</td>\n";
+					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
 
 			default:
-				$a .= "<td>".safetohtml($cvalue)."</td>\n";
+				$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 
 		} // end switch
 
-	$a .= "</tr>\n";
+	$riga .= "</tr>\n";
 
 } // end while
 
+$a .= $riga;
 $a .= "</tbody>\n</table>\n";
+
+
+$export .= addslashes($riga);
+$export .= "</table>\n</div>\";\n";
+$export .= "//==============================================================\n";
+$export .= "include(\"".lib_mpdf57."\");\n";
+$export .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
+$export .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+$export .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
+$export .= "\$mpdf->WriteHTML(\"\$html\");\n";
+$export .= "\$mpdf->Output();\n";
+$export .= "exit;\n";
+$export .= "//==============================================================\n";
+$export .= "?>";
 
 
 // termino risorse
 mysql_free_result($res);
 mysql_close($conn);
+
+
+// salvo export pdf
+$file_export = "export_transiti.php";
+$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
+fwrite($fp,$export);
+fclose($fp);
+
+$log .= remesg("Scarica <a href=\"".ricerche.$file_export."\">dati</a> in pdf","pdf");
 
 
 // stampo

@@ -10,10 +10,9 @@
 <table>
 	
 <caption>
-	<h1>Export stato Magazzino</h1>
+	<h1>Export dati</h1>
 	<hr>
 	<h3><?php echo date("d/m/Y H.i.s"); ?></h3>
 </caption>
-
 
 

@@ -11,11 +11,10 @@ $html = "<div id=\"contenitore\">
 <table>
 	
 <caption>
-	<h1>Export stato Magazzino</h1>
+	<h1>Export dati</h1>
 	<hr>
-	<h3>18/02/2015 16.55.59</h3>
+	<h3>20/02/2015 16.41.28</h3>
 </caption>
-
 
 
 <tr>
