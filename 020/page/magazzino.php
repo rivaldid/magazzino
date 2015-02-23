@@ -31,6 +31,7 @@ if (isset($_GET["id"])) {
 
 $log .= remesg("Aggiornamento <a href=\"?page=aggiornamento_magazzino\">posizione o quantita'</a> in magazzino","msg");
 $log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","msg");
+$log .= remesg("Effettua una <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
 
 
 // interrogazione

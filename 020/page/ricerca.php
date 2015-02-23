@@ -87,8 +87,8 @@ $log .= remesg("<a href=\"".ricerche.$ricerca."\">Risultati ricerca magazzino</a
 
 
 
-$a .= jsxtable;
-//$a .= jsaltrows;
+// $a .= jsxtable;
+// $a .= jsaltrows;
 $a .= jsxdate;
 
 
@@ -106,7 +106,8 @@ $a .= "<tfoot>\n";
 	$a .= "<tr>\n";
 	$a .= "<td colspan='3'>\n";
 		$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
-		$a .= "<input type='submit' name='invia' value='Invia'/>\n";
+		$a .= "<input type='submit' name='doc' value='Documento'/>\n";
+		$a .= "<input type='submit' name='trans' value='Transito'/>\n";
 	$a .= "</td>\n";
 	$a .= "</tr>\n";
 $a .= "</tfoot>\n";

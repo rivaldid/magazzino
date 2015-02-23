@@ -93,6 +93,10 @@ function remesg($msg,$classe) {
 		case "pdf":
 			$result = "<p class=\"msg\"><i class=\"fa fa-file-pdf-o\"></i> ".$msg."</p>\n";
 			break;
+			
+		case "search":
+			$result = "<p class=\"msg\"><i class=\"fa fa-search\"></i></i> ".$msg."</p>\n";
+			break;
 		
 		default:
 			$result = "<p class=\"".$classe."\">".$msg."</p>\n";
