@@ -64,47 +64,59 @@ function isoptlst($value) {
 }
 
 function remesg($msg,$classe) {
+	
+	$out = "<p class=\"".$classe."\">";
+	
 	switch ($classe) {
 		
-		case "msg":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-info\"></i> ".$msg."</p>\n";
+		case "info":
+			$out .= "<i class=\"fa fa-info\"></i>";
+			break;
+
+		case "action":
+			$out .= "<i class=\"fa fa-cog\"></i>";
+			break;
+
+		case "done":
+			$out .= "<i class=\"fa fa-check\"></i>";
 			break;
 		
 		case "warn":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-exclamation\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-exclamation\"></i>";
 			break;
 		
 		case "err":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-exclamation-triangle\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-exclamation-triangle\"></i>";
 			break;
 		
 		case "tit":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-envelope-o\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-envelope-o\"></i>";
 			break;
 		
 		case "debug":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-bug\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-bug\"></i>";
 			break;
 		
 		case "out":
-			$result = "<p class=\"".$classe."\"><i class=\"fa fa-thumbs-o-up\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-thumbs-o-up\"></i>";
 			break;
 
 		case "pdf":
-			$result = "<p class=\"msg\"><i class=\"fa fa-file-pdf-o\"></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-file-pdf-o\"></i>";
 			break;
 			
 		case "search":
-			$result = "<p class=\"msg\"><i class=\"fa fa-search\"></i></i> ".$msg."</p>\n";
+			$out .= "<i class=\"fa fa-search\"></i>";
 			break;
 		
 		default:
-			$result = "<p class=\"".$classe."\">".$msg."</p>\n";
+			$out .= "";
 			
 			
 	}
 	
-	return $result;
+	$out .= " ".$msg."</p>\n";
+	return $out;
 }
 
 function input_hidden($name,$value) {
@@ -159,10 +171,10 @@ return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gi
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
 $o .= remesg("Notifiche","tit");
-$o .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"msg");
+$o .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"info");
 if (isset($log)) {
 	if (empty($log))
-		$o .= remesg("Nessuna notifica da visualizzare","msg");
+		$o .= remesg("Nessuna notifica da visualizzare","info");
 	else
 		$o .= $log;
 }

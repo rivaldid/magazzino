@@ -31,7 +31,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
-$log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","msg");
+$log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
 
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
@@ -78,7 +78,7 @@ $data = date('Y-m-d');
 // test stop
 if (isset($_SESSION['stop'])) {
 	reset_sessione();
-	$log .= remesg("Sessione terminata","msg");
+	$log .= remesg("Sessione terminata","done");
 }
 
 // test add
@@ -113,7 +113,7 @@ if (isset($_SESSION['add'])) {
 		$res = mysql_query($call);
 		
 		if ($res)
-			$log .= remesg("Aggiornamento magazzino inviato al database","msg");
+			$log .= remesg("Aggiornamento magazzino inviato al database","done");
 		else
 			die('Errore nell\'invio dell\'aggiornamento al db: '.mysql_error());
 		
@@ -126,11 +126,11 @@ if (isset($_SESSION['add'])) {
 		
 		// form di inserimento
 		$a .= jsxtable;
-		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=aggiornamento_magazzino");
+		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_update");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
-		$log .= remesg("Acquisizione nuovi dati","msg");
+		$log .= remesg("Acquisizione nuovi dati","info");
 		
 		$a .= "<thead><tr>\n";
 			$a .= "<th>Posizione</th>\n";
@@ -190,7 +190,7 @@ if (is_null($a) OR empty($a)) {
 	$a .= jsxtable;
 	$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
-	$log .= remesg("Lista estesa del contenuto del magazzino","msg");
+	$log .= remesg("Lista estesa del contenuto del magazzino","info");
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Posizione</th>\n";
 		$a .= "<th>TAGS</th>\n";
@@ -201,7 +201,7 @@ if (is_null($a) OR empty($a)) {
 
 	while ($row = mysql_fetch_array($result_lista_merce, MYSQL_NUM)) {
 		$a .= "<tr>\n";
-		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=aggiornamento_magazzino");
+		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_update");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		foreach ($row as $cname => $cvalue)

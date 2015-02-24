@@ -13,7 +13,7 @@ $html = "<div id=\"contenitore\">
 <caption>
 	<h1>Export dati</h1>
 	<hr>
-	<h3>23/02/2015 19.49.41</h3>
+	<h3>24/02/2015 16.56.19</h3>
 </caption>
 
 
@@ -59,8 +59,8 @@ $html = "<div id=\"contenitore\">
 </tr>
 <tr>
 <td>BRETELLA FO-LC-LC-50/125 5M</td>
-<td>A2L04(161),P09(32)</td>
-<td>193</td>
+<td>A2L04(159),P09(32)</td>
+<td>191</td>
 </tr>
 <tr>
 <td>BRETELLA FO-SC-SC-50/125 10M</td>
@@ -74,8 +74,8 @@ $html = "<div id=\"contenitore\">
 </tr>
 <tr>
 <td>BRETELLA FO-LC-LC-50/125 3M</td>
-<td>A2L06(370),A2L07(237)</td>
-<td>607</td>
+<td>A2L06(370),A2L07(229)</td>
+<td>599</td>
 </tr>
 <tr>
 <td>BRETELLA FO-LC-LC-50/125 12,5M</td>

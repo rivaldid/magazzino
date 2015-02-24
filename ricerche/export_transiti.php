@@ -13,10 +13,34 @@ $html = "<div id=\"contenitore\">
 <caption>
 	<h1>Export dati</h1>
 	<hr>
-	<h3>23/02/2015 19.48.18</h3>
+	<h3>24/02/2015 16.33.54</h3>
 </caption>
 
 
+<tr>
+<td>MANZOGI9</td>
+<td>24/02/2015</td>
+<td>USCITA</td>
+<td>CARRIER A</td>
+<td>Facility - MDS - 241</td>
+<td>24/02/2015</td>
+<td>BRETELLA FO-LC-LC-50/125 3M</td>
+<td>8 (da A2L07)</td>
+<td>GI POSTEMOBILE</td>
+<td></td>
+</tr>
+<tr>
+<td>MANZOGI9</td>
+<td>24/02/2015</td>
+<td>USCITA</td>
+<td>CARRIER A</td>
+<td>Facility - MDS - 242</td>
+<td>24/02/2015</td>
+<td>BRETELLA FO-LC-LC-50/125 5M</td>
+<td>2 (da A2L04)</td>
+<td>GI POSTEMOBILE</td>
+<td></td>
+</tr>
 <tr>
 <td>MANZOGI9</td>
 <td>17/02/2015</td>

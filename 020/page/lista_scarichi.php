@@ -37,7 +37,7 @@ $a .= jsxtable;
 $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-$log .= remesg("Torna a <a href=\"?page=scarico\">scarico</a>","msg");
+$log .= remesg("Torna a <a href=\"?page=scarico\">scarico</a>","info");
 
 $a .= "<thead><tr>\n";
 	$a .= "<th>Utente</th>\n";

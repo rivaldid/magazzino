@@ -26,8 +26,8 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 // log
-$log .= remesg("Aggiornamento <a href=\"?page=aggiornamento_magazzino\">posizione o quantita'</a> in magazzino","msg");
-$log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","msg");
+$log .= remesg("Aggiornamento <a href=\"?page=aggiornamento_magazzino\">posizione o quantita'</a> in magazzino","action");
+$log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
 
 
 // test invia

@@ -18,45 +18,61 @@ padding: 1%;
 }
 
 #log {
-font: italic bold 14px/30px Georgia, serif;
-text-align: center;
-margin: 90px auto;
+font: normal bold 14px/30px verdana, serif;
+text-align: justify;
+margin: 0 auto;
 line-height: 1;
-
+padding:1%;
+width: 500px;
+border-bottom: 1px dashed #000;
+margin-bottom: 2em;
 }
 
-#log p.err{
-margin: 6px auto;
-padding: 5px;
-color: #DF0101;
-}
-
-#log p.warn{
-margin: 6px auto;
-padding: 5px;
-color: #FFBF00;
-}
-
-#log p.msg{
-margin: 6px auto;
-padding: 5px;
-color: #31B404;
-}
-
-#log p.out{
-margin: 6px auto;
-padding: 5px;
-color: #3366CC;
+#log a{
+color: inherit;
 }
 
 #log p.tit{
 color: #585858;
 font-size: 20px;
+padding:2%;
+border-bottom: 1px dashed #000;
+}
+
+#log p.action{
+color: #6C99B4;
+}
+
+#log p.search{
+color: blue;
+}
+
+#log p.pdf{
+color: green;
+}
+
+#log p.err{
+color: #DF0101;
+}
+
+#log p.warn{
+color: #FFBF00;
+}
+
+#log p.info{
+color: grey;
+}
+
+#log p.done{
+color: #31B404;
+}
+
+#log p.out{
+color: #3366CC;
 }
 
 #log p.debug{
 color: #008800;
-padding: 5px;
 text-decoration: underline;
 }
 

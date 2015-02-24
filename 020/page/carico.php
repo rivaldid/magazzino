@@ -150,7 +150,7 @@ if (isset($_GET["reintegro"])) {
 	}
 }
 
-$log .= remesg("Aggiungi un <a href=\"?page=carico&reintegro\">reintegro</a> merce","msg");
+$log .= remesg("Aggiungi un <a href=\"?page=carico&reintegro\">reintegro</a> merce","action");
 
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
@@ -358,7 +358,7 @@ if (isset($_SESSION['stop'])) {
 	// reset variabili server
 	reset_sessione();
 	// alert
-	$log .= remesg("Sessione terminata","msg");
+	$log .= remesg("Sessione terminata","done");
 }
 
 // add||save
@@ -479,7 +479,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				if ($upload == true) {
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
-					  $log .= remesg("Scansione del documento caricata correttamente","msg");
+					  $log .= remesg("Scansione del documento caricata correttamente","done");
 					else
 					  $log .= remesg("Scansione del documento non caricata","err");
 				} else
@@ -496,7 +496,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$res_carico = mysql_query($call);
 
 		if ($res_carico)
-			$log .= remesg("Carico inviato il database","msg");
+			$log .= remesg("Carico inviato il database","done");
 		else
 			die('Errore nell\'invio dei dati al db: '.mysql_error());
 
@@ -536,7 +536,7 @@ $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	//$a .= "<caption>CARICO MERCE</caption>\n";
-	$log .= remesg("Pagina per il carico della merce in magazzino","msg");
+	$log .= remesg("Pagina per il carico della merce in magazzino","info");
 
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Descrizione</th>\n";
@@ -652,7 +652,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td><label for='itags'>TAGS merce ".add_tooltip("Campo tags merce obbligatorio")."</label></td>\n";
 			$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
 			$a .= "<td>\n";
-				$a .= remesg("Per bretelle rame/fibra:","msg");
+				$a .= remesg("Per bretelle rame/fibra:","info");
 				$a .= input_hidden("tag1","BRETELLA")." \n";
 				$a .= myoptlst("tag2",vserv_tags2)." \n";
 				$a .= myoptlst("tag3",vserv_tags3)." \n";
@@ -713,8 +713,8 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		else
 			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 		$a .= "<td>\n";
-			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
-			$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
+			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","info");
+			$a .= remesg("al corretto recupero di informazioni a posteriori","info");
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 

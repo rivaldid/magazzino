@@ -113,8 +113,8 @@ $a = "";
 $log = "";
 $valid = true;
 
-$log .= remesg("Visualizza <a href=\"?page=lista_scarichi&ultimi\">ultimi scarichi</a> o <a href=\"?page=lista_scarichi\">tutti</a>","msg");
-$log .= remesg("Visualizza i <a href=\"".registro_mds."\">moduli di scarico</a> generati","msg");
+$log .= remesg("Visualizza <a href=\"?page=lista_scarichi&ultimi\">ultimi scarichi</a> o <a href=\"?page=lista_scarichi\">tutti</a>","action");
+$log .= remesg("Visualizza i <a href=\"".registro_mds."\">moduli di scarico</a> generati","action");
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
@@ -283,7 +283,7 @@ if (isset($_SESSION['stop'])) {
 		if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
 
 		unset($corpo_html);
-		$log .= remesg("Terminato modulo di scarico","msg");
+		$log .= remesg("Terminato modulo di scarico","done");
 
 		// 2112. write mds
 		$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
@@ -291,7 +291,7 @@ if (isset($_SESSION['stop'])) {
 		fwrite($fp,$_SESSION['mds']);
 		fclose($fp);
 
-		$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
+		$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
 
 	}
 
@@ -299,7 +299,7 @@ if (isset($_SESSION['stop'])) {
 	reset_sessione();
 
 	// 213. alert
-	$log .= remesg("Sessione terminata","msg");
+	$log .= remesg("Sessione terminata","done");
 }
 
 // 22. test add||save
@@ -380,7 +380,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$res_scarico = mysql_query($call);
 
 		if ($res_scarico)
-			$log .= remesg("Scarico inviato al database","msg");
+			$log .= remesg("Scarico inviato al database","done");
 		else
 			die('Errore nell\'invio dei dati al db: '.mysql_error());
 
@@ -395,7 +395,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		if ($ritorno[0]=="0") {
 
-			$log .= remesg("Scarico completato correttamente","msg");
+			$log .= remesg("Scarico completato correttamente","done");
 
 			// 2224. MDS
 
@@ -412,7 +412,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
 
 				unset($corpo_html);
-				$log .= remesg("Creato modulo di scarico","msg");
+				$log .= remesg("Creato modulo di scarico","done");
 
 			}
 
@@ -426,7 +426,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
 
 			unset($corpo_html);
-			$log .= remesg("Aggiunti valori al modulo di scarico","msg");
+			$log .= remesg("Aggiunti valori al modulo di scarico","done");
 
 			// 22243. reset id_merce - tags - posizione - maxquantita
 			unset($_SESSION['id_merce'],$_SESSION['tags'],$_SESSION['posizione'],$_SESSION['maxquantita']);
@@ -460,7 +460,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
 
 				unset($corpo_html);
-				$log .= remesg("Terminato modulo di scarico","msg");
+				$log .= remesg("Terminato modulo di scarico","done");
 
 				// 22252. write mds
 				$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
@@ -468,7 +468,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				fwrite($fp,$_SESSION['mds']);
 				fclose($fp);
 
-				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","msg");
+				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
 
 				// 22253. reset sessione server
 				reset_sessione();
@@ -501,7 +501,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-		$log .= remesg("Completare lo scarico sulla merce indicata","msg");
+		$log .= remesg("Completare lo scarico sulla merce indicata","info");
 
 		$a .= "<thead><tr>\n";
 			$a .= "<th>Descrizione</th>\n";
@@ -606,8 +606,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			else
 				$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
 			$a .= "<td>\n";
-				$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","msg");
-				$a .= remesg("al corretto recupero di informazioni a posteriori","msg");
+				$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","info");
+				$a .= remesg("al corretto recupero di informazioni a posteriori","info");
 			$a .= "</td>\n";
 			$a .= "</tr>\n";
 
@@ -632,7 +632,7 @@ if (is_null($a) OR empty($a)) {
 	$a .= jsxtable;
 	$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
-	$log .= remesg("Lista estesa del contenuto del magazzino","msg");
+	$log .= remesg("Lista estesa del contenuto del magazzino","info");
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Posizione</th>\n";
 		$a .= "<th>TAGS</th>\n";

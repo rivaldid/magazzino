@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="../020/css/main.css" type="text/css" />
 	<link rel="stylesheet" href="../020/css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="../020/css/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="../020/lib/font-awesome/css/font-awesome.min.css" type="text/css" />
 	<script type="text/javascript" src="../020/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="../020/lib/jquery-ui.js"></script>
 	<script type="text/javascript" src="../020/lib/jquery.filtertable.js"></script>
@@ -38,13 +39,13 @@ if ($handle = opendir('.')) {
 
         if ($entry != "." && $entry != ".." && $entry != "index.php") {
 
-            echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> generato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"msg");
+            echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> generato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"pdf");
         }
     }
 
     closedir($handle);
     
-    if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","msg");
+    if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","action");
     
 }
 ?>

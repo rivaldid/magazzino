@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="020/css/main.css" type="text/css" />
 	<link rel="stylesheet" href="020/css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="020/css/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="020/lib/font-awesome/css/font-awesome.min.css" type="text/css" />
 	<script type="text/javascript" src="020/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="020/lib/jquery-ui.js"></script>
 	<script type="text/javascript" src="020/lib/jquery.filtertable.js"></script>
@@ -38,19 +39,19 @@ if ($handle = opendir('.')) {
 
         if ($entry != "." && $entry != ".." && $entry != "index.php" && $entry != "log" && $entry != ".git" && $entry != ".gitignore") {
 			
-			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> generato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"msg");
+			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> aggiornato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"info");
 			
         }
         
         if ($entry == "log" && in_array($_SERVER["AUTHENTICATE_UID"], $enabled_users))
         
-			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> generato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"msg");
+			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> aggiornato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"info");
 		
     }
 
     closedir($handle);
     
-    if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","msg");
+    if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","action");
     
 }
 ?>

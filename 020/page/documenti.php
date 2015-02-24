@@ -135,7 +135,7 @@ if (isset($_SESSION['stop'])) {
 	reset_sessione();
 
 	// alert
-	$log .= remesg("Sessione terminata","msg");
+	$log .= remesg("Sessione terminata","done");
 
 }
 
@@ -249,7 +249,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				if ($upload == true) {
 					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
 					if ($moved)
-					  $log .= remesg("Scansione del documento caricata correttamente","msg");
+					  $log .= remesg("Scansione del documento caricata correttamente","done");
 					else
 					  $log .= remesg("Scansione del documento non caricata","err");
 				} else
@@ -270,7 +270,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 						$res = mysql_query($call_link);
 
 						if ($res)
-							$log .= remesg("Collegamento a documento creato nel database","msg");
+							$log .= remesg("Collegamento a documento creato nel database","done");
 						else
 							die('Errore in creazione collegamento a documento: '.mysql_error());
 
@@ -286,7 +286,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 					$res = mysql_query($call);
 
 					if ($res)
-						$log .= remesg("Documento creato nel database","msg");
+						$log .= remesg("Documento creato nel database","done");
 					else
 						die('Errore in creazione documento dopo aggiornamento: '.mysql_error());
 
@@ -302,7 +302,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 					$res = mysql_query($call);
 
 					if ($res)
-						$log .= remesg("Documento creato nel database","msg");
+						$log .= remesg("Documento creato nel database","done");
 					else
 						die('Errore in creazione documento: '.mysql_error());
 
@@ -330,7 +330,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-			$log .= remesg("Pagina per la gestione di documenti di magazzino","msg");
+			$log .= remesg("Pagina per la gestione di documenti di magazzino","info");
 
 			$a .= "<thead><tr>\n";
 				$a .= "<th>Descrizione</th>\n";
