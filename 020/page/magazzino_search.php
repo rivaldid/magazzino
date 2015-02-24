@@ -17,29 +17,38 @@ $riga = "";  $export = "";
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
+
+if (isset($_POST['num_doc'])AND(!empty($_POST['num_doc'])))
+	$num_doc = safe($_POST['num_doc']);
+else
+	$num_doc = NULL;
+
+if (isset($_POST['data1'])AND(!empty($_POST['data1'])))
+	$data1 = safe($_POST['data1']);
+else
+	$data1 = NULL;
+
+if (isset($_POST['data2'])AND(!empty($_POST['data2'])))
+	$data2 = safe($_POST['data2']);
+else
+	$data2 = NULL;
+
+if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
+	$tags = safe($_POST['tags']);
+else
+	$tags = NULL;
+
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
-
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
-
-// log
-$log .= remesg("Aggiornamento <a href=\"?page=aggiornamento_magazzino\">posizione o quantita'</a> in magazzino","action");
-$log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
 
 
 // test invia
 if (isset($_POST['invia'])) {
 	
-	if (isset($_GET["id"])) {
-		$query = "SELECT * FROM vserv_magazzino_id;";
-		$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","msg");
-	} else {
-		$query = "SELECT * FROM vserv_magazzino;";
-		$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","msg");
-	}
+	$query = "SELECT * FROM vserv_magazzino;";
 
 	// interrogazione
 	$res = mysql_query($query);
@@ -58,7 +67,6 @@ if (isset($_POST['invia'])) {
 	$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 	$a .= "<thead><tr>\n";
-		if (isset($_GET["id"])) $a .= "<th>ID</th>\n";
 		$a .= "<th>TAGS</th>\n";
 		$a .= "<th>Posizioni con parziali</th>\n";
 		$a .= "<th>Tot</th>\n";
@@ -102,47 +110,51 @@ if (isset($_POST['invia'])) {
 
 
 
-
-// form input
-$a .= jsxdate;
-$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=ricerca");
-if ($DEBUG) $a .= "&debug";
-$a .= "'>\n";
-$a .= "<table class='altrowstable' id='alternatecolor' >\n";
-
-$a .= "<thead><tr>\n";
-	$a .= "<th colspan='2'>Visualizza il magazzino</th>\n";
-$a .= "</tr></thead>\n";
-
-$a .= "<tfoot>\n";
-	$a .= "<tr>\n";
-	$a .= "<td colspan='2'>\n";
-		$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
-		$a .= "<input type='submit' name='invia' value='Invia'/>\n";
-	$a .= "</td>\n";
-	$a .= "</tr>\n";
-$a .= "</tfoot>\n";
-
-$a .= "<tbody>\n";
+// test contenuti
+if (is_null($a) OR empty($a)) {
 	
-	$a .= "<tr>\n";
-		$a .= "<td>Filtra per intervallo</td>\n";
-		$a .= "<td><input type='text' class='datepicker' name='data_doc1'/> - <input type='text' class='datepicker' name='data_doc2'/></td>\n";
-	$a .= "</tr>\n";
-	
-	$a .= "<tr>\n";
-		$a .= "<td>Filtra per ODA</td>\n";
-		$a .= "<td><input type='text' name='num_doc'/></td>\n";
-	$a .= "</tr>\n";
-	
-	$a .= "<tr>\n";
-		$a .= "<td>Filtra per tags</td>\n";
-		$a .= "<td><input type='text' name='tags'/></td>\n";
-	$a .= "</tr>\n";
+	// form input
+	$a .= jsxdate;
+	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_search");
+	if ($DEBUG) $a .= "&debug";
+	$a .= "'>\n";
+	$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
-$a .= "</tbody>\n";
+	$a .= "<thead><tr>\n";
+		$a .= "<th colspan='2'>Visualizza il magazzino</th>\n";
+	$a .= "</tr></thead>\n";
 
-$a .= "</table></form>\n";
+	$a .= "<tfoot>\n";
+		$a .= "<tr>\n";
+		$a .= "<td colspan='2'>\n";
+			$a .= "<input type='reset' name='reset' value='Pulisci il foglio'/>\n";
+			$a .= "<input type='submit' name='invia' value='Invia'/>\n";
+		$a .= "</td>\n";
+		$a .= "</tr>\n";
+	$a .= "</tfoot>\n";
+
+	$a .= "<tbody>\n";
+		
+		$a .= "<tr>\n";
+			$a .= "<td>Filtra per intervallo</td>\n";
+			$a .= "<td><input type='text' class='datepicker' name='data1'/> - <input type='text' class='datepicker' name='data2'/></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+			$a .= "<td>Filtra per ODA</td>\n";
+			$a .= "<td><input type='text' name='num_doc'/></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+			$a .= "<td>Filtra per tags</td>\n";
+			$a .= "<td><input type='text' name='tags'/></td>\n";
+		$a .= "</tr>\n";
+
+	$a .= "</tbody>\n";
+
+	$a .= "</table></form>\n";
+	
+}
 
 
 // termino risorse
