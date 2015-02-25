@@ -13,7 +13,7 @@ $html = "<div id=\"contenitore\">
 <caption>
 	<h1>Export dati</h1>
 	<hr>
-	<h3>25/02/2015 13.49.25</h3>
+	<h3>25/02/2015 16.16.38</h3>
 </caption>
 
 
@@ -39,6 +39,18 @@ $html = "<div id=\"contenitore\">
 <td>VMAX 20K</td>
 <td>1</td>
 <td>PROGETTO CRM  Trasportatore: Safe Watcher S.r.l.</td>
+<td></td>
+</tr>
+<tr>
+<td>MANZOGI9</td>
+<td>25/02/2015</td>
+<td>USCITA</td>
+<td>SALA2-ISOLA16</td>
+<td>Facility - MDS - 243</td>
+<td>25/02/2015</td>
+<td>VMAX 20K</td>
+<td>2 (da P15)</td>
+<td>PROGETTI BANCOPOSTA GESTIONE INCASSI MIT E CRM</td>
 <td></td>
 </tr>
 <tr>
