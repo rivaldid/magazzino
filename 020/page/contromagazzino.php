@@ -16,7 +16,7 @@ if (!$conn) die('Errore di connessione: '.mysql_error());
 $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-$log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","msg");
+$log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
 
 // query
 $query = "SELECT MERCE.tags AS merce,sum(seljoin.quantita) AS tot,GROUP_CONCAT(DISTINCT CONCAT(seljoin.posizione,'(',seljoin.quantita,')')) AS destinazioni FROM

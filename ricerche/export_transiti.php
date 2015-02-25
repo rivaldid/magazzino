@@ -13,10 +13,34 @@ $html = "<div id=\"contenitore\">
 <caption>
 	<h1>Export dati</h1>
 	<hr>
-	<h3>24/02/2015 16.33.54</h3>
+	<h3>25/02/2015 13.49.25</h3>
 </caption>
 
 
+<tr>
+<td>MANZOGI9</td>
+<td>25/02/2015</td>
+<td>INGRESSO</td>
+<td>P15</td>
+<td><a href=\"/GMDCTO/registro/Letteradivettura-INFORDATA-15-002026.pdf\">INFORDATA - Lettera_di_vettura - 15-002026</a></td>
+<td>25/02/2015</td>
+<td>VMAX 20K</td>
+<td>1</td>
+<td>BANCOPOSTA GESTIONE INCASSI MIT  Trasportatore: Safe Watcher S.r.l.</td>
+<td></td>
+</tr>
+<tr>
+<td>MANZOGI9</td>
+<td>25/02/2015</td>
+<td>INGRESSO</td>
+<td>P15</td>
+<td><a href=\"/GMDCTO/registro/Letteradivettura-INFORDATA-15-002026.pdf\">INFORDATA - Lettera_di_vettura - 15-002026</a></td>
+<td>25/02/2015</td>
+<td>VMAX 20K</td>
+<td>1</td>
+<td>PROGETTO CRM  Trasportatore: Safe Watcher S.r.l.</td>
+<td></td>
+</tr>
 <tr>
 <td>MANZOGI9</td>
 <td>24/02/2015</td>
