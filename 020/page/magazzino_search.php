@@ -139,15 +139,15 @@ if (is_null($a) OR empty($a)) {
 			$a .= "<td>Filtra per intervallo</td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='data1'/> - <input type='text' class='datepicker' name='data2'/></td>\n";
 		$a .= "</tr>\n";
-		
-		$a .= "<tr>\n";
-			$a .= "<td>Filtra per ODA</td>\n";
-			$a .= "<td><input type='text' name='num_doc'/></td>\n";
-		$a .= "</tr>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td>Filtra per tags</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "<tr>\n";
+			$a .= "<td>Giacenze per documento o ODA</td>\n";
+			$a .= "<td><input type='text' name='num_doc'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
