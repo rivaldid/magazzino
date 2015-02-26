@@ -1,69 +1,46 @@
 #bloccosuperiore{
 	margin-bottom: 5%;
-
 }
 
 table {
 	margin: 1% 0 0 0;	
-	/*border: 1px solid red;*/
 	font: normal 12px verdana;
-	background-color: #ccc;
 	width: 100%;
-
 }
 
 td {
-	/*border: 1px solid blue;*/
+	background-color: #FFE87C;
 	padding: 5px;
 	text-align: justify;
 	font: normal 12px verdana;
-
-
 }
 
 th {
-	background-color: #99D7FF;
+	background-color: #38ACEC;
 	text-align: center;
 	padding: 5px;
 	text-transform: uppercase;
 	border-bottom: 2px solid #000;
-
 }
-
-tr {
-	/*border: 1px solid green;*/
-
-}
-
 
 table:hover {
-	background-color: #ddd;
+	border: 5px solid #2B65EC;
 }
 
 .titolo{ 
-
 	font: bold 18px verdana;
-
+	padding: 1em;
 }
 
-
 p{
-	
 	border-bottom: 1px dashed #000;
 	padding: 0.1%;
 	margin: 0.5% auto;
 	font: normal 14px verdana;
 	width: 40%;
-	font: normal 12px verdana;
-
 }
 
 p:hover {
-	background-color: #CCCCAB;
-	
-
+	color: #2B65EC;
+	font-weight: bold;
 }
-
-
-
-
