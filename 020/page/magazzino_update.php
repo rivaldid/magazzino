@@ -109,11 +109,16 @@ if (isset($_SESSION['add'])) {
 	if ($valid) {	
 		
 		// call
-		$call = "CALL aggiornamento_magazzino('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
+		if (isset($nuova_posizione))
+			$call = "CALL aggiornamento_magazzino_posizione('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$data}');";
+		elseif (isset($nuova_quantita))
+			$call = "CALL aggiornamento_magazzino_quantita('{$utente}','{$id_merce}','{$posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
+		
+		// $call = "CALL aggiornamento_magazzino('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
 		$res = mysql_query($call);
 		
 		if ($res)
-			$log .= remesg("Aggiornamento magazzino inviato al database","done");
+			$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
 		else
 			die('Errore nell\'invio dell\'aggiornamento al db: '.mysql_error());
 		
