@@ -137,37 +137,39 @@ if (isset($_SESSION['add'])) {
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$log .= remesg("Acquisizione nuovi dati","info");
 		
-		$a .= "<thead><tr>\n";
-			$a .= "<th>Posizione</th>\n";
-			$a .= "<th>TAGS</th>\n";
-			$a .= "<th>Quantita'</th>\n";
-			$a .= "<th>Azione</th>\n";
-		$a .= "</tr></thead>\n";
+		
+		$a .= "<thead><th>Target</th><th>Corrente</th><th>Nuovo</th><th>Aggiornamento</th></thead>\n";
+		
+		$a .= "<tfoot><tr><td colspan='4'><input type='submit' name='stop' value='Esci senza salvare'/></td>\n</tr>\n</tfoot>\n";
 		
 		$a .= "<tbody>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>".$posizione."</td>\n";
-			$a .= "<td rowspan='3'>".$tags."</td>\n";
-			$a .= "<td>".$quantita."</td>\n";
-			$a .= "<td rowspan='2'><input type='submit' name='save' value='Salva'/></td>\n";
+			$a .= "<td colspan='4'>".$tags."</td>\n";
 		$a .= "</tr>\n";
 		
 		$a .= "<tr>\n";
+			$a .= "<td>Aggiorna la posizione</td>\n";
+			$a .= "<td>".$posizione."</td>\n";
 			$a .= "<td>\n";
 				$a .= "<input type='text' name='inuova_posizione'/>\n";
+				$a .= myoptlst("snuova_posizione",$vserv_posizioni)."\n";
 			$a .= "</td>\n";
-			$a .= "<td rowspan='2'>\n";
-				$a .= "<input type='text' name='nuova_quantita'/>\n";
-			$a .= "</td>\n";
-		$a .= "</tr>\n";
-		
-		$a .= "<tr>\n";
-			$a .= "<td>".myoptlst("snuova_posizione",$vserv_posizioni)."</td>\n";
-			$a .= "<td><input type='submit' name='stop' value='Esci senza salvare'/></td>\n";
+			$a .= "<td><input type='submit' name='save' value='Salva'/></td>\n";
 		$a .= "</tr>\n";
 
-		$a .= "</tbody>\n</table>\n</form>\n";
+		$a .= "<tr>\n";
+			$a .= "<td>Aggiorna la quantita'</td>\n";
+			$a .= "<td>".$quantita."</td>\n";
+			$a .= "<td>\n";
+				$a .= "<input type='text' name='nuova_quantita'/>\n";
+			$a .= "</td>\n";
+			$a .= "<td><input type='submit' name='save' value='Salva'/></td>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "</tbody>\n";
+
+		$a .= "</table>\n</form>\n";
 	}
 	
 }
