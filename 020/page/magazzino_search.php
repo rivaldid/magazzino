@@ -18,20 +18,10 @@ $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
 
-if (isset($_POST['num_doc'])AND(!empty($_POST['num_doc'])))
-	$num_doc = safe($_POST['num_doc']);
+if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
+	$documento = safe($_POST['documento']);
 else
-	$num_doc = NULL;
-
-if (isset($_POST['data1'])AND(!empty($_POST['data1'])))
-	$data1 = safe($_POST['data1']);
-else
-	$data1 = NULL;
-
-if (isset($_POST['data2'])AND(!empty($_POST['data2'])))
-	$data2 = safe($_POST['data2']);
-else
-	$data2 = NULL;
+	$documento = NULL;
 
 if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
 	$tags = safe($_POST['tags']);
@@ -48,7 +38,21 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // test invia
 if (isset($_POST['invia'])) {
 	
-	$query = "SELECT * FROM vserv_magazzino;";
+	if (isset($documento))
+		$query = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
+					LEFT JOIN MERCE USING(id_merce)
+					LEFT JOIN OPERAZIONI USING(id_merce,posizione)
+					LEFT JOIN REGISTRO USING(id_registro)
+					WHERE MAGAZZINO.quantita>0 AND REGISTRO.numero LIKE '%".$documento."%'
+					GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
+	elseif (isset($tags))
+		$query= "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
+					LEFT JOIN MERCE USING(id_merce)
+					WHERE MAGAZZINO.quantita>0 AND MERCE.tags LIKE '%".$tags."%';";
+	else
+		$query = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
+					LEFT JOIN MERCE USING(id_merce)
+					WHERE MAGAZZINO.quantita>0;";
 
 	// interrogazione
 	$res = mysql_query($query);
@@ -68,8 +72,8 @@ if (isset($_POST['invia'])) {
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 	$a .= "<thead><tr>\n";
 		$a .= "<th>TAGS</th>\n";
-		$a .= "<th>Posizioni con parziali</th>\n";
-		$a .= "<th>Tot</th>\n";
+		$a .= "<th>Posizione</th>\n";
+		$a .= "<th>Quantita</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
@@ -114,14 +118,13 @@ if (isset($_POST['invia'])) {
 if (is_null($a) OR empty($a)) {
 	
 	// form input
-	$a .= jsxdate;
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_search");
 	if ($DEBUG) $a .= "&debug";
 	$a .= "'>\n";
 	$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
 	$a .= "<thead><tr>\n";
-		$a .= "<th colspan='2'>Visualizza il magazzino</th>\n";
+		$a .= "<th colspan='2'>Ricerca in magazzino</th>\n";
 	$a .= "</tr></thead>\n";
 
 	$a .= "<tfoot>\n";
@@ -136,18 +139,13 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>Filtra per intervallo</td>\n";
-			$a .= "<td><input type='text' class='datepicker' name='data1'/> - <input type='text' class='datepicker' name='data2'/></td>\n";
-		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
-			$a .= "<td>Filtra per tags</td>\n";
+			$a .= "<td>per tags</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
 		$a .= "</tr>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>Giacenze per documento o ODA</td>\n";
-			$a .= "<td><input type='text' name='num_doc'/></td>\n";
+			$a .= "<td>per documento</td>\n";
+			$a .= "<td><input type='text' name='documento'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
