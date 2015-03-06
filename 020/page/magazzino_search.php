@@ -17,16 +17,23 @@ $riga = "";  $export = "";
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
+$log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
+
 
 if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
-	$documento = safe($_POST['documento']);
+	$documento = trim(epura_space2percent(safe($_POST['documento'])));
 else
 	$documento = NULL;
 
 if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
-	$tags = safe($_POST['tags']);
+	$tags = trim(epura_space2percent(safe($_POST['tags'])));
 else
 	$tags = NULL;
+
+if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
+	$posizione = trim(safe($_POST['posizione']));
+else
+	$posizione = NULL;
 
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
@@ -38,24 +45,24 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // test invia
 if (isset($_POST['invia'])) {
 	
-	if (isset($documento))
-		$query = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
-					LEFT JOIN MERCE USING(id_merce)
-					LEFT JOIN OPERAZIONI USING(id_merce,posizione)
-					LEFT JOIN REGISTRO USING(id_registro)
-					WHERE MAGAZZINO.quantita>0 AND REGISTRO.numero LIKE '%".$documento."%'
-					GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
-	elseif (isset($tags))
-		$query= "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
-					LEFT JOIN MERCE USING(id_merce)
-					WHERE MAGAZZINO.quantita>0 AND MERCE.tags LIKE '%".$tags."%';";
-	else
-		$query = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita FROM MAGAZZINO
-					LEFT JOIN MERCE USING(id_merce)
-					WHERE MAGAZZINO.quantita>0;";
-
+	$log .= remesg("Effettua una nuova <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
+	
+	$q = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita,
+				GROUP_CONCAT(CONCAT(REGISTRO.tipo,' - ',REGISTRO.numero,' (',REGISTRO.contatto,')') SEPARATOR ' ') AS documento 
+				FROM MAGAZZINO
+				LEFT JOIN MERCE USING(id_merce)
+				LEFT JOIN OPERAZIONI USING(id_merce,posizione)
+				LEFT JOIN REGISTRO USING(id_registro) 
+				WHERE MAGAZZINO.quantita>0 ";
+	
+	if ($documento) $q .= "AND REGISTRO.numero LIKE '%".$documento."%' ";
+	if ($tags) $q .= "AND MERCE.tags LIKE '%".$tags."%' ";
+	if ($posizione) $q .= "AND MAGAZZINO.posizione='".$posizione."' ";
+	
+	$q .= "GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
+	
 	// interrogazione
-	$res = mysql_query($query);
+	$res = mysql_query($q);
 	if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
@@ -74,6 +81,7 @@ if (isset($_POST['invia'])) {
 		$a .= "<th>TAGS</th>\n";
 		$a .= "<th>Posizione</th>\n";
 		$a .= "<th>Quantita</th>\n";
+		$a .= "<th>Documento</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
@@ -146,6 +154,11 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<tr>\n";
 			$a .= "<td>per documento</td>\n";
 			$a .= "<td><input type='text' name='documento'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>per posizione</td>\n";
+			$a .= "<td><input type='text' name='posizione'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";

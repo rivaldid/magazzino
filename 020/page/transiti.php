@@ -13,18 +13,43 @@ $dbsel = mysql_select_db('magazzino', $conn);
 if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // variabili
+$a = "";
+$log = "";
+$riga = "";
+
 if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
 
-$a = "";
-$log = "";
-$riga = "";
+if (isset($_GET["begin"]))
+	$begin = safe($_GET["begin"]);
+else
+	$begin = 0;
+
+
+/*
+// limit pagina: divisore
+if (isset($_GET["divisore"]))
+	$divisore = safe($_GET["divisore"]);
+else
+	$divisore = 1;
+
+// limit pagina: dividendo
+$dividendo = "SELECT COUNT(*) FROM TRANSITI;";
+
+// limit pagina: num_pagine
+$num_pagine = $dividendo/$divisore
+*/
 
 
 // interrogazione
-$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI;";
+$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI LIMIT 30 OFFSET ".$begin.";";
+
+$log .= remesg("Visualizza <a href=\"?page=transiti&begin=".nextpage($begin)."\">altra pagina</a>","action");
+
+if ($DEBUG) $log .= remesg("Limite di tuple per vista: 30 a partire dalla ".$begin,"debug");
+
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 

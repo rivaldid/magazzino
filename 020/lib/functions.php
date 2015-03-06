@@ -9,6 +9,10 @@ function epura_space2underscore($string) {
 	return str_replace(' ', '_', $string);
 }
 
+function epura_space2percent($string) {
+	return str_replace(' ', '%', $string);
+}
+
 function epura_specialchars($string) {
 	return preg_replace('/[^A-Za-z0-9\. -]/', '', $string);
 }
@@ -29,6 +33,10 @@ function safefromhtml($value) {
 
 function testinteger($mixed) {
 	return preg_match('/^[\d]*$/',$mixed);
+}
+
+function nextpage($offset) {
+	return $offset+30;
 }
 
 // fun
