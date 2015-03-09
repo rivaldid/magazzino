@@ -22,36 +22,50 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
-if (isset($_GET["begin"]))
-	$begin = safe($_GET["begin"]);
+
+$sql = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI";
+$query_count = mysql_query($sql);
+
+$per_page = 20;
+$count = mysql_num_rows($query_count);
+$pages = ceil($count/$per_page);
+
+if (isset($_GET["current_page"]))
+	$current_page = $_GET['current_page'];
 else
-	$begin = 0;
+	$current_page = 1;
+
+if (testinteger($current_page)) {
+	$start = ($current_page - 1) * $per_page;
+	$sql = $sql." LIMIT $start,$per_page";
+} else
+	$current_page=1;
+
+$query = mysql_query($sql);
+if (!$query) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
-/*
-// limit pagina: divisore
-if (isset($_GET["divisore"]))
-	$divisore = safe($_GET["divisore"]);
-else
-	$divisore = 1;
+// pagination
+$pagination = "<ul class='paginate pag1 clearfix'>\n";
+$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=all\">tutto</a></li>\n";
 
-// limit pagina: dividendo
-$dividendo = "SELECT COUNT(*) FROM TRANSITI;";
+// testa
+if ($current_page > 1)
+	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=1\">1..</a></li>\n";
 
-// limit pagina: num_pagine
-$num_pagine = $dividendo/$divisore
-*/
+// corpo
+for ($i = $current_page; $i <= $current_page + 3; $i++) {
+	if ($i <= $pages)
+		$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
+}
 
+// coda
+if ($current_page < $pages-3)
+	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$pages\">..$pages</a></li>\n";
 
-// interrogazione
-$query = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI LIMIT 30 OFFSET ".$begin.";";
+$pagination .= "</ul>\n";
 
-$log .= remesg("Visualizza <a href=\"?page=transiti&begin=".nextpage($begin)."\">altra pagina</a>","action");
-
-if ($DEBUG) $log .= remesg("Limite di tuple per vista: 30 a partire dalla ".$begin,"debug");
-
-$res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+$log .= $pagination;
 
 
 // inizializzo pdf
@@ -80,7 +94,7 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
 	$riga .= "<tr>\n";
 	foreach ($row as $cname => $cvalue)
 		switch ($cname) {
@@ -135,7 +149,8 @@ $export .= "?>";
 
 
 // termino risorse
-mysql_free_result($res);
+mysql_free_result($query);
+mysql_free_result($query_count);
 mysql_close($conn);
 
 
