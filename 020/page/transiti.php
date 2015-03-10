@@ -48,7 +48,7 @@ if (!$query) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
 // pagination
-$pagination = "<div id='DIV-pagination'><ul class='paginate pag1 clearfix'>\n";
+$pagination = "<div id='DIV-pagination'><ul class='paginate'>\n";
 
 if (($current_page-1)>1)
 	$prev=$current_page-1;
