@@ -22,6 +22,8 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
+$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza transiti per intero</a>","action");
+
 
 $sql = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI";
 $query_count = mysql_query($sql);
@@ -35,7 +37,7 @@ if (isset($_GET["current_page"]))
 else
 	$current_page = 1;
 
-if (testinteger($current_page)) {
+if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= $pages)) {
 	$start = ($current_page - 1) * $per_page;
 	$sql = $sql." LIMIT $start,$per_page";
 } else
@@ -46,26 +48,74 @@ if (!$query) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
 // pagination
-$pagination = "<ul class='paginate pag1 clearfix'>\n";
-$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=all\">tutto</a></li>\n";
+$pagination = "<div id='DIV-pagination'><ul class='paginate pag1 clearfix'>\n";
+
+if (($current_page-1)>1)
+	$prev=$current_page-1;
+else
+	$prev=1;
+
+if (($current_page+1)<$pages)
+	$next=$current_page+1;
+else
+	$next=$pages;
 
 // testa
-if ($current_page > 1)
-	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=1\">1..</a></li>\n";
+$current_page2 = $current_page;
+if ($current_page2>1) 
+	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
 
+$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
+	
 // corpo
-for ($i = $current_page; $i <= $current_page + 3; $i++) {
-	if ($i <= $pages)
-		$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
+switch ($current_page) {
+	
+	case 1:
+		$current_page+=4;
+		break;
+	
+	case 2:
+		$current_page+=3;
+		break;
+	
+	case 3:
+		$current_page+=2;
+		break;
+	
+	case 4:
+		$current_page+=1;
+		break;
+	
+	case $pages-3:
+		$current_page-=1;
+		break;
+	
+	case $pages-2:
+		$current_page-=2;
+		break;
+	
+	case $pages-1:
+		$current_page-=3;
+		break;
+	
+	case $pages:
+		$current_page-=4;
+		break;
+
+}
+
+for ($i = $current_page-3; $i <= $current_page+3; $i++) {
+	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
 }
 
 // coda
-if ($current_page < $pages-3)
-	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$pages\">..$pages</a></li>\n";
+$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
+if ($current_page2<$pages) 
+	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
 
-$pagination .= "</ul>\n";
+$pagination .= "</ul></div>\n";
 
-$log .= $pagination;
+$a .= $pagination;
 
 
 // inizializzo pdf
@@ -132,6 +182,8 @@ while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
 
 $a .= $riga;
 $a .= "</tbody>\n</table>\n";
+
+$a .= $pagination;
 
 
 $export .= addslashes($riga);
