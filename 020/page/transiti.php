@@ -22,7 +22,8 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
-$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza transiti per intero</a>","action");
+$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti i transiti registrati</a>","action");
+$log .= remesg("Effettua una <a href=\"?page=transiti_search\">ricerca</a> nei transiti","search");
 
 
 $sql = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI";
