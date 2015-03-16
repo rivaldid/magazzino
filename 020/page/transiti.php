@@ -51,6 +51,13 @@ if (!$query) die('Errore nell\'interrogazione del db: '.mysql_error());
 // pagination
 $pagination = "<div id='DIV-pagination'><ul class='paginate'>\n";
 
+// stabilisco che se $current_page esiste, class sia uguale a CURRENT
+if ($current_page)
+ $current='current'; 
+else 
+ $current='single';
+ 
+ 
 if (($current_page-1)>1)
 	$prev=$current_page-1;
 else
@@ -64,10 +71,16 @@ else
 // testa
 $current_page2 = $current_page;
 if ($current_page2>1) 
-	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
-
-$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
+	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
 	
+	//codice davide
+	if ($current_page2 == '1')	$current='single'; 
+	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
+
+	//codice davide
+	$current='current';	
+ 
+ 
 // corpo
 switch ($current_page) {
 	
@@ -101,21 +114,33 @@ switch ($current_page) {
 	
 	case $pages:
 		$current_page-=4;
-		break;
+		break;		
 
 }
 
 for ($i = $current_page-3; $i <= $current_page+3; $i++) {
-	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
+	
+	//codice di davide
+	if ($current_page2 == $i) $current='single'; 
+	//fine codice di davide
+	
+	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
+	//codice di davide
+	$current='current'; 
+	//fine codice di davide
+
 }
 
+
 // coda
-$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
-if ($current_page2<$pages) 
-	$pagination .= "<li class='current'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
+if ($current_page2 == '32')	$current='single'; 
 
-$pagination .= "</ul></div>\n";
 
+$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
+if ($current_page2<$pages) 	
+	
+	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
+	$pagination .= "</ul></div>\n";
 $a .= $pagination;
 
 

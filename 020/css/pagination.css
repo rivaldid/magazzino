@@ -13,33 +13,47 @@ margin: 1.5em;
   display: block;
   float: left;
   color: #000;
-  background: #e9e9e9;
+  /*background: #CECDBD ;*/
   text-decoration: none;
-  padding: 3px;
-  margin-right: 3px;
-  border-radius: 3px;
-  border: solid 1px #c0c0c0;
-  box-shadow: inset 0px 1px 0px rgba(255,255,255, .7), 0px 1px 3px rgba(0,0,0, .1);
-  text-shadow: 1px 1px 0px rgba(255,255,255, 0.7);
+  padding: 2px;
+  margin-right: 2px;
+
 }
 
-.paginate li a:hover {
-  color: blue;
-  background-color: yellow;
+.paginate li.current a:hover {
+  color: black;
+  background-color: #ccc ;  
 }
 
-.paginate li a:active {
-  -webkit-box-shadow: inset -1px 2px 5px rgba(0,0,0,0.25);
-  -moz-box-shadow: inset -1px 2px 5px rgba(0,0,0,0.25);
-  box-shadow: inset -1px 2px 5px rgba(0,0,0,0.25);
- 
+.paginate li.single a:hover,li:hover {
+  color: white;
+  background-color: #CECDBD ;
+
 }
 
-.paginate li.single, .paginate li.current {
+.paginate li.current {
+  background-color: B9BDBD ;
+ font-size: 16px;
   display: block;
   float: left;
-  border: solid 1px #c0c0c0;
-  padding: 3px 4px;
+  border: solid 1px #B4B6B3;
+  padding: 3px;
   margin-right: 6px;
   border-radius: 3px;
 }
+.paginate li.single {
+  background-color: #CECDBD ;
+ font-size: 16px;
+  display: block;
+  float: left;
+  border: solid 1px #B4B6B3;
+  padding: 3px;
+  margin-right: 6px;
+  border-radius: 3px;
+}
+
+
+
+
+
+
