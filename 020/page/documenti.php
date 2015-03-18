@@ -376,7 +376,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				if (isset($numero)) {
 					$a .= "<td><label for='numero'>Numero documento</label></td>\n";
-					$a .= "<td colspan='2'>".input_hidden("snumero",$numero)."</td>\n";
+					$a .= "<td colspan='2'>".input_hidden("snumero",htmlspecialchars($numero))."</td>\n";
 				} else {
 					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
@@ -507,7 +507,7 @@ if (is_null($a) OR empty($a)) {
 					break;
 
 				case "4":
-					$a .= "<td>".$cvalue."</td>\n";
+					$a .= "<td>".htmlspecialchars($cvalue)."</td>\n";
 					break;
 
 				case "5":

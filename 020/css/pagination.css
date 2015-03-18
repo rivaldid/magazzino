@@ -13,7 +13,6 @@ margin: 1.5em;
   display: block;
   float: left;
   color: #000;
-  /*background: #CECDBD ;*/
   text-decoration: none;
   padding: 2px;
   margin-right: 2px;
@@ -25,7 +24,7 @@ margin: 1.5em;
   background-color: #ccc ;  
 }
 
-.paginate li.single a:hover,li:hover {
+.paginate li.single a:hover {
   color: white;
   background-color: #CECDBD ;
 
@@ -55,5 +54,5 @@ margin: 1.5em;
 
 
 
-
+*/
 

@@ -128,6 +128,7 @@ if (isset($_POST['invia'])) {
 if (is_null($a) OR empty($a)) {
 	
 	// form input
+	$a .= jsxdate;
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_search");
 	if ($DEBUG) $a .= "&debug";
 	$a .= "'>\n";
@@ -149,18 +150,8 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>per tags</td>\n";
-			$a .= "<td><input type='text' name='tags'/></td>\n";
-		$a .= "</tr>\n";
-		
-		$a .= "<tr>\n";
-			$a .= "<td>per documento</td>\n";
-			$a .= "<td><input type='text' name='documento'/></td>\n";
-		$a .= "</tr>\n";
-
-		$a .= "<tr>\n";
-			$a .= "<td>per posizione</td>\n";
-			$a .= "<td><input type='text' name='posizione'/></td>\n";
+			$a .= "<td>per intervallo</td>\n";
+			$a .= "<td><input type='text' class='datepicker' name='data_min'/> - <input type='text' class='datepicker' name='data_max'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
