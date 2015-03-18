@@ -21,6 +21,8 @@ define("vserv_magazzino", "SELECT * FROM vserv_magazzino_id;");
 define("vserv_tags2", "SELECT * FROM vserv_tags2;");
 define("vserv_tags3", "SELECT * FROM vserv_tags3;");
 
+define("vserv_posizioni_occupate", "SELECT posizione FROM MAGAZZINO WHERE quantita>0 ORDER BY posizione;");
+
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
 $vserv_tipodoc = "SELECT * FROM vserv_tipodoc WHERE label!='Sistema';";
 $vserv_numdoc = "SELECT * FROM vserv_numdoc;";

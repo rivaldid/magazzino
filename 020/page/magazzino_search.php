@@ -158,7 +158,7 @@ if (is_null($a) OR empty($a)) {
 
 		$a .= "<tr>\n";
 			$a .= "<td>per posizione</td>\n";
-			$a .= "<td><input type='text' name='posizione'/></td>\n";
+			$a .= "<td>".myoptlst("posizione",vserv_posizioni_occupate)."</td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
