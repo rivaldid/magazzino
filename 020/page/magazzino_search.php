@@ -35,6 +35,11 @@ if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
 else
 	$posizione = NULL;
 
+if (isset($_POST['ordine'])AND(!empty($_POST['ordine'])))
+	$ordine = trim(safe($_POST['ordine']));
+else
+	$ordine = NULL;
+
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
@@ -48,16 +53,19 @@ if (isset($_POST['invia'])) {
 	$log .= remesg("Effettua una nuova <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
 	
 	$q = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita,
-				GROUP_CONCAT(CONCAT(REGISTRO.tipo,' - ',REGISTRO.numero,' (',REGISTRO.contatto,')') SEPARATOR ' ') AS documento 
+				GROUP_CONCAT(CONCAT(REGISTRO.tipo,' - ',REGISTRO.numero,' (',REGISTRO.contatto,')') SEPARATOR ' ') AS documento,
+				GROUP_CONCAT(CONCAT(vista_ordini.tipo,' - ',vista_ordini.numero) SEPARATOR ' ') AS ordine 
 				FROM MAGAZZINO
 				LEFT JOIN MERCE USING(id_merce)
 				LEFT JOIN OPERAZIONI USING(id_merce,posizione)
-				LEFT JOIN REGISTRO USING(id_registro) 
-				WHERE MAGAZZINO.quantita>0 ";
+				LEFT JOIN REGISTRO USING(id_registro)
+				LEFT JOIN (SELECT id_operazioni,tipo,numero,gruppo,data,file FROM ORDINI JOIN REGISTRO ON id_registro=id_registro_ordine) AS vista_ordini USING(id_operazioni)
+				WHERE MAGAZZINO.quantita>0";
 	
-	if ($documento) $q .= "AND REGISTRO.numero LIKE '%".$documento."%' ";
-	if ($tags) $q .= "AND MERCE.tags LIKE '%".$tags."%' ";
-	if ($posizione) $q .= "AND MAGAZZINO.posizione='".$posizione."' ";
+	if ($documento) $q .= " AND REGISTRO.numero LIKE '%$documento%'";
+	if ($tags) $q .= " AND MERCE.tags LIKE '%".$tags."%'";
+	if ($posizione) $q .= " AND MAGAZZINO.posizione='$posizione'";
+	if ($ordine) $q .= " AND vista_ordini.numero LIKE '%$ordine%'";
 	
 	$q .= "GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
 	
@@ -82,6 +90,7 @@ if (isset($_POST['invia'])) {
 		$a .= "<th>Posizione</th>\n";
 		$a .= "<th>Quantita</th>\n";
 		$a .= "<th>Documento</th>\n";
+		$a .= "<th>Ordine</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
@@ -132,7 +141,8 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
 	$a .= "<thead><tr>\n";
-		$a .= "<th colspan='2'>Ricerca in magazzino</th>\n";
+		$a .= "<th>Criterio</th>\n";
+		$a .= "<th>Valori</th>\n";
 	$a .= "</tr></thead>\n";
 
 	$a .= "<tfoot>\n";
@@ -147,17 +157,22 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>per tags</td>\n";
+			$a .= "<td>tags</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
 		$a .= "</tr>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>per documento</td>\n";
+			$a .= "<td>documento</td>\n";
 			$a .= "<td><input type='text' name='documento'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>per posizione</td>\n";
+			$a .= "<td>ordine</td>\n";
+			$a .= "<td><input type='text' name='ordine'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>posizione</td>\n";
 			$a .= "<td>".myoptlst("posizione",vserv_posizioni_occupate)."</td>\n";
 		$a .= "</tr>\n";
 

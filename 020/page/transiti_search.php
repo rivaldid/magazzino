@@ -193,22 +193,22 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 		
 		$a .= "<tr>\n";
-			$a .= "<td>per intervallo</td>\n";
+			$a .= "<td>intervallo</td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='data_min'/> - <input type='text' class='datepicker' name='data_max'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>per tags</td>\n";
+			$a .= "<td>tags</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>per documento</td>\n";
+			$a .= "<td>documento</td>\n";
 			$a .= "<td><input type='text' name='documento'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>per ODA</td>\n";
+			$a .= "<td>ordine</td>\n";
 			$a .= "<td><input type='text' name='oda'/></td>\n";
 		$a .= "</tr>\n";
 
