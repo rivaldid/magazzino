@@ -20,22 +20,34 @@ $utente = $_SERVER["AUTHENTICATE_UID"];
 $log .= remesg("Torna alla <a href=\"?page=transiti\">visualizzazione transiti</a>","action");
 
 
-// documento: fornitore - tipo - numero
-if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
-	$documento = trim(epura_space2percent(safe($_POST['documento'])));
+// data_min data_max
+if (isset($_POST['data_min'])AND(!empty($_POST['data_min'])))
+	$data_min = safe($_POST['data_min']);
 else
-	$documento = NULL;
-
+	$data_min = NULL;
+if (isset($_POST['data_max'])AND(!empty($_POST['data_max'])))
+	$data_max = safe($_POST['data_max']);
+else
+	$data_max = NULL;
+	
 // tags
 if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
 	$tags = trim(epura_space2percent(safe($_POST['tags'])));
 else
 	$tags = NULL;
-
-if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
-	$posizione = trim(safe($_POST['posizione']));
+	
+// documento
+if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
+	$documento = trim(epura_space2percent(safe($_POST['documento'])));
 else
-	$posizione = NULL;
+	$documento = NULL;
+
+// ODA
+if (isset($_POST['oda'])AND(!empty($_POST['oda'])))
+	$oda = trim(safe($_POST['oda']));
+else
+	$oda = NULL;
+
 
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
@@ -51,10 +63,10 @@ if (isset($_POST['invia'])) {
 	
 	$q = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
 	
-	if ($documento) $q .= " AND documento LIKE '%".$documento."%' ";
-	if ($tags) $q .= " AND tags LIKE '%".$tags."%' ";
-	if ($posizione) $q .= " AND MAGAZZINO.posizione='".$posizione."' ";
-	if ($data1 AND $data2) $q .= " AND data BETWEEN '2015-01-01' AND '2015-01-31' ORDER BY data DESC;";
+	if ($data_min AND $data_max) $q .= " AND data BETWEEN '$data_min' AND '$data_max'";
+	if ($tags) $q .= " AND tags LIKE '%$tags%'";
+	if ($documento) $q .= " AND documento LIKE '%$documento%'";
+	if ($oda) $q .= " AND ordine LIKE '%$oda%'";
 	
 	// interrogazione
 	$res = mysql_query($q);
@@ -88,16 +100,46 @@ if (isset($_POST['invia'])) {
 	$a .= "<tbody>\n";
 
 	while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-		$riga .= "<tr>\n";
-		foreach ($row as $cname => $cvalue)
-			$riga .= "<td>".$cvalue."</td>\n";
-		$riga .= "</tr>\n";
-	}
+	$riga .= "<tr>\n";
+	foreach ($row as $cname => $cvalue)
+		switch ($cname) {
+
+			case "0":
+				$doc_ingresso = $cvalue;
+				break;
+
+			case "1":
+				$doc_ordine = $cvalue;
+				break;
+
+			case "6":
+				if ($doc_ingresso != NULL)
+					$riga .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
+				else
+					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
+				break;
+
+			case "10":
+				if ($doc_ordine != NULL)
+					$riga .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
+				else
+					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
+				break;
+
+			default:
+				$riga .= "<td>".safetohtml($cvalue)."</td>\n";
+
+		} // end switch
+
+	$riga .= "</tr>\n";
+
+	} // end while
+	
 
 	$a .= $riga;
 	$a .= "</tbody>\n</table>\n";
 
-	$export .= $riga;
+	$export .= addslashes($riga);
 	$export .= "</table>\n</div>\";\n";
 	$export .= "//==============================================================\n";
 	$export .= "include(\"".lib_mpdf57."\");\n";
@@ -114,7 +156,7 @@ if (isset($_POST['invia'])) {
 	
 	
 	// salvo export pdf
-	$file_export = "export_magazzino.php";
+	$file_export = "export_transiti.php";
 	$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
 	fwrite($fp,$export);
 	fclose($fp);
@@ -135,7 +177,8 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<table class='altrowstable' id='alternatecolor' >\n";
 
 	$a .= "<thead><tr>\n";
-		$a .= "<th colspan='2'>Ricerca in magazzino</th>\n";
+		$a .= "<th>Criterio</th>\n";
+		$a .= "<th>Valori</th>\n";
 	$a .= "</tr></thead>\n";
 
 	$a .= "<tfoot>\n";
@@ -152,6 +195,21 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<tr>\n";
 			$a .= "<td>per intervallo</td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='data_min'/> - <input type='text' class='datepicker' name='data_max'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>per tags</td>\n";
+			$a .= "<td><input type='text' name='tags'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>per documento</td>\n";
+			$a .= "<td><input type='text' name='documento'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>per ODA</td>\n";
+			$a .= "<td><input type='text' name='oda'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";

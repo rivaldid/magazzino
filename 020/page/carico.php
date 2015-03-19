@@ -156,7 +156,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 // tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
-	$fornitore = safe($_SESSION['ifornitore']);
+	$fornitore = strtr(safe($_SESSION['ifornitore']),$rimpiazzi);
 else {
 	if (isset($_SESSION['sfornitore'])AND(!empty($_SESSION['sfornitore'])))
 		$fornitore = safe($_SESSION['sfornitore']);
@@ -171,7 +171,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['itipo_doc'])AND(!empty($_SESSION['itipo_doc'])))
-	$tipo_doc = safe($_SESSION['itipo_doc']);
+	$tipo_doc = strtr(safe($_SESSION['itipo_doc']),$rimpiazzi);
 else {
 	if (isset($_SESSION['stipo_doc'])AND(!empty($_SESSION['stipo_doc'])))
 		$tipo_doc = safe($_SESSION['stipo_doc']);
@@ -186,7 +186,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inum_doc'])AND(!empty($_SESSION['inum_doc'])))
-	$num_doc = safe($_SESSION['inum_doc']);
+	$num_doc = strtr(safe($_SESSION['inum_doc']),$rimpiazzi);
 else {
 	if (isset($_SESSION['snum_doc'])AND(!empty($_SESSION['snum_doc'])))
 		$num_doc = safe($_SESSION['snum_doc']);
@@ -218,7 +218,7 @@ if ($DEBUG) {
 
 // trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
-	$trasportatore = safe($_SESSION['itrasportatore']);
+	$trasportatore = strtr(safe($_SESSION['itrasportatore']),$rimpiazzi);
 else {
 	if (isset($_SESSION['strasportatore'])AND(!empty($_SESSION['strasportatore'])))
 		$trasportatore = safe($_SESSION['strasportatore']);
@@ -332,7 +332,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['iposizione'])AND(!empty($_SESSION['iposizione'])))
-	$posizione = safe($_SESSION['iposizione']);
+	$posizione = strtr(safe($_SESSION['iposizione']),$rimpiazzi);
 else {
 	if (isset($_SESSION['sposizione'])AND(!empty($_SESSION['sposizione'])))
 		$posizione = safe($_SESSION['sposizione']);

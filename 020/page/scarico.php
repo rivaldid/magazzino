@@ -138,7 +138,7 @@ $utente = $_SERVER["AUTHENTICATE_UID"];
 
 // 134. richiedente
 if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
-	$richiedente = safe($_SESSION['irichiedente']);
+	$richiedente = strtr(safe($_SESSION['irichiedente']),$rimpiazzi);
 else {
 	if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
 		$richiedente = safe($_SESSION['srichiedente']);
@@ -170,7 +170,7 @@ if ($DEBUG) {
 
 // 136. destinazione
 if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
-	$destinazione = safe($_SESSION['idestinazione']);
+	$destinazione = strtr(safe($_SESSION['idestinazione']),$rimpiazzzi);
 else {
 	if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
 		$destinazione = safe($_SESSION['sdestinazione']);
@@ -224,13 +224,13 @@ else {
 }
 
 if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = safe($_SESSION['tags']);
+	$tags = strtr(safe($_SESSION['tags']),$rimpiazzi);
 else {
 	$tags = NULL;
 }
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = safe($_SESSION['posizione']);
+	$posizione = strtr(safe($_SESSION['posizione']),$rimpiazzi);
 else {
 	$posizione = NULL;
 }
