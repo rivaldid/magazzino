@@ -21,15 +21,10 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 // log
-if (isset($_GET["id"])) {
-	$query = "SELECT * FROM vserv_magazzino_id;";
-	$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","action");
-} else {
-	$query = "SELECT * FROM vserv_magazzino;";
-	$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","action");
-}
+$query = "SELECT * FROM vista_magazzino_ng;";
 
-$log .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione con documenti</a>","action");
+
+$log .= remesg("<a href=\"?page=magazzino\">Visualizzazione di default</a>","action");
 $log .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti</a> sul magazzino","action");
 $log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
 $log .= remesg("Effettua una <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
@@ -54,8 +49,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 $a .= "<thead><tr>\n";
 	if (isset($_GET["id"])) $a .= "<th>ID</th>\n";
 	$a .= "<th>TAGS</th>\n";
-	$a .= "<th>Posizioni con parziali</th>\n";
-	$a .= "<th>Tot</th>\n";
+	$a .= "<th>Posizione</th>\n";
+	$a .= "<th>Quantita'</th>\n";
+	$a .= "<th>Documento di carico</th>\n";
+	$a .= "<th>Ordine corrispondente</th>\n";
+	$a .= "<th>Note</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
