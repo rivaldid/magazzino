@@ -40,6 +40,11 @@ if (isset($_POST['ordine'])AND(!empty($_POST['ordine'])))
 else
 	$ordine = NULL;
 
+if (isset($_POST['note'])AND(!empty($_POST['note'])))
+	$note = trim(epura_space2percent(safe($_POST['note'])));
+else
+	$note = NULL;
+
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
 if (!$conn) die('Errore di connessione: '.mysql_error());
@@ -54,7 +59,7 @@ if (isset($_POST['invia'])) {
 	
 	$q = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita,
 				GROUP_CONCAT(CONCAT(REGISTRO.tipo,' - ',REGISTRO.numero,' (',REGISTRO.contatto,')') SEPARATOR ' ') AS documento,
-				GROUP_CONCAT(CONCAT(vista_ordini.tipo,' - ',vista_ordini.numero) SEPARATOR ' ') AS ordine 
+				GROUP_CONCAT(CONCAT(vista_ordini.tipo,' - ',vista_ordini.numero) SEPARATOR ' ') AS ordine, OPERAZIONI.note
 				FROM MAGAZZINO
 				LEFT JOIN MERCE USING(id_merce)
 				LEFT JOIN OPERAZIONI USING(id_merce,posizione)
@@ -66,6 +71,7 @@ if (isset($_POST['invia'])) {
 	if ($tags) $q .= " AND MERCE.tags LIKE '%".$tags."%'";
 	if ($posizione) $q .= " AND MAGAZZINO.posizione='$posizione'";
 	if ($ordine) $q .= " AND vista_ordini.numero LIKE '%$ordine%'";
+	if ($note) $q .= " AND OPERAZIONI.note LIKE '%$note%'";
 	
 	$q .= "GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
 	
@@ -91,6 +97,7 @@ if (isset($_POST['invia'])) {
 		$a .= "<th>Quantita</th>\n";
 		$a .= "<th>Documento</th>\n";
 		$a .= "<th>Ordine</th>\n";
+		$a .= "<th>Note</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
@@ -174,6 +181,11 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<tr>\n";
 			$a .= "<td>posizione</td>\n";
 			$a .= "<td>".myoptlst("posizione",vserv_posizioni_occupate)."</td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>Note</td>\n";
+			$a .= "<td><input type='text' name='note'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
