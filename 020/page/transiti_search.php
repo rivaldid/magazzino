@@ -48,6 +48,12 @@ if (isset($_POST['oda'])AND(!empty($_POST['oda'])))
 else
 	$oda = NULL;
 
+//note
+if (isset($_POST['note'])AND(!empty($_POST['note'])))
+	$note = trim(epura_space2percent(safe($_POST['note'])));
+else
+	$note = NULL;
+
 
 // mysql
 $conn = mysql_connect('localhost','magazzino','magauser');
@@ -67,6 +73,7 @@ if (isset($_POST['invia'])) {
 	if ($tags) $q .= " AND tags LIKE '%$tags%'";
 	if ($documento) $q .= " AND documento LIKE '%$documento%'";
 	if ($oda) $q .= " AND ordine LIKE '%$oda%'";
+	if ($note) $q .= " AND note LIKE '%$note%'";
 	
 	// interrogazione
 	$res = mysql_query($q);
@@ -210,6 +217,11 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<tr>\n";
 			$a .= "<td>ordine</td>\n";
 			$a .= "<td><input type='text' name='oda'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>Note</td>\n";
+			$a .= "<td><input type='text' name='note'/></td>\n";
 		$a .= "</tr>\n";
 
 	$a .= "</tbody>\n";
