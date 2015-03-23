@@ -48,12 +48,10 @@ $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 $a .= "<thead><tr>\n";
 	if (isset($_GET["id"])) $a .= "<th>ID</th>\n";
-	$a .= "<th>TAGS</th>\n";
+	$a .= "<th>TAGS e Documenti</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
-	$a .= "<th>Documento di carico</th>\n";
-	$a .= "<th>Ordine corrispondente</th>\n";
-	$a .= "<th>Note</th>\n";
+	$a .= "<th>Ordine e Note</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
