@@ -29,7 +29,7 @@ if (isset($_GET["id"])) {
 	$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","action");
 }
 
-$log .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione con documenti</a>","action");
+//$log .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione con documenti</a>","action");
 $log .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti</a> sul magazzino","action");
 $log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
 $log .= remesg("Effettua una <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");

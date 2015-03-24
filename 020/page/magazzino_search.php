@@ -10,6 +10,14 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
+
+// test id_merce in GET
+if (isset($_GET['id_merce'])) {
+	$id_merce = safe($_GET['id_merce']);
+	$_POST['invia']="Invia";
+}
+else
+	$id_merce = NULL;
 	
 $a = ""; $log = "";
 $riga = "";  $export = "";
@@ -67,13 +75,14 @@ if (isset($_POST['invia'])) {
 				LEFT JOIN (SELECT id_operazioni,tipo,numero,gruppo,data,file FROM ORDINI JOIN REGISTRO ON id_registro=id_registro_ordine) AS vista_ordini USING(id_operazioni)
 				WHERE MAGAZZINO.quantita>0";
 	
+	if ($id_merce) $q .= " AND MAGAZZINO.id_merce='$id_merce'";
 	if ($documento) $q .= " AND REGISTRO.numero LIKE '%$documento%'";
-	if ($tags) $q .= " AND MERCE.tags LIKE '%".$tags."%'";
+	if ($tags) $q .= " AND MERCE.tags LIKE '%$tags%'";
 	if ($posizione) $q .= " AND MAGAZZINO.posizione='$posizione'";
 	if ($ordine) $q .= " AND vista_ordini.numero LIKE '%$ordine%'";
 	if ($note) $q .= " AND OPERAZIONI.note LIKE '%$note%'";
 	
-	$q .= "GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
+	$q .= " GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
 	
 	// interrogazione
 	$res = mysql_query($q);

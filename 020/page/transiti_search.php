@@ -10,6 +10,14 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
+
+// test id_merce in GET
+if (isset($_GET['id_merce'])) {
+	$id_merce = safe($_GET['id_merce']);
+	$_POST['invia']="Invia";
+}
+else
+	$id_merce = NULL;
 	
 $a = ""; $log = "";
 $riga = "";  $export = "";
@@ -69,6 +77,7 @@ if (isset($_POST['invia'])) {
 	
 	$q = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
 	
+	if ($id_merce) $q .= " AND id_merce='$id_merce'";
 	if ($data_min AND $data_max) $q .= " AND data BETWEEN '$data_min' AND '$data_max'";
 	if ($tags) $q .= " AND tags LIKE '%$tags%'";
 	if ($documento) $q .= " AND documento LIKE '%$documento%'";

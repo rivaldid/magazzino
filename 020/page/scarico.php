@@ -625,7 +625,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 if (is_null($a) OR empty($a)) {
 
 	// 31. ricevo lista merce
-	$result_lista_merce = mysql_query($vista_magazzino);
+	$result_lista_merce = mysql_query("SELECT * FROM vista_magazzino_ng;");
 	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
 
 	// 32. form selezione
@@ -634,9 +634,10 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 	$log .= remesg("Lista estesa del contenuto del magazzino","info");
 	$a .= "<thead><tr>\n";
+		$a .= "<th>Merce</th>\n";
 		$a .= "<th>Posizione</th>\n";
-		$a .= "<th>TAGS</th>\n";
 		$a .= "<th>Quantita'</th>\n";
+		$a .= "<th>Dettagli</th>\n";
 		$a .= "<th>Azione</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
@@ -652,14 +653,18 @@ if (is_null($a) OR empty($a)) {
 
 				case 0:
 					$a .= noinput_hidden("id_merce",$cvalue)."\n";
+					$id_merce=$cvalue;
 					break;
 
 				case 1:
-					$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
+					$a .= "<td>\n";
+					$a .= input_hidden("tags",$cvalue)."\n";
+					$a .= "<a href=\"?page=transiti_search&id_merce=$id_merce\">[dettagli]</a>\n";
+					$a .= "</td>\n";
 					break;
 
 				case 2:
-					$a .= "<td>".input_hidden("tags",$cvalue)."</td>\n";
+					$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
 					break;
 
 				case 3:
@@ -667,8 +672,7 @@ if (is_null($a) OR empty($a)) {
 					break;
 
 				default:
-					//$a .= "<td>".$cvalue."</td>\n";
-					$a .= "";
+					$a .= "<td>".$cvalue."</td>\n";
 			}
 
 		$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
