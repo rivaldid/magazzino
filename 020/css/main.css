@@ -78,3 +78,20 @@ text-decoration: underline;
 
 #footer a{ color: #7087A9; }
 #footer a:hover { color: #244D8A; }
+
+table a:link {
+text-decoration: none;
+color: #380000;
+}
+table a:visited {
+text-decoration: none;
+color: #380000;
+}
+table a:hover {
+text-decoration: none;
+color: #0066CC;
+}
+table a:active {
+text-decoration: none;
+color: #000000;
+}
