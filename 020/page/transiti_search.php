@@ -10,23 +10,23 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
+	
+$a = ""; $log = "";
+$riga = "";  $export = "";
 
 // test id_merce in GET
 if (isset($_GET['id_merce'])) {
 	$id_merce = safe($_GET['id_merce']);
 	$_POST['invia']="Invia";
+	$log .= remesg("Torna alla <a href=\"".$_SERVER['HTTP_REFERER']."\">visualizzazione scarichi</a>","action");
 }
-else
+else {
 	$id_merce = NULL;
+	$log .= remesg("Torna alla <a href=\"?page=transiti\">visualizzazione transiti</a>","action");
+}
 	
-$a = ""; $log = "";
-$riga = "";  $export = "";
-
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
-
-$log .= remesg("Torna alla <a href=\"?page=transiti\">visualizzazione transiti</a>","action");
-
 
 // data_min data_max
 if (isset($_POST['data_min'])AND(!empty($_POST['data_min'])))
