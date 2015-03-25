@@ -1,22 +1,27 @@
 /* unvisited link */
-a:link {
-    color: #00A0F9;
+table a:link {
+    color: #00008B;
+    text-decoration: none;
 }
 
 /* visited link */
-a:visited {
-    color: #0000F9;
+table a:visited {
+    color: #380000;
+    text-decoration: none;
 }
 
 /* mouse over link */
-a:hover {
-    color: #FF00FF;
+table a:hover {
+    color: #0066CC;
+    text-decoration: none;
 }
 
 /* selected link */
-a:active {
-    color: #0000FF;
+table a:active {
+    color: #000000;
+    text-decoration: none;
 }
+
 #top{
     width:100px;
 	border:1px solid #d2d2d2;
