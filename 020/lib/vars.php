@@ -23,6 +23,8 @@ define("vserv_tags3", "SELECT * FROM vserv_tags3;");
 
 define("vserv_posizioni_occupate", "SELECT posizione FROM MAGAZZINO WHERE quantita>0 ORDER BY posizione;");
 
+define("vserv_transiti","SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1");
+
 $vserv_contatti = "SELECT * FROM vserv_contatti;";
 $vserv_tipodoc = "SELECT * FROM vserv_tipodoc WHERE label!='Sistema';";
 $vserv_numdoc = "SELECT * FROM vserv_numdoc;";

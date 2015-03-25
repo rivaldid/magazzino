@@ -75,7 +75,7 @@ if (isset($_POST['invia'])) {
 	
 	$log .= remesg("Effettua una nuova <a href=\"?page=transiti_search\">ricerca</a> in transiti","search");
 	
-	$q = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
+	$q = vserv_transiti;
 	
 	if ($id_merce) $q .= " AND id_merce='$id_merce'";
 	if ($data_min AND $data_max) $q .= " AND data BETWEEN '$data_min' AND '$data_max'";
@@ -136,6 +136,10 @@ if (isset($_POST['invia'])) {
 				break;
 
 			case "10":
+				$riga .= "<td>".safetohtml(strtolower($cvalue))."</td>\n";
+				break;
+
+			case "11":
 				if ($doc_ordine != NULL)
 					$riga .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
 				else

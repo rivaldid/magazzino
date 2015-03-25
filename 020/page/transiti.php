@@ -26,7 +26,7 @@ $log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti i 
 $log .= remesg("Effettua una <a href=\"?page=transiti_search\">ricerca</a> nei transiti","search");
 
 
-$sql = "SELECT doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI";
+$sql = vserv_transiti;
 $query_count = mysql_query($sql);
 
 $per_page = 20;
@@ -189,8 +189,12 @@ while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
 				else
 					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
-
+			
 			case "10":
+				$riga .= "<td>".safetohtml(strtolower($cvalue))."</td>\n";
+				break;
+
+			case "11":
 				if ($doc_ordine != NULL)
 					$riga .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
 				else
