@@ -133,7 +133,7 @@ for ($i = $current_page-3; $i <= $current_page+3; $i++) {
 
 
 // coda
-if ($current_page2 == '32')	$current='single'; 
+if ($current_page2 == '33')	$current='single'; 
 
 
 $pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";

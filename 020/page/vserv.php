@@ -341,7 +341,7 @@ mysql_close($conn);
 
 // stampo output
 echo "<div id='log'>\n";
-echo remesg("Notifiche","tit");
+echo remesg("Strumenti","tit");
 if ($log == "") echo remesg($msg18,"msg");
 else echo $log;
 echo "</div>\n";

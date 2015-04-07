@@ -21,7 +21,8 @@ margin: 1.5em;
 
 .paginate li.current a:hover {
   color: black;
-  background-color: #ccc ;  
+  background-color: transparent ;  
+  text-decoration: underline;
 }
 
 .paginate li.single a:hover {

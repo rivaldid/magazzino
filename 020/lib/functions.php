@@ -82,7 +82,7 @@ function remesg($msg,$classe) {
 			break;
 
 		case "action":
-			$out .= "<i class=\"fa fa-cog\"></i>";
+			$out .= "<i class=\"fa fa-pencil\"></i>";
 			break;
 
 		case "done":
@@ -98,7 +98,7 @@ function remesg($msg,$classe) {
 			break;
 		
 		case "tit":
-			$out .= "<i class=\"fa fa-envelope-o\"></i>";
+			$out .= "<i class=\"fa fa-cogs\"></i>";
 			break;
 		
 		case "debug":
@@ -178,7 +178,7 @@ return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gi
 
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
-$o .= remesg("Notifiche","tit");
+$o .= remesg("Strumenti","tit");
 $o .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"info");
 if (isset($log)) {
 	if (empty($log))

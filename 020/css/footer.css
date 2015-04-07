@@ -1,17 +1,24 @@
-#footer ul {
-   clear:left;
-   float:left;
-   margin:0;
-   padding:0;
-   position:relative;
-   left:50%;
+#footer {
+	font: bold 14px Verdana, "Times New Roman", serif;
+
 }
 
-#footer ul li {
-   font-size: 1.2em;
+#footer ul {
+	clear:left;
+	float:left;
+	margin:0;
+	padding:0;
+	position:relative;
+	left:50%;
+}
+
+#footer ul li {	
    float:left;
    list-style:none;
    position:relative;
    right:50%;
    padding: 1em 0.5em;
 }
+
+#footer a{ color: #7087A9;text-decoration:none; }
+#footer a:hover { color: #244D8A; }

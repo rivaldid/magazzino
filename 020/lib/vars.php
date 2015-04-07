@@ -4,7 +4,7 @@
 define("jsxtable","<script type='text/javascript'>\n$(document).ready(function() { $('table').filterTable(); });\n$(document).ready(function() { $('table').tablesorter(); });\n</script>\n");
 define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
 define("jsaltrows","<script type='text/javascript'>\n  function altRows(id){ if(document.getElementsByTagName){ var table = document.getElementById(id); var rows = table.getElementsByTagName(\"tr\"); for(i = 0; i < rows.length; i++){ if(i % 2 == 0){ rows[i].className = \"evenrowcolor\"; }else{ rows[i].className = \"oddrowcolor\"; } } } } window.onload=function(){ altRows('alternatecolor'); } </script>\n");
-define("jsxtop","<script type='text/javascript'>\n $(function() { $(window).scroll(function() { if($(this).scrollTop() != 0) { $('#top').fadeIn(); } else { $('#top').fadeOut(); } }); $('#top').click(function() { $('body,html').animate({scrollTop:0},800); }); }); </script>\n");
+define("jsxtop","<script type='text/javascript'>\n $(function() { $('#toTop').scrollToTop(1000); });\n</script>\n");
 
 
 // costanti path

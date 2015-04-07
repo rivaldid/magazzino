@@ -23,7 +23,7 @@ div.centeredmenu a span
     background:#FFF url(../imgs/bg.gif) repeat-x 100% 0;
     padding: 0 20px;
     text-decoration:none;
-    font: normal 14px Arial;
+    font: normal 16px verdana;
     line-height: 25px;
     color:#7087A9;
     vertical-align:top;
@@ -45,17 +45,15 @@ div.centeredmenu a:hover span, div.centeredmenu a.current span
 div.centeredMenuPre
 {
 	width: 100%;
-	height: 145px;
-	background-image: url(../imgs/bg_pi.gif);
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: 10px;
+	height: 52px;
+	background: transparent url(../imgs/bg_pi4.png)  no-repeat center;
+    margin: 1em 0 1.5em 0;
 }
 
 div.centeredMenuSub
 {
-    height:10px;
-    border:1px solid #C2D5EF;
-    background:#eee url(../imgs/bg.gif) repeat-x 0 -50px;
+    height:0px;
+   /* border:1px solid #C2D5EF;*/
+    /*background:#eee url(../imgs/bg.gif) repeat-x 0 -50px;*/
 }
 

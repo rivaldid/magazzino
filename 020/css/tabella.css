@@ -1,25 +1,25 @@
 /* unvisited link */
 table a:link {
-    color: #00008B;
-    text-decoration: none;
+    color: #000;
+    text-decoration: underline;
 }
 
 /* visited link */
 table a:visited {
-    color: #380000;
-    text-decoration: none;
+    color: #000;
+    text-decoration: underline;
 }
 
 /* mouse over link */
 table a:hover {
-    color: #0066CC;
-    text-decoration: none;
+    color: #000;
+    text-decoration: underline;
 }
 
 /* selected link */
 table a:active {
-    color: #000000;
-    text-decoration: none;
+  color: #000;
+    text-decoration: underline;
 }
 
 #top{
@@ -44,15 +44,18 @@ input[type="submit"],input[type="reset"],input[type="text"], textarea, select  {
     line-height: 18px;
     box-shadow: px 2px 2px 3px #333;
 	font-size: 14px;
+	background-color:#fff;
+
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover  {
-	background-color:#DAE6F4;
+	/*background-color:#DAE6F4;*/
+	background-color:#4673BE;
 }
 
 
 input[type="submit"],input[type="reset"]:visited  {
-	background-color:transparent;
+	background-color:#fff;
 }
 
 body {
@@ -111,13 +114,14 @@ tr:nth-child(odd) > td {
 table.altrowstable {
 font-family: verdana,arial,sans-serif;
 font-size:11px;
-color:#333333;
+color:#3F7AC1;
 border-width: 1px;
 border-color: #a9c6c9;
 border-collapse: collapse;
 }
 
 table.altrowstable th {
+color:#006DBE;
 border-width: 1px;
 padding: 8px 19px 8px 8px;
 border-style: solid;

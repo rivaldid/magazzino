@@ -3,10 +3,11 @@ html, body {
     width: 100%;
     margin: 0;
     display: table;
+
 }
 
 #contents {
-margin: 20px 10px 10px 10px;
+margin: 0px 10px 10px 10px;
 text-align: center;
 width: auto;
 height: auto;
@@ -14,17 +15,23 @@ border: 1px #C2D5EF solid;
 position: relative;
 border-radius: 22px;
 background-color: #DFE5EA;
-padding: 1%;
+/*background: transparent url(../imgs/bg_content2.png)  repeat-x;*/
+padding: 0.5%;
 }
 
+#contents h1{
+font: bold 26px Verdana, "Times New Roman", serif;
+}
+
+/*area notifiche con stili annessi - warning, tilt..ecc */
 #log {
-font: normal bold 14px/30px verdana, serif;
+font: bold 11px Verdana, "Times New Roman", serif;
 text-align: justify;
 margin: 0 auto;
 line-height: 1;
-padding:1%;
+padding: 0;
 width: 700px;
-border-bottom: 1px dashed #000;
+border-bottom: 1px dashed #006DBE;
 margin-bottom: 2em;
 }
 
@@ -33,22 +40,32 @@ color: inherit;
 }
 
 #log p.tit{
-color: #585858;
-font-size: 20px;
-padding:2%;
-border-bottom: 1px dashed #000;
+color: #1C5BA3;
+padding:1%;
+border-bottom: 1px dashed #006DBE;
+font: bold 12px Verdana, "Times New Roman", serif;
+
 }
 
 #log p.action{
 color: #6C99B4;
 }
+#log p.action a:hover{
+color: #366092;
+}
 
 #log p.search{
-color: blue;
+color: #0069FC;
+}
+#log p.search a:hover{
+color: #009AFC;
 }
 
 #log p.pdf{
-color: green;
+color: #2D8000;
+}
+#log p.pdf  a:hover{
+color: #2DB100;
 }
 
 #log p.err{
@@ -61,6 +78,9 @@ color: #FFBF00;
 
 #log p.info{
 color: grey;
+}
+#log p.info a:hover{
+color: #000000;
 }
 
 #log p.done{
@@ -75,7 +95,5 @@ color: #3366CC;
 color: #008800;
 text-decoration: underline;
 }
-
-#footer a{ color: #7087A9; }
-#footer a:hover { color: #244D8A; }
+/*fine area notifiche con stili annessi - warning, tilt..ecc */
 

@@ -4,7 +4,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 ?>
 
-<h1><i class="fa fa-terminal"> Gestione Magazzino DataCenter Torino</i></h1>
+<h1> Magazzino Data Center </h1>
 <hr>
 
 <div style="text-align:justify; padding:20px 120px;">

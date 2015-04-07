@@ -31,7 +31,7 @@
 				highlightClass:    'alt',               // class applied to cells containing the filter term
 				inputName:         '',                  // name of filter input field
 				inputType:         'search',            // tag name of the filter input tag
-				label:             'Filtro:',           // text to precede the filter input tag
+				label:             '<i title="filtra dati" class="fa fa-filter"></i>',           // text to precede the filter input tag
 				minRows:           8,                   // don't show the filter on tables with less than this number of rows
 				placeholder:       '...', 				// HTML5 placeholder text for the filter field
 				quickList:         [],                  // list of phrases to quick fill the search
