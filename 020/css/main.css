@@ -1,9 +1,8 @@
 html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    display: table;
-
+height: 100%;
+width: 100%;
+margin: 0;
+display: table;
 }
 
 #contents {
@@ -29,7 +28,9 @@ font: bold 11px Verdana, "Times New Roman", serif;
 text-align: justify;
 margin: 0 auto;
 line-height: 1;
-padding: 0;
+background-color: #DFEEFF;
+border: 1px dashed #ccc;
+padding: 0.2%;
 width: 700px;
 margin-bottom: 2em;
 margin-top: 1.5em;

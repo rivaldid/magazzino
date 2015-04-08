@@ -22,8 +22,8 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
-$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti i transiti registrati</a>","action");
-$log .= remesg("Effettua una <a href=\"?page=transiti_search\">ricerca</a> nei transiti","search");
+$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti</a>","action");
+$log .= remesg("<a href=\"?page=transiti_search\">Ricerca</a>","search");
 
 
 $sql = vserv_transiti;
@@ -232,7 +232,7 @@ $fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
 fwrite($fp,$export);
 fclose($fp);
 
-$log .= remesg("Scarica <a href=\"".ricerche.$file_export."\">dati</a> in pdf","pdf");
+$log .= remesg("<a href=\"".ricerche.$file_export."\">Esporta in pdf</a> ","pdf");
 
 
 // stampo
