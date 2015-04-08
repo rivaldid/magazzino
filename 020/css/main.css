@@ -31,20 +31,35 @@ margin: 0 auto;
 line-height: 1;
 padding: 0;
 width: 700px;
-border-bottom: 1px dashed #006DBE;
 margin-bottom: 2em;
+margin-top: 1.5em;
+}
+
+hr.divisore_log { 
+border: 0; 
+height: 1px; 
+background: #0066B3;
+width: 100%;
+background-image: -webkit-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
+background-image: -moz-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
+background-image: -ms-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
+background-image: -o-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA);
+margin-bottom: 2em; 
 }
 
 #log a{
 color: inherit;
 }
 
-#log p.tit{
+.tit{
 color: #1C5BA3;
-padding:1%;
-border-bottom: 1px dashed #006DBE;
 font: bold 12px Verdana, "Times New Roman", serif;
+}
 
+.wellcomePage{
+color: #31b404;
+left: 480px;
+position: relative;
 }
 
 #log p.action{
@@ -96,4 +111,6 @@ color: #008800;
 text-decoration: underline;
 }
 /*fine area notifiche con stili annessi - warning, tilt..ecc */
+
+
 

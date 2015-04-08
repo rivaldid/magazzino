@@ -119,8 +119,7 @@ function remesg($msg,$classe) {
 		
 		default:
 			$out .= "";
-			
-			
+	
 	}
 	
 	$out .= " ".$msg."</p>\n";
@@ -178,8 +177,9 @@ return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gi
 
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
-$o .= remesg("Strumenti","tit");
-$o .= remesg("Autenticato come ".$_SERVER["AUTHENTICATE_UID"]." alle ".date('H:i')." del ".date('d/m/Y'),"info");
+$o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span><span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["AUTHENTICATE_UID"]."</span>";
+$o .= "<hr class=\"divisore_log\" />\n";
+
 if (isset($log)) {
 	if (empty($log))
 		$o .= remesg("Nessuna notifica da visualizzare","info");

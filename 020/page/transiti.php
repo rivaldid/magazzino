@@ -73,13 +73,9 @@ $current_page2 = $current_page;
 if ($current_page2>1) 
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
 	
-	//codice davide
-	if ($current_page2 == '1')	$current='single'; 
-	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
-
-	//codice davide
-	$current='current';	
- 
+if ($current_page2 == '1')	$current='single';
+$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
+$current='current';
  
 // corpo
 switch ($current_page) {
@@ -120,27 +116,21 @@ switch ($current_page) {
 
 for ($i = $current_page-3; $i <= $current_page+3; $i++) {
 	
-	//codice di davide
-	if ($current_page2 == $i) $current='single'; 
-	//fine codice di davide
-	
+	if ($current_page2 == $i) $current='single'; 	
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
-	//codice di davide
 	$current='current'; 
-	//fine codice di davide
-
+	
 }
 
-
 // coda
-if ($current_page2 == '33')	$current='single'; 
-
+if ($current_page2 == $pages) 
+	$current='single'; 
 
 $pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
 if ($current_page2<$pages) 	
-	
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
-	$pagination .= "</ul></div>\n";
+$pagination .= "</ul></div>\n";
+
 $a .= $pagination;
 
 
