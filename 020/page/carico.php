@@ -150,7 +150,7 @@ if (isset($_GET["reintegro"])) {
 	}
 }
 
-$log .= remesg("Aggiungi un <a href=\"?page=carico&reintegro\">reintegro</a> merce","action");
+$log .= $menu_carico;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
@@ -536,7 +536,7 @@ $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	//$a .= "<caption>CARICO MERCE</caption>\n";
-	$log .= remesg("Pagina per il carico della merce in magazzino","info");
+	//$log .= remesg("Pagina per il carico della merce in magazzino","info");
 
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Descrizione</th>\n";

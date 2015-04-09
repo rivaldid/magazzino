@@ -23,16 +23,13 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 // log
 if (isset($_GET["id"])) {
 	$query = "SELECT * FROM vserv_magazzino_id;";
-	$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","action");
+	//$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","action");
 } else {
 	$query = "SELECT * FROM vserv_magazzino;";
-	$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","action");
+	//$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","action");
 }
 
-//$log .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione con documenti</a>","action");
-$log .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti</a> sul magazzino","action");
-$log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
-$log .= remesg("Effettua una <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
+$log .= $menu_magazzino;
 
 
 // interrogazione
@@ -94,7 +91,7 @@ $fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
 fwrite($fp,$export);
 fclose($fp);
 
-$log .= remesg("Scarica <a href=\"".ricerche.$file_export."\">dati</a> in pdf","pdf");
+$log .= remesg("<a href=\"".ricerche.$file_export."\">Esporta in pdf</a>","pdf");
 
 // stampo
 echo makepage($a, $log);

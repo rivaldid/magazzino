@@ -21,9 +21,10 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
+	
 
-$log .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti</a>","action");
-$log .= remesg("<a href=\"?page=transiti_search\">Ricerca</a>","search");
+// menu
+$log .= $menu_transiti;
 
 
 $sql = vserv_transiti;
