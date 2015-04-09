@@ -36,16 +36,16 @@ margin-bottom: 2em;
 margin-top: 1.5em;
 }
 
-hr.divisore_log { 
-border: 0; 
-height: 1px; 
+hr.divisore_log {
+border: 0;
+height: 1px;
 background: #0066B3;
 width: 100%;
-background-image: -webkit-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
-background-image: -moz-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
-background-image: -ms-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA); 
+background-image: -webkit-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA);
+background-image: -moz-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA);
+background-image: -ms-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA);
 background-image: -o-linear-gradient(left, #DFE5EA, #0066B3, #DFE5EA);
-margin-bottom: 2em; 
+margin-bottom: 2em;
 }
 
 #log a{
@@ -73,6 +73,7 @@ color: #366092;
 #log p.search{
 color: #0069FC;
 }
+
 #log p.search a:hover{
 color: #009AFC;
 }
@@ -80,6 +81,7 @@ color: #009AFC;
 #log p.pdf{
 color: #2D8000;
 }
+
 #log p.pdf  a:hover{
 color: #2DB100;
 }
@@ -95,6 +97,7 @@ color: #FFBF00;
 #log p.info{
 color: grey;
 }
+
 #log p.info a:hover{
 color: #000000;
 }
@@ -112,6 +115,4 @@ color: #008800;
 text-decoration: underline;
 }
 /*fine area notifiche con stili annessi - warning, tilt..ecc */
-
-
 
