@@ -7,7 +7,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 // variabili
 $a = ""; $log = "";
-$riga = ""; 
+$riga = "";
 
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
@@ -21,13 +21,10 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 // log
-$query = "SELECT * FROM vista_magazzino_ng;";
+$query = "SELECT * FROM vista_magazzino_ng_full;";
 
-
-$log .= remesg("<a href=\"?page=magazzino\">Visualizzazione di default</a>","action");
-$log .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti</a> sul magazzino","action");
-$log .= remesg("<a href=\"?page=contromagazzino\">Contromagazzino</a>","action");
-$log .= remesg("Effettua una <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
+$log .= $menu_magazzino;
+$log .= remesg("<a href=\"?page=magazzino\">Default</a>","action");
 
 
 // interrogazione
@@ -86,12 +83,12 @@ mysql_free_result($res);
 
 
 // salvo export pdf
-$file_export = "export_magazzino.php";
+$file_export = "export_magazzino_ng.php";
 $fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
 fwrite($fp,$export);
 fclose($fp);
 
-$log .= remesg("Scarica <a href=\"".ricerche.$file_export."\">dati</a> in pdf","pdf");
+$log .= remesg("<a href=\"".ricerche.$file_export."\">Esporta in pdf</a>","pdf");
 
 // stampo
 echo makepage($a, $log);

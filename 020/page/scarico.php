@@ -371,7 +371,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	// 222. test valid
 	if ($valid) {
-		
+
 		// 2221. SCARICO
 		$call = "CALL SCARICO('{$num_mds}','{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
 		if ($DEBUG) $log .= remesg($call,"debug");
@@ -500,7 +500,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-		$log .= remesg("Completare lo scarico sulla merce indicata","info");
+		//$log .= remesg("Completare lo scarico sulla merce indicata","info");
 
 		$a .= "<thead><tr>\n";
 			$a .= "<th>Descrizione</th>\n";

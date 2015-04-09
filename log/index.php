@@ -24,7 +24,6 @@ include '../020/lib/menu.php';
 
 <div id="contents">
 
-<div id="log">
 <?php
 
 logging2(occhiomalocchio("logs"),accesslog);
@@ -44,12 +43,11 @@ if ($handle = opendir('.')) {
     }
 
     closedir($handle);
-    
+
     if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","action");
-    
+
 }
 ?>
-</div>
 
 </div>
 

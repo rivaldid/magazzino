@@ -72,11 +72,11 @@ function isoptlst($value) {
 }
 
 function remesg($msg,$classe) {
-	
+
 	$out = "<p class=\"".$classe."\">";
-	
+
 	switch ($classe) {
-		
+
 		case "info":
 			$out .= "<i class=\"fa fa-info\"></i>";
 			break;
@@ -88,23 +88,23 @@ function remesg($msg,$classe) {
 		case "done":
 			$out .= "<i class=\"fa fa-check\"></i>";
 			break;
-		
+
 		case "warn":
 			$out .= "<i class=\"fa fa-exclamation\"></i>";
 			break;
-		
+
 		case "err":
 			$out .= "<i class=\"fa fa-exclamation-triangle\"></i>";
 			break;
-		
+
 		case "tit":
 			$out .= "<i class=\"fa fa-cogs\"></i>";
 			break;
-		
+
 		case "debug":
 			$out .= "<i class=\"fa fa-bug\"></i>";
 			break;
-		
+
 		case "out":
 			$out .= "<i class=\"fa fa-thumbs-o-up\"></i>";
 			break;
@@ -112,16 +112,16 @@ function remesg($msg,$classe) {
 		case "pdf":
 			$out .= "<i class=\"fa fa-file-pdf-o\"></i>";
 			break;
-			
+
 		case "search":
 			$out .= "<i class=\"fa fa-search\"></i>";
 			break;
-		
+
 		default:
 			$out .= "";
-	
+
 	}
-	
+
 	$out .= " ".$msg."</p>\n";
 	return $out;
 }
@@ -199,9 +199,9 @@ function array2csv(array &$array)
      return null;
    }
    ob_start();
-   
+
    $df = fopen("php://output",'w');
-   
+
    fputcsv($df, array_keys(reset($array)));
    foreach ($array as $row) {
       fputcsv($df, $row);
@@ -217,7 +217,7 @@ function download_send_headers($filename) {
     header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
     header("Last-Modified: {$now} GMT");
 
-    // force download  
+    // force download
     header("Content-Type: application/force-download");
     header("Content-Type: application/octet-stream");
     header("Content-Type: application/download");
@@ -254,7 +254,7 @@ while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
 		$a .= "<td>".$cvalue."</td>\n";
 	$a .= "</tr>\n";
 }
-		
+
 $a .= "</table>\n</div>\";\n";
 $a .= "//==============================================================\n";
 $a .= "include(\"".lib_mpdf57."\");\n";

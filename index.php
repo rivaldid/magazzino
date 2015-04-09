@@ -24,7 +24,6 @@ include '020/lib/menu.php';
 
 <div id="contents">
 
-<div id="log">
 <?php
 
 logging2(occhiomalocchio("radice"),accesslog);
@@ -38,24 +37,23 @@ if ($handle = opendir('.')) {
     while (false !== ($entry = readdir($handle))) {
 
         if ($entry != "." && $entry != ".." && $entry != "index.php" && $entry != "log" && $entry != ".git" && $entry != ".gitignore") {
-			
+
 			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> aggiornato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"info");
-			
+
         }
-        
+
         if ($entry == "log" && in_array($_SERVER["AUTHENTICATE_UID"], $enabled_users))
-        
+
 			echo remesg("<a href=\"".dirname($_SERVER['SCRIPT_NAME'])."/".$entry."\">".basename($entry, ".php")."</a> aggiornato il ".strftime("%d %B %Y %H:%M:%S",filectime($entry)),"info");
-		
+
     }
 
     closedir($handle);
-    
+
     if (isset($_SERVER['HTTP_REFERER'])) echo remesg("<a href=\"".$_SERVER['HTTP_REFERER']."\">Indietro</a>","action");
-    
+
 }
 ?>
-</div>
 
 </div>
 

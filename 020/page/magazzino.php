@@ -30,6 +30,7 @@ if (isset($_GET["id"])) {
 }
 
 $log .= $menu_magazzino;
+$log .= remesg("<a href=\"?page=magazzino_ng\">Vista dettagliata</a>","action");
 
 
 // interrogazione

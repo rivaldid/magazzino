@@ -21,9 +21,9 @@ $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino
 // query
 $query = "SELECT MERCE.tags AS merce,sum(seljoin.quantita) AS tot,GROUP_CONCAT(DISTINCT CONCAT(seljoin.posizione,'(',seljoin.quantita,')')) AS destinazioni FROM
 (SELECT sel1.id_merce,sel1.quantita,sel1.posizione FROM
-(SELECT id_merce,quantita,posizione FROM OPERAZIONI JOIN REGISTRO USING(id_registro) WHERE direzione=0 AND contatto!='Aggiornamento') AS sel1 
-LEFT JOIN 
-(SELECT id_merce,quantita,posizione FROM MAGAZZINO WHERE quantita>0) AS sel2 
+(SELECT id_merce,quantita,posizione FROM OPERAZIONI JOIN REGISTRO USING(id_registro) WHERE direzione=0 AND contatto!='Aggiornamento') AS sel1
+LEFT JOIN
+(SELECT id_merce,quantita,posizione FROM MAGAZZINO WHERE quantita>0) AS sel2
 ON CONCAT(sel1.id_merce,sel1.quantita,sel1.posizione)=CONCAT(sel2.id_merce,sel2.quantita,sel2.posizione)
 WHERE CONCAT(sel2.id_merce,sel2.quantita,sel2.posizione) IS NULL) AS seljoin
 JOIN MERCE ON seljoin.id_merce=MERCE.id_merce GROUP BY MERCE.tags ORDER BY MERCE.tags";
