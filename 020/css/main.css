@@ -28,8 +28,8 @@ font: bold 11px Verdana, "Times New Roman", serif;
 text-align: justify;
 margin: 0 auto;
 line-height: 1;
-background-color: #DFEEFF;
-border: 1px dashed #ccc;
+/*background-color: #DFEEFF;
+border: 1px dashed #ccc;*/
 padding: 0.2%;
 width: 700px;
 margin-bottom: 2em;
@@ -63,9 +63,15 @@ left: 480px;
 position: relative;
 }
 
+#log p {
+display: inline;
+padding: 0.5em;
+}
+
 #log p.action{
 color: #6C99B4;
 }
+
 #log p.action a:hover{
 color: #366092;
 }
