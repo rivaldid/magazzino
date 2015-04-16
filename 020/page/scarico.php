@@ -169,7 +169,7 @@ if ($DEBUG) {
 
 // 136. destinazione
 if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
-	$destinazione = strtr(safe($_SESSION['idestinazione']),$rimpiazzzi);
+	$destinazione = epura_special2chars(safe($_SESSION['idestinazione']));
 else {
 	if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
 		$destinazione = safe($_SESSION['sdestinazione']);
@@ -223,13 +223,13 @@ else {
 }
 
 if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = strtr(safe($_SESSION['tags']),$rimpiazzi);
+	$tags = epura_special2chars(safe($_SESSION['tags']));
 else {
 	$tags = NULL;
 }
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = strtr(safe($_SESSION['posizione']),$rimpiazzi);
+	$posizione = epura_special2chars(safe($_SESSION['posizione']));
 else {
 	$posizione = NULL;
 }
@@ -520,6 +520,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$a .= "</tfoot>\n";
 
 		$a .= "<tbody>\n";
+
+			$a .= noinput_hidden("num_mds",$num_mds);
 
 			$a .= "<tr>\n";
 			$a .= "<td><label for='utente'>Utente</label></td>\n";

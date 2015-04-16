@@ -7,7 +7,7 @@ logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 // variabili
 $a = ""; $log = "";
-$riga = ""; 
+$riga = "";
 
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
