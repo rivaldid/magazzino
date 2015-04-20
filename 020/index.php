@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<!--[if IE 7]><html lang="it" class="ie7"><![endif]-->
+<!--[if IE 8]><html lang="it" class="ie8"><![endif]-->
+<!--[if IE 9]><html lang="it" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><html lang="it"><![endif]-->
+<!--[if !IE]><html lang="it-IT"><![endif]-->
 <head>
 	<title>GMDCTO - Gestione Magazzino DC-TO</title>
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
