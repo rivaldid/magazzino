@@ -137,7 +137,7 @@ $utente = $_SERVER["AUTHENTICATE_UID"];
 
 // 134. richiedente
 if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
-	$richiedente = strtr(safe($_SESSION['irichiedente']),$rimpiazzi);
+	$richiedente = epura_special2chars(safe($_SESSION['irichiedente']));
 else {
 	if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
 		$richiedente = safe($_SESSION['srichiedente']);
