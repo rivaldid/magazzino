@@ -466,7 +466,7 @@ if (is_null($a) OR empty($a)) {
 
 	// risultati
 	$a .= jsxtable;
-	$a .= jsaltrows;
+	//$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	$a .= "<thead><tr>\n";
@@ -478,10 +478,13 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 
 	while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-		$a .= "<tr>\n";
+		
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
+		
+		$a .= "<tr>\n";
+		
 		foreach ($row as $cname => $cvalue)
 
 			switch ($cname) {
@@ -535,7 +538,9 @@ if (is_null($a) OR empty($a)) {
 
 			} // end switch
 
-		$a .= "</form>\n</tr>\n";
+		$a .= "</tr>\n";
+		
+		$a .= "</form>\n";
 
 	} // end while
 

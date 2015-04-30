@@ -644,41 +644,46 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 
 	while ($row = mysql_fetch_array($result_lista_merce, MYSQL_NUM)) {
-		$a .= "<tr>\n";
+
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-		foreach ($row as $cname => $cvalue)
+		
+		$a .= "<tr>\n";
+		
+			foreach ($row as $cname => $cvalue)
 
-			switch ($cname) {
+				switch ($cname) {
 
-				case 0:
-					$a .= noinput_hidden("id_merce",$cvalue)."\n";
-					$id_merce=$cvalue;
-					break;
+					case 0:
+						$a .= noinput_hidden("id_merce",$cvalue)."\n";
+						$id_merce=$cvalue;
+						break;
 
-				case 1:
-					$a .= "<td>\n";
-					$a .= input_hidden("tags",$cvalue)."\n";
-					$a .= "<a href=\"?page=transiti_search&id_merce=$id_merce\">[dettagli]</a>\n";
-					$a .= "</td>\n";
-					break;
+					case 1:
+						$a .= "<td>\n";
+						$a .= input_hidden("tags",$cvalue)."\n";
+						$a .= "<a href=\"?page=transiti_search&id_merce=$id_merce\">[dettagli]</a>\n";
+						$a .= "</td>\n";
+						break;
 
-				case 2:
-					$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
-					break;
+					case 2:
+						$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
+						break;
 
-				case 3:
-					$a .= "<td>".input_hidden("maxquantita",$cvalue)."</td>\n";
-					break;
+					case 3:
+						$a .= "<td>".input_hidden("maxquantita",$cvalue)."</td>\n";
+						break;
 
-				default:
-					$a .= "<td>".$cvalue."</td>\n";
-			}
+					default:
+						$a .= "<td>".$cvalue."</td>\n";
+				}
 
-		$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
-		$a .= "</form>\n";
+			$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
+		
 		$a .= "</tr>\n";
+		
+		$a .= "</form>\n";
 	}
 
 	$a .= "</tbody>\n</table>\n";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <!--[if IE 7]><html lang="it" class="ie7"><![endif]-->
 <!--[if IE 8]><html lang="it" class="ie8"><![endif]-->
 <!--[if IE 9]><html lang="it" class="ie9"><![endif]-->
