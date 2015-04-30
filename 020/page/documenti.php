@@ -327,7 +327,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		$a .= jsxdate;
-		$a .= jsaltrows;
+		//$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 			$log .= remesg("Pagina per la gestione di documenti di magazzino","info");

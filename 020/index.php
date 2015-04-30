@@ -36,7 +36,6 @@
 	
 	?>
 	<div id="contents">
-		<!-- bottone torna su -->
 		<a href="#top" id="toTop"></a>
 		<?php include $page; ?>
 	</div>

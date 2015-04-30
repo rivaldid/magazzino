@@ -532,7 +532,7 @@ $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities(
 if ($DEBUG) $a .= "&debug";
 $a .= "'>\n";
 $a .= jsxdate;
-$a .= jsaltrows;
+//$a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	//$a .= "<caption>CARICO MERCE</caption>\n";
