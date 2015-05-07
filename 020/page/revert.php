@@ -33,7 +33,10 @@ if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 // test bottoni
 if (isset($_POST['finish'])) {
 
-	$log .= remesg("Hai confermato l'eliminazione del transito #".$_POST['id_operazioni'],"done");
+	$log .= remesg("Hai confermato l'annullamento del transito #".$_POST['id_operazioni'],"done");
+	// call=revert($_SERVER["AUTHENTICATE_UID"],$_POST['id_operazioni']);
+	// logging2($call,splog);
+	// unset($_POST['id_operazioni']);
 
 // test revert
 } elseif (isset($_POST['revert'])) {
@@ -44,7 +47,6 @@ if (isset($_POST['finish'])) {
 
 	// form revisione dati
 	$result_target = mysql_query($query_interrogazione." AND id_operazioni=\"".$_POST['id_operazioni']."\"");
-	$a .= remesg("Stai per annullare il transito","warn");
 
 	$target = mysql_fetch_row($result_target);
 	mysql_free_result($result_target);
