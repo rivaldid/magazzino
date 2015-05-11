@@ -45,6 +45,7 @@ input[type="submit"],input[type="reset"],input[type="text"], textarea, select  {
     box-shadow: px 2px 2px 3px #333;
 	font-size: 14px;
 	background-color:#fff;
+	width: 15em;
 
 }
 

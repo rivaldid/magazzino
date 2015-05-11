@@ -17,10 +17,20 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
+if (isset($_SERVER["AUTHENTICATE_UID"])AND(!empty($_SERVER["AUTHENTICATE_UID"])))
+	$utente = $_SERVER["AUTHENTICATE_UID"];
+else
+	$utente = NULL;
+	
+if (isset($_POST['id_operazioni'])AND(!empty($_POST['id_operazioni'])))
+	$id_operazioni = safe($_POST['id_operazioni']);
+else
+	$id_operazioni = NULL;
+
 $a = "";
 $log = "";
 $output_row = "";
-$valid = false;
+$data_revert = date("Y-m-d");
 
 $query_interrogazione = "SELECT id_operazioni,doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
 
@@ -32,21 +42,27 @@ if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 
 // test bottoni
 if (isset($_POST['finish'])) {
+	
+	$call = "CALL revert('{$utente}','{$id_operazioni}');";
+	
+	$res_revert = mysql_query($call);
 
-	$log .= remesg("Hai confermato l'annullamento del transito #".$_POST['id_operazioni'],"done");
-	// call=revert($_SERVER["AUTHENTICATE_UID"],$_POST['id_operazioni']);
-	// logging2($call,splog);
-	// unset($_POST['id_operazioni']);
+	if ($res_revert)
+		$log .= remesg("Hai confermato l'annullamento del transito #".$id_operazioni,"done");
+	else
+		die('Errore nell\'invio dei dati al db: '.mysql_error());
+	
+	logging2($call,splog);
 
 // test revert
 } elseif (isset($_POST['revert'])) {
 
 	if ($DEBUG) $log .= remesg("Valore tasto ADD: ".$_POST['revert'],"debug");
-	$log .= remesg("Annullamento transito #".$_POST['id_operazioni'],"info");
+	$log .= remesg("Annullamento transito #".$id_operazioni,"info");
 
 
 	// form revisione dati
-	$result_target = mysql_query($query_interrogazione." AND id_operazioni=\"".$_POST['id_operazioni']."\"");
+	$result_target = mysql_query($query_interrogazione." AND id_operazioni=\"".$id_operazioni."\"");
 
 	$target = mysql_fetch_row($result_target);
 	mysql_free_result($result_target);
@@ -97,7 +113,7 @@ if (isset($_POST['finish'])) {
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=revert");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-		$a .= noinput_hidden("id_operazioni",$_POST['id_operazioni']);
+		$a .= noinput_hidden("id_operazioni",$id_operazioni);
 		$a .= "<input type='submit' name='finish' value='Conferma'/>\n";
 		$a .= "</form>\n";
 
@@ -119,8 +135,10 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 if (is_null($a) OR empty($a)) {
 
 	// interrogazione + tabella risultati + free result
-	$resultset = mysql_query($query_interrogazione." LIMIT 1,5;");
+	$resultset = mysql_query($query_interrogazione." AND data='{$data_revert}';");
 	if (!$resultset) die('Errore nell\'interrogazione del db: '.mysql_error());
+	
+	if (mysql_num_rows($resultset)>0) {
 
 	$a .= jsxtable;
 	$a .= jsaltrows;
@@ -197,6 +215,10 @@ if (is_null($a) OR empty($a)) {
 
 	$a .= $output_row;
 	$a .= "</tbody>\n</table>\n";
+	
+	} else
+	
+		$a .= remesg("Nessun transito da annullare","tit");
 
 	mysql_free_result($resultset);
 
