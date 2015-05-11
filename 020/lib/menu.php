@@ -17,17 +17,19 @@ $menu_magazzino = "";
 //$menu_documenti = "";
 $menu_carico = "";
 $menu_scarico = "";
+$menu_revert = "";
 
 
 // MENU TRANSITI
-$menu_transiti .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti</a>","action");
-$menu_transiti .= remesg("<a href=\"?page=transiti_search\">Ricerca</a>","search");
+$menu_transiti .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti i transiti</a>","action");
+$menu_transiti .= remesg("<a href=\"?page=transiti_search\">Ricerca nei transiti</a>","search");
+$menu_transiti .= remesg("<a href=\"?page=revert\">Annulla un transito registrato oggi</a>","search");
 
 // MENU MAGAZZINO
-//$menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione con documenti</a>","action");
-$menu_magazzino .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti</a>","action");
-$menu_magazzino .= remesg("<a href=\"?page=contromagazzino\">Merce scaricata</a>","action");
-$menu_magazzino .= remesg("<a href=\"?page=magazzino_search\">Ricerca</a>","search");
+$menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione completa di documenti</a>","action");
+$menu_magazzino .= remesg("<a href=\"?page=contromagazzino\">Visualizzazione completa della merce scaricata</a>","action");
+$menu_magazzino .= remesg("<a href=\"?page=magazzino_search\">Ricerca in magazzino</a>","search");
+$menu_magazzino .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti di posizione o quantita'</a>","action");
 
 // MENU CARICO
 $menu_carico .= remesg("<a href=\"?page=carico&reintegro\">Reintegro merce</a>","action");
@@ -36,5 +38,8 @@ $menu_carico .= remesg("<a href=\"?page=carico&reintegro\">Reintegro merce</a>",
 $menu_scarico .= remesg("<a href=\"?page=lista_scarichi&ultimi\">Ultimi scarichi</a>","action");
 $menu_scarico .= remesg("<a href=\"?page=lista_scarichi\">Scarichi</a>","action");
 $menu_scarico .= remesg("<a href=\"".registro_mds."\">Moduli di scarico</a>","pdf");
+
+// MENU REVERT
+$menu_revert .= remesg("<a href=\"?page=transiti\">Torna alla visualizzazione dei transiti</a>","action");
 
 ?>

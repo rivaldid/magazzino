@@ -32,6 +32,8 @@ $log = "";
 $output_row = "";
 $data_revert = date("Y-m-d");
 
+$log .= $menu_revert;
+
 $query_interrogazione = "SELECT id_operazioni,doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
