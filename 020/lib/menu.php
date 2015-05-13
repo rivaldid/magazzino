@@ -27,7 +27,7 @@ $menu_transiti .= remesg("<a href=\"?page=revert\">Annulla un transito registrat
 $menu_transiti .= remesg("<a href=\"http://10.98.2.159/GMDCTO/020/lib/report_transiti_excel.php\">Report transiti mese precedente in excel</a>","excel");
 
 // MENU MAGAZZINO
-$menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione completa di documenti</a>","action");
+//$menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione completa di documenti</a>","action");
 $menu_magazzino .= remesg("<a href=\"?page=contromagazzino\">Visualizzazione completa della merce scaricata</a>","action");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino_search\">Ricerca in magazzino</a>","search");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti di posizione o quantita'</a>","action");
