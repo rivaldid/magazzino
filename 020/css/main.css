@@ -92,6 +92,14 @@ color: #2D8000;
 color: #2DB100;
 }
 
+#log p.excel{
+color: #2D8000;
+}
+
+#log p.excel  a:hover{
+color: #2DB100;
+}
+
 #log p.err{
 color: #DF0101;
 }

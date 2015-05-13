@@ -125,6 +125,10 @@ function remesg($msg,$classe) {
 		case "search":
 			$out .= "<i class=\"fa fa-search\"></i>";
 			break;
+		
+		case "excel":
+			$out .= "<i class=\"fa fa-file-excel-o\"></i>";
+			break;
 
 		default:
 			$out .= "";

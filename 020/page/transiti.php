@@ -21,7 +21,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-	
+
 
 // menu
 $log .= $menu_transiti;
@@ -54,11 +54,11 @@ $pagination = "<div id='DIV-pagination'><ul class='paginate'>\n";
 
 // stabilisco che se $current_page esiste, class sia uguale a CURRENT
 if ($current_page)
- $current='current'; 
-else 
+ $current='current';
+else
  $current='single';
- 
- 
+
+
 if (($current_page-1)>1)
 	$prev=$current_page-1;
 else
@@ -71,64 +71,64 @@ else
 
 // testa
 $current_page2 = $current_page;
-if ($current_page2>1) 
+if ($current_page2>1)
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
-	
+
 if ($current_page2 == '1')	$current='single';
 $pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
 $current='current';
- 
+
 // corpo
 switch ($current_page) {
-	
+
 	case 1:
 		$current_page+=4;
 		break;
-	
+
 	case 2:
 		$current_page+=3;
 		break;
-	
+
 	case 3:
 		$current_page+=2;
 		break;
-	
+
 	case 4:
 		$current_page+=1;
 		break;
-	
+
 	case $pages-3:
 		$current_page-=1;
 		break;
-	
+
 	case $pages-2:
 		$current_page-=2;
 		break;
-	
+
 	case $pages-1:
 		$current_page-=3;
 		break;
-	
+
 	case $pages:
 		$current_page-=4;
-		break;		
+		break;
 
 }
 
 for ($i = $current_page-3; $i <= $current_page+3; $i++) {
-	
-	if ($current_page2 == $i) $current='single'; 	
+
+	if ($current_page2 == $i) $current='single';
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
-	$current='current'; 
-	
+	$current='current';
+
 }
 
 // coda
-if ($current_page2 == $pages) 
-	$current='single'; 
+if ($current_page2 == $pages)
+	$current='single';
 
 $pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
-if ($current_page2<$pages) 	
+if ($current_page2<$pages)
 	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
 $pagination .= "</ul></div>\n";
 
@@ -180,7 +180,7 @@ while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
 				else
 					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
-			
+
 			case "10":
 				$riga .= "<td>".safetohtml(strtolower($cvalue))."</td>\n";
 				break;
