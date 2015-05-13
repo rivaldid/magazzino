@@ -4,8 +4,8 @@ $DB_Server = "localhost";															//MySQL Server
 $DB_Username = "magazzino";															//MySQL Username
 $DB_Password = "magauser";															//MySQL Password
 $DB_DBName = "magazzino";   														//MySQL Database Name
-$DB_TBLName = "report_transiti_mensile";											//MySQL Table Name
-$filename = "report_mensile_transiti__".date('m', strtotime("last month"));			//File Name
+$DB_TBLName = "vserv_magazzino";													//MySQL Table Name
+$filename = "report_mensile_magazzino__".date('Y-m-d', strtotime("last month"));	//File Name
 /*******YOU DO NOT NEED TO EDIT ANYTHING BELOW THIS LINE*******/
 //create MySQL connection
 $sql = "Select * from $DB_TBLName";

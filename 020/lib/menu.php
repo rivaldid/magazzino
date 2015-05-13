@@ -31,6 +31,7 @@ $menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione comple
 $menu_magazzino .= remesg("<a href=\"?page=contromagazzino\">Visualizzazione completa della merce scaricata</a>","action");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino_search\">Ricerca in magazzino</a>","search");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti di posizione o quantita'</a>","action");
+$menu_magazzino .= remesg("<a href=\"http://10.98.2.159/GMDCTO/020/lib/report_magazzino_excel.php\">Report magazzino in excel</a>","excel");
 
 // MENU CARICO
 $menu_carico .= remesg("<a href=\"?page=carico&reintegro\">Reintegro merce</a>","action");
