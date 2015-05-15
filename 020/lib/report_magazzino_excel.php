@@ -1,4 +1,9 @@
 <?php
+
+require_once 'vars.php';
+require_once 'functions.php';
+logging2(occhiomalocchio(basename(__FILE__)),accesslog);
+
 /*******EDIT LINES 3-8*******/
 $DB_Server = "localhost";															//MySQL Server
 $DB_Username = "magazzino";															//MySQL Username
