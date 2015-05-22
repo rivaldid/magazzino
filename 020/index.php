@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="css/tabella.css" type="text/css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
 	<link rel="stylesheet" href="css/pagination.css" type="text/css" />
-	<link rel="stylesheet" href="css/scroll_top.css" type="text/css" />	
+	<link rel="stylesheet" href="css/scroll_top.css" type="text/css" />
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css" />
 	<script type="text/javascript" src="lib/jquery.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-ui.js"></script>
@@ -33,7 +33,19 @@
 	require_once 'lib/functions.php';
 	include 'lib/menu.php';
 	echo jsxtop;
-	
+
+
+	// occhiomalocchio
+	$conn = mysql_connect('localhost','magazzino','magauser');
+	if (!$conn) die('Errore di connessione: '.mysql_error());
+	$dbsel = mysql_select_db('magazzino', $conn);
+	if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
+	$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
+	mysql_query($logging);
+	mysql_close($conn);
+
+
 	?>
 	<div id="contents">
 		<a href="#top" id="toTop"></a>

@@ -1,15 +1,5 @@
 <?php
 
-// occhiomalocchio
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-mysql_query($logging);
-mysql_close($conn);
-
 // inizializzazione
 
 // mysql
@@ -28,7 +18,7 @@ if (isset($_SERVER["AUTHENTICATE_UID"])AND(!empty($_SERVER["AUTHENTICATE_UID"]))
 	$utente = $_SERVER["AUTHENTICATE_UID"];
 else
 	$utente = NULL;
-	
+
 if (isset($_POST['id_operazioni'])AND(!empty($_POST['id_operazioni'])))
 	$id_operazioni = safe($_POST['id_operazioni']);
 else
@@ -51,16 +41,16 @@ if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 
 // test bottoni
 if (isset($_POST['finish'])) {
-	
+
 	$call = "CALL revert('{$utente}','{$id_operazioni}');";
-	
+
 	$res_revert = mysql_query($call);
 
 	if ($res_revert)
 		$log .= remesg("Hai confermato l'annullamento del transito #".$id_operazioni,"done");
 	else
 		die('Errore nell\'invio dei dati al db: '.mysql_error());
-	
+
 	logging2($call,splog);
 
 // test revert
@@ -146,7 +136,7 @@ if (is_null($a) OR empty($a)) {
 	// interrogazione + tabella risultati + free result
 	$resultset = mysql_query($query_interrogazione." AND data='{$data_revert}';");
 	if (!$resultset) die('Errore nell\'interrogazione del db: '.mysql_error());
-	
+
 	if (mysql_num_rows($resultset)>0) {
 
 	$a .= jsxtable;
@@ -224,9 +214,9 @@ if (is_null($a) OR empty($a)) {
 
 	$a .= $output_row;
 	$a .= "</tbody>\n</table>\n";
-	
+
 	} else
-	
+
 		$a .= remesg("Nessun transito da annullare","tit");
 
 	mysql_free_result($resultset);

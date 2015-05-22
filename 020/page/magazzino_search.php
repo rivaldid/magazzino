@@ -1,15 +1,5 @@
 <?php
 
-// occhiomalocchio
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-mysql_query($logging);
-mysql_close($conn);
-
 // inizializzo risorse
 
 // variabili
@@ -25,7 +15,7 @@ if (isset($_GET['id_merce'])) {
 }
 else
 	$id_merce = NULL;
-	
+
 $a = ""; $log = "";
 $riga = "";  $export = "";
 
@@ -69,9 +59,9 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // test invia
 if (isset($_POST['invia'])) {
-	
+
 	$log .= remesg("Effettua una nuova <a href=\"?page=magazzino_search\">ricerca</a> nel magazzino","search");
-	
+
 	$q = "SELECT MERCE.tags,MAGAZZINO.posizione,MAGAZZINO.quantita,
 				GROUP_CONCAT(CONCAT(REGISTRO.tipo,' - ',REGISTRO.numero,' (',REGISTRO.contatto,')') SEPARATOR ' ') AS documento,
 				GROUP_CONCAT(CONCAT(vista_ordini.tipo,' - ',vista_ordini.numero) SEPARATOR ' ') AS ordine, OPERAZIONI.note
@@ -81,16 +71,16 @@ if (isset($_POST['invia'])) {
 				LEFT JOIN REGISTRO USING(id_registro)
 				LEFT JOIN (SELECT id_operazioni,tipo,numero,gruppo,data,file FROM ORDINI JOIN REGISTRO ON id_registro=id_registro_ordine) AS vista_ordini USING(id_operazioni)
 				WHERE MAGAZZINO.quantita>0";
-	
+
 	if ($id_merce) $q .= " AND MAGAZZINO.id_merce='$id_merce'";
 	if ($documento) $q .= " AND REGISTRO.numero LIKE '%$documento%'";
 	if ($tags) $q .= " AND MERCE.tags LIKE '%$tags%'";
 	if ($posizione) $q .= " AND MAGAZZINO.posizione='$posizione'";
 	if ($ordine) $q .= " AND vista_ordini.numero LIKE '%$ordine%'";
 	if ($note) $q .= " AND OPERAZIONI.note LIKE '%$note%'";
-	
+
 	$q .= " GROUP BY MAGAZZINO.id_merce,MAGAZZINO.posizione;";
-	
+
 	// interrogazione
 	$res = mysql_query($q);
 	if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
@@ -139,10 +129,10 @@ if (isset($_POST['invia'])) {
 	$export .= "exit;\n";
 	$export .= "//==============================================================\n";
 	$export .= "?>";
-	
+
 	mysql_free_result($res);
-	
-	
+
+
 	// salvo export pdf
 	$file_export = "export_magazzino.php";
 	$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
@@ -156,7 +146,7 @@ if (isset($_POST['invia'])) {
 
 // test contenuti
 if (is_null($a) OR empty($a)) {
-	
+
 	// form input
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_search");
 	if ($DEBUG) $a .= "&debug";
@@ -178,12 +168,12 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tfoot>\n";
 
 	$a .= "<tbody>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td>tags</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
 		$a .= "</tr>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td>documento</td>\n";
 			$a .= "<td><input type='text' name='documento'/></td>\n";
@@ -207,7 +197,7 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tbody>\n";
 
 	$a .= "</table></form>\n";
-	
+
 }
 
 

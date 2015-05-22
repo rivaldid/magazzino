@@ -1,15 +1,5 @@
 <?php
 
-// occhiomalocchio
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-mysql_query($logging);
-mysql_close($conn);
-
 /*
  * scarico merce da magazzino, script frontend per stored procedure
  * CALL SCARICO(utente, richiedente, id_merce, quantita, posizione,
@@ -656,9 +646,9 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-		
+
 		$a .= "<tr>\n";
-		
+
 			foreach ($row as $cname => $cvalue)
 
 				switch ($cname) {
@@ -688,9 +678,9 @@ if (is_null($a) OR empty($a)) {
 				}
 
 			$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
-		
+
 		$a .= "</tr>\n";
-		
+
 		$a .= "</form>\n";
 	}
 

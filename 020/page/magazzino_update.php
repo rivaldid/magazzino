@@ -1,15 +1,5 @@
 <?php
 
-// occhiomalocchio
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-mysql_query($logging);
-mysql_close($conn);
-
 // inizializzo risorse
 
 // $_SESSION
@@ -30,7 +20,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-	
+
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
@@ -90,50 +80,50 @@ if (isset($_SESSION['stop'])) {
 if (isset($_SESSION['add'])) {
 
 	if ($DEBUG) $log .= remesg("Valore tasto ADD: ".$_SESSION['add'],"debug");
-	
+
 	// validazione
 	if (is_null($posizione) OR empty($posizione)) $valid = false;
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	if (is_null($id_merce) OR empty($id_merce)) $valid = false;
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	if (is_null($quantita) OR empty($quantita)) $valid = false;
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
-	if ((is_null($nuova_posizione) OR empty($nuova_posizione)) AND 
-		(is_null($nuova_quantita) OR empty($nuova_quantita))) 
+
+	if ((is_null($nuova_posizione) OR empty($nuova_posizione)) AND
+		(is_null($nuova_quantita) OR empty($nuova_quantita)))
 		$valid = false;
-	
+
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
-	
+
 	if ($DEBUG) $log .= remesg("Valore nuova posizione: ".$nuova_posizione,"debug");
 	if ($DEBUG) $log .= remesg("Valore nuova quantita: ".$nuova_quantita,"debug");
-	
-	
-	if ($valid) {	
-		
+
+
+	if ($valid) {
+
 		// call
 		if (isset($nuova_posizione))
 			$call = "CALL aggiornamento_magazzino_posizione('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$data}');";
 		elseif (isset($nuova_quantita))
 			$call = "CALL aggiornamento_magazzino_quantita('{$utente}','{$id_merce}','{$posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
-		
+
 		// $call = "CALL aggiornamento_magazzino('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
 		$res = mysql_query($call);
-		
+
 		if ($res)
 			$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
 		else
 			die('Errore nell\'invio dell\'aggiornamento al db: '.mysql_error());
-		
+
 		logging2($call,splog);
-				
+
 		// reset
 		reset_sessione();
-	
+
 	} else {
-		
+
 		// form di inserimento
 		$a .= jsxtable;
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_update");
@@ -141,18 +131,18 @@ if (isset($_SESSION['add'])) {
 		$a .= "'>\n";
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$log .= remesg("Acquisizione nuovi dati","info");
-		
-		
+
+
 		$a .= "<thead><th>Target</th><th>Corrente</th><th>Nuovo</th><th>Aggiornamento</th></thead>\n";
-		
+
 		$a .= "<tfoot><tr><td colspan='4'><input type='submit' name='stop' value='Esci senza salvare'/></td>\n</tr>\n</tfoot>\n";
-		
+
 		$a .= "<tbody>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td colspan='4'>".$tags."</td>\n";
 		$a .= "</tr>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td>Aggiorna la posizione</td>\n";
 			$a .= "<td>".$posizione."</td>\n";
@@ -171,12 +161,12 @@ if (isset($_SESSION['add'])) {
 			$a .= "</td>\n";
 			$a .= "<td><input type='submit' name='save' value='Salva'/></td>\n";
 		$a .= "</tr>\n";
-		
+
 		$a .= "</tbody>\n";
 
 		$a .= "</table>\n</form>\n";
 	}
-	
+
 }
 
 
@@ -219,7 +209,7 @@ if (is_null($a) OR empty($a)) {
 		foreach ($row as $cname => $cvalue)
 
 			switch ($cname) {
-				
+
 				case 0:
 					$a .= noinput_hidden("id_merce",$cvalue);
 					break;
@@ -227,7 +217,7 @@ if (is_null($a) OR empty($a)) {
 				case 1:
 					$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
 					break;
-				
+
 				case 2:
 					$a .= "<td>".input_hidden("tags",$cvalue)."</td>\n";
 					break;

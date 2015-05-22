@@ -1,16 +1,5 @@
 <?php
 
-// occhiomalocchio
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-mysql_query($logging);
-mysql_close($conn);
-
-
 // inizializzo risorse
 
 // variabili
@@ -18,7 +7,7 @@ if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
-	
+
 $a = ""; $log = "";
 $riga = "";  $export = "";
 
@@ -32,7 +21,7 @@ else {
 	$id_merce = NULL;
 	$log .= remesg("Torna alla <a href=\"?page=transiti\">visualizzazione transiti</a>","action");
 }
-	
+
 $data = date("d/m/Y");
 $utente = $_SERVER["AUTHENTICATE_UID"];
 
@@ -45,13 +34,13 @@ if (isset($_POST['data_max'])AND(!empty($_POST['data_max'])))
 	$data_max = safe($_POST['data_max']);
 else
 	$data_max = NULL;
-	
+
 // tags
 if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
 	$tags = trim(epura_space2percent(safe($_POST['tags'])));
 else
 	$tags = NULL;
-	
+
 // documento
 if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
 	$documento = trim(epura_space2percent(safe($_POST['documento'])));
@@ -80,18 +69,18 @@ if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // test invia
 if (isset($_POST['invia'])) {
-	
+
 	$log .= remesg("Effettua una nuova <a href=\"?page=transiti_search\">ricerca</a> in transiti","search");
-	
+
 	$q = vserv_transiti;
-	
+
 	if ($id_merce) $q .= " AND id_merce='$id_merce'";
 	if ($data_min AND $data_max) $q .= " AND data BETWEEN '$data_min' AND '$data_max'";
 	if ($tags) $q .= " AND tags LIKE '%$tags%'";
 	if ($documento) $q .= " AND documento LIKE '%$documento%'";
 	if ($oda) $q .= " AND ordine LIKE '%$oda%'";
 	if ($note) $q .= " AND note LIKE '%$note%'";
-	
+
 	// interrogazione
 	$res = mysql_query($q);
 	if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
@@ -108,7 +97,7 @@ if (isset($_POST['invia'])) {
 	$a .= jsxtable;
 	$a .= jsaltrows;
 	$a .= "<table class='altrowstable' id='alternatecolor'>\n";
-	
+
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Utente</th>\n";
 		$a .= "<th>Data transito</th>\n";
@@ -162,7 +151,7 @@ if (isset($_POST['invia'])) {
 	$riga .= "</tr>\n";
 
 	} // end while
-	
+
 
 	$a .= $riga;
 	$a .= "</tbody>\n</table>\n";
@@ -179,10 +168,10 @@ if (isset($_POST['invia'])) {
 	$export .= "exit;\n";
 	$export .= "//==============================================================\n";
 	$export .= "?>";
-	
+
 	mysql_free_result($res);
-	
-	
+
+
 	// salvo export pdf
 	$file_export = "export_transiti.php";
 	$fp = fopen($_SERVER['DOCUMENT_ROOT'].ricerche.$file_export,"w");
@@ -196,7 +185,7 @@ if (isset($_POST['invia'])) {
 
 // test contenuti
 if (is_null($a) OR empty($a)) {
-	
+
 	// form input
 	$a .= jsxdate;
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_search");
@@ -219,7 +208,7 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tfoot>\n";
 
 	$a .= "<tbody>\n";
-		
+
 		$a .= "<tr>\n";
 			$a .= "<td>intervallo</td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='data_min'/> - <input type='text' class='datepicker' name='data_max'/></td>\n";
@@ -248,7 +237,7 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tbody>\n";
 
 	$a .= "</table></form>\n";
-	
+
 }
 
 
