@@ -344,6 +344,11 @@ function getBrowser($u_agent)
     { 
         $bname = 'Netscape'; 
         $ub = "Netscape"; 
+    }
+    elseif(preg_match('/Trident/i', $u_agent) && !preg_match('/Opera/i',$u_agent))
+    {
+        $bname = 'Internet Explorer';
+        $ub = "Trident";
     } 
     
     // finally get the correct version number

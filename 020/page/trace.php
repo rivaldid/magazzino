@@ -22,7 +22,7 @@ else
 $a = "";
 $log = "";
 
-$query_interrogazione = "SELECT data,REQUEST_URI,HTTP_REFERER,REMOTE_ADDR,REMOTE_USER,PHP_AUTH_USER,HTTP_USER_AGENT FROM vista_trace ORDER BY data DESC LIMIT 0,10";
+$query_interrogazione = "SELECT data,REQUEST_URI,HTTP_REFERER,REMOTE_ADDR,REMOTE_USER,PHP_AUTH_USER,HTTP_USER_AGENT FROM vista_trace ORDER BY data DESC LIMIT 0,20";
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
@@ -55,12 +55,12 @@ while ($input_row = mysql_fetch_array($resultset, MYSQL_NUM)) {
 	
 	foreach ($input_row as $cname => $cvalue) {
 		
-		if ($cname == "6") {
+		/*if ($cname == "6") {
 			$ua=getBrowser($cvalue);
 			//$yourbrowser= "Your browser: " . $ua['name'] . " " . $ua['version'] . " on " .$ua['platform'] . " reports: <br >" . $ua['userAgent'];
 			//print_r($yourbrowser);
 			$a .= "<td>".$ua['name']." ".$ua['version']." da ".$ua['platform']."</td>\n";
-		} else
+		} else*/
 			$a .= "<td>".safetohtml($cvalue)."</td>\n";
 	}
 			
