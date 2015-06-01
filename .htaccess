@@ -1,0 +1,8 @@
+AuthType           Kerberos
+AuthName           "immettere le credenziali rete.poste"
+KrbMethodNegotiate off
+KrbVerifyKDC       off
+KrbAuthRealm       RETE.POSTE
+Krb5Keytab         /var/www/auth_kerb.keytab
+KrbSaveCredentials on
+Require            valid-user
