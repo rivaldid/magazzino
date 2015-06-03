@@ -3,11 +3,8 @@
 // inizializza risorse
 
 //  mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+$mysqli = new mysqli(host,user,pass,db);	
+if ($mysqli->connect_errno) include 'page/die.php';
 
 // variabili
 $a = "";
@@ -19,13 +16,12 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
-
 // menu
 $log .= $menu_transiti;
 
 
 $sql = vserv_transiti;
-$query_count = mysql_query($sql);
+if ($query_count = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
 
 $per_page = 20;
 $count = mysql_num_rows($query_count);
@@ -42,8 +38,7 @@ if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= 
 } else
 	$current_page=1;
 
-$query = mysql_query($sql);
-if (!$query) die('Errore nell\'interrogazione del db: '.mysql_error());
+if ($query = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
 
 
 // pagination

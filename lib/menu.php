@@ -24,7 +24,7 @@ $menu_revert = "";
 $menu_transiti .= remesg("<a href=\"?page=transiti&current_page=all\"\>Visualizza tutti i transiti</a>","action");
 $menu_transiti .= remesg("<a href=\"?page=transiti_search\">Ricerca nei transiti</a>","search");
 $menu_transiti .= remesg("<a href=\"?page=revert\">Annulla un transito registrato oggi</a>","search");
-$menu_transiti .= remesg("<a href=\"http://10.98.2.159/GMDCTO/020/lib/report_transiti_excel.php\">Report transiti mese precedente in excel</a>","excel");
+$menu_transiti .= remesg("<a href=\"lib/report_transiti_excel.php\">Report transiti mese precedente in excel</a>","excel");
 
 // MENU MAGAZZINO
 //$menu_magazzino .= remesg("<a href=\"?page=magazzino_ng\">Visualizzazione completa di documenti</a>","action");

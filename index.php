@@ -44,19 +44,21 @@
 	// occhiomalocchio
 	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
 	
-	$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
+	//$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
+	
 	$mysqli = new mysqli(host,user,pass,db);
+	if ($mysqli->connect_errno) include 'page/die.php';
 	
-	if ($mysqli->connect_errno) {
-		printf("Connect failed: %s\n", $mysqli->connect_error);
-		exit();
-	}
+	$stmt = $mysqli->prepare("CALL input_trace(?,?,?,?,?,?,?)");
+	if ($stmt === FALSE) include 'page/die.php';
 	
-	if ($mysqli->query($logging) === TRUE) {
-		printf("Logging corretto.\n");
-	}
+	$rc = $stmt->bind_param("sssssss",$_SERVER['REQUEST_TIME'],$_SERVER['REQUEST_URI'],$_SERVER['HTTP_REFERER'],$_SERVER['REMOTE_ADDR'],$_SERVER['REMOTE_USER'],$_SERVER['PHP_AUTH_USER'],$_SERVER['HTTP_USER_AGENT']);
+	if ($rc === FALSE) include 'page/die.php';
 	
-	$mysqli->close();
+	$rc = $stmt->execute();
+	if ($rc === FALSE) include 'page/die.php';
+	
+	$stmt->close();
 
 	?>
 	<div id="contents">

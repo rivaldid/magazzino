@@ -190,7 +190,7 @@ return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gi
 
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
-$o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span><span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["AUTHENTICATE_UID"]."</span>";
+$o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span><span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["PHP_AUTH_USER"]."</span>";
 $o .= "<hr class=\"divisore_log\" />\n";
 
 if (isset($log)) {
