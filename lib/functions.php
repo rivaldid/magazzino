@@ -295,6 +295,12 @@ return $nome_export_pdf;
 
 }
 
+
+function error_handler($msg) {
+	die(remesg("Rilevato errore: ".$msg."<br> <img src=\"imgs/db_error.jpg\" alt=\"db error\">","err")); 
+}
+
+
 function getBrowser($u_agent) 
 { 
     //$u_agent = $_SERVER['HTTP_USER_AGENT']; 

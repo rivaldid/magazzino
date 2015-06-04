@@ -1,5 +1,12 @@
 <?php
 
+define("lib_mpdf57","lib/MPDF57/mpdf.php");
+define("registro",Config::read('workspace')."/registro/");
+define("registro_mds",Config::read('workspace')."/registro_mds/");
+define("splog",Config::read('workspace')."/log/sp.log");
+//define("accesslog",$_SERVER['DOCUMENT_ROOT']."/GMDCTO/log/login.log");
+define("ricerche",Config::read('workspace')."/ricerche/");
+
 // js
 define("jsxtable","<script type='text/javascript'>\n$(document).ready(function() { $('table').filterTable(); });\n$(document).ready(function() { $('table').tablesorter(); });\n</script>\n");
 define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");

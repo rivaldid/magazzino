@@ -3,8 +3,8 @@
 // inizializza risorse
 
 //  mysql
-$mysqli = new mysqli(host,user,pass,db);	
-if ($mysqli->connect_errno) include 'page/die.php';
+//$mysqli = new mysqli(host,user,pass,db);	
+//if ($mysqli->connect_errno) include 'page/die.php';
 
 // variabili
 $a = "";
@@ -21,10 +21,12 @@ $log .= $menu_transiti;
 
 
 $sql = vserv_transiti;
-if ($query_count = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
+//if ($query_count = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
+//$query_count = $db->query($sql);
 
 $per_page = 20;
-$count = mysql_num_rows($query_count);
+//$count = mysql_num_rows($query_count);
+$count = $query_count = $db->query($sql)->num_rows();
 $pages = ceil($count/$per_page);
 
 if (isset($_GET["current_page"]))
@@ -38,7 +40,8 @@ if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= 
 } else
 	$current_page=1;
 
-if ($query = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
+//if ($query = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
+$query = $db->query($sql);
 
 
 // pagination

@@ -7,6 +7,7 @@
 <!--[if !IE]><html lang="it-IT"><![endif]-->
 <head>
 	<title>GMDCTO - Gestione Magazzino DC-TO</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
 	<link rel="stylesheet" href="css/footer.css" type="text/css" />
 	<link rel="stylesheet" href="css/main.css" type="text/css" />
@@ -29,36 +30,14 @@
 		if (!file_exists($page)) $page = sprintf("page/404.php");
 	} else $page = sprintf("page/home.php");
 
-	require_once 'dati/config.php';
-	require_once 'lib/vars.php';
-	require_once 'lib/functions.php';
+	require_once 'lib/init.php';
 	include 'lib/menu.php';
 	echo jsxtop;
 	
-	/*if (!function_exists('mysqli_init') && !extension_loaded('mysqli')) {
-		echo 'We don\'t have mysqli!!!';
-	} else {
-		echo 'Phew we have it!';
-	}*/
-
-	// occhiomalocchio
+	$db = myquery::start();
 	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-	
-	//$logging = "CALL input_trace('{$_SERVER['REQUEST_TIME']}','{$_SERVER['REQUEST_URI']}','{$_SERVER['HTTP_REFERER']}','{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_USER']}','{$_SERVER['PHP_AUTH_USER']}','{$_SERVER['HTTP_USER_AGENT']}');";
-	
-	$mysqli = new mysqli(host,user,pass,db);
-	if ($mysqli->connect_errno) include 'page/die.php';
-	
-	$stmt = $mysqli->prepare("CALL input_trace(?,?,?,?,?,?,?)");
-	if ($stmt === FALSE) include 'page/die.php';
-	
-	$rc = $stmt->bind_param("sssssss",$_SERVER['REQUEST_TIME'],$_SERVER['REQUEST_URI'],$_SERVER['HTTP_REFERER'],$_SERVER['REMOTE_ADDR'],$_SERVER['REMOTE_USER'],$_SERVER['PHP_AUTH_USER'],$_SERVER['HTTP_USER_AGENT']);
-	if ($rc === FALSE) include 'page/die.php';
-	
-	$rc = $stmt->execute();
-	if ($rc === FALSE) include 'page/die.php';
-	
-	$stmt->close();
+
+	myquery::logger($db);
 
 	?>
 	<div id="contents">
