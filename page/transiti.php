@@ -2,10 +2,6 @@
 
 // inizializza risorse
 
-//  mysql
-//$mysqli = new mysqli(host,user,pass,db);	
-//if ($mysqli->connect_errno) include 'page/die.php';
-
 // variabili
 $a = "";
 $log = "";
@@ -20,114 +16,17 @@ else
 $log .= $menu_transiti;
 
 
-$sql = vserv_transiti;
-//if ($query_count = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
-//$query_count = $db->query($sql);
-
-$per_page = 20;
-//$count = mysql_num_rows($query_count);
-$count = $query_count = $db->query($sql)->num_rows();
-$pages = ceil($count/$per_page);
-
+// test current
 if (isset($_GET["current_page"]))
 	$current_page = $_GET['current_page'];
 else
 	$current_page = 1;
 
-if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= $pages)) {
-	$start = ($current_page - 1) * $per_page;
-	$sql = $sql." LIMIT $start,$per_page";
-} else
-	$current_page=1;
+// eseguo pagination: ritorno array: 0 indice pagination, 1 query
+$query = myquery::transiti_pagination($db,$current_page);
 
-//if ($query = ($mysqli->query($sql) === FALSE)) include 'page/die.php';
-$query = $db->query($sql);
-
-
-// pagination
-$pagination = "<div id='DIV-pagination'><ul class='paginate'>\n";
-
-// stabilisco che se $current_page esiste, class sia uguale a CURRENT
-if ($current_page)
- $current='current';
-else
- $current='single';
-
-
-if (($current_page-1)>1)
-	$prev=$current_page-1;
-else
-	$prev=1;
-
-if (($current_page+1)<$pages)
-	$next=$current_page+1;
-else
-	$next=$pages;
-
-// testa
-$current_page2 = $current_page;
-if ($current_page2>1)
-	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
-
-if ($current_page2 == '1')	$current='single';
-$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
-$current='current';
-
-// corpo
-switch ($current_page) {
-
-	case 1:
-		$current_page+=4;
-		break;
-
-	case 2:
-		$current_page+=3;
-		break;
-
-	case 3:
-		$current_page+=2;
-		break;
-
-	case 4:
-		$current_page+=1;
-		break;
-
-	case $pages-3:
-		$current_page-=1;
-		break;
-
-	case $pages-2:
-		$current_page-=2;
-		break;
-
-	case $pages-1:
-		$current_page-=3;
-		break;
-
-	case $pages:
-		$current_page-=4;
-		break;
-
-}
-
-for ($i = $current_page-3; $i <= $current_page+3; $i++) {
-
-	if ($current_page2 == $i) $current='single';
-	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
-	$current='current';
-
-}
-
-// coda
-if ($current_page2 == $pages)
-	$current='single';
-
-$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
-if ($current_page2<$pages)
-	$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
-$pagination .= "</ul></div>\n";
-
-$a .= $pagination;
+// stampo indice
+$a .= $query[0];
 
 
 // inizializzo pdf
@@ -156,9 +55,13 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
+foreach ($query[1] as $row) {
 	$riga .= "<tr>\n";
-	foreach ($row as $cname => $cvalue)
+
+	//print_r($row);
+
+	foreach ($row as $cname => $cvalue) {
+
 		switch ($cname) {
 
 			case "0":
@@ -187,19 +90,30 @@ while ($row = mysql_fetch_array($query, MYSQL_NUM)) {
 					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
 				break;
 
-			default:
+			case "2":
+			case "3":
+			case "4":
+			case "5":
+			case "7":
+			case "8":
+			case "9":
 				$riga .= "<td>".safetohtml($cvalue)."</td>\n";
+				break;
+
 
 		} // end switch
 
+		} //fine stampa riga
+
 	$riga .= "</tr>\n";
 
-} // end while
+} // fine stampa risultati
 
 $a .= $riga;
 $a .= "</tbody>\n</table>\n";
 
-$a .= $pagination;
+// stampo indice
+$a .= $query[0];
 
 
 $export .= addslashes($riga);
@@ -214,12 +128,6 @@ $export .= "\$mpdf->Output();\n";
 $export .= "exit;\n";
 $export .= "//==============================================================\n";
 $export .= "?>";
-
-
-// termino risorse
-mysql_free_result($query);
-mysql_free_result($query_count);
-mysql_close($conn);
 
 
 // salvo export pdf

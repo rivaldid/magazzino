@@ -82,7 +82,7 @@ class DB {
 
 	public function num_rows() {
 		$this->execute();
-		return $this->fetchColumn();
+		return $this->stmt->fetchColumn();
 	}
 
 }
@@ -108,6 +108,128 @@ class myquery extends DB {
 				->bind(6,$_SERVER['PHP_AUTH_USER'])
 				->bind(7,$_SERVER['HTTP_USER_AGENT'])
 			   ->single();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function transiti_pagination($db,$current_page) {
+		
+		// righe da visualizzare
+		$per_page = 20;
+		
+		try {
+			
+			// righe tot
+			$count = $db->query("SELECT COUNT(*) FROM vserv_transiti")->num_rows();
+			
+			// pagine totali
+			$pages = ceil($count/$per_page);
+			
+			// test pagina corrente valida
+			if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= $pages)) {
+				
+				// pagina iniziale
+				$start = ($current_page - 1) * $per_page;
+
+			} else
+				$current_page=1;
+				
+			// query
+			$query = $db->query("SELECT * FROM vserv_transiti LIMIT ?, ?")
+				->bind(1,$start)
+				->bind(2,$per_page)
+				->resultset();
+			
+			// pagination
+			$pagination = "<div id='DIV-pagination'><ul class='paginate'>\n";
+
+			// classe css per elemento selezionato
+			if ($current_page)
+			 $current='current';
+			else
+			 $current='single';
+
+			// precedente
+			if (($current_page-1)>1)
+				$prev=$current_page-1;
+			else
+				$prev=1;
+
+			// successivo
+			if (($current_page+1)<$pages)
+				$next=$current_page+1;
+			else
+				$next=$pages;
+
+			// testa
+			$current_page2 = $current_page;
+			if ($current_page2>1)
+				$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$prev\"><i class='fa fa-backward'></i></a></li>\n";
+
+			if ($current_page2 == '1')	$current='single';
+			$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=1\">1</a></li>\n";
+			$current='current';
+
+			// corpo
+			switch ($current_page) {
+
+				case 1:
+					$current_page+=4;
+					break;
+
+				case 2:
+					$current_page+=3;
+					break;
+
+				case 3:
+					$current_page+=2;
+					break;
+
+				case 4:
+					$current_page+=1;
+					break;
+
+				case $pages-3:
+					$current_page-=1;
+					break;
+
+				case $pages-2:
+					$current_page-=2;
+					break;
+
+				case $pages-1:
+					$current_page-=3;
+					break;
+
+				case $pages:
+					$current_page-=4;
+					break;
+
+			}
+
+			for ($i = $current_page-3; $i <= $current_page+3; $i++) {
+
+				if ($current_page2 == $i) $current='single';
+				$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$i\">$i</a></li>\n";
+				$current='current';
+
+			}
+
+			// coda
+			if ($current_page2 == $pages)
+				$current='single';
+
+			$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$pages\">$pages</a></li>\n";
+			if ($current_page2<$pages)
+				$pagination .= "<li class='".$current."'><a class='' href=\"?page=transiti&current_page=$next\"><i class='fa fa-forward'></i></a></li>\n";
+			$pagination .= "</ul></div>\n";
+			
+			
+			// ritorno pagination e query
+			return array($pagination,$query);
+			
+			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
