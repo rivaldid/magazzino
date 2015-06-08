@@ -127,7 +127,7 @@ class myquery extends DB {
 			$pages = ceil($count/$per_page);
 			
 			// test pagina corrente valida
-			if ((testinteger($current_page)) AND ($current_page >= 1) AND ($current_page <= $pages)) {
+			if (($current_page >= 1) AND ($current_page <= $pages)) {
 				
 				// pagina iniziale
 				$start = ($current_page - 1) * $per_page;
@@ -230,6 +230,16 @@ class myquery extends DB {
 			return array($pagination,$query);
 			
 			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
+	
+	public function transiti_nopagination($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_transiti")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

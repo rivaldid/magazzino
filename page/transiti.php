@@ -17,16 +17,25 @@ $log .= $menu_transiti;
 
 
 // test current
-if (isset($_GET["current_page"]))
-	$current_page = $_GET['current_page'];
-else
+if (isset($_GET["current_page"])) {
+	$current_page = $_GET["current_page"];
+} else
 	$current_page = 1;
-
-// eseguo pagination: ritorno array: 0 indice pagination, 1 query
-$query = myquery::transiti_pagination($db,$current_page);
+	
+// se intero ritorno pagination
+if (testinteger($current_page)) {
+	$array_return = myquery::transiti_pagination($db,$current_page);
+	$index_pagination = $array_return[0];
+	$query = $array_return[1];
+	
+// altrimenti ritorno nopagination
+} else {
+	$query = myquery::transiti_nopagination($db);
+}
+	
 
 // stampo indice
-$a .= $query[0];
+if (isset($index_pagination)) $a .= $index_pagination;
 
 
 // inizializzo pdf
@@ -55,7 +64,7 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-foreach ($query[1] as $row) {
+foreach ($query as $row) {
 	$riga .= "<tr>\n";
 
 	//print_r($row);
@@ -112,8 +121,9 @@ foreach ($query[1] as $row) {
 $a .= $riga;
 $a .= "</tbody>\n</table>\n";
 
+
 // stampo indice
-$a .= $query[0];
+if (isset($index_pagination)) $a .= $index_pagination;
 
 
 $export .= addslashes($riga);
