@@ -12,9 +12,9 @@
 
 <?php
 
+$menu_home = "";
 $menu_transiti = "";
 $menu_magazzino = "";
-//$menu_documenti = "";
 $menu_carico = "";
 $menu_scarico = "";
 $menu_revert = "";

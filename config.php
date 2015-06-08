@@ -8,7 +8,7 @@ Config::write('db.user', 'magazzino');
 Config::write('db.password', 'magauser');
 
 // home
-Config::write('workspace','/var/www/html/magazzino/dati/');
+Config::write('workspace','/magazzino/dati/');
 
 // Config::read('var');
 
