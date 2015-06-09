@@ -244,6 +244,16 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function report_transiti_mensile($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_report_transiti_mensile")->resultset();
+
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 

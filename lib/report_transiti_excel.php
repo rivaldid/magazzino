@@ -1,56 +1,57 @@
 <?php
 
-require_once 'vars.php';
-require_once 'functions.php';
-logging2(occhiomalocchio(basename(__FILE__)),accesslog);
+require 'class_config.php';
+require '../config.php';
+require 'vars.php';
+require 'functions.php';
+require 'class_pdo.php';
 
-/*******EDIT LINES 3-8*******/
-$DB_Server = "localhost";															//MySQL Server
-$DB_Username = "magazzino";															//MySQL Username
-$DB_Password = "magauser";															//MySQL Password
-$DB_DBName = "magazzino";   														//MySQL Database Name
-$DB_TBLName = "report_transiti_mensile";											//MySQL Table Name
-$filename = "report_mensile_transiti__".date('m', strtotime("last month"));			//File Name
-/*******YOU DO NOT NEED TO EDIT ANYTHING BELOW THIS LINE*******/
-//create MySQL connection
-$sql = "Select * from $DB_TBLName";
-$Connect = @mysql_connect($DB_Server, $DB_Username, $DB_Password) or die("Couldn't connect to MySQL:<br>" . mysql_error() . "<br>" . mysql_errno());
-//select database
-$Db = @mysql_select_db($DB_DBName, $Connect) or die("Couldn't select database:<br>" . mysql_error(). "<br>" . mysql_errno());
-//execute query
-$result = @mysql_query($sql,$Connect) or die("Couldn't execute query:<br>" . mysql_error(). "<br>" . mysql_errno());
+$db = myquery::start();
+if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
+
+myquery::logger($db);
+
+$filename = "report_mensile_transiti__".date('m', strtotime("last month"));
+$result = myquery::report_transiti_mensile($db);
 $file_ending = "xls";
+
 //header info for browser
 header("Content-Type: application/xls");
 header("Content-Disposition: attachment; filename=$filename.xls");
 header("Pragma: no-cache");
 header("Expires: 0");
+
 /*******Start of Formatting for Excel*******/
-//define separator (defines columns in excel & tabs in word)
 $sep = "\t"; //tabbed character
-//start of printing column names as names of MySQL fields
-for ($i = 0; $i < mysql_num_fields($result); $i++) {
-echo mysql_field_name($result,$i) . "\t";
-}
+
+echo "Data".$sep;
+echo "Account".$sep;
+echo "Direzione".$sep;
+echo "Posizione".$sep;
+echo "Merce".$sep;
+echo "Quantita'".$sep;
+echo "Documento".$sep;
+echo "Note".$sep;
+echo "Ordine".$sep;
 print("\n");
-//end of printing column names
-//start while loop to get data
-    while($row = mysql_fetch_row($result))
-    {
-        $schema_insert = "";
-        for($j=0; $j<mysql_num_fields($result);$j++)
-        {
-            if(!isset($row[$j]))
-                $schema_insert .= "NULL".$sep;
-            elseif ($row[$j] != "")
-                $schema_insert .= "$row[$j]".$sep;
-            else
-                $schema_insert .= "".$sep;
-        }
-        $schema_insert = str_replace($sep."$", "", $schema_insert);
-        $schema_insert = preg_replace("/\r\n|\n\r|\n|\r/", " ", $schema_insert);
-        $schema_insert .= "\t";
-        print(trim($schema_insert));
-        print "\n";
-    }
+
+foreach ($result as $row) {
+	$schema_insert = "";
+        
+    $schema_insert .= $row['data'].$sep;
+    $schema_insert .= $row['rete'].$sep;
+    $schema_insert .= $row['status'].$sep;
+    $schema_insert .= $row['posizione'].$sep;
+    $schema_insert .= $row['tags'].$sep;
+    $schema_insert .= $row['quantita'].$sep;
+    $schema_insert .= $row['riferimento'].$sep;
+    $schema_insert .= $row['note'].$sep;
+    $schema_insert .= $row['ordine'].$sep;
+        
+	$schema_insert = str_replace($sep."$", "", $schema_insert);
+	$schema_insert = preg_replace("/\r\n|\n\r|\n|\r/", " ", $schema_insert);
+	$schema_insert .= "\t";
+	print(trim($schema_insert));
+	print "\n";
+}
 ?>

@@ -21,18 +21,18 @@ if (isset($_GET["current_page"])) {
 	$current_page = $_GET["current_page"];
 } else
 	$current_page = 1;
-	
+
 // se intero ritorno pagination
 if (testinteger($current_page)) {
 	$array_return = myquery::transiti_pagination($db,$current_page);
 	$index_pagination = $array_return[0];
 	$query = $array_return[1];
-	
+
 // altrimenti ritorno nopagination
 } else {
 	$query = myquery::transiti_nopagination($db);
 }
-	
+
 
 // stampo indice
 if (isset($index_pagination)) $a .= $index_pagination;
@@ -68,51 +68,20 @@ foreach ($query as $row) {
 	$riga .= "<tr>\n";
 
 	//print_r($row);
-
-	foreach ($row as $cname => $cvalue) {
-
-		switch ($cname) {
-
-			case "0":
-				$doc_ingresso = $cvalue;
-				break;
-
-			case "1":
-				$doc_ordine = $cvalue;
-				break;
-
-			case "6":
-				if ($doc_ingresso != NULL)
-					$riga .= "<td><a href=\"".registro.$doc_ingresso."\">".safetohtml($cvalue)."</a></td>\n";
-				else
-					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
-				break;
-
-			case "10":
-				$riga .= "<td>".safetohtml(strtolower($cvalue))."</td>\n";
-				break;
-
-			case "11":
-				if ($doc_ordine != NULL)
-					$riga .= "<td><a href=\"".registro.$doc_ordine."\">".safetohtml($cvalue)."</a></td>\n";
-				else
-					$riga .= "<td>".safetohtml($cvalue)."</td>\n";
-				break;
-
-			case "2":
-			case "3":
-			case "4":
-			case "5":
-			case "7":
-			case "8":
-			case "9":
-				$riga .= "<td>".safetohtml($cvalue)."</td>\n";
-				break;
-
-
-		} // end switch
-
-		} //fine stampa riga
+	
+	$riga .= "<td>".safetohtml($row['2'])."</td>\n";
+	$riga .= "<td>".safetohtml($row['3'])."</td>\n";
+	$riga .= "<td>".safetohtml($row['4'])."</td>\n";
+	$riga .= "<td>".safetohtml($row['5'])."</td>\n";
+	
+	$riga .= "<td><a href=\"".registro.$row['0']."\">".safetohtml($row['6'])."</a></td>\n";
+	
+	$riga .= "<td>".safetohtml($row['7'])."</td>\n";
+	$riga .= "<td>".safetohtml($row['8'])."</td>\n";
+	$riga .= "<td>".safetohtml($row['9'])."</td>\n";
+	$riga .= "<td>".safetohtml(strtolower($row['10']))."</td>\n";
+	
+	$riga .= "<td><a href=\"".registro.$row['1']."\">".safetohtml($row['11'])."</a></td>\n";
 
 	$riga .= "</tr>\n";
 
@@ -151,7 +120,6 @@ $log .= remesg("<a href=\"".ricerche.$file_export."\">Esporta in pdf</a> ","pdf"
 
 // stampo
 echo makepage($a, $log);
-
 
 ?>
 
