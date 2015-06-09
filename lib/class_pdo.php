@@ -254,6 +254,25 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$oda,$note) {
+		
+		try {
+			
+			$q = "SELECT * FROM vserv_transiti WHERE 1";
+			if ($id_merce) $q .= " AND id_merce='$id_merce'";
+			if ($data_min AND $data_max) $q .= " AND STR_TO_DATE(dataop, '%d/%m/%Y') BETWEEN STR_TO_DATE('$data_min', '%d/%m/%Y') AND STR_TO_DATE('$data_max', '%d/%m/%Y')";
+			if ($tags) $q .= " AND tags LIKE '%$tags%'";
+			if ($documento) $q .= " AND documento LIKE '%$documento%'";
+			if ($oda) $q .= " AND ordine LIKE '%$oda%'";
+			if ($note) $q .= " AND note LIKE '%$note%'";
+			
+			return $query = $db->query($q)->resultset();
+			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 
