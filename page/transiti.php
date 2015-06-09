@@ -74,14 +74,20 @@ foreach ($query as $row) {
 	$riga .= "<td>".safetohtml($row['4'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['5'])."</td>\n";
 	
-	$riga .= "<td><a href=\"".registro.$row['0']."\">".safetohtml($row['6'])."</a></td>\n";
+	if (isset($row['0']) AND ($row['0']!= NULL))
+		$riga .= "<td><a href=\"".registro.$row['0']."\">".safetohtml($row['6'])."</a></td>\n";
+	else
+		$riga .= "<td>".safetohtml($row['6'])."</td>\n";
 	
 	$riga .= "<td>".safetohtml($row['7'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['8'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['9'])."</td>\n";
 	$riga .= "<td>".safetohtml(strtolower($row['10']))."</td>\n";
 	
-	$riga .= "<td><a href=\"".registro.$row['1']."\">".safetohtml($row['11'])."</a></td>\n";
+	if (isset($row['1']) AND ($row['1']!= NULL))
+		$riga .= "<td><a href=\"".registro.$row['1']."\">".safetohtml($row['11'])."</a></td>\n";
+	else
+		$riga .= "<td>".safetohtml($row['11'])."</td>\n";
 
 	$riga .= "</tr>\n";
 
