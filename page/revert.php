@@ -2,22 +2,13 @@
 
 // inizializzazione
 
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
 // variabili
 if (isset($_GET["debug"]))
 	$DEBUG=true;
 else
 	$DEBUG=false;
 
-if (isset($_SERVER["AUTHENTICATE_UID"])AND(!empty($_SERVER["AUTHENTICATE_UID"])))
-	$utente = $_SERVER["AUTHENTICATE_UID"];
-else
-	$utente = NULL;
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 if (isset($_POST['id_operazioni'])AND(!empty($_POST['id_operazioni'])))
 	$id_operazioni = safe($_POST['id_operazioni']);
@@ -30,8 +21,6 @@ $output_row = "";
 $data_revert = date("Y-m-d");
 
 $log .= $menu_revert;
-
-$query_interrogazione = "SELECT id_operazioni,doc_ingresso,doc_ordine,utente,DATE_FORMAT(data,'%d/%m/%Y'),status,posizione,documento,DATE_FORMAT(data_doc,'%d/%m/%Y'),tags,quantita,note,ordine FROM TRANSITI WHERE 1";
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");

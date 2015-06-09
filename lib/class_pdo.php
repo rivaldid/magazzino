@@ -274,6 +274,17 @@ class myquery extends DB {
 		}
 	}
 	
+	public function revert_transito($db,$id_operazioni) {
+		
+		try {
+					
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE ")->resultset();
+			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
 }
 
 
