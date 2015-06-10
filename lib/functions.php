@@ -155,6 +155,7 @@ fclose($flog);
 }
 
 function logging2($mixed,$logfile) {
+if (!file_exists($logfile)) touch($logfile);    
 $flog = fopen($logfile,'a');
 $a = $mixed.PHP_EOL;
 fwrite($flog,$a);

@@ -11,7 +11,7 @@ else
 $utente = $_SERVER["PHP_AUTH_USER"];
 
 if (isset($_POST['id_operazioni'])AND(!empty($_POST['id_operazioni'])))
-	$id_operazioni = safe($_POST['id_operazioni']);
+	$id_operazioni = $_POST['id_operazioni'];
 else
 	$id_operazioni = NULL;
 
@@ -30,17 +30,9 @@ if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 
 // test bottoni
 if (isset($_POST['finish'])) {
-
-	/*$call = "CALL revert('{$utente}','{$id_operazioni}');";
-
-	$res_revert = mysql_query($call);
-
-	if ($res_revert)
-		$log .= remesg("Hai confermato l'annullamento del transito #".$id_operazioni,"done");
-	else
-		die('Errore nell\'invio dei dati al db: '.mysql_error());
-
-	logging2($call,splog);*/
+	
+	$res_revert = myquery::revert_do($db,$utente,$id_operazioni);
+	$log .= remesg("Hai confermato l'annullamento del transito #".$id_operazioni,"done");
 
 // test revert
 } elseif (isset($_POST['revert'])) {
@@ -48,11 +40,8 @@ if (isset($_POST['finish'])) {
 	if ($DEBUG) $log .= remesg("Valore tasto ADD: ".$_POST['revert'],"debug");
 	$log .= remesg("Annullamento transito #".$id_operazioni,"info");
 
-
 	// form revisione dati
 	$target = myquery::revisione_revert($db,$id_operazioni);
-	
-	//print_r($target);
 
 	$a .= jsxtable;
 	$a .= jsaltrows;
@@ -75,25 +64,25 @@ if (isset($_POST['finish'])) {
 
 	$a .= "<tr>\n";
 
-	$a .= "<td>".safetohtml($target['2'])."</td>\n";
-	$a .= "<td>".safetohtml($target['3'])."</td>\n";
-	$a .= "<td>".safetohtml($target['4'])."</td>\n";
-	$a .= "<td>".safetohtml($target['5'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['rete'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['dataop'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['status'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['posizione'])."</td>\n";
 	
-	if (isset($target['0']) AND ($target['0']!= NULL))
-		$a .= "<td><a href=\"".registro.$target['0']."\">".safetohtml($target['6'])."</a></td>\n";
+	if (isset($target[0]['doc_ingresso']) AND ($target[0]['doc_ingresso']!= NULL))
+		$a .= "<td><a href=\"".registro.$target[0]['doc_ingresso']."\">".safetohtml($target[0]['documento'])."</a></td>\n";
 	else
-		$a .= "<td>".safetohtml($target['6'])."</td>\n";
+		$a .= "<td>".safetohtml($target[0]['documento'])."</td>\n";
 	
-	$a .= "<td>".safetohtml($target['7'])."</td>\n";
-	$a .= "<td>".safetohtml($target['8'])."</td>\n";
-	$a .= "<td>".safetohtml($target['9'])."</td>\n";
-	$a .= "<td>".safetohtml(strtolower($target['10']))."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['data_doc'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['tags'])."</td>\n";
+	$a .= "<td>".safetohtml($target[0]['quantita'])."</td>\n";
+	$a .= "<td>".safetohtml(strtolower($target[0]['note']))."</td>\n";
 	
-	if (isset($target['1']) AND ($target['1']!= NULL))
-		$a .= "<td><a href=\"".registro.$target['1']."\">".safetohtml($target['11'])."</a></td>\n";
+	if (isset($target[0]['doc_ordine']) AND ($target[0]['doc_ordine']!= NULL))
+		$a .= "<td><a href=\"".registro.$target[0]['doc_ordine']."\">".safetohtml($target[0]['ordine'])."</a></td>\n";
 	else
-		$a .= "<td>".safetohtml($target['11'])."</td>\n";
+		$a .= "<td>".safetohtml($target[0]['ordine'])."</td>\n";
 			
 	$a .= "<td>\n";
 
@@ -140,32 +129,32 @@ if (is_null($a) OR empty($a)) {
 			
 			$riga .= "<tr>\n";
 			
-			$riga .= "<td>".safetohtml($row['2'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['3'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['4'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['5'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['rete'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['status'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['posizione'])."</td>\n";
 			
-			if (isset($row['0']) AND ($row['0']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['0']."\">".safetohtml($row['6'])."</a></td>\n";
+			if (isset($row['doc_ingresso']) AND ($row['doc_ingresso']!= NULL))
+				$riga .= "<td><a href=\"".registro.$row['doc_ingresso']."\">".safetohtml($row['documento'])."</a></td>\n";
 			else
-				$riga .= "<td>".safetohtml($row['6'])."</td>\n";
+				$riga .= "<td>".safetohtml($row['documento'])."</td>\n";
 			
-			$riga .= "<td>".safetohtml($row['7'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['8'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['9'])."</td>\n";
-			$riga .= "<td>".safetohtml(strtolower($row['10']))."</td>\n";
+			$riga .= "<td>".safetohtml($row['data_doc'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
+			$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
 			
-			if (isset($row['1']) AND ($row['1']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['1']."\">".safetohtml($row['11'])."</a></td>\n";
+			if (isset($row['doc_ordine']) AND ($row['doc_ordine']!= NULL))
+				$riga .= "<td><a href=\"".registro.$row['doc_ordine']."\">".safetohtml($row['ordine'])."</a></td>\n";
 			else
-				$riga .= "<td>".safetohtml($row['11'])."</td>\n";
+				$riga .= "<td>".safetohtml($row['ordine'])."</td>\n";
 			
 			$riga .= "<td>\n";
 
 			$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=revert");
-			if ($DEBUG) $output_row .= "&debug";
+			if ($DEBUG) $riga .= "&debug";
 			$riga .= "'>\n";
-			$riga .= noinput_hidden("id_operazioni",$row['13']);
+			$riga .= noinput_hidden("id_operazioni",$row['id_operazioni']);
 			$riga .= "<input type='submit' name='revert' value='Annulla'/>\n";
 			$riga .= "</form>\n";
 

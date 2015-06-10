@@ -295,7 +295,20 @@ class myquery extends DB {
 		
 		try {
 			
-			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni = ?")->bind(1,$id_operazioni)->resultset();
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni = ? ")->bind(1,$id_operazioni)->resultset();
+			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function revert_do($db,$utente,$id_operazioni) {
+		
+		try {
+			
+			logging2("CALL revert('$utente','$id_operazioni');",splog);
+			
+			return $query = $db->query("CALL revert( ?, ?) ")->bind(1,$utente,$id_operazioni)->single();
 			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
