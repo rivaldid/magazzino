@@ -1,0 +1,215 @@
+                  _            ___   ___        _     _       
+                 | |          / _ \ / _ \      (_)   | |      
+   ___ ___  _ __ | |_ _ __ __| (_) | (_) |_   _ _  __| | __ _ 
+  / __/ _ \| '_ \| __| '__/ _ \__, |\__, | | | | |/ _` |/ _` |
+ | (_| (_) | | | | |_| | | (_) |/ /   / /| |_| | | (_| | (_| |
+  \___\___/|_| |_|\__|_|  \___//_/   /_/  \__,_|_|\__,_|\__,_|
+                                                              
+                                                              
+------------------------------------------------------------------------
+
+
+*fix nuovo mac: 
+rigenerandolo dal programma di virtualizzazione si sara' creato 
+nuovo nic eth1 in /etc/udev/rules.d/70-persistent-net.rules
+quel mac lo inserisco in HWADDR in /etc/sysconfig/network-scripts/ifcfg-eth0
+e /etc/udev/rules.d/70-persistent-net.rules stesso eliminando la riga 
+relativa al nuovo nic e lasciando eth0 con il mac attuale
+
+*fix repo baseline:
+modifica baseurl /etc/yum.repos.d/baselinesec_6.2_x86_64.repo
+baseurl = ftp://10.207.248.41/yum/rhel62/cache/x86_64/6Server/rhel-x86_64-server-6/getPackage/
+
+*fix rpmnew
+# find / -print | egrep "rpmnew"
+
+*disable proxy
+mv /etc/profile.d/proxy.csh /etc/profile.d/proxy.csh.bk
+mv /etc/profile.d/proxy.sh /etc/profile.d/proxy.sh.bk
+
+*fix proxy
+[root@rto1dcvm181 /]# cat /etc/profile.d/proxy.sh
+# proxy inizialization script (sh)
+export no_proxy='.rete.poste'
+export HTTP_PROXY='http://10.98.2.171:3128/'
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTP_PROXY
+export FTP_PROXY=$HTTP_PROXY
+export ftp_proxy=$HTTP_PROXY
+
+[root@rto1dcvm181 /]# cat /etc/profile.d/proxy.csh
+# inizialization script (csh)
+setenv HTTP_PROXY http://10.98.2.171:3128/
+setenv FTP_PROXY http://10.98.2.171:3128/
+setenv http_proxy http://10.98.2.171:3128/
+setenv ftp_proxy http://10.98.2.171:3128/
+setenv no_proxy .rete.poste
+
+*fix warning timestamp
+aggiunta della riga in mysqld in /etc/my.cnf: explicit_defaults_for_timestamp = 1
+
+*fix MYSQL
+yum install perl-DBI
+manual download http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
+yum localinstall mysql-community-release-el6-5.noarch.rpm
+fix proxy*
+yum install mysql-community-server
+disable proxy*
+fix warning timestamp*
+chmod 1777 /tmp
+mysql_install_db
+chown -R mysql:mysql /var/lib/mysql/
+service mysqld start
+mysql_secure_installation
+
+*fix permessi su wwww
+groupadd devs
+usermod -a -G devs utente
+getent group
+chown -R root:devs /var/www/
+chmod -R 775 /var/www/
+
+*config apache: /etc/httpd/conf/httpd.conf
+ServerAdmin
+ServerName
+AllowOverride All nella home del webserver (per eseguire .htaccess)
+
+*config krb5
+mv /etc/krb5.conf /etc/krb5.conf.bk
+cat /etc/krb5.conf
+[libdefaults]
+ ticket_lifetime = 24000
+ default_realm = RETE.POSTE
+ dns_lookup_realm = false
+ dns_lookup_kdc = false
+
+[realms]
+ RETE.POSTE = {
+  kdc = 10.208.77.84:88
+  kdc = 10.205.73.84:88
+ }
+
+[domain_realm]
+ .rete.poste = RETE.POSTE
+ rete.poste = RETE.POSTE
+
+[appdefaults]
+ pam = {
+   debug = false
+   ticket_lifetime = 36000
+   renew_lifetime = 36000
+   forwardable = true
+   krb4_convert = false
+ }
+cat /var/www/auth_kerb.keytab
+HTTP/10.98.2.181@RETE.POSTE
+
+*pagine test
+# cat /var/www/html/test.php
+<?php
+  phpinfo();
+?>
+# cat /var/www/html/.htaccess
+AuthType           Kerberos
+AuthName           "immettere le credenziali rete.poste"
+KrbMethodNegotiate off
+KrbVerifyKDC       off
+KrbAuthRealm       RETE.POSTE
+Krb5Keytab         /var/www/auth_kerb.keytab
+KrbSaveCredentials on
+Require            valid-user
+# cat /var/www/html/index.php
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Benvenuto nel server di preproduzione!</h1>
+<p>Ti sei autenticato come <?php echo $_SERVER['REMOTE_USER']; ?></p>
+</body>
+</html>
+
+*mount cdrom RHEL6
+mount -o loop /dev/cdrom1 /mnt/
+
+*fix mbstring
+source /etc/profile.d/proxy.sh.bk
+wget ftp://fr2.rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-mbstring-5.3.3-40.el6_6.x86_64.rpm
+rpm -ivh php-mbstring-5.3.3-40.el6_6.x86_64.rpm
+service httpd restart
+
+
+BEGIN
+/etc/hosts
+/etc/sysconfig/network
+/etc/sysconfig/network-scripts/ifcfg-eth0
+fix nuovo mac*
+passwd
+useradd utente
+passwd utente
+usermod -g wheel utente
+reboot
+visudo e scommento %wheel ALL=(ALL) ALL
+
+UPDATE
+fix repo baseline*
+mv /etc/yum.repos.d/cdrom.repo /etc/yum.repos.d/cdrom.repo.bk
+yum repolist all
+yum update
+fix rpmnew*
+
+INSTALL
+yum install httpd -y
+service httpd start
+chkconfig httpd on
+vim /etc/sysconfig/iptables
+and add line -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+service iptables restart
+fix MYSQL*
+chkconfig mysqld on
+fix subscription-manager*
+
+yum install php -y
+service httpd restart
+fix permessi su www*
+yum install mod_auth_kerb krb5-workstation
+config apache*
+config krb5*
+service httpd restart
+pagine test*
+
+PORTING DB
+# yum install git
+$ source /etc/profile.d/proxy.sh.bk
+$ cat .gitconfig
+[core]
+        pager = less -r
+        editor = vim
+[format]
+        pretty = format:'%C(bold blue)%h%Creset%C(bold yellow)%d%Creset: %C(bold red)%s%Creset - %C(bold magenta)%cn%Creset(%C(bold green)%cd%Creset)'
+
+[alias]
+        lg = log --graph --date=relative --all
+
+[user]
+        name = user
+        email = user@mail.it
+
+$ git clone https://rivaldid@bitbucket.org/rivaldid/magazzinodb.git
+mysql> CREATE USER 'magazzino'@'localhost' IDENTIFIED BY 'magauser';
+mysql> CREATE DATABASE magazzino;
+mysql> GRANT ALL PRIVILEGES ON magazzino.* TO 'magazzino'@'localhost';
+mysql> FLUSH PRIVILEGES;
+$ mysql_config_editor set --login-path=local --host=localhost --user=magazzino --password
+$ mysql --login-path=local -D magazzino
+$ grep magazzino .bash_profile
+export connect_db_magazzino="mysql --login-path=local -D magazzino"
+
+PORTING WEBAPP
+$ git clone https://rivaldid@bitbucket.org/rivaldid/magazzino.git
+# source /etc/profile.d/proxy.sh.bk
+# yum install php-mysql
+# service httpd restart
+$ grep "date.timezone =" /etc/php.ini
+date.timezone = Europe/Rome
+# service httpd restart
+fix mbstring*
+
