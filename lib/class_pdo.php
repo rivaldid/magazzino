@@ -31,12 +31,17 @@ class DB {
     private $stmt;
 
     public function __construct($user, $pass, $dbname) {
-        $this->dbh = new PDO(
-            "mysql:host=localhost;dbname=$dbname",
-            $user,
-            $pass,
-            array( PDO::ATTR_PERSISTENT => true )
-        );
+		try {
+			$this->dbh = new PDO(
+				"mysql:host=localhost;dbname=$dbname",
+				$user,
+				$pass,
+				array( PDO::ATTR_PERSISTENT => true )
+			);
+        }
+        catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
     }
 
     public function query($query) {
@@ -274,11 +279,23 @@ class myquery extends DB {
 		}
 	}
 	
-	public function revert_transito($db,$id_operazioni) {
+	public function vista_transiti_revertibili($db) {
 		
 		try {
 					
-			return $query = $db->query("SELECT * FROM vserv_transiti WHERE ")->resultset();
+			//return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,date("d/m/Y"))->resultset();
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,"05/06/2015")->resultset();
+			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function revisione_revert($db,$id_operazioni) {
+		
+		try {
+			
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni = ?")->bind(1,$id_operazioni)->resultset();
 			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
