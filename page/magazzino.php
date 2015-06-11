@@ -64,20 +64,15 @@ $a .= "</tbody>\n</table>\n";
 $export .= $riga;
 $export .= "</table>\n</div>\";\n";
 $export .= "//==============================================================\n";
-$export .= "include(\"".lib_mpdf57."\");\n";
+$export .= "include(\"../../".lib_mpdf57."\");\n";
 $export .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
-$export .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+$export .= "\$stylesheet = file_get_contents('../../css/mds.css');\n";
 $export .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
 $export .= "\$mpdf->WriteHTML(\"\$html\");\n";
 $export .= "\$mpdf->Output();\n";
 $export .= "exit;\n";
 $export .= "//==============================================================\n";
 $export .= "?>";
-
-
-// termino risorse
-mysql_close($conn);
-mysql_free_result($res);
 
 
 // salvo export pdf
