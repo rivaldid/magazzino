@@ -7,31 +7,25 @@ $a = ""; $log = "";
 $riga = "";
 
 $data = date("d/m/Y");
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
 
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+if (isset($_GET["detail"])) {
+	
+	$query = myquery::magazzino_detail($db);
+	
+} elseif (isset($_GET["contro"])) {
 
-// log
-if (isset($_GET["id"])) {
-	$query = "SELECT * FROM vserv_magazzino_id;";
-	//$log .= remesg("Visualizzazione senza <a href=\"?page=magazzino\">ID</a>","action");
+	$query = myquery::magazzino_contro($db);
+
 } else {
-	$query = "SELECT * FROM vserv_magazzino;";
-	//$log .= remesg("Visualizzazione con <a href=\"?page=magazzino&id\">ID</a>","action");
+	
+	$query = myquery::magazzino($db);
+	
 }
 
 $log .= $menu_magazzino;
-$log .= remesg("<a href=\"?page=magazzino_ng\">Vista dettagliata</a>","action");
 
-
-// interrogazione
-$res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
 
 
 // inizializzo pdf
@@ -47,16 +41,20 @@ $a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 $a .= "<thead><tr>\n";
 	if (isset($_GET["id"])) $a .= "<th>ID</th>\n";
-	$a .= "<th>TAGS</th>\n";
-	$a .= "<th>Posizioni con parziali</th>\n";
-	$a .= "<th>Tot</th>\n";
+	$a .= "<th>Merce</th>\n";
+	$a .= "<th>Posizione</th>\n";
+	$a .= "<th>Quantita'</th>\n";
+	if (isset($_GET["contro"]) OR isset($_GET["detail"])) $a .= "<th>Note</th>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+foreach ($query as $row) {
 	$riga .= "<tr>\n";
-	foreach ($row as $cname => $cvalue)
-		$riga .= "<td>".$cvalue."</td>\n";
+	if (isset($_GET["id"])) $riga .= "<td>".$row['id_merce']."</td>\n";
+	$riga .= "<td>".$row['merce']."</td>\n";
+	$riga .= "<td>".$row['posizione']."</td>\n";
+	$riga .= "<td>".$row['quantita']."</td>\n";
+	if (isset($_GET["contro"]) OR isset($_GET["detail"])) $riga .= "<td>".$row['note']."</td>\n";
 	$riga .= "</tr>\n";
 }
 

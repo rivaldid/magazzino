@@ -283,8 +283,8 @@ class myquery extends DB {
 		
 		try {
 					
-			//return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,date("d/m/Y"))->resultset();
-			return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,"05/06/2015")->resultset();
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,date("d/m/Y"))->resultset();
+			//return $query = $db->query("SELECT * FROM vserv_transiti WHERE STR_TO_DATE(dataop, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')")->bind(1,"05/06/2015")->resultset();
 			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
@@ -308,8 +308,38 @@ class myquery extends DB {
 			
 			logging2("CALL revert('$utente','$id_operazioni');",splog);
 			
-			return $query = $db->query("CALL revert( ?, ?) ")->bind(1,$utente,$id_operazioni)->single();
+			return $query = $db->query("CALL revert( ? , ? ) ")
+				->bind(1,$utente)
+				->bind(2,$id_operazioni)
+				->single();
 			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function magazzino($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_magazzino")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function magazzino_detail($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_magazzino_detail")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function magazzino_contro($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_magazzino_contro")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
