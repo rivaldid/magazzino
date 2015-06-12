@@ -5,13 +5,6 @@
 // $_SESSION
 if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
 // variabili
 $a = ""; $log = "";
 $valid = true;
@@ -30,7 +23,7 @@ if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false
 
 $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
 
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
 	$posizione = safe($_SESSION['posizione']);
@@ -103,21 +96,12 @@ if (isset($_SESSION['add'])) {
 
 	if ($valid) {
 
-		// call
 		if (isset($nuova_posizione))
-			$call = "CALL aggiornamento_magazzino_posizione('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$data}');";
+			myquery::magazzino_agg_posizione($db,$utente,$posizione,$nuova_posizione,$quantita,$data);
 		elseif (isset($nuova_quantita))
-			$call = "CALL aggiornamento_magazzino_quantita('{$utente}','{$id_merce}','{$posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
+			myquery::magazzino_agg_quantita($db,$utente,$posizione,$nuova_posizione,$quantita,$data);
 
-		// $call = "CALL aggiornamento_magazzino('{$utente}','{$id_merce}','{$posizione}','{$nuova_posizione}','{$quantita}','{$nuova_quantita}','{$data}');";
-		$res = mysql_query($call);
-
-		if ($res)
-			$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
-		else
-			die('Errore nell\'invio dell\'aggiornamento al db: '.mysql_error());
-
-		logging2($call,splog);
+		$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
 
 		// reset
 		reset_sessione();
@@ -170,23 +154,11 @@ if (isset($_SESSION['add'])) {
 }
 
 
-
-// reset mysql connection
-mysql_close($conn);
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
-
-
 // test contenuti
 if (is_null($a) OR empty($a)) {
 
 	// ricevo lista merce
-	$query = "SELECT * FROM vista_magazzino;";
-	$result_lista_merce = mysql_query($query);
-	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
+	$query = myquery::magazzino_simple($db);
 
 	// form selezione
 	$a .= jsxtable;
@@ -201,36 +173,17 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
-	while ($row = mysql_fetch_array($result_lista_merce, MYSQL_NUM)) {
+	foreach ($query AS $row) {
 		$a .= "<tr>\n";
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_update");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-		foreach ($row as $cname => $cvalue)
-
-			switch ($cname) {
-
-				case 0:
-					$a .= noinput_hidden("id_merce",$cvalue);
-					break;
-
-				case 1:
-					$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
-					break;
-
-				case 2:
-					$a .= "<td>".input_hidden("tags",$cvalue)."</td>\n";
-					break;
-
-				case 3:
-					$a .= "<td>".input_hidden("quantita",$cvalue)."</td>\n";
-					break;
-
-				default:
-					//$a .= "<td>".$cvalue."</td>\n";
-					$a .= "";
-			}
-
+		
+		$a .= noinput_hidden("id_merce",$row['id_merce']);
+		$a .= "<td>".input_hidden("posizione",$row['posizione'])."</td>\n";
+		$a .= "<td>".input_hidden("tags",$row['merce'])."</td>\n";
+		$a .= "<td>".input_hidden("quantita",$row['quantita'])."</td>\n";
+		
 		$a .= "<td><input type='submit' name='add' value='Aggiorna'/></td>\n";
 		$a .= "</form>\n";
 		$a .= "</tr>\n";
@@ -238,15 +191,11 @@ if (is_null($a) OR empty($a)) {
 
 	$a .= "</tbody>\n</table>\n";
 
-	mysql_free_result($result_lista_merce);
-
 }
 
 
 // libero risorse
-mysql_close($conn);
 session_write_close();
-
 
 // stampo
 echo makepage($a, $log);

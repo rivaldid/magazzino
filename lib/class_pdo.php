@@ -326,6 +326,15 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function magazzino_simple($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_magazzino_simple")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 	public function magazzino_detail($db) {
 		
@@ -379,6 +388,44 @@ class myquery extends DB {
 			 
 			return $query;
 			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function magazzino_agg_posizione($db,$utente,$posizione,$nuova_posizione,$quantita,$data) {
+		
+		try {
+			
+			logging2("CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');",splog);
+			return $query = $db->query('CALL aggiornamento_magazzino_posizione(?,?,?,?,?,?)')
+					->bind(1,$utente)
+					->bind(1,$id_merce)
+					->bind(1,$posizione)
+					->bind(1,$nuova_posizione)
+					->bind(1,$quantita)
+					->bind(1,$data)
+					->single();
+					
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function magazzino_agg_quantita($db,$utente,$posizione,$nuova_posizione,$quantita,$data) {
+		
+		try {
+			
+			logging2("CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');",splog);
+			return $query = $db->query('CALL aggiornamento_magazzino_quantita(?,?,?,?,?,?)')
+					->bind(1,$utente)
+					->bind(1,$id_merce)
+					->bind(1,$posizione)
+					->bind(1,$quantita)
+					->bind(1,$nuova_quantita)
+					->bind(1,$data)
+					->single();
+					
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

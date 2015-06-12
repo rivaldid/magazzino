@@ -136,6 +136,15 @@ wget ftp://fr2.rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-mbstring
 rpm -ivh php-mbstring-5.3.3-40.el6_6.x86_64.rpm
 service httpd restart
 
+*fix php5.3 to php5.4
+source /etc/profile.d/proxy.sh.bk
+rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+yum remove php-common
+yum install php54w php54w-mbstring php54w-pdo php54w-mysql
+yum reinstall mod_auth_kerb
+$ grep "date.timezone =" /etc/php.ini
+date.timezone = Europe/Rome
+
 
 BEGIN
 /etc/hosts
@@ -167,7 +176,7 @@ fix MYSQL*
 chkconfig mysqld on
 fix subscription-manager*
 
-yum install php -y
+yum install php -y [no more needed!!!!]
 service httpd restart
 fix permessi su www*
 yum install mod_auth_kerb krb5-workstation
@@ -175,6 +184,7 @@ config apache*
 config krb5*
 service httpd restart
 pagine test*
+yum install mutt
 
 PORTING DB
 # yum install git
@@ -206,10 +216,11 @@ export connect_db_magazzino="mysql --login-path=local -D magazzino"
 PORTING WEBAPP
 $ git clone https://rivaldid@bitbucket.org/rivaldid/magazzino.git
 # source /etc/profile.d/proxy.sh.bk
-# yum install php-mysql
+# yum install php-mysql [no more needed!!!!]
 # service httpd restart
 $ grep "date.timezone =" /etc/php.ini
 date.timezone = Europe/Rome
 # service httpd restart
-fix mbstring*
+fix mbstring* [no more needed!!!!]
+fix php5.3 to php5.4*
 
