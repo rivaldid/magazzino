@@ -20,7 +20,7 @@ $a = ""; $log = "";
 $riga = "";  $export = "";
 
 $data = date("d/m/Y");
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
 

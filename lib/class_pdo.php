@@ -345,6 +345,15 @@ class myquery extends DB {
 		}
 	}
 	
+	public function magazzino_search($db,$id_merce,$documento,$tags,$posizione,$ordine,$note) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE 1")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
 }
 
 

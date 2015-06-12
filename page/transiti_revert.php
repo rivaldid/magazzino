@@ -68,22 +68,13 @@ if (isset($_POST['finish'])) {
 	$a .= "<td>".safetohtml($target[0]['dataop'])."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['status'])."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['posizione'])."</td>\n";
-	
-	if (isset($target[0]['doc_ingresso']) AND ($target[0]['doc_ingresso']!= NULL))
-		$a .= "<td><a href=\"".registro.$target[0]['doc_ingresso']."\">".safetohtml($target[0]['documento'])."</a></td>\n";
-	else
-		$a .= "<td>".safetohtml($target[0]['documento'])."</td>\n";
-	
+	$a .= "<td>".$target[0]['documento']."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['data_doc'])."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['tags'])."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['quantita'])."</td>\n";
 	$a .= "<td>".safetohtml(strtolower($target[0]['note']))."</td>\n";
+	$a .= "<td>".$target[0]['doc_ordine']."</td>\n";		
 	
-	if (isset($target[0]['doc_ordine']) AND ($target[0]['doc_ordine']!= NULL))
-		$a .= "<td><a href=\"".registro.$target[0]['doc_ordine']."\">".safetohtml($target[0]['ordine'])."</a></td>\n";
-	else
-		$a .= "<td>".safetohtml($target[0]['ordine'])."</td>\n";
-			
 	$a .= "<td>\n";
 
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=revert");
@@ -133,21 +124,12 @@ if (is_null($a) OR empty($a)) {
 			$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['status'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['posizione'])."</td>\n";
-			
-			if (isset($row['doc_ingresso']) AND ($row['doc_ingresso']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['doc_ingresso']."\">".safetohtml($row['documento'])."</a></td>\n";
-			else
-				$riga .= "<td>".safetohtml($row['documento'])."</td>\n";
-			
+			$riga .= "<td>".$row['documento']."</td>\n";
 			$riga .= "<td>".safetohtml($row['data_doc'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
 			$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
-			
-			if (isset($row['doc_ordine']) AND ($row['doc_ordine']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['doc_ordine']."\">".safetohtml($row['ordine'])."</a></td>\n";
-			else
-				$riga .= "<td>".safetohtml($row['ordine'])."</td>\n";
+			$riga .= "<td>".$row['doc_ordine']."</td>\n";
 			
 			$riga .= "<td>\n";
 

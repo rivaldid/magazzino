@@ -73,21 +73,12 @@ foreach ($query as $row) {
 	$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['status'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['posizione'])."</td>\n";
-	
-	if (isset($row['doc_ingresso']) AND ($row['doc_ingresso']!= NULL))
-		$riga .= "<td><a href=\"".registro.$row['doc_ingresso']."\">".safetohtml($row['documento'])."</a></td>\n";
-	else
-		$riga .= "<td>".safetohtml($row['documento'])."</td>\n";
-	
+	$riga .= "<td>".$row['documento']."</td>\n";
 	$riga .= "<td>".safetohtml($row['data_doc'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
 	$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
-	
-	if (isset($row['doc_ordine']) AND ($row['doc_ordine']!= NULL))
-		$riga .= "<td><a href=\"".registro.$row['doc_ordine']."\">".safetohtml($row['ordine'])."</a></td>\n";
-	else
-		$riga .= "<td>".safetohtml($row['ordine'])."</td>\n";
+	$riga .= "<td>".$row['doc_ordine']."</td>\n";
 
 	$riga .= "</tr>\n";
 
