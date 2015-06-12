@@ -30,9 +30,8 @@ $menu_transiti .= remesg("<a href=\"lib/report_transiti_excel.php\">Report trans
 $menu_magazzino .= remesg("<a href=\"?page=magazzino\">Merce presente (default)</a>","action");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino&detail\">Merce presente dettagliata</a>","action");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino&contro\">Merce scaricata</a>","action");
-$menu_magazzino .= remesg("<a href=\"?page=magazzino_search\">Ricerca in magazzino</a>","search");
 $menu_magazzino .= remesg("<a href=\"?page=magazzino_update\">Aggiornamenti di posizione o quantita'</a>","action");
-$menu_magazzino .= remesg("<a href=\"lib/report_magazzino_excel.php\">Report magazzino in excel</a>","excel");
+//$menu_magazzino .= remesg("<a href=\"lib/report_magazzino_excel.php\">Report magazzino in excel</a>","excel");
 
 // MENU CARICO
 $menu_carico .= remesg("<a href=\"?page=carico&reintegro\">Reintegro merce</a>","action");

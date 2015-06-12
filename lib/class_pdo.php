@@ -345,10 +345,40 @@ class myquery extends DB {
 		}
 	}
 	
-	public function magazzino_search($db,$id_merce,$documento,$tags,$posizione,$ordine,$note) {
+	public function magazzino_search($db,$target,$pattern) {
 		
 		try {
-			return $query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE 1")->resultset();
+			
+			switch ($target) {
+				
+				case "id_merce":
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE id_merce='$pattern'")->resultset();
+					break;
+				
+				case "merce":
+				case "documento":
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE merce LIKE '%$pattern%'")->resultset();
+					break;
+					
+				case "posizione":
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE posizione='$pattern'")->resultset();
+					break;
+					
+				case "ordine":
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE note LIKE '%ODA%$pattern%'")->resultset();
+					break;
+					
+				case "note":
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail WHERE note LIKE '%$pattern%'")->resultset();
+					break;
+				
+				default:
+					$query = $db->query("SELECT * FROM vserv_magazzino_detail")->resultset();
+				
+			}
+			 
+			return $query;
+			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
