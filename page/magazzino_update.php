@@ -26,37 +26,37 @@ $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino
 $utente = $_SERVER["PHP_AUTH_USER"];
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = safe($_SESSION['posizione']);
+	$posizione = $_SESSION['posizione'];
 else
 	$posizione = NULL;
 
 if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
-	$id_merce = safe($_SESSION['id_merce']);
+	$id_merce = $_SESSION['id_merce'];
 else
 	$id_merce = NULL;
 
 if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = safe($_SESSION['tags']);
+	$tags = $_SESSION['tags'];
 else
 	$tags = NULL;
 
 if (isset($_SESSION['quantita'])AND(!empty($_SESSION['quantita'])))
-	$quantita = safe($_SESSION['quantita']);
+	$quantita = $_SESSION['quantita'];
 else
 	$quantita = NULL;
 
 // nuovi valori
 if (isset($_SESSION['inuova_posizione'])AND(!empty($_SESSION['inuova_posizione'])))
-	$nuova_posizione = safe($_SESSION['inuova_posizione']);
+	$nuova_posizione = $_SESSION['inuova_posizione'];
 else {
 	if (isset($_SESSION['snuova_posizione'])AND(!empty($_SESSION['snuova_posizione'])))
-		$nuova_posizione = safe($_SESSION['snuova_posizione']);
+		$nuova_posizione = $_SESSION['snuova_posizione'];
 	else
 		$nuova_posizione = NULL;
 }
 
 if (isset($_SESSION['nuova_quantita'])AND(!empty($_SESSION['nuova_quantita'])))
-	$nuova_quantita = safe($_SESSION['nuova_quantita']);
+	$nuova_quantita = $_SESSION['nuova_quantita'];
 else
 	$nuova_quantita = NULL;
 
