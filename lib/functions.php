@@ -166,17 +166,25 @@ function occhiomalocchio($path) {
 return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".basename($path,".php");
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
-function reset_sessione() {
+
+function mysession_start($id) {
+session_id($id);
+if (session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+	return true;
+} else
+return false;
+}
+
+function mysession_reset($id) {
 // reset $_SESSION
 $_SESSION = array();
 session_unset(); // tronca solo i dati
 session_destroy(); // distrugge lato server
-
-/* generate new session id and delete old session in store */
-session_regenerate_id(true);
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-
+if (mysession_start($id))
 return true;
+else
+return false;
 }
 
 function user2name($utente) {

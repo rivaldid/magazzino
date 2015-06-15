@@ -1,9 +1,7 @@
 <?php
 
-// inizializzo risorse
+mysession_start($_SERVER['PHP_AUTH_USER'].epura_specialchars($_SERVER['REQUEST_URI']));
 
-// $_SESSION
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 // variabili
 $a = ""; $log = "";
