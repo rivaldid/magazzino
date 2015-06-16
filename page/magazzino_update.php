@@ -2,6 +2,8 @@
 
 mysession_start($_SERVER['PHP_AUTH_USER'].epura_specialchars($_SERVER['REQUEST_URI']));
 
+echo $thisPage = pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME ); 
+
 
 // variabili
 $a = ""; $log = "";
@@ -63,7 +65,8 @@ $data = date('Y-m-d');
 
 // test stop
 if (isset($_SESSION['stop'])) {
-	reset_sessione();
+	session_destroy();
+	
 	$log .= remesg("Sessione terminata","done");
 }
 
@@ -113,6 +116,10 @@ if (isset($_SESSION['add'])) {
 		$a .= "'>\n";
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$log .= remesg("Acquisizione nuovi dati","info");
+		
+		
+		
+		
 
 
 		$a .= "<thead><th>Target</th><th>Corrente</th><th>Nuovo</th><th>Aggiornamento</th></thead>\n";
@@ -130,7 +137,7 @@ if (isset($_SESSION['add'])) {
 			$a .= "<td>".$posizione."</td>\n";
 			$a .= "<td>\n";
 				$a .= "<input type='text' name='inuova_posizione'/>\n";
-				$a .= myoptlst("snuova_posizione",$vserv_posizioni)."\n";
+				//$a .= myoptlst("snuova_posizione",$vserv_posizioni)."\n";
 			$a .= "</td>\n";
 			$a .= "<td><input type='submit' name='save' value='Salva'/></td>\n";
 		$a .= "</tr>\n";

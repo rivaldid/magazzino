@@ -101,6 +101,42 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function mysession_clear($db) {
+		try {
+			
+			$num_record = $db->query("SELECT (*) FROM session_handler WHERE rete='?' AND page='?'")
+				->bind(1,$_SERVER['PHP_AUTH_USER'])
+				->bind(2,$_GET['page'])
+				->single();
+			
+			if ($num_record > 1) {
+				
+			}
+				
+			
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function mysession_open($db) {
+		try {
+			
+			$num_record = $db->query("SELECT (*) FROM session_handler WHERE rete='?' AND page='?'")
+				->bind(1,$_SERVER['PHP_AUTH_USER'])
+				->bind(2,$_GET['page'])
+				->single();
+			
+			if ($num_record > 1) {
+				
+			}
+				
+			
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
 	
 	public function logger($db) {
 		try {
