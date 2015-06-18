@@ -102,42 +102,33 @@ class myquery extends DB {
 		}
 	}
 
-	public function mysession_clear($db) {
-		try {
-			
-			$num_record = $db->query("SELECT (*) FROM session_handler WHERE rete='?' AND page='?'")
-				->bind(1,$_SERVER['PHP_AUTH_USER'])
-				->bind(2,$_GET['page'])
-				->single();
-			
-			if ($num_record > 1) {
-				
-			}
-				
-			
-		} catch (PDOException $e) {
-			error_handler($e->getMessage());
-		}
-	}
-	
 	public function mysession_open($db) {
 		try {
 			
-			$num_record = $db->query("SELECT (*) FROM session_handler WHERE rete='?' AND page='?'")
+			session_start();
+			$db->query("CALL sh_read('?','?','?')")
 				->bind(1,$_SERVER['PHP_AUTH_USER'])
 				->bind(2,$_GET['page'])
-				->single();
-			
-			if ($num_record > 1) {
-				
-			}
-				
+				->bind(3,$temp)
+				->resultset();
+			foreach ($temp AS $key => $value) $_SESSION[$key] = $value;
+			return true;
 			
 		} catch (PDOException $e) {
 			error_handler($e->getMessage());
 		}
 	}
-	
+
+	public function mysession_close() {
+		try {
+			session_write_close();
+			return true;
+			
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+		
 	public function logger($db) {
 		try {
 			return $row = $db->query('CALL input_trace(?,?,?,?,?,?,?)')

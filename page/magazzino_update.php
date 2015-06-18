@@ -1,8 +1,10 @@
 <?php
 
-mysession_start($_SERVER['PHP_AUTH_USER'].epura_specialchars($_SERVER['REQUEST_URI']));
+myquery::mysession_open($db);
 
-echo $thisPage = pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME ); 
+print_r($_SESSION);
+
+myquery::mysession_close();
 
 
 // variabili
