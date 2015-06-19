@@ -105,12 +105,18 @@ class myquery extends DB {
 	public function mysession_open($db) {
 		try {
 			
+			session_id($_SERVER['PHP_AUTH_USER'].$_GET['page']);
 			session_start();
+			
+			// frees all session variables / empties the array but keeps the session alive
+			session_unset();
+			
 			$db->query("CALL sh_read('?','?','?')")
 				->bind(1,$_SERVER['PHP_AUTH_USER'])
 				->bind(2,$_GET['page'])
 				->bind(3,$temp)
 				->resultset();
+				
 			foreach ($temp AS $key => $value) $_SESSION[$key] = $value;
 			return true;
 			
