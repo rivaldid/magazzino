@@ -102,10 +102,15 @@ class myquery extends DB {
 		}
 	}
 
+	
+	// *********** test *****************************
 	public function mysession_open($db) {
 		try {
 			
-			session_id($_SERVER['PHP_AUTH_USER'].$_GET['page']);
+			$temp=array();
+			
+			$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
+			session_id($id);
 			session_start();
 			
 			// frees all session variables / empties the array but keeps the session alive
@@ -116,8 +121,12 @@ class myquery extends DB {
 				->bind(2,$_GET['page'])
 				->bind(3,$temp)
 				->resultset();
-				
-			foreach ($temp AS $key => $value) $_SESSION[$key] = $value;
+			
+			//var_dump($temp);
+			
+			if (isset($temp)) {
+				foreach ($temp AS $key => $value) $_SESSION[$key] = $value;
+			}
 			return true;
 			
 		} catch (PDOException $e) {
@@ -125,15 +134,26 @@ class myquery extends DB {
 		}
 	}
 
-	public function mysession_close() {
+	public function mysession_close($db) {
 		try {
+						
+			$db->query("CALL sh_write('?','?','?','?')")
+				->bind(1,$_SERVER['PHP_AUTH_USER'])
+				->bind(2,$_GET['page'])
+				->bind(3,$_SESSION)
+				->bind(4,time())
+				->resultset();
+				
 			session_write_close();
+			
 			return true;
 			
 		} catch (PDOException $e) {
 			error_handler($e->getMessage());
 		}
 	}
+	
+	// *********** fine test *****************************
 		
 	public function logger($db) {
 		try {
@@ -430,15 +450,10 @@ class myquery extends DB {
 		
 		try {
 			
-			logging2("CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');",splog);
-			return $query = $db->query('CALL aggiornamento_magazzino_posizione(?,?,?,?,?,?)')
-					->bind(1,$utente)
-					->bind(1,$id_merce)
-					->bind(1,$posizione)
-					->bind(1,$nuova_posizione)
-					->bind(1,$quantita)
-					->bind(1,$data)
-					->single();
+			$sql = "CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');";
+			
+			logging2($sql,splog);
+			return $query = $db->query($sql)->single();
 					
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
@@ -449,15 +464,10 @@ class myquery extends DB {
 		
 		try {
 			
-			logging2("CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');",splog);
-			return $query = $db->query('CALL aggiornamento_magazzino_quantita(?,?,?,?,?,?)')
-					->bind(1,$utente)
-					->bind(1,$id_merce)
-					->bind(1,$posizione)
-					->bind(1,$quantita)
-					->bind(1,$nuova_quantita)
-					->bind(1,$data)
-					->single();
+			$sql = "CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');";
+			
+			logging2($sql,splog);
+			return $query = $db->query($sql)->single();
 					
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());

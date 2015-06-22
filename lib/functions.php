@@ -167,26 +167,6 @@ return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".bas
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 
-function mysession_start($id) {
-session_id($id);
-if (session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
-	return true;
-} else
-return false;
-}
-
-function mysession_reset($id) {
-// reset $_SESSION
-$_SESSION = array();
-session_unset(); // tronca solo i dati
-session_destroy(); // distrugge lato server
-if (mysession_start($id))
-return true;
-else
-return false;
-}
-
 function user2name($utente) {
 foreach (array("Piscazzi","Manzo","Muratore","Lorusso","Vilardi") as $name)
 	if (strcasecmp(substr($utente,0,4),substr($name,0,4)) == 0)

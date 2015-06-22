@@ -1,11 +1,11 @@
 <?php
 
-myquery::mysession_open($db);
+// inizializzo risorse
 
-print_r($_SESSION);
-
-myquery::mysession_close();
-
+// $_SESSION
+$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
+session_id($id);
+if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 // variabili
 $a = ""; $log = "";
@@ -28,37 +28,37 @@ $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino
 $utente = $_SERVER["PHP_AUTH_USER"];
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = $_SESSION['posizione'];
+	$posizione = safe($_SESSION['posizione']);
 else
 	$posizione = NULL;
 
 if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
-	$id_merce = $_SESSION['id_merce'];
+	$id_merce = safe($_SESSION['id_merce']);
 else
 	$id_merce = NULL;
 
 if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = $_SESSION['tags'];
+	$tags = safe($_SESSION['tags']);
 else
 	$tags = NULL;
 
 if (isset($_SESSION['quantita'])AND(!empty($_SESSION['quantita'])))
-	$quantita = $_SESSION['quantita'];
+	$quantita = safe($_SESSION['quantita']);
 else
 	$quantita = NULL;
 
 // nuovi valori
 if (isset($_SESSION['inuova_posizione'])AND(!empty($_SESSION['inuova_posizione'])))
-	$nuova_posizione = $_SESSION['inuova_posizione'];
+	$nuova_posizione = safe($_SESSION['inuova_posizione']);
 else {
 	if (isset($_SESSION['snuova_posizione'])AND(!empty($_SESSION['snuova_posizione'])))
-		$nuova_posizione = $_SESSION['snuova_posizione'];
+		$nuova_posizione = safe($_SESSION['snuova_posizione']);
 	else
 		$nuova_posizione = NULL;
 }
 
 if (isset($_SESSION['nuova_quantita'])AND(!empty($_SESSION['nuova_quantita'])))
-	$nuova_quantita = $_SESSION['nuova_quantita'];
+	$nuova_quantita = safe($_SESSION['nuova_quantita']);
 else
 	$nuova_quantita = NULL;
 
@@ -68,7 +68,10 @@ $data = date('Y-m-d');
 // test stop
 if (isset($_SESSION['stop'])) {
 	session_destroy();
-	
+	session_unset();
+	$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
+	session_id($id);
+	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 	$log .= remesg("Sessione terminata","done");
 }
 
@@ -99,15 +102,20 @@ if (isset($_SESSION['add'])) {
 
 	if ($valid) {
 
+		// call
 		if (isset($nuova_posizione))
 			myquery::magazzino_agg_posizione($db,$utente,$posizione,$nuova_posizione,$quantita,$data);
 		elseif (isset($nuova_quantita))
 			myquery::magazzino_agg_quantita($db,$utente,$posizione,$nuova_posizione,$quantita,$data);
-
+	
 		$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
 
 		// reset
-		reset_sessione();
+		session_destroy();
+		session_unset();
+		$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
+		session_id($id);
+		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 	} else {
 
@@ -118,10 +126,6 @@ if (isset($_SESSION['add'])) {
 		$a .= "'>\n";
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$log .= remesg("Acquisizione nuovi dati","info");
-		
-		
-		
-		
 
 
 		$a .= "<thead><th>Target</th><th>Corrente</th><th>Nuovo</th><th>Aggiornamento</th></thead>\n";
@@ -200,9 +204,9 @@ if (is_null($a) OR empty($a)) {
 
 }
 
-
 // libero risorse
 session_write_close();
+
 
 // stampo
 echo makepage($a, $log);
