@@ -446,7 +446,7 @@ class myquery extends DB {
 		}
 	}
 
-	public function magazzino_agg_posizione($db,$utente,$posizione,$nuova_posizione,$quantita,$data) {
+	public function magazzino_agg_posizione($db,$utente,$id_merce,$posizione,$nuova_posizione,$quantita,$data) {
 		
 		try {
 			
@@ -460,7 +460,7 @@ class myquery extends DB {
 		}
 	}
 	
-	public function magazzino_agg_quantita($db,$utente,$posizione,$nuova_posizione,$quantita,$data) {
+	public function magazzino_agg_quantita($db,$utente,$id_merce,$posizione,$quantita,$nuova_quantita,$data) {
 		
 		try {
 			

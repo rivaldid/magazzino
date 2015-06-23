@@ -197,5 +197,10 @@ margin: auto;
 padding: 2%;
 }*/
 
+fieldset.fieldform {
+width: 15em;
+border: none;
+padding: 0.5em 3em;  
+}
 
 
