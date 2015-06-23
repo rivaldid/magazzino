@@ -1,6 +1,6 @@
 <?php
 
-// pre
+// basic
 function safe($value) {
 	return mysql_real_escape_string($value);
 }
@@ -48,7 +48,26 @@ function nextpage($offset) {
 	return $offset+30;
 }
 
-// fun
+
+// session
+function session_apri() {
+$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
+session_id($id);
+if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+return true;
+}
+function session_riavvia(){
+session_destroy();
+session_unset();
+session_open();
+return true;
+}
+function session_chiudi(){
+session_write_close();
+return true;
+}
+
+// utils
 function myoptlst($name,$query) {
 $opt = "<select name='".$name."'>\n";
 $opt .= "<option selected='selected' value=''>Blank</option>\n";

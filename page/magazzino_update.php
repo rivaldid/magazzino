@@ -2,11 +2,6 @@
 
 // inizializzo risorse
 
-// $_SESSION
-$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
-session_id($id);
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-
 // variabili
 $a = ""; $log = "";
 $valid = true;
@@ -16,11 +11,7 @@ if (isset($_GET["debug"]))
 else
 	$DEBUG=false;
 
-foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
-
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
-if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
-
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 $log .= remesg("Torna alla <a href=\"?page=magazzino\">visualizzazione magazzino</a>","action");
@@ -31,34 +22,34 @@ $data = date('Y-m-d');
 
 // test input: id_merce tags posizione quantita target inserimento
 
-if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
-	$id_merce = $_SESSION['id_merce'];
+if (isset($_POST['id_merce'])AND(!empty($_POST['id_merce'])))
+	$id_merce = $_POST['id_merce'];
 else
 	$id_merce = NULL;
 
-if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = $_SESSION['tags'];
+if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
+	$tags = $_POST['tags'];
 else
 	$tags = NULL;
 
-if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = $_SESSION['posizione'];
+if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
+	$posizione = $_POST['posizione'];
 else
 	$posizione = NULL;
 
-if (isset($_SESSION['quantita'])AND(!empty($_SESSION['quantita'])))
-	$quantita = $_SESSION['quantita'];
+if (isset($_POST['quantita'])AND(!empty($_POST['quantita'])))
+	$quantita = $_POST['quantita'];
 else
 	$quantita = NULL;
 
-if (isset($_SESSION['inserimento'])AND(!empty($_SESSION['inserimento'])))
-	$inserimento = $_SESSION['inserimento'];
+if (isset($_POST['inserimento'])AND(!empty($_POST['inserimento'])))
+	$inserimento = $_POST['inserimento'];
 else
 	$inserimento = NULL;
 
-if (isset($_SESSION['target'])AND(!empty($_SESSION['target']))) {
+if (isset($_POST['target'])AND(!empty($_POST['target']))) {
 	
-	switch ($_SESSION['target']) {
+	switch ($_POST['target']) {
 		case "posizione":
 			$nuova_posizione=$inserimento;
 			break;
@@ -76,21 +67,10 @@ if (isset($_SESSION['target'])AND(!empty($_SESSION['target']))) {
 }
 
 
-
-// test stop
-if (isset($_SESSION['stop'])) {
-	session_destroy();
-	session_unset();
-	$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
-	session_id($id);
-	if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-	$log .= remesg("Sessione terminata","done");
-}
-
 // test add
-if (isset($_SESSION['save'])) {
+if (isset($_POST['save'])) {
 
-	if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_SESSION['save'],"debug");
+	if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_POST['save'],"debug");
 
 	// validazione
 	if (is_null($posizione) OR empty($posizione)) $valid = false;
@@ -121,13 +101,6 @@ if (isset($_SESSION['save'])) {
 			myquery::magazzino_agg_quantita($db,$utente,$id_merce,$posizione,$quantita,$nuova_quantita,$data);
 	
 		$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
-
-		// reset
-		session_destroy();
-		session_unset();
-		$id = $_SERVER['PHP_AUTH_USER']."-".epura_specialchars($_GET['page']);
-		session_id($id);
-		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
 
 	}
 
@@ -186,13 +159,8 @@ if (is_null($a) OR empty($a)) {
 
 }
 
-// libero risorse
-session_write_close();
-
-
 // stampo
 echo makepage($a, $log);
-
 
 ?>
 

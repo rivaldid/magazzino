@@ -451,7 +451,6 @@ class myquery extends DB {
 		try {
 			
 			$sql = "CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');";
-			
 			logging2($sql,splog);
 			return $query = $db->query($sql)->single();
 					
@@ -461,11 +460,10 @@ class myquery extends DB {
 	}
 	
 	public function magazzino_agg_quantita($db,$utente,$id_merce,$posizione,$quantita,$nuova_quantita,$data) {
-		
+	
 		try {
 			
 			$sql = "CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');";
-			
 			logging2($sql,splog);
 			return $query = $db->query($sql)->single();
 					
