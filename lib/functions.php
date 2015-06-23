@@ -68,16 +68,13 @@ return true;
 }
 
 // utils
-function myoptlst($name,$query) {
-$opt = "<select name='".$name."'>\n";
+function myoptlst($db,$name,$vserv) {
+$opt = "<select name=\"$name\">\n";
 $opt .= "<option selected='selected' value=''>Blank</option>\n";
-$res = mysql_query($query);
-if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-	$opt .= "<option value='".safetohtml($row[0])."'>".safetohtml($row[0])."</option>\n";
-}
-mysql_free_result($res);
-$opt .= "</select>";
+$res = myquery::contatti($db);
+foreach ($res AS $row)
+	$opt .= "<option value=\"".safetohtml($row['label'])."\">".safetohtml($row['label'])."</option>\n";
+$opt .= "</select>\n";
 return $opt;
 }
 

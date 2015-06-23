@@ -472,6 +472,24 @@ class myquery extends DB {
 		}
 	}
 	
+	public function next_reintegro_doc($db) {
+		
+		try {
+			return $query = $db->query("SELECT next_reintegro_doc();")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+	
+	public function contatti($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_contatti;")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}	
+	
 }
 
 

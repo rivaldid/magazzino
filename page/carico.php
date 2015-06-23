@@ -102,13 +102,8 @@
 // 1. inizializzo risorse
 
 // $_SESSION
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+session_apri();
 
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // variabili
 
@@ -136,7 +131,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 if (isset($_GET["reintegro"])) {
 	$_SESSION['ifornitore'] = "Accessi";
 	$_SESSION['itipo_doc'] = "Reintegro";
-	$_SESSION['inum_doc'] = single_field_query("SELECT next_reintegro_doc();");
+	$_SESSION['inum_doc'] = myquery::next_reintegro_doc($db);
 	$_SESSION['idata_doc'] = date('Y-m-d');
 
 	if ($DEBUG) {
@@ -153,10 +148,10 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 // tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
-	$fornitore = epura_special2chars(safe($_SESSION['ifornitore']));
+	$fornitore = epura_special2chars($_SESSION['ifornitore']);
 else {
 	if (isset($_SESSION['sfornitore'])AND(!empty($_SESSION['sfornitore'])))
-		$fornitore = safe($_SESSION['sfornitore']);
+		$fornitore = $_SESSION['sfornitore'];
 	else
 		$fornitore = NULL;
 }
@@ -168,10 +163,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['itipo_doc'])AND(!empty($_SESSION['itipo_doc'])))
-	$tipo_doc = epura_special2chars(safe($_SESSION['itipo_doc']));
+	$tipo_doc = epura_special2chars($_SESSION['itipo_doc']);
 else {
 	if (isset($_SESSION['stipo_doc'])AND(!empty($_SESSION['stipo_doc'])))
-		$tipo_doc = safe($_SESSION['stipo_doc']);
+		$tipo_doc = $_SESSION['stipo_doc'];
 	else
 		$tipo_doc = NULL;
 }
@@ -183,10 +178,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inum_doc'])AND(!empty($_SESSION['inum_doc'])))
-	$num_doc = epura_special2chars(safe($_SESSION['inum_doc']));
+	$num_doc = epura_special2chars($_SESSION['inum_doc']);
 else {
 	if (isset($_SESSION['snum_doc'])AND(!empty($_SESSION['snum_doc'])))
-		$num_doc = safe($_SESSION['snum_doc']);
+		$num_doc = $_SESSION['snum_doc'];
 	else
 		$num_doc = NULL;
 }
@@ -199,10 +194,10 @@ if ($DEBUG) {
 
 // data carico
 if (isset($_SESSION['idata_carico'])AND(!empty($_SESSION['idata_carico'])))
-	$data_carico = safe($_SESSION['idata_carico']);
+	$data_carico = $_SESSION['idata_carico'];
 else {
 	if (isset($_SESSION['sdata_carico'])AND(!empty($_SESSION['sdata_carico'])))
-		$data_carico = safe($_SESSION['sdata_carico']);
+		$data_carico = $_SESSION['sdata_carico'];
 	else
 		$data_carico = NULL;
 }
@@ -215,10 +210,10 @@ if ($DEBUG) {
 
 // trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
-	$trasportatore = epura_special2chars(safe($_SESSION['itrasportatore']));
+	$trasportatore = epura_special2chars($_SESSION['itrasportatore']);
 else {
 	if (isset($_SESSION['strasportatore'])AND(!empty($_SESSION['strasportatore'])))
-		$trasportatore = safe($_SESSION['strasportatore']);
+		$trasportatore = $_SESSION['strasportatore'];
 	else
 		$trasportatore = NULL;
 }
@@ -230,10 +225,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inum_oda'])AND(!empty($_SESSION['inum_oda'])))
-	$num_oda = safe($_SESSION['inum_oda']);
+	$num_oda = $_SESSION['inum_oda'];
 else {
 	if (isset($_SESSION['snum_oda'])AND(!empty($_SESSION['snum_oda'])))
-		$num_oda = safe($_SESSION['snum_oda']);
+		$num_oda = $_SESSION['snum_oda'];
 	else
 		$num_oda = NULL;
 }
@@ -245,10 +240,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
-	$note = safe($_SESSION['inote']);
+	$note = $_SESSION['inote'];
 else {
 	if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
-		$note = safe($_SESSION['snote']);
+		$note = $_SESSION['snote'];
 	else
 		$note = NULL;
 }
@@ -261,10 +256,10 @@ if ($DEBUG) {
 
 // data_doc - nome_doc
 if (isset($_SESSION['idata_doc'])AND(!empty($_SESSION['idata_doc'])))
-	$data_doc = safe($_SESSION['idata_doc']);
+	$data_doc = $_SESSION['idata_doc'];
 else {
 	if (isset($_SESSION['sdata_doc'])AND(!empty($_SESSION['sdata_doc'])))
-		$data_doc = safe($_SESSION['sdata_doc']);
+		$data_doc = $_SESSION['sdata_doc'];
 	else
 		$data_doc = NULL;
 }
@@ -276,7 +271,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['nome_doc'])AND(!empty($_SESSION['nome_doc'])))
-	$nome_doc = safe($_SESSION['nome_doc']);
+	$nome_doc = $_SESSION['nome_doc'];
 else
 	$nome_doc = NULL;
 
@@ -291,18 +286,18 @@ if ($DEBUG) {
  * else
  * 		$utente = NULL;
  */
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 // tripla tags - quantita' - posizione
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
-	$tags = safe($_SESSION['itags']);
+	$tags = $_SESSION['itags'];
 else {
 	if (isset($_SESSION['tag2']) AND (!empty($_SESSION['tag2'])) AND isset($_SESSION['tag3']) AND (!empty($_SESSION['tag3']))) {
-		$tags = safe($_SESSION['tag1'])." ".safe($_SESSION['tag2'])." ".safe($_SESSION['tag3']);
+		$tags = $_SESSION['tag1']." ".$_SESSION['tag2']." ".$_SESSION['tag3'];
 	} else
 	{
 		if (isset($_SESSION['stags'])AND(!empty($_SESSION['stags'])))
-			$tags = safe($_SESSION['stags']);
+			$tags = $_SESSION['stags'];
 		else
 			$tags = NULL;
 	}
@@ -314,10 +309,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
-	$quantita = safe($_SESSION['iquantita']);
+	$quantita = $_SESSION['iquantita'];
 else {
 	if (isset($_SESSION['squantita'])AND(!empty($_SESSION['squantita'])))
-		$quantita = safe($_SESSION['squantita']);
+		$quantita = $_SESSION['squantita'];
 	else
 		$quantita = NULL;
 }
@@ -329,10 +324,10 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['iposizione'])AND(!empty($_SESSION['iposizione'])))
-	$posizione = epura_special2chars(safe($_SESSION['iposizione']));
+	$posizione = epura_special2chars($_SESSION['iposizione']);
 else {
 	if (isset($_SESSION['sposizione'])AND(!empty($_SESSION['sposizione'])))
-		$posizione = safe($_SESSION['sposizione']);
+		$posizione = $_SESSION['sposizione'];
 	else
 		$posizione = NULL;
 }
@@ -348,11 +343,14 @@ if ($DEBUG) {
 
 // stop
 if (isset($_SESSION['stop'])) {
+	
 	// reset variabili client
 	unset($tags, $quantita, $posizione);
 	unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
+	
 	// reset variabili server
-	reset_sessione();
+	session_riavvia();
+	
 	// alert
 	$log .= remesg("Sessione terminata","done");
 }
@@ -512,10 +510,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// test save
 		if (isset($_SESSION['save'])) {
+			
 			// reset altre variabili client
 			unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
+			
 			// reset variabili server
-			reset_sessione();
+			session_riavvia();
 		}
 
 	}
@@ -530,9 +530,6 @@ $a .= "'>\n";
 $a .= jsxdate;
 //$a .= jsaltrows;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
-
-	//$a .= "<caption>CARICO MERCE</caption>\n";
-	//$log .= remesg("Pagina per il carico della merce in magazzino","info");
 
 	$a .= "<thead><tr>\n";
 		$a .= "<th>Descrizione</th>\n";
@@ -552,19 +549,22 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 	$a .= "</tfoot>\n";
 
 	$a .= "<tbody>\n";
+		
 
 		$a .= "<tr>\n";
-		$a .= "<td><label for='utente'>Utente</label></td>\n";
-		if (isset($utente)) {
+		if (isset($fornitore)) {
+			$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
 			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
+			$a .= "<td>".input_hidden("sfornitore",$fornitore)."</td>\n";
 		} else {
-			$a .= "<td></td>\n";
-			//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
-			$a .= "<td>\n".$magamanager."</td>\n";
+			$a .= "<td><label for='ifornitore'>Fornitore ".add_tooltip("Campo fornitore obbligatorio")."</label></td>\n";
+			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
+			$a .= "<td>".myoptlst($db,"sfornitore","contatti")."</td>\n";
 		}
 		$a .= "</tr>\n";
+		
 
+		/*
 		$a .= "<tr>\n";
 		//$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
 		if (isset($fornitore)) {
@@ -724,6 +724,8 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td>".myoptlst("snum_oda",$vserv_numoda)."</td>\n";
 		}
 		$a .= "</tr>\n";
+		
+		*/
 
 	$a .= "</tbody>\n";
 
@@ -733,14 +735,11 @@ $a .= "</form>\n";
 
 
 // 5. termino risorse
-mysql_close($conn);
-session_write_close();
-
+session_chiudi();
 
 
 // 6. stampo
 echo makepage($a, $log);
-
 
 
 ?>
