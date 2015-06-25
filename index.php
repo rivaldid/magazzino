@@ -33,17 +33,40 @@
 	require_once 'lib/init.php';
 	include 'lib/menu.php';
 	echo jsxtop;
-	
+
 	$db = myquery::start();
 	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-
 	myquery::logger($db);
 
 	?>
+
 	<div id="contents">
+
 		<a href="#top" id="toTop"></a>
-		<?php include $page; ?>
+
+		<?php
+
+		$lettura=array("home","transiti","transiti_search","magazzino");
+		//$scrittura=array("transiti_revert","magazzino_update","carico","scarico");
+
+		$permission=myquery::permission($db)[0];
+
+		if ($permission>0) {
+
+			if (($permission==2) OR (($permission==1) AND in_array($_GET["page"],$lettura)))
+				include $page;
+			else
+				include "page/access_limited.php";
+
+		} else
+
+			include "page/access_denied.php";
+
+		?>
+
 	</div>
+
 	<?php include 'lib/footer.html'; ?>
+
 </body>
 </html>

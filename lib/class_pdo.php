@@ -171,6 +171,17 @@ class myquery extends DB {
 		}
 	}
 	
+	public function permission($db) {
+		
+		try {
+			return $query = $db->query("SELECT get_permission(?)")
+				->bind(1,$_SERVER['PHP_AUTH_USER'])
+				->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}	
+	
 	public function transiti_pagination($db,$current_page) {
 		
 		// righe da visualizzare
@@ -484,11 +495,76 @@ class myquery extends DB {
 	public function contatti($db) {
 		
 		try {
-			return $query = $db->query("SELECT * FROM vserv_contatti;")->single();
+			return $query = $db->query("SELECT * FROM vserv_contatti;")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
 	}	
+	
+	public function tipi_doc($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_tipodoc;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function numdoc($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_numdoc;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function tags2($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_tags2;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}	
+
+	public function tags3($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_tags3;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function posizioni($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_posizioni;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function numoda($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_numoda;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}	
+
+	public function carico($db,$utente,$fornitore,$tipo_doc,$num_doc,$data_doc,$nome_doc,$tags,$quantita,$posizione,$data_carico,$note,$trasportatore,$num_oda) {
+		
+		try {
+			$sql = "CALL CARICO('$utente','$fornitore','$tipo_doc','$num_doc','$data_doc','$nome_doc','$tags','$quantita','$posizione','$data_carico','$note','$trasportatore','$num_oda');";
+			logging2($sql,splog);
+			return $query = $db->query($sql)->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}		
 	
 }
 

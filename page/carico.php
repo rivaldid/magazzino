@@ -368,10 +368,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
-	if(!(in_array($utente, $enabled_users))){
+	/*if(!(in_array($utente, $enabled_users))){
 		$log .= remesg("Utente non abilitato per l'attivita' in oggetto (errore 17)","err");
 		$valid = false;
-	}
+	}*/
 
 	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
@@ -483,24 +483,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		}
 
 		// CARICO
-
-		$call = "CALL CARICO('{$utente}','{$fornitore}','{$tipo_doc}','{$num_doc}','{$data_doc}','{$nome_doc}','{$tags}','{$quantita}','{$posizione}','{$data_carico}','{$note}','{$trasportatore}','{$num_oda}');";
-		if ($DEBUG) $log .= remesg($call,"debug");
-
-		$res_carico = mysql_query($call);
-
-		if ($res_carico)
-			$log .= remesg("Carico inviato il database","done");
-		else
-			die('Errore nell\'invio dei dati al db: '.mysql_error());
-
-		/* nb: fail @ mysql_free_result($res_carico);
-		 * Warning: mysql_free_result() expects parameter 1 to be resource, boolean given in
-		 * You can't free the result of an INSERT query, since you can't free a boolean
-		 */
-
-		// logging
-		logging2($call,splog);
+		myquery::carico($db,$utente,$fornitore,$tipo_doc,$num_doc,$data_doc,$nome_doc,$tags,$quantita,$posizione,$data_carico,$note,$trasportatore,$num_oda);
+		$log .= remesg("Carico inviato il database","done");
 
 		// reset tripla tags - quantita' - posizione client
 		unset($tags, $quantita, $posizione);
@@ -522,6 +506,15 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 }
 
 
+// 4pre. query
+$lista_contatti = myquery::contatti($db);
+$lista_tipi_doc = myquery::tipi_doc($db);
+$lista_numdoc = myquery::numdoc($db);
+$lista_tags2 = myquery::tags2($db);
+$lista_tags3 = myquery::tags3($db);
+$lista_posizioni = myquery::posizioni($db);
+$lista_numoda = myquery::numoda($db);
+
 
 // 4. form
 $a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=carico");
@@ -532,9 +525,9 @@ $a .= jsxdate;
 $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	$a .= "<thead><tr>\n";
-		$a .= "<th>Descrizione</th>\n";
-		$a .= "<th>Inserimento</th>\n";
-		$a .= "<th>Suggerimento</th>\n";
+		$a .= "<th>Campo</th>\n";
+		$a .= "<th>Inserimento manuale</th>\n";
+		$a .= "<th>Inserimento guidato</th>\n";
 	$a .= "</tr></thead>\n";
 
 	$a .= "<tfoot>\n";
@@ -550,7 +543,6 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
 	$a .= "<tbody>\n";
 		
-
 		$a .= "<tr>\n";
 		if (isset($fornitore)) {
 			$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
@@ -559,22 +551,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		} else {
 			$a .= "<td><label for='ifornitore'>Fornitore ".add_tooltip("Campo fornitore obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
-			$a .= "<td>".myoptlst($db,"sfornitore","contatti")."</td>\n";
-		}
-		$a .= "</tr>\n";
-		
-
-		/*
-		$a .= "<tr>\n";
-		//$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
-		if (isset($fornitore)) {
-			$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";
-			$a .= "<td></td>\n";
-			$a .= "<td>".input_hidden("sfornitore",$fornitore)."</td>\n";
-		} else {
-			$a .= "<td><label for='ifornitore'>Fornitore ".add_tooltip("Campo fornitore obbligatorio")."</label></td>\n";
-			$a .= "<td><input type='text' name='ifornitore'/></td>\n";
-			$a .= "<td>".myoptlst("sfornitore",$vserv_contatti)."</td>\n";
+			$a .= "<td>".myoptlst("sfornitore",$lista_contatti)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
@@ -585,12 +562,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td>".input_hidden("strasportatore",$trasportatore)."</td>\n";
 		} else {
 			$a .= "<td><input type='text' name='itrasportatore'/></td>\n";
-			$a .= "<td>".myoptlst("strasportatore",$vserv_contatti)."</td>\n";
+			$a .= "<td>".myoptlst("strasportatore",$lista_contatti)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
 		if (isset($tipo_doc)) {
 			$a .= "<td><label for='itipo_doc'>Tipo documento</label></td>\n";
 			$a .= "<td></td>\n";
@@ -598,12 +574,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		} else {
 			$a .= "<td><label for='itipo_doc'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='itipo_doc'/></td>\n";
-			$a .= "<td>".myoptlst("stipo_doc",$vserv_tipodoc)."</td>\n";
+			$a .= "<td>".myoptlst("stipo_doc",$lista_tipi_doc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
 		if (isset($num_doc)) {
 			$a .= "<td><label for='inum_doc'>Numero documento</label></td>\n";
 			$a .= "<td></td>\n";
@@ -611,7 +586,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		} else {
 			$a .= "<td><label for='inum_doc'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='inum_doc'/></td>\n";
-			$a .= "<td>".myoptlst("snum_doc",$vserv_numdoc)."</td>\n";
+			$a .= "<td>".myoptlst("snum_doc",$lista_numdoc)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
@@ -639,7 +614,6 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 		if (isset($tags)) {
 			$a .= "<td><label for='itags'>TAGS merce</label></td>\n";
 			$a .= "<td></td>\n";
@@ -647,17 +621,18 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		} else {
 			$a .= "<td><label for='itags'>TAGS merce ".add_tooltip("Campo tags merce obbligatorio")."</label></td>\n";
 			$a .= "<td><textarea rows='4' cols='25' name='itags'></textarea></td>\n";
-			$a .= "<td>\n";
+			$a .= "<td align=\"center\">\n";
+				$a .= "<fieldset class=\"fieldform\">\n";
 				$a .= remesg("Per bretelle rame/fibra:","info");
 				$a .= input_hidden("tag1","BRETELLA")." \n";
-				$a .= myoptlst("tag2",vserv_tags2)." \n";
-				$a .= myoptlst("tag3",vserv_tags3)." \n";
+				$a .= myoptlst("tag2",$lista_tags2)." \n";
+				$a .= myoptlst("tag3",$lista_tags3)." \n";
+				$a .= "</fieldset>\n";
 			$a .= "</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
 		if (isset($quantita)) {
 			if (testinteger($quantita)) {
 				$a .= "<td><label for='iquantita'>Quantita'</label></td>\n";
@@ -676,7 +651,6 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
 		if (isset($posizione)) {
 			$a .= "<td><label for='iposizione'>Posizione</label></td>\n";
 			$a .= "<td></td>\n";
@@ -684,12 +658,11 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 		} else {
 			$a .= "<td><label for='iposizione'>Posizione ".add_tooltip("Campo posizione obbligatorio")."</label></td>\n";
 			$a .= "<td><input type='text' name='iposizione'/></td>\n";
-			$a .= "<td>".myoptlst("sposizione",$vserv_posizioni)."</td>\n";
+			$a .= "<td>".myoptlst("sposizione",$lista_posizioni)."</td>\n";
 		}
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-		//$a .= "<td><label for='idata'>Data carico</label></td>\n";
 		if (isset($data_carico)) {
 			$a .= "<td><label for='idata'>Data carico</label></td>\n";
 			$a .= "<td></td>\n";
@@ -708,9 +681,10 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td>".input_hidden("snote",$note)."</td>\n";
 		else
 			$a .= "<td><textarea rows='4' cols='25' name='inote'></textarea></td>\n";
-		$a .= "<td>\n";
-			$a .= remesg("Campo ad inserimento libero per dettagli vari mirati","info");
-			$a .= remesg("al corretto recupero di informazioni a posteriori","info");
+		$a .= "<td align=\"center\">\n";
+		$a .= "<fieldset class=\"fieldform\">\n";
+		$a .= remesg("Campo ad inserimento libero per dettagli mirati al recupero delle informazioni a posteriori","info");
+		$a .= "</fieldset>\n";
 		$a .= "</td>\n";
 		$a .= "</tr>\n";
 
@@ -721,11 +695,9 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 			$a .= "<td>".input_hidden("snum_oda",$num_oda)."</td>\n";
 		} else {
 			$a .= "<td><input type='text' name='inum_oda'/></td>\n";
-			$a .= "<td>".myoptlst("snum_oda",$vserv_numoda)."</td>\n";
+			$a .= "<td>".myoptlst("snum_oda",$lista_numoda)."</td>\n";
 		}
 		$a .= "</tr>\n";
-		
-		*/
 
 	$a .= "</tbody>\n";
 

@@ -59,7 +59,7 @@ return true;
 function session_riavvia(){
 session_destroy();
 session_unset();
-session_open();
+session_apri();
 return true;
 }
 function session_chiudi(){
@@ -68,12 +68,11 @@ return true;
 }
 
 // utils
-function myoptlst($db,$name,$vserv) {
-$opt = "<select name=\"$name\">\n";
+function myoptlst($nomecampo,$valori) {
+$opt = "<select name=\"$nomecampo\">\n";
 $opt .= "<option selected='selected' value=''>Blank</option>\n";
-$res = myquery::contatti($db);
-foreach ($res AS $row)
-	$opt .= "<option value=\"".safetohtml($row['label'])."\">".safetohtml($row['label'])."</option>\n";
+foreach ($valori AS $elemento)
+	$opt .= "<option value=\"".safetohtml($elemento['0'])."\">".safetohtml($elemento['0'])."</option>\n";
 $opt .= "</select>\n";
 return $opt;
 }
