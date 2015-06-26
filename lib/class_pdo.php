@@ -564,7 +564,52 @@ class myquery extends DB {
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
-	}		
+	}
+
+	public function next_mds_doc($db) {
+		
+		try {
+			return $query = $db->query("SELECT next_mds_doc();")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note) {
+		
+		try {
+			$sql = "CALL SCARICO('$num_mds','$utente','$richiedente','$id_merce','$quantita','$posizione','$destinazione','$data_doc_scarico','$data_scarico','$note',@myvar);";
+			logging2($sql,splog);
+			return $query = $db->query($sql)->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function destinazioni($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_destinazioni;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function lista_scarichi($db,$limit) {
+		
+		try {
+			
+			if (isset($limit) AND is_int($limit)) {
+				$query = $db->query("SELECT * FROM vserv_transiti_uscita LIMIT ?;")->bind(1,$limit)->resultset();
+			} else {
+				$query = $db->query("SELECT * FROM vserv_transiti_uscita;")->resultset();
+			}			
+			return $query;
+			
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 

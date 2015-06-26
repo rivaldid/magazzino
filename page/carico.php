@@ -280,12 +280,6 @@ if ($DEBUG) {
 }
 
 // utente
-/*
- * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
- * 		$utente = safe($_SESSION['utente']);
- * else
- * 		$utente = NULL;
- */
 $utente = $_SERVER["PHP_AUTH_USER"];
 
 // tripla tags - quantita' - posizione

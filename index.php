@@ -58,9 +58,11 @@
 			else
 				include "page/access_limited.php";
 
-		} else
+		} else {
 
 			header('Location: ' . "/");
+		
+		}
 
 		?>
 

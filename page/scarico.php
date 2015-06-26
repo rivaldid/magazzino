@@ -89,15 +89,8 @@
 
 // 1. inizializzo risorse
 
-// 11. $_SESSION
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-
-// 12. mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+// session
+session_apri();
 
 // 13. variabili
 
@@ -125,20 +118,14 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 $data_scarico = date("Y-m-d");
 
 // 133. utente
-/*
- * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
- * 		$utente = safe($_SESSION['utente']);
- * else
- * 		$utente = NULL;
- */
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 // 134. richiedente
 if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
-	$richiedente = epura_special2chars(safe($_SESSION['irichiedente']));
+	$richiedente = epura_special2chars($_SESSION['irichiedente']);
 else {
 	if (isset($_SESSION['srichiedente'])AND(!empty($_SESSION['srichiedente'])))
-		$richiedente = safe($_SESSION['srichiedente']);
+		$richiedente = $_SESSION['srichiedente'];
 	else
 		$richiedente = NULL;
 }
@@ -151,10 +138,10 @@ if ($DEBUG) {
 
 // 135. quantita
 if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
-	$quantita = safe($_SESSION['iquantita']);
+	$quantita = $_SESSION['iquantita'];
 else {
 	if (isset($_SESSION['squantita'])AND(!empty($_SESSION['squantita'])))
-		$quantita = safe($_SESSION['squantita']);
+		$quantita = $_SESSION['squantita'];
 	else
 		$quantita = NULL;
 }
@@ -167,10 +154,10 @@ if ($DEBUG) {
 
 // 136. destinazione
 if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
-	$destinazione = epura_special2chars(safe($_SESSION['idestinazione']));
+	$destinazione = epura_special2chars($_SESSION['idestinazione']);
 else {
 	if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
-		$destinazione = safe($_SESSION['sdestinazione']);
+		$destinazione = $_SESSION['sdestinazione'];
 	else
 		$destinazione = NULL;
 }
@@ -183,10 +170,10 @@ if ($DEBUG) {
 
 // 137. data_doc_scarico
 if (isset($_SESSION['idata_doc_scarico'])AND(!empty($_SESSION['idata_doc_scarico'])))
-	$data_doc_scarico = safe($_SESSION['idata_doc_scarico']);
+	$data_doc_scarico = $_SESSION['idata_doc_scarico'];
 else {
 	if (isset($_SESSION['sdata_doc_scarico'])AND(!empty($_SESSION['sdata_doc_scarico'])))
-		$data_doc_scarico = safe($_SESSION['sdata_doc_scarico']);
+		$data_doc_scarico = $_SESSION['sdata_doc_scarico'];
 	else
 		$data_doc_scarico = NULL;
 }
@@ -199,10 +186,10 @@ if ($DEBUG) {
 
 // 138. note
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
-	$note = safe($_SESSION['inote']);
+	$note = $_SESSION['inote'];
 else {
 	if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
-		$note = safe($_SESSION['snote']);
+		$note = $_SESSION['snote'];
 	else
 		$note = NULL;
 }
@@ -215,25 +202,25 @@ if ($DEBUG) {
 
 // 139. id_merce - tags - posizione - maxquantita
 if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
-	$id_merce = safe($_SESSION['id_merce']);
+	$id_merce = $_SESSION['id_merce'];
 else {
 	$id_merce = NULL;
 }
 
-if (isset($_SESSION['tags'])AND(!empty($_SESSION['tags'])))
-	$tags = epura_special2chars(safe($_SESSION['tags']));
+if (isset($_SESSION['merce'])AND(!empty($_SESSION['merce'])))
+	$merce = epura_special2chars($_SESSION['merce']);
 else {
-	$tags = NULL;
+	$merce = NULL;
 }
 
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
-	$posizione = epura_special2chars(safe($_SESSION['posizione']));
+	$posizione = epura_special2chars($_SESSION['posizione']);
 else {
 	$posizione = NULL;
 }
 
 if (isset($_SESSION['maxquantita'])AND(!empty($_SESSION['maxquantita'])))
-	$maxquantita = safe($_SESSION['maxquantita']);
+	$maxquantita = $_SESSION['maxquantita'];
 else {
 	$maxquantita = NULL;
 }
@@ -247,9 +234,9 @@ if ($DEBUG) {
 
 // 140. num_mds
 if (isset($_SESSION['num_mds'])AND(!empty($_SESSION['num_mds'])))
-	$num_mds = safe($_SESSION['num_mds']);
+	$num_mds = $_SESSION['num_mds'];
 else
-	$num_mds = single_field_query("SELECT next_mds_doc();");
+	$num_mds = myquery::next_mds_doc($db);
 
 
 // 2. test bottoni
@@ -283,7 +270,7 @@ if (isset($_SESSION['stop'])) {
 		$log .= remesg("Terminato modulo di scarico","done");
 
 		// 2112. write mds
-		$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".rand().".php";
+		$nome_report = "MDS-".$utente."-".epura_space2underscore($richiedente)."-".$data_doc_scarico."_".time().".php";
 		$fp = fopen($_SERVER['DOCUMENT_ROOT'].registro_mds.$nome_report,"w");
 		fwrite($fp,$_SESSION['mds']);
 		fclose($fp);
@@ -293,7 +280,7 @@ if (isset($_SESSION['stop'])) {
 	}
 
 	// 212. reset variabili server
-	reset_sessione();
+	session_riavvia();
 
 	// 213. alert
 	$log .= remesg("Sessione terminata","done");
@@ -321,10 +308,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	// 2212. utente
 	if (is_null($utente) OR empty($utente)) {
 		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso","err");
-		$valid = false;
-	}
-	if(!(in_array($utente, $enabled_users))){
-		$log .= remesg("Utente non abilitato per l'attivita' in oggetto","err");
 		$valid = false;
 	}
 
@@ -371,22 +354,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	if ($valid) {
 
 		// 2221. SCARICO
-		$call = "CALL SCARICO('{$num_mds}','{$utente}','{$richiedente}','{$id_merce}','{$quantita}','{$posizione}','{$destinazione}','{$data_doc_scarico}','{$data_scarico}','{$note}',@myvar);";
-		if ($DEBUG) $log .= remesg($call,"debug");
-
-		$res_scarico = mysql_query($call);
-
-		if ($res_scarico)
-			$log .= remesg("Scarico inviato al database","done");
-		else
-			die('Errore nell\'invio dei dati al db: '.mysql_error());
-
-		$ritorno = mysql_fetch_array($res_scarico, MYSQL_NUM);
-		mysql_free_result($res_scarico);
-
-		// 2222. logging
-		logging2($call,splog);
-
+		$ritorno = myquery::scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note);
+	
 		// 2223. test ritorno
 		if ($DEBUG) $log .= remesg("Ritorno sp: ".$ritorno[0],"debug");
 
@@ -468,7 +437,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
 
 				// 22253. reset sessione server
-				reset_sessione();
+				session_riavvia();
 
 			}
 
@@ -476,19 +445,15 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			// 2226. scarico non riuscito
 			logging2("-- ultimo scarico non riuscito",splog);
-			$log .= remesg("Scarico non riuscito, ripete l'operazione","err");
+			$log .= remesg("Scarico non riuscito, ripetere l'operazione","err");
 
 		}
 
-	// 223. reset mysql connection
-	mysql_close($conn);
-	$conn = mysql_connect('localhost','magazzino','magauser');
-	if (!$conn) die('Errore di connessione: '.mysql_error());
-	$dbsel = mysql_select_db('magazzino', $conn);
-	if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
-	// 224. test not valid
+		// 224. test not valid
 	} else {
+		
+		$lista_destinazioni = myquery::destinazioni($db);
 
 		// 2241. form input scarico
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
@@ -498,12 +463,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		//$a .= jsaltrows;
 		$a .= "<table class='altrowstable' id='alternatecolor'>\n";
 
-		//$log .= remesg("Completare lo scarico sulla merce indicata","info");
-
 		$a .= "<thead><tr>\n";
-			$a .= "<th>Descrizione</th>\n";
-			$a .= "<th>Inserimento</th>\n";
-			$a .= "<th>Suggerimento</th>\n";
+			$a .= "<th>Campo</th>\n";
+			$a .= "<th>Inserimento manuale</th>\n";
+			$a .= "<th>Inserimento guidato</th>\n";
 		$a .= "</tr></thead>\n";
 
 		$a .= "<tfoot>\n";
@@ -522,18 +485,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= noinput_hidden("num_mds",$num_mds);
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='utente'>Utente</label></td>\n";
-			if (isset($utente)) {
-				$a .= "<td></td>\n";
-				$a .= "<td>".input_hidden("utente",$utente)."</td>\n";
-			} else {
-				$a .= "<td></td>\n";
-				//$a .= "<td>".myoptlst("utente",$q6)."</td>\n";
-				$a .= "<td>\n".$magamanager."</td>\n";
-			}
-			$a .= "</tr>\n";
-
-			$a .= "<tr>\n";
 			//$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
 			if (isset($richiedente)) {
 				$a .= "<td><label for='irichiedente'>Richiedente</label></td>\n";
@@ -547,9 +498,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
-			$a .= "<td><label for='tags'>TAGS</label></td>\n";
+			$a .= "<td><label for='merce'>Merce</label></td>\n";
 			$a .= "<td></td>\n";
-			$a .= "<td>".noinput_hidden("id_merce",$id_merce).$tags."</td>\n";
+			$a .= "<td>".noinput_hidden("id_merce",$id_merce).$merce."</td>\n";
 			$a .= "</tr>\n";
 
 			$a .= "<tr>\n";
@@ -580,7 +531,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			} else {
 				$a .= "<td><label for='idestinazione'>Destinazione ".add_tooltip("Campo destinazione obbligatorio")."</label></td>\n";
 				$a .= "<td><input type='text' name='idestinazione'/></td>\n";
-				$a .= "<td>".myoptlst("sdestinazione",$vserv_posizioni)."</td>\n";
+				$a .= "<td>".myoptlst("sdestinazione",$lista_destinazioni)."</td>\n";
 			}
 			$a .= "</tr>\n";
 
@@ -624,8 +575,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 if (is_null($a) OR empty($a)) {
 
 	// 31. ricevo lista merce
-	$result_lista_merce = mysql_query("SELECT * FROM vista_magazzino_ng;");
-	if (!$result_lista_merce) die('Errore in ricezione lista merce dal db: '.mysql_error());
+	$lista_merce = myquery::magazzino_detail($db);
 
 	// 32. form selezione
 	$a .= jsxtable;
@@ -641,59 +591,35 @@ if (is_null($a) OR empty($a)) {
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
 
-	while ($row = mysql_fetch_array($result_lista_merce, MYSQL_NUM)) {
-
+	foreach ($lista_merce AS $elemento) {
+		
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-
 		$a .= "<tr>\n";
-
-			foreach ($row as $cname => $cvalue)
-
-				switch ($cname) {
-
-					case 0:
-						$a .= noinput_hidden("id_merce",$cvalue)."\n";
-						$id_merce=$cvalue;
-						break;
-
-					case 1:
-						$a .= "<td>\n";
-						$a .= input_hidden("tags",$cvalue)."\n";
-						$a .= "<a href=\"?page=transiti_search&id_merce=$id_merce\">[dettagli]</a>\n";
-						$a .= "</td>\n";
-						break;
-
-					case 2:
-						$a .= "<td>".input_hidden("posizione",$cvalue)."</td>\n";
-						break;
-
-					case 3:
-						$a .= "<td>".input_hidden("maxquantita",$cvalue)."</td>\n";
-						break;
-
-					default:
-						$a .= "<td>".$cvalue."</td>\n";
-				}
-
-			$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
+		
+		$a .= "<td>\n";
+		$a .= noinput_hidden("id_merce",$elemento['id_merce'])."\n";
+		$a .= input_hidden("merce",$elemento['merce']);
+		$a .= "<a href=\"?page=transiti_search&id_merce=".$elemento['id_merce']."\">[dettagli]</a>\n";
+		$a .= "</td>\n";
+		$a .= "<td>".input_hidden("posizione",$elemento['posizione'])."</td>\n";
+		$a .= "<td>".input_hidden("maxquantita",$elemento['quantita'])."</td>\n";
+		$a .= "<td>".input_hidden("note",$elemento['note'])."</td>\n";
+		
+		$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
 
 		$a .= "</tr>\n";
-
 		$a .= "</form>\n";
 	}
 
 	$a .= "</tbody>\n</table>\n";
 
-	mysql_free_result($result_lista_merce);
-
 }
 
 
 // 4. libero risorse
-mysql_close($conn);
-session_write_close();
+session_chiudi();
 
 
 // 5. stampo

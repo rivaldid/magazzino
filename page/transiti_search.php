@@ -15,7 +15,7 @@ $riga = "";  $export = "";
 if (isset($_GET['id_merce'])) {
 	$id_merce = $_GET['id_merce'];
 	$_POST['invia']="Invia";
-	$log .= remesg("Torna alla <a href=\"".$_SERVER['HTTP_REFERER']."\">visualizzazione scarichi</a>","action");
+	$log .= remesg("Torna alla <a href=\"".$_SERVER['HTTP_REFERER']."\">visualizzazione merce per scarico</a>","action");
 }
 else {
 	$id_merce = NULL;
@@ -102,25 +102,16 @@ if (isset($_POST['invia'])) {
 
 			//print_r($row);
 
-			$riga .= "<td>".safetohtml($row['2'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['3'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['4'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['5'])."</td>\n";
-
-			if (isset($row['0']) AND ($row['0']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['0']."\">".safetohtml($row['6'])."</a></td>\n";
-			else
-				$riga .= "<td>".safetohtml($row['6'])."</td>\n";
-
-			$riga .= "<td>".safetohtml($row['7'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['8'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['9'])."</td>\n";
-			$riga .= "<td>".safetohtml(strtolower($row['10']))."</td>\n";
-
-			if (isset($row['1']) AND ($row['1']!= NULL))
-				$riga .= "<td><a href=\"".registro.$row['1']."\">".safetohtml($row['11'])."</a></td>\n";
-			else
-				$riga .= "<td>".safetohtml($row['11'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['rete'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['data'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['status'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['posizione'])."</td>\n";
+			$riga .= "<td>".$row['documento']."</td>\n";
+			$riga .= "<td>".safetohtml($row['data_doc'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
+			$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
+			$riga .= "<td>".$row['doc_ordine']."</td>\n";
 
 			$riga .= "</tr>\n";
 

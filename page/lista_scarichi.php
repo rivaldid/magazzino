@@ -6,27 +6,11 @@
 $a = "";
 $log = "";
 
+
 if (isset($_GET["ultimi"]))
-	$ultimi=true;
+	$lista_scarichi = myquery::lista_scarichi($db,15);
 else
-	$ultimi=false;
-
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
-
-
-// interrogazione
-if ($ultimi)
-	$vserv_ultimi_scarichi = "SELECT utente,data,data_doc,tags,quantita,posizione,note FROM vserv_transiti WHERE status='USCITA' LIMIT 15;";
-else
-	$vserv_ultimi_scarichi = "SELECT utente,data,data_doc,tags,quantita,posizione,note FROM vserv_transiti WHERE status='USCITA';";
-
-$res = mysql_query($vserv_ultimi_scarichi);
-if (!$res) die('Errore nell\'interrogazione del db: '.mysql_error());
+	$lista_scarichi = myquery::lista_scarichi($db,NULL);
 
 
 // risultati
@@ -47,20 +31,19 @@ $a .= "<thead><tr>\n";
 $a .= "</tr></thead>\n";
 $a .= "<tbody>\n";
 
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+foreach ($lista_scarichi AS $elemento) {
 	$a .= "<tr>\n";
-	foreach ($row as $cname => $cvalue)
-		$a .= "<td>".$cvalue."</td>\n";
+	$a .= "<td>".safetohtml($elemento['rete'])."</td>\n";
+	$a .= "<td>".safetohtml($elemento['dataop'])."</td>\n";
+	$a .= "<td>".safetohtml($elemento['data_doc'])."</td>\n";
+	$a .= "<td>".safetohtml($elemento['tags'])."</td>\n";
+	$a .= "<td>".safetohtml($elemento['quantita'])."</td>\n";
+	$a .= "<td>".safetohtml($elemento['posizione'])."</td>\n";
+	$a .= "<td>".safetohtml(strtolower($elemento['note']))."</td>\n";
 	$a .= "</tr>\n";
 }
 
 $a .= "</tbody>\n</table>\n";
-mysql_free_result($res);
-
-
-// termino risorse
-mysql_close($conn);
-
 
 // stampo
 echo makepage($a, $log);
