@@ -128,5 +128,11 @@ color: #3366CC;
 color: #008800;
 text-decoration: underline;
 }
+
+#log p.deny{
+color: #ff0000;
+}
+
+
 /*fine area notifiche con stili annessi - warning, tilt..ecc */
 

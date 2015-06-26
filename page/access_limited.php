@@ -1,10 +1,18 @@
 <?php
 
-$a = ""; $log = "";
+echo remesg("Accesso limitato ai contenuti per la pagina richiesta","deny");
+$done=false;
 
-$log .= remesg("Accesso limitato ai contenuti","warn");
-$a .= "<a href=\"/magazzino\"><img border=\"0\" src=\"imgs/maga.png\" alt=\"Homepage\" /></a>\n";
+if (isset($_SERVER['HTTP_REFERER'])) {
+	if (strpos($_SERVER['HTTP_REFERER'],'page') !== false) {
+		$test = explode("page=",$_SERVER['HTTP_REFERER']);
+		if (in_array($test[1],$lettura)) {
+			include sprintf("page/%s.php",$test[1]);
+		} else $done=true;
+	} else $done=true;
+} else $done=true;
 
-echo makepage($a, $log);
+
+if ($done) include sprintf("page/home.php");
 
 ?>

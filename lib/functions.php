@@ -145,6 +145,10 @@ function remesg($msg,$classe) {
 			$out .= "<i class=\"fa fa-file-excel-o\"></i>";
 			break;
 
+		case "deny":
+			$out .= "<i class=\"fa fa-ban\"></i>";
+			break;
+
 		default:
 			$out .= "";
 
