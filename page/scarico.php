@@ -236,7 +236,7 @@ if ($DEBUG) {
 if (isset($_SESSION['num_mds'])AND(!empty($_SESSION['num_mds'])))
 	$num_mds = $_SESSION['num_mds'];
 else
-	$num_mds = myquery::next_mds_doc($db);
+	$num_mds = myquery::next_mds_doc($db)[0];
 
 
 // 2. test bottoni
@@ -254,9 +254,9 @@ if (isset($_SESSION['stop'])) {
 		$corpo_html = ob_get_clean();
 		$_SESSION['mds'] .= addslashes($corpo_html)."\";\n";
 		$_SESSION['mds'] .= "//==============================================================\n";
-		$_SESSION['mds'] .= "include(\"".lib_mpdf57."\");\n";
+		$_SESSION['mds'] .= "include(\"../../".lib_mpdf57."\");\n";
 		$_SESSION['mds'] .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
-		$_SESSION['mds'] .= "\$stylesheet = file_get_contents('../020/css/mds.css');\n";
+		$_SESSION['mds'] .= "\$stylesheet = file_get_contents('../../css/mds.css');\n";
 		$_SESSION['mds'] .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
 		$_SESSION['mds'] .= "\$mpdf->WriteHTML(\"\$html\");\n";
 		$_SESSION['mds'] .= "\$mpdf->Output();\n";
@@ -372,7 +372,16 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				ob_start();
 				include 'lib/template_mds1.php';
 				$corpo_html = ob_get_clean();
-				$_SESSION['mds'] = "<?php\n"."\$html = \"".addslashes($corpo_html)."\n";
+				$_SESSION['mds'] = "<?php\n".
+										"require '../../lib/class_config.php';".
+										"require '../../config.php';".
+										"require '../../lib/vars.php';".
+										"require '../../lib/functions.php';".
+										"require '../../lib/class_pdo.php';".
+										"\$db = myquery::start();\n".
+										"\$html = \"".
+										addslashes($corpo_html).
+										"\n";
 
 				if ($DEBUG) $log .= remesg("Testa MDS: <textarea name='testo' rows='10' cols='100'>".$corpo_html."</textarea>","debug");
 				if ($DEBUG) $log .= remesg("MDS fin'ora: <textarea name='testo' rows='10' cols='100'>".$_SESSION['mds']."</textarea>","debug");
@@ -435,10 +444,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				fclose($fp);
 
 				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
-
-				// 22253. reset sessione server
-				session_riavvia();
-
 			}
 
 		} else {
@@ -448,7 +453,9 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$log .= remesg("Scarico non riuscito, ripetere l'operazione","err");
 
 		}
-
+		
+		// scarico riuscito o no, reset sessione server per ripetere attivita
+		session_riavvia();
 
 		// 224. test not valid
 	} else {

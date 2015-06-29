@@ -145,6 +145,42 @@ yum reinstall mod_auth_kerb
 $ grep "date.timezone =" /etc/php.ini
 date.timezone = Europe/Rome
 
+*fix SSL
+yum install mod_ssl
+mkdir /etc/httpd/conf/ssl.key
+openssl genrsa -des3 1024 > /etc/httpd/conf/ssl.key/server.key
+
+
+
+
+openssl genrsa -out mydomain.key 1024
+openssl req -new -key mydomain.key -x509 -out mydomain.crt
+mkdir /etc/httpd/ssl.key
+mkdir /etc/httpd/ssl.crt
+mv magazzino.key /etc/httpd/ssl.key/
+mv magazzino.crt /etc/httpd/ssl.crt/
+$ cat /etc/httpd/conf.d/sites.conf
+NameVirtualHost *:80
+NameVirtualHost *:443
+Listen 443
+
+<VirtualHost *:80>
+ServerAdmin vilardid@posteitaliane.it
+DocumentRoot /var/www/html
+ServerName 10.98.2.181
+ServerAlias 10.98.2.181
+</VirtualHost>
+
+<VirtualHost *:443>
+ServerAdmin vilardid@posteitaliane.it
+DocumentRoot /var/www/html/magazzino
+ServerName 10.98.2.181
+SSLEngine on
+SSLCertificateFile /etc/httpd/ssl.crt/magazzino.crt
+SSLCertificateKeyFile /etc/httpd/ssl.key/magazzino.key
+</VirtualHost>
+
+
 
 BEGIN
 /etc/hosts
@@ -223,4 +259,5 @@ date.timezone = Europe/Rome
 # service httpd restart
 fix mbstring* [no more needed!!!!]
 fix php5.3 to php5.4*
+fix SSL*
 
