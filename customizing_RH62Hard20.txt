@@ -109,7 +109,7 @@ HTTP/10.98.2.181@RETE.POSTE
 <?php
   phpinfo();
 ?>
-# cat /var/www/html/.htaccess
+# cat /var/www/html/.htaccess >> RENAMED web.conf
 AuthType           Kerberos
 AuthName           "immettere le credenziali rete.poste"
 KrbMethodNegotiate off
@@ -118,6 +118,21 @@ KrbAuthRealm       RETE.POSTE
 Krb5Keytab         /var/www/auth_kerb.keytab
 KrbSaveCredentials on
 Require            valid-user
+$ cat /etc/httpd/conf.d/web.conf
+<Location "/">
+AuthType           Kerberos
+AuthName           "ACCOUNT RETE.POSTE"
+KrbMethodNegotiate off
+KrbVerifyKDC       off
+KrbAuthRealm       RETE.POSTE
+Krb5Keytab         /var/www/auth_kerb.keytab
+KrbSaveCredentials on
+Require            valid-user
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</Location>
+
 # cat /var/www/html/index.php
 <!DOCTYPE html>
 <html>
@@ -146,39 +161,24 @@ $ grep "date.timezone =" /etc/php.ini
 date.timezone = Europe/Rome
 
 *fix SSL
-yum install mod_ssl
-mkdir /etc/httpd/conf/ssl.key
-openssl genrsa -des3 1024 > /etc/httpd/conf/ssl.key/server.key
+yum install mod_ssl java-1.8.0-openjdk
+*** GABAGE:
+*** openssl req -new -newkey rsa:2048 -nodes -out rete.poste.crs -keyout rete.poste.key -subj '/C=IT/ST=Piemonte/L=Torino/O=Poste Italiane/CN=rto1dcvm181.rete.poste'
+*** openssl req -new -newkey rsa:2048 -nodes -out rto1dcvm181.rete.poste.csr -keyout rto1dcvm181.rete.poste.key -subj "/C=IT/O=Poste Italiane/CN=rto1dcvm181.rete.poste"
+*** www.startssl.com
+openssl genrsa -out ca.key 2048
+openssl req -new -key ca.key -out ca.csr
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+sudo cp ca.crt /etc/pki/tls/certs/
+sudo cp ca.key /etc/pki/tls/private/
+sudo cp ca.csr /etc/pki/tls/private/
+sudo restorecon -RvF /etc/pki
+sudo vim /etc/httpd/conf.d/ssl.conf
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo /sbin/service iptables save
+sudo iptables -L -v
+sudo httpd restart
 
-
-
-
-openssl genrsa -out mydomain.key 1024
-openssl req -new -key mydomain.key -x509 -out mydomain.crt
-mkdir /etc/httpd/ssl.key
-mkdir /etc/httpd/ssl.crt
-mv magazzino.key /etc/httpd/ssl.key/
-mv magazzino.crt /etc/httpd/ssl.crt/
-$ cat /etc/httpd/conf.d/sites.conf
-NameVirtualHost *:80
-NameVirtualHost *:443
-Listen 443
-
-<VirtualHost *:80>
-ServerAdmin vilardid@posteitaliane.it
-DocumentRoot /var/www/html
-ServerName 10.98.2.181
-ServerAlias 10.98.2.181
-</VirtualHost>
-
-<VirtualHost *:443>
-ServerAdmin vilardid@posteitaliane.it
-DocumentRoot /var/www/html/magazzino
-ServerName 10.98.2.181
-SSLEngine on
-SSLCertificateFile /etc/httpd/ssl.crt/magazzino.crt
-SSLCertificateKeyFile /etc/httpd/ssl.key/magazzino.key
-</VirtualHost>
 
 
 
