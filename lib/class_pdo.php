@@ -621,6 +621,35 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function gruppo_da_documento($db,$id_registro) {
+		
+		try {
+			return $query = $db->query("SELECT get_gruppo_da_documento('?');")
+				->bind(1,$id_registro)
+				->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function prossimo_gruppo($db) {
+		
+		try {
+			return $query = $db->query("SELECT get_next_gruppo();")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function aggiornamento_registro($db) {
+		
+		try {
+			return $query = $db->query("SELECT get_next_gruppo();")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 
