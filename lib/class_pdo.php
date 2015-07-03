@@ -642,10 +642,10 @@ class myquery extends DB {
 		}
 	}
 
-	public function aggiornamento_registro($db) {
+	public function dati_per_aggiornamento_registro($db) {
 		
 		try {
-			return $query = $db->query("SELECT get_next_gruppo();")->single();
+			return $query = $db->query("SELECT * FROM vserv_dati_per_aggiornamento_registro;")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

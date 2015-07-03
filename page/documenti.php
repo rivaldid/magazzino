@@ -3,7 +3,13 @@
 // 1. inizializza risorse
 
 // $_SESSION
-session_apri();
+if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+
+// mysql
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 // variabili
 
@@ -29,7 +35,13 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 
 // utente
-$utente = $_SERVER["PHP_AUTH_USER"];
+/*
+ * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
+ * 		$utente = safe($_SESSION['utente']);
+ * else
+ * 		$utente = NULL;
+ */
+$utente = $_SERVER["AUTHENTICATE_UID"];
 
 /*
 // id_registro
@@ -41,46 +53,46 @@ else
 
 // tripla mittente - tipo - numero
 if (isset($_SESSION['imittente'])AND(!empty($_SESSION['imittente'])))
-	$mittente = $_SESSION['imittente'];
+	$mittente = safe($_SESSION['imittente']);
 else {
 	if (isset($_SESSION['smittente'])AND(!empty($_SESSION['smittente'])))
-		$mittente = $_SESSION['smittente'];
+		$mittente = safe($_SESSION['smittente']);
 	else
 		$mittente = NULL;
 }
 
 if (isset($_SESSION['itipo'])AND(!empty($_SESSION['itipo'])))
-	$tipo = $_SESSION['itipo'];
+	$tipo = safe($_SESSION['itipo']);
 else {
 	if (isset($_SESSION['stipo'])AND(!empty($_SESSION['stipo'])))
-		$tipo = $_SESSION['stipo'];
+		$tipo = safe($_SESSION['stipo']);
 	else
 		$tipo = NULL;
 }
 
 if (isset($_SESSION['inumero'])AND(!empty($_SESSION['inumero'])))
-	$numero = $_SESSION['inumero'];
+	$numero = safe($_SESSION['inumero']);
 else {
 	if (isset($_SESSION['snumero'])AND(!empty($_SESSION['snumero'])))
-		$numero = $_SESSION['snumero'];
+		$numero = safe($_SESSION['snumero']);
 	else
 		$numero = NULL;
 }
 
 // data
 if (isset($_SESSION['idata'])AND(!empty($_SESSION['idata'])))
-	$data = $_SESSION['idata'];
+	$data = safe($_SESSION['idata']);
 else {
 	if (isset($_SESSION['sdata'])AND(!empty($_SESSION['sdata'])))
-		$data = $_SESSION['sdata'];
+		$data = safe($_SESSION['sdata']);
 	else
 		$data = NULL;
 }
 
 // link_id_registro - gruppo
 if (isset($_SESSION['link_id_registro'])AND(!empty($_SESSION['link_id_registro']))) {
-	$link_id_registro = $_SESSION['link_id_registro'];
-	$gruppo = myquery::gruppo_da_documento($db,$link_id_registro)[0];
+	$link_id_registro = safe($_SESSION['link_id_registro']);
+	$gruppo = single_field_query("SELECT gruppo FROM REGISTRO WHERE id_registro='".$link_id_registro."';");
 } else {
 	$link_id_registro = NULL;
 	$gruppo = NULL;
@@ -96,7 +108,7 @@ if ($DEBUG) {
 
 // scansione
 if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
-	$scansione = $_SESSION['scansione'];
+	$scansione = safe($_SESSION['scansione']);
 else
 	$scansione = NULL;
 
@@ -116,7 +128,7 @@ if (isset($_SESSION['stop'])) {
 	if ($DEBUG) $log .= remesg("Valore tasto STOP: ".$_SESSION['stop'],"debug");
 
 	// reset variabili server
-	session_riavvia();
+	reset_sessione();
 
 	// alert
 	$log .= remesg("Sessione terminata","done");
@@ -242,8 +254,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				// sp
 				if (is_null($gruppo) OR empty($gruppo)) {
-					
-					$new_gruppo = myquery::prossimo_gruppo($db)[0];
+
+					$new_gruppo = single_field_query("SELECT MAX(gruppo)+1 FROM REGISTRO;");
 
 					if (isset($link_id_registro)AND(!empty($link_id_registro))) {
 
@@ -297,7 +309,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				// reset
 				unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
-				session_riavvia();
+				reset_sessione();
 
 
 			} // end test size>0
@@ -430,6 +442,15 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 }
 
 
+// reset mysql connection
+mysql_close($conn);
+$conn = mysql_connect('localhost','magazzino','magauser');
+if (!$conn) die('Errore di connessione: '.mysql_error());
+$dbsel = mysql_select_db('magazzino', $conn);
+if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+
+
+
 // 3. test contenuti
 if (is_null($a) OR empty($a)) {
 
@@ -520,12 +541,16 @@ if (is_null($a) OR empty($a)) {
 	} // end while
 
 	$a .= "</tbody>\n</table>\n";
+	mysql_free_result($res);
 
 }
 
 
+
 // 4. termino risorse
-session_chiudi();
+mysql_close($conn);
+session_write_close();
+
 
 
 // 5. stampo
