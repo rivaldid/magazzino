@@ -3,13 +3,7 @@
 // 1. inizializza risorse
 
 // $_SESSION
-if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-
-// mysql
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
+session_apri();
 
 // variabili
 
@@ -23,7 +17,6 @@ $a = "";
 $log = "";
 
 $valid = true;
-$upload = true;
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
@@ -35,13 +28,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 
 // utente
-/*
- * if (isset($_SESSION['utente'])AND(!empty($_SESSION['utente'])))
- * 		$utente = safe($_SESSION['utente']);
- * else
- * 		$utente = NULL;
- */
-$utente = $_SERVER["AUTHENTICATE_UID"];
+$utente = $_SERVER["PHP_AUTH_USER"];
 
 /*
 // id_registro
@@ -53,46 +40,46 @@ else
 
 // tripla mittente - tipo - numero
 if (isset($_SESSION['imittente'])AND(!empty($_SESSION['imittente'])))
-	$mittente = safe($_SESSION['imittente']);
+	$mittente = $_SESSION['imittente'];
 else {
 	if (isset($_SESSION['smittente'])AND(!empty($_SESSION['smittente'])))
-		$mittente = safe($_SESSION['smittente']);
+		$mittente = $_SESSION['smittente'];
 	else
 		$mittente = NULL;
 }
 
 if (isset($_SESSION['itipo'])AND(!empty($_SESSION['itipo'])))
-	$tipo = safe($_SESSION['itipo']);
+	$tipo = $_SESSION['itipo'];
 else {
 	if (isset($_SESSION['stipo'])AND(!empty($_SESSION['stipo'])))
-		$tipo = safe($_SESSION['stipo']);
+		$tipo = $_SESSION['stipo'];
 	else
 		$tipo = NULL;
 }
 
 if (isset($_SESSION['inumero'])AND(!empty($_SESSION['inumero'])))
-	$numero = safe($_SESSION['inumero']);
+	$numero = $_SESSION['inumero'];
 else {
 	if (isset($_SESSION['snumero'])AND(!empty($_SESSION['snumero'])))
-		$numero = safe($_SESSION['snumero']);
+		$numero = $_SESSION['snumero'];
 	else
 		$numero = NULL;
 }
 
 // data
 if (isset($_SESSION['idata'])AND(!empty($_SESSION['idata'])))
-	$data = safe($_SESSION['idata']);
+	$data = $_SESSION['idata'];
 else {
 	if (isset($_SESSION['sdata'])AND(!empty($_SESSION['sdata'])))
-		$data = safe($_SESSION['sdata']);
+		$data = $_SESSION['sdata'];
 	else
 		$data = NULL;
 }
 
 // link_id_registro - gruppo
 if (isset($_SESSION['link_id_registro'])AND(!empty($_SESSION['link_id_registro']))) {
-	$link_id_registro = safe($_SESSION['link_id_registro']);
-	$gruppo = single_field_query("SELECT gruppo FROM REGISTRO WHERE id_registro='".$link_id_registro."';");
+	$link_id_registro = $_SESSION['link_id_registro'];
+	$gruppo = myquery::gruppo_da_documento($db,$link_id_registro);
 } else {
 	$link_id_registro = NULL;
 	$gruppo = NULL;
@@ -108,15 +95,19 @@ if ($DEBUG) {
 
 // scansione
 if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
-	$scansione = safe($_SESSION['scansione']);
+	$scansione = $_SESSION['scansione'];
 else
 	$scansione = NULL;
 
 
 // nuovo inserimento
-$log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
+$log .= remesg("<a href=\"?page=documenti&add\"\>Aggiungi nuovo</a>","action");
+/*$log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
 if ($DEBUG) $log .= "&debug";
-$log .= "'>\n<input type='submit' name='add' value='Aggiungi nuovo'/>\n</form>\n";
+$log .= "'>\n<input type='submit' name='add' value='Aggiungi nuovo'/>\n</form>\n";*/
+
+// test add da get
+if (isset($_GET['add'])) $_SESSION['add']=true;
 
 
 
@@ -128,7 +119,7 @@ if (isset($_SESSION['stop'])) {
 	if ($DEBUG) $log .= remesg("Valore tasto STOP: ".$_SESSION['stop'],"debug");
 
 	// reset variabili server
-	reset_sessione();
+	session_riavvia();
 
 	// alert
 	$log .= remesg("Sessione terminata","done");
@@ -145,18 +136,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		if ($DEBUG) $log .= remesg("Valore tasto SAVE: ".$_SESSION['save'],"debug");
 
 	// validazione
-
-	// utente
-	if (is_null($utente) OR empty($utente)) {
-		$log .= remesg("Mancata selezione di un utente per l'attivita' in corso","err");
-		$valid = false;
-	}
-	if(!(in_array($utente, $enabled_users))){
-		$log .= remesg("Utente non abilitato per l'attivita' in oggetto","err");
-		$valid = false;
-	}
-
-	if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
 	// mittente
 	if (is_null($mittente) OR empty($mittente)) {
@@ -212,111 +191,77 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// case $valid
 
-		// scansione
+		// UPLOAD
 		if (empty($_FILES['scansione']['name'])) {
+			
 			$log .= remesg("Nessun file selezionato","warn");
-		} else
-		{
-			if ($_FILES['scansione']['size'] > 0) {
+			
+		} elseif ($_FILES['scansione']['size'] > 0) {
 
-				/*
-				// exists_db
-				$q7 = "SELECT doc_exists('{$fornitore}','{$tipo_doc}','{$num_doc}') AS risultato";
-				$res_q7 = mysql_query($q7);
-				if (!$res_q7) die('Errore nell\'interrogazione del db: '.mysql_error());
-				$exists_db = mysql_fetch_assoc($res_q7);
-				mysql_free_result($res_q7);
-
-				if ($exists_db['risultato'] == "1") {
-					$log .= remesg("Nessun file caricato perche' presente sul db","warn");
-					$upload = false;
-				}
-				*/
-
-				// exists_file
-				$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
-				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
-				if (file_exists(registro.$filename)) {
-					$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
-					$upload = false;
-				}
-
-				// upload
-				if ($upload == true) {
-					$moved = move_uploaded_file($_FILES['scansione']['tmp_name'], $filename);
-					if ($moved)
-					  $log .= remesg("Scansione del documento caricata correttamente","done");
-					else
-					  $log .= remesg("Scansione del documento non caricata","err");
-				} else
-					$scansione = NULL;
-
-
-				// sp
-				if (is_null($gruppo) OR empty($gruppo)) {
-
-					$new_gruppo = single_field_query("SELECT MAX(gruppo)+1 FROM REGISTRO;");
-
-					if (isset($link_id_registro)AND(!empty($link_id_registro))) {
-
-						// call_link
-						$call_link = "CALL aggiornamento_registro('{$link_id_registro}',NULL,NULL,NULL,'{$new_gruppo}',NULL,NULL,@myvar);";
-
-						if ($DEBUG) $log .= remesg($call_link,"debug");
-						$res = mysql_query($call_link);
-
-						if ($res)
-							$log .= remesg("Collegamento a documento creato nel database","done");
-						else
-							die('Errore in creazione collegamento a documento: '.mysql_error());
-
-						logging2($call_link,splog);
-						mysql_free_result($res);
-
-					}
-
-					// call
-					$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
-
-					if ($DEBUG) $log .= remesg($call,"debug");
-					$res = mysql_query($call);
-
-					if ($res)
-						$log .= remesg("Documento creato nel database","done");
-					else
-						die('Errore in creazione documento dopo aggiornamento: '.mysql_error());
-
-					logging2($call,splog);
-					mysql_free_result($res);
-
+			// exists_file
+			$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
+			$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
+			
+			if (file_exists(registro.$filename)) {
+				
+				$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
+						
+			} else {
+				
+				if (move_uploaded_file($_FILES['scansione']['tmp_name'], $filename)) {
+					
+					$log .= remesg("Scansione del documento caricata correttamente","done");
+					
 				} else {
+					
+					$log .= remesg("Scansione del documento non caricata","err");
+					$scansione = NULL;
+					
+				}		
+			}
+		}	
+		
+		// SP
+		if (is_null($gruppo) OR empty($gruppo)) {
 
-					// single call
-					$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
+			$new_gruppo = myquery::prossimo_gruppo($db);
 
-					if ($DEBUG) $log .= remesg($call,"debug");
-					$res = mysql_query($call);
+			if (isset($link_id_registro)AND(!empty($link_id_registro))) {
 
-					if ($res)
-						$log .= remesg("Documento creato nel database","done");
-					else
-						die('Errore in creazione documento: '.mysql_error());
+				// aggiorno l'elemento a cui associare quello inserito
+				myquery::aggiornamento_registro($db,$link_id_registro,NULL,NULL,NULL,$new_gruppo,NULL,NULL);
+				//$call_link = "CALL aggiornamento_registro('{$link_id_registro}',NULL,NULL,NULL,'{$new_gruppo}',NULL,NULL,@myvar);";
 
-					logging2($call,splog);
-					mysql_free_result($res);
+			}
 
-				}
-
-				// reset
-				unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
-				reset_sessione();
+			// nuovo elemento
+			myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$new_gruppo,$data,$scansine);
+			//$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
 
 
-			} // end test size>0
+		} else {
 
-		} // end test name file not empty
+			// single call
+			myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$gruppo,$data,$scansine);
+			//$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
+
+
+		}
+
+		// reset
+		unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
+		session_riavvia();
+
+
 
 	} else {
+		
+		// pre
+		$lista_contatti = myquery::contatti($db);
+		$lista_tipi_doc = myquery::tipi_doc($db);
+		$lista_numdoc = myquery::numdoc($db)
+		$lista_id_documento_gruppo = myquery::lista_id_documento_gruppo($db)
+		$lista_documenti_per_link = myquery::lista_id_documento_gruppo($db);
 
 		// case not $valid
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
@@ -330,8 +275,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 			$a .= "<thead><tr>\n";
 				$a .= "<th>Descrizione</th>\n";
-				$a .= "<th>Inserimento</th>\n";
-				$a .= "<th>Suggerimento</th>\n";
+				$a .= "<th>Inserimento manuale</th>\n";
+				$a .= "<th>Inserimento guidato</th>\n";
 			$a .= "</tr></thead>\n";
 
 			$a .= "<tfoot>\n";
@@ -353,7 +298,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='mittente'>Mittente documento ".add_tooltip("Campo mittente documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='imittente'></td>\n";
-					$a .= "<td>".myoptlst("smittente",$vserv_contatti)."</td>\n";
+					$a .= "<td>".myoptlst("smittente",$lista_contatti)."</td>\n";
 				}
 				$a .= "</tr>\n";
 
@@ -365,7 +310,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='itipo'></td>\n";
-					$a .= "<td>".myoptlst("stipo",$vserv_tipodoc)."</td>\n";
+					$a .= "<td>".myoptlst("stipo",$lista_tipi_doc)."</td>\n";
 				}
 				$a .= "</tr>\n";
 
@@ -376,7 +321,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
-					$a .= "<td>".myoptlst("snumero",$vserv_numdoc)."</td>\n";
+					$a .= "<td>".myoptlst("snumero",$lista_numdoc)."</td>\n";
 				}
 				$a .= "</tr>\n";
 
@@ -406,14 +351,18 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<td colspan='2'>";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
 
-					$a .= single_field_query("SELECT documento FROM vserv_gruppi_doc WHERE id_registro='".$link_id_registro."';");
+					$a .= myquery::documento_da_id($db,$link_id_registro);
+					//$a .= single_field_query("SELECT documento FROM vserv_gruppi_doc WHERE id_registro='".$link_id_registro."';");
 					if ((isset($gruppo)AND(!empty($gruppo))))
 						$a .= noinput_hidden("gruppo",$gruppo);
 					else
 						$a .= noinput_hidden("link_id_registro",$link_id_registro);
 
 				} else {
-
+					
+					$a .= "<td>".myoptlst("link_id_registro",$lista_documenti_per_link)."</td>\n";
+					
+					/*
 					$a .= "<select name='link_id_registro'>\n";
 					$a .= "<option selected='selected' value=''>Blank</option>\n";
 					$res = mysql_query($vserv_gruppi_doc);
@@ -427,6 +376,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 					mysql_free_result($res);
 					$a .= "</select>";
+					*/
 
 				}
 				$a .= "</td>\n";
@@ -440,14 +390,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	}
 
 }
-
-
-// reset mysql connection
-mysql_close($conn);
-$conn = mysql_connect('localhost','magazzino','magauser');
-if (!$conn) die('Errore di connessione: '.mysql_error());
-$dbsel = mysql_select_db('magazzino', $conn);
-if (!$dbsel) die('Errore di accesso al db: '.mysql_error());
 
 
 
@@ -548,8 +490,7 @@ if (is_null($a) OR empty($a)) {
 
 
 // 4. termino risorse
-mysql_close($conn);
-session_write_close();
+session_chiudi();
 
 
 

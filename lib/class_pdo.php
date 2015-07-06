@@ -650,6 +650,35 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function lista_id_documento_gruppo($db) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_id_documento_gruppo;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function documento_da_id($db,$id_registro) {
+		
+		try {
+			return $query = $db->query("SELECT documento FROM vserv_id_documento_gruppo WHERE id_registro=$id_registro;")->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function aggiornamento_registro($db,$id_registro,$mittente,$tipo,$numero,$gruppo,$data,$scansione) {
+		
+		try {
+			$sql = "CALL aggiornamento_registro('$id_registro','$mittente','$tipo','$numero','$gruppo','$data','$scansione',@myvar);";
+			logging2($sql,splog);
+			return $query = $db->query($sql)->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 
