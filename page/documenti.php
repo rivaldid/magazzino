@@ -1,89 +1,39 @@
 <?php
 
-// 1. inizializza risorse
-
-// $_SESSION
+// apri sessione
 session_apri();
 
 // variabili
-
-// globali
-if (isset($_GET["debug"]))
-	$DEBUG=true;
-else
-	$DEBUG=false;
-
 $a = "";
 $log = "";
-
 $valid = true;
+$utente = $_SERVER["PHP_AUTH_USER"];
+
+// variabili: get
+if (isset($_GET["debug"])) $DEBUG=true;
+else $DEBUG=false;
 
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
+// variabili: post
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
+// variabili: session
+$mittente = $_SESSION['imittente'] ?: $_SESSION['smittente'] ?: $_SESSION['mittente'] ?: NULL;
+$tipo = $_SESSION['itipo'] ?: $_SESSION['stipo'] ?: $_SESSION['tipo'] ?: NULL;
+$numero = $_SESSION['inumero'] ?: $_SESSION['snumero'] ?: $_SESSION['numero'] ?: NULL;
+$data = $_SESSION['idata'] ?: $_SESSION['sdata'] ?: $_SESSION['data'] ?: NULL;
+$scansione = $_SESSION['scansione'] ?: NULL;
 
-// utente
-$utente = $_SERVER["PHP_AUTH_USER"];
-
-/*
-// id_registro
-if (isset($_SESSION['id_registro'])AND(!empty($_SESSION['id_registro'])))
-	$id_registro = safe($_SESSION['id_registro']);
-else
-	$id_registro = NULL;
-*/
-
-// tripla mittente - tipo - numero
-if (isset($_SESSION['imittente'])AND(!empty($_SESSION['imittente'])))
-	$mittente = $_SESSION['imittente'];
-else {
-	if (isset($_SESSION['smittente'])AND(!empty($_SESSION['smittente'])))
-		$mittente = $_SESSION['smittente'];
-	else
-		$mittente = NULL;
-}
-
-if (isset($_SESSION['itipo'])AND(!empty($_SESSION['itipo'])))
-	$tipo = $_SESSION['itipo'];
-else {
-	if (isset($_SESSION['stipo'])AND(!empty($_SESSION['stipo'])))
-		$tipo = $_SESSION['stipo'];
-	else
-		$tipo = NULL;
-}
-
-if (isset($_SESSION['inumero'])AND(!empty($_SESSION['inumero'])))
-	$numero = $_SESSION['inumero'];
-else {
-	if (isset($_SESSION['snumero'])AND(!empty($_SESSION['snumero'])))
-		$numero = $_SESSION['snumero'];
-	else
-		$numero = NULL;
-}
-
-// data
-if (isset($_SESSION['idata'])AND(!empty($_SESSION['idata'])))
-	$data = $_SESSION['idata'];
-else {
-	if (isset($_SESSION['sdata'])AND(!empty($_SESSION['sdata'])))
-		$data = $_SESSION['sdata'];
-	else
-		$data = NULL;
-}
-
-// link_id_registro - gruppo
-if (isset($_SESSION['link_id_registro'])AND(!empty($_SESSION['link_id_registro']))) {
-	$link_id_registro = $_SESSION['link_id_registro'];
+$link_id_registro = $_SESSION['link_id_registro'] ?: NULL;
+if ($link_id_registro)
 	$gruppo = myquery::gruppo_da_documento($db,$link_id_registro);
-} else {
-	$link_id_registro = NULL;
+else
 	$gruppo = NULL;
-}
 
 if ($DEBUG) {
 	if (isset($link_id_registro)) $log .= remesg("id_registro da cui prendere il gruppo: ".$link_id_registro,"debug");
@@ -93,22 +43,12 @@ if ($DEBUG) {
 	else $log .= remesg("gruppo nullo","debug");
 }
 
-// scansione
-if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
-	$scansione = $_SESSION['scansione'];
-else
-	$scansione = NULL;
-
-
-// nuovo inserimento
-$log .= remesg("<a href=\"?page=documenti&add\"\>Aggiungi nuovo</a>","action");
-/*$log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
-if ($DEBUG) $log .= "&debug";
-$log .= "'>\n<input type='submit' name='add' value='Aggiungi nuovo'/>\n</form>\n";*/
-
 // test add da get
 if (isset($_GET['add'])) $_SESSION['add']=true;
 
+
+// menu: nuovo inserimento
+$log .= remesg("<a href=\"?page=documenti&add\"\>Aggiungi nuovo</a>","action");
 
 
 // 2. test bottoni
@@ -221,47 +161,32 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			}
 		}	
 		
-		// SP
-		if (is_null($gruppo) OR empty($gruppo)) {
+		/* SP
+		passo1: se gruppo nullo mi calcolo il prossimo disponibile
+		passo2: se ho dato un id a cui collegare gli aggiorno il gruppo dato che vuoto in quella posizione
+		passo3: inserisco i dati correnti
+		*/
+		
+		
+		if (is_null($gruppo) OR empty($gruppo)) 
+			$gruppo = myquery::prossimo_gruppo($db);
 
-			$new_gruppo = myquery::prossimo_gruppo($db);
+		if (isset($link_id_registro)AND(!empty($link_id_registro)))
+			myquery::aggiornamento_registro($db,$link_id_registro,NULL,NULL,NULL,$gruppo,NULL,NULL);
 
-			if (isset($link_id_registro)AND(!empty($link_id_registro))) {
-
-				// aggiorno l'elemento a cui associare quello inserito
-				myquery::aggiornamento_registro($db,$link_id_registro,NULL,NULL,NULL,$new_gruppo,NULL,NULL);
-				//$call_link = "CALL aggiornamento_registro('{$link_id_registro}',NULL,NULL,NULL,'{$new_gruppo}',NULL,NULL,@myvar);";
-
-			}
-
-			// nuovo elemento
-			myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$new_gruppo,$data,$scansine);
-			//$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$new_gruppo}','{$data}','{$scansione}',@myvar);";
-
-
-		} else {
-
-			// single call
-			myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$gruppo,$data,$scansine);
-			//$call = "CALL aggiornamento_registro(NULL,'{$mittente}','{$tipo}','{$numero}','{$gruppo}','{$data}','{$scansione}',@myvar);";
-
-
-		}
+		myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$gruppo,$data,$scansine);
 
 		// reset
 		unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
 		session_riavvia();
 
-
-
 	} else {
 		
 		// pre
-		$lista_contatti = myquery::contatti($db);
-		$lista_tipi_doc = myquery::tipi_doc($db);
-		$lista_numdoc = myquery::numdoc($db)
-		$lista_id_documento_gruppo = myquery::lista_id_documento_gruppo($db)
-		$lista_documenti_per_link = myquery::lista_id_documento_gruppo($db);
+		$lista_contatti = myquery::contatti($db); //pre1
+		$lista_tipi_doc = myquery::tipi_doc($db); //pre2
+		$lista_numdoc = myquery::numdoc($db); //pre3
+		$lista_documenti_per_link = myquery::lista_linkid_documento($db); //pre5
 
 		// case not $valid
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
@@ -298,7 +223,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='mittente'>Mittente documento ".add_tooltip("Campo mittente documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='imittente'></td>\n";
-					$a .= "<td>".myoptlst("smittente",$lista_contatti)."</td>\n";
+					$a .= "<td>".myoptlst("smittente",$lista_contatti)."</td>\n"; //pre1
 				}
 				$a .= "</tr>\n";
 
@@ -310,7 +235,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='tipo'>Tipo documento ".add_tooltip("Campo tipo di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='itipo'></td>\n";
-					$a .= "<td>".myoptlst("stipo",$lista_tipi_doc)."</td>\n";
+					$a .= "<td>".myoptlst("stipo",$lista_tipi_doc)."</td>\n"; //pre2
 				}
 				$a .= "</tr>\n";
 
@@ -321,7 +246,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				} else {
 					$a .= "<td><label for='numero'>Numero documento ".add_tooltip("Campo numero di documento obbligatorio")."</label></td>\n";
 					$a .= "<td><input type='text' name='inumero'></td>\n";
-					$a .= "<td>".myoptlst("snumero",$lista_numdoc)."</td>\n";
+					$a .= "<td>".myoptlst("snumero",$lista_numdoc)."</td>\n"; //pre3
 				}
 				$a .= "</tr>\n";
 
@@ -345,41 +270,18 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				}
 				$a .= "</tr>\n";
 
-				// gruppo
+				// gruppo per associazione a documento, visualizzo il documento dato un id e passo di nascosto gruppo e id
 				$a .= "<tr>\n";
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
-				$a .= "<td colspan='2'>";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
-
-					$a .= myquery::documento_da_id($db,$link_id_registro);
-					//$a .= single_field_query("SELECT documento FROM vserv_gruppi_doc WHERE id_registro='".$link_id_registro."';");
-					if ((isset($gruppo)AND(!empty($gruppo))))
-						$a .= noinput_hidden("gruppo",$gruppo);
-					else
-						$a .= noinput_hidden("link_id_registro",$link_id_registro);
-
+					
+					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)."</td>\n"; //pre4: solo visualizzazione
+					$a .= noinput_hidden("link_id_registro",$link_id_registro);
+					
 				} else {
 					
-					$a .= "<td>".myoptlst("link_id_registro",$lista_documenti_per_link)."</td>\n";
-					
-					/*
-					$a .= "<select name='link_id_registro'>\n";
-					$a .= "<option selected='selected' value=''>Blank</option>\n";
-					$res = mysql_query($vserv_gruppi_doc);
-					if (!$res) die('Errore in lista documenti: '.mysql_error());
-
-					while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-						$a .= "<option value='".$row[0]."'>".$row[2];
-						if (!empty($row[3])) $a .= " (del ".$row[3].")";
-						$a .= "</option>\n";
-					}
-
-					mysql_free_result($res);
-					$a .= "</select>";
-					*/
-
+					$a .= "<td colspan='2'>".myoptlst("link_id_registro",$lista_documenti_per_link)."</td>\n"; // pre5
 				}
-				$a .= "</td>\n";
 				$a .= "</tr>\n";
 
 			$a .= "</tbody>\n";
@@ -397,10 +299,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 if (is_null($a) OR empty($a)) {
 
 	// interrogazione
-	$query = "SELECT id_registro,data,DATE_FORMAT(data,'%d/%m/%Y'),contatto,CONCAT_WS(' - ',tipo,numero,gruppo) as documento,tipo,numero,gruppo,file FROM REGISTRO WHERE NOT tipo='MDS' AND NOT tipo='Sistema' ORDER BY data DESC;";
-	$res = mysql_query($query);
-	if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());
-
+	$query = myquery::dati_per_aggiornamento_registro($db);
 
 	// risultati
 	$a .= jsxtable;
@@ -414,85 +313,62 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<th>Scansione</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
-
-	while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-		
-		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
-		if ($DEBUG) $a .= "&debug";
-		$a .= "'>\n";
-		
+	
+	foreach ($query as $row) {
+				
 		$a .= "<tr>\n";
 		
-		foreach ($row as $cname => $cvalue)
-
-			switch ($cname) {
-
-				case "0":
-					$a .= noinput_hidden("id_registro",$cvalue)."\n";
-					break;
-
-				case "1":
-					$data = $cvalue;
-					break;
-
-				case "2":
-					if ($data != NULL) {
-						$a .= noinput_hidden("sdata",$data)."\n";
-						$a .= "<td>".$cvalue."</td>\n";
-					} else
-						$a .= "<td><input type='submit' name='add' value='Aggiungi data'/></td>\n";
-					break;
-
-				case "3":
-					$a .= "<td>".input_hidden("smittente",$cvalue)."</td>\n";
-					break;
-
-				case "4":
-					$a .= "<td>".htmlspecialchars($cvalue)."</td>\n";
-					break;
-
-				case "5":
-					$a .= noinput_hidden("stipo",$cvalue)."\n";
-					break;
-
-				case "6":
-					$a .= noinput_hidden("snumero",$cvalue)."\n";
-					break;
-
-				case "7":
-					$a .= noinput_hidden("sgruppo",$cvalue)."\n";
-					break;
-
-				case "8":
-					if ($cvalue != NULL) {
-						$a .= noinput_hidden("scansione",$cvalue)."\n";
-						$a .= "<td><a href=\"".registro.$cvalue."\">".safetohtml($cvalue)."</a></td>\n";
-					} else
-						$a .= "<td><input type='submit' name='add' value='Aggiungi scansione'/></td>\n";
-					break;
-
-				default:
-					$a .= "<td>".safetohtml($cvalue)."</td>\n";
-
-			} // end switch
+		// data - data_ita
+		if (is_null($row['data']) OR empty($row['data'])) {
+			$a .= "<td>\n";
+			$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
+			if ($DEBUG) $a .= "&debug";
+			$a .= "'>\n";
+			$a .= noinput_hidden("id_registro",$row['id_registro'])."\n";
+			$a .= noinput_hidden("smittente",$row['contatto'])."\n";
+			$a .= noinput_hidden("tipo",$row['tipo'])."\n";
+			$a .= noinput_hidden("numero",$row['numero'])."\n";
+			$a .= noinput_hidden("gruppo",$row['gruppo'])."\n";
+			$a .= "<input type='submit' name='add' value='Aggiungi data'/>\n";
+			$a .= "</form>\n";
+			$a .= "</td>\n";
+		} else {
+			$a .= "<td>".$row['data_ita']."</td>\n";
+		}
+		
+		// mittente
+		$a .= "<td>".$row['contatto']."</td>\n";
+		
+		// documento
+		$a .= "<td>".$row['documento']."</td>\n";
+	
+		// scansione
+		if (is_null($row['scansione']) OR empty($row['scansione'])) {
+			$a .= "<td>\n";
+			$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
+			if ($DEBUG) $a .= "&debug";
+			$a .= "'>\n";
+			$a .= noinput_hidden("id_registro",$row['id_registro'])."\n";
+			$a .= noinput_hidden("smittente",$row['contatto'])."\n";
+			$a .= noinput_hidden("tipo",$row['tipo'])."\n";
+			$a .= noinput_hidden("numero",$row['numero'])."\n";
+			$a .= noinput_hidden("gruppo",$row['gruppo'])."\n";
+			$a .= "<input type='submit' name='add' value='Aggiungi scansione'/>\n";
+			$a .= "</form>\n";
+			$a .= "</td>\n";
+		} else {
+			$a .= "<td>".$row['scansione']."</td>\n";
+		}
 
 		$a .= "</tr>\n";
-		
-		$a .= "</form>\n";
 
-	} // end while
-
+	}
+	
 	$a .= "</tbody>\n</table>\n";
-	mysql_free_result($res);
-
 }
-
-
 
 // 4. termino risorse
 session_chiudi();
-
-
 
 // 5. stampo
 echo makepage($a, $log);

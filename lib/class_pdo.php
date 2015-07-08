@@ -651,10 +651,10 @@ class myquery extends DB {
 		}
 	}
 
-	public function lista_id_documento_gruppo($db) {
+	public function lista_linkid_documento($db) {
 		
 		try {
-			return $query = $db->query("SELECT * FROM vserv_id_documento_gruppo;")->resultset();
+			return $query = $db->query("SELECT * FROM vserv_id_documento;")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
