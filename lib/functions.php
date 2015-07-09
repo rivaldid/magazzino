@@ -77,6 +77,15 @@ $opt .= "</select>\n";
 return $opt;
 }
 
+function myoptlst_double($nomecampo,$valori) {
+$opt = "<select name=\"$nomecampo\">\n";
+$opt .= "<option selected='selected' value=''>Blank</option>\n";
+foreach ($valori AS $elemento)
+	$opt .= "<option value=\"".safetohtml($elemento['0'])."\">".safetohtml($elemento['1'])."</option>\n";
+$opt .= "</select>\n";
+return $opt;
+}
+
 function single_field_query($query) {
 $res = mysql_query($query);
 if (!$res) die('Errore nell\'interrogazione del db su '.$query.' con errore '.mysql_error());

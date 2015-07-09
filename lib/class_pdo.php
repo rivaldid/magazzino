@@ -651,10 +651,10 @@ class myquery extends DB {
 		}
 	}
 
-	public function lista_linkid_documento($db) {
+	public function lista_documenti_con_id($db) {
 		
 		try {
-			return $query = $db->query("SELECT * FROM vserv_id_documento;")->resultset();
+			return $query = $db->query("SELECT * FROM vserv_documento_con_id;")->resultset();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
@@ -663,7 +663,9 @@ class myquery extends DB {
 	public function documento_da_id($db,$id_registro) {
 		
 		try {
-			return $query = $db->query("SELECT documento FROM vserv_id_documento_gruppo WHERE id_registro=$id_registro;")->single();
+			return $query = $db->query("SELECT * FROM vserv_documento_con_id WHERE id_registro='?';")
+				->bind(1,$id_registro)
+				->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

@@ -186,7 +186,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		$lista_contatti = myquery::contatti($db); //pre1
 		$lista_tipi_doc = myquery::tipi_doc($db); //pre2
 		$lista_numdoc = myquery::numdoc($db); //pre3
-		$lista_documenti_per_link = myquery::lista_linkid_documento($db); //pre5
+		$lista_documenti_per_link = myquery::lista_documenti_con_id($db); //pre5
 
 		// case not $valid
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=documenti");
@@ -275,12 +275,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
 					
-					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)."</td>\n"; //pre4: solo visualizzazione
+					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)[0]."</td>\n"; //pre4: solo visualizzazione
 					$a .= noinput_hidden("link_id_registro",$link_id_registro);
 					
 				} else {
 					
-					$a .= "<td colspan='2'>".myoptlst("link_id_registro",$lista_documenti_per_link)."</td>\n"; // pre5
+					$a .= "<td colspan='2'>".myoptlst_double("link_id_registro",$lista_documenti_per_link)."</td>\n"; // pre5
 				}
 				$a .= "</tr>\n";
 
