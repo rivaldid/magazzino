@@ -663,9 +663,7 @@ class myquery extends DB {
 	public function documento_da_id($db,$id_registro) {
 		
 		try {
-			return $query = $db->query("SELECT * FROM vserv_documento_con_id WHERE id_registro='?';")
-				->bind(1,$id_registro)
-				->single();
+			return $db->query("SELECT * FROM vserv_documento_con_id WHERE id_registro=$id_registro;")->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
@@ -674,9 +672,19 @@ class myquery extends DB {
 	public function aggiornamento_registro($db,$id_registro,$mittente,$tipo,$numero,$gruppo,$data,$scansione) {
 		
 		try {
+			//$id_registro = ($id_registro == '' ? 'NULL' : $id_registro);
 			$sql = "CALL aggiornamento_registro('$id_registro','$mittente','$tipo','$numero','$gruppo','$data','$scansione',@myvar);";
 			logging2($sql,splog);
-			return $query = $db->query($sql)->single();
+			return $db->query("CALL aggiornamento_registro(?,?,?,?,?,?,?,@myvar)")
+				->bind(1,$id_registro)
+				->bind(2,$mittente)
+				->bind(3,$tipo)
+				->bind(4,$numero)
+				->bind(5,$gruppo)
+				->bind(6,$data)
+				->bind(7,$scansione)
+				->single();
+			//return $query = $db->query($sql)->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

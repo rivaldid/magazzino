@@ -136,30 +136,31 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			
 			$log .= remesg("Nessun file selezionato","warn");
 			
-		} elseif ($_FILES['scansione']['size'] > 0) {
-
-			// exists_file
-			$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
-			$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
+		} else {
 			
-			if (file_exists(registro.$filename)) {
+			if ($_FILES['scansione']['size'] > 0) {
+
+				$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
+				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
 				
-				$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
-						
-			} else {
-				
-				if (move_uploaded_file($_FILES['scansione']['tmp_name'], $filename)) {
+				if (file_exists(registro.$scansione)) {
 					
-					$log .= remesg("Scansione del documento caricata correttamente","done");
-					
+					$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
+							
 				} else {
 					
-					$log .= remesg("Scansione del documento non caricata","err");
-					$scansione = NULL;
-					
-				}		
+					if (move_uploaded_file($_FILES['scansione']['tmp_name'], $filename)) {
+						
+						$log .= remesg("Scansione del documento caricata correttamente","done");
+						
+					} else {
+						
+						$log .= remesg("Scansione del documento non caricata","err");
+						$scansione = NULL;
+					}		
+				}
 			}
-		}	
+		}
 		
 		/* SP
 		passo1: se gruppo nullo mi calcolo il prossimo disponibile
@@ -167,14 +168,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		passo3: inserisco i dati correnti
 		*/
 		
-		
 		if (is_null($gruppo) OR empty($gruppo)) 
-			$gruppo = myquery::prossimo_gruppo($db);
+			$gruppo = myquery::prossimo_gruppo($db)[0];
 
 		if (isset($link_id_registro)AND(!empty($link_id_registro)))
 			myquery::aggiornamento_registro($db,$link_id_registro,NULL,NULL,NULL,$gruppo,NULL,NULL);
 
-		myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$gruppo,$data,$scansine);
+		myquery::aggiornamento_registro($db,NULL,$mittente,$tipo,$numero,$gruppo,$data,$scansione);
 
 		// reset
 		unset($mittente,$tipo,$numero,$data,$scansione,$link_id_registro,$gruppo);
@@ -275,7 +275,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
 					
-					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)[0]."</td>\n"; //pre4: solo visualizzazione
+					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)['documento']."</td>\n"; //pre4: solo visualizzazione
 					$a .= noinput_hidden("link_id_registro",$link_id_registro);
 					
 				} else {
