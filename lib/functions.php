@@ -17,7 +17,7 @@ function epura_specialchars($string) {
 	return preg_replace('/[^A-Za-z0-9\. -]/', '', $string);
 }
 
-function epura_special2chars($string) {
+function norm($string) {
 $rimpiazzi = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                    'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
                    'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
@@ -175,6 +175,12 @@ function noinput_hidden($name,$value) {
 	return "<input type='hidden' name='".$name."' value='".$value."'/>";
 }
 
+function empty2null($mixed) {
+if (trim($mixed) === '')
+	$mixed = null;
+return $mixed;
+}
+
 function logging($mixed) {
 $flog = fopen(splog,'a');
 $a = $mixed."\n";
@@ -185,7 +191,7 @@ fclose($flog);
 function logging2($mixed,$logfile) {
 if (!file_exists($logfile)) touch($logfile);    
 $flog = fopen($logfile,'a');
-$a = $mixed.PHP_EOL;
+$a = str_replace("''","NULL",$mixed ).PHP_EOL;
 fwrite($flog,$a);
 fclose($flog);
 }

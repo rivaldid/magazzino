@@ -148,7 +148,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
 // tripla fornitore - tipo_doc - num_doc
 if (isset($_SESSION['ifornitore'])AND(!empty($_SESSION['ifornitore'])))
-	$fornitore = epura_special2chars($_SESSION['ifornitore']);
+	$fornitore = norm($_SESSION['ifornitore']);
 else {
 	if (isset($_SESSION['sfornitore'])AND(!empty($_SESSION['sfornitore'])))
 		$fornitore = $_SESSION['sfornitore'];
@@ -163,7 +163,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['itipo_doc'])AND(!empty($_SESSION['itipo_doc'])))
-	$tipo_doc = epura_special2chars($_SESSION['itipo_doc']);
+	$tipo_doc = norm($_SESSION['itipo_doc']);
 else {
 	if (isset($_SESSION['stipo_doc'])AND(!empty($_SESSION['stipo_doc'])))
 		$tipo_doc = $_SESSION['stipo_doc'];
@@ -178,7 +178,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inum_doc'])AND(!empty($_SESSION['inum_doc'])))
-	$num_doc = epura_special2chars($_SESSION['inum_doc']);
+	$num_doc = norm($_SESSION['inum_doc']);
 else {
 	if (isset($_SESSION['snum_doc'])AND(!empty($_SESSION['snum_doc'])))
 		$num_doc = $_SESSION['snum_doc'];
@@ -210,7 +210,7 @@ if ($DEBUG) {
 
 // trasportatore - ODA - note
 if (isset($_SESSION['itrasportatore'])AND(!empty($_SESSION['itrasportatore'])))
-	$trasportatore = epura_special2chars($_SESSION['itrasportatore']);
+	$trasportatore = norm($_SESSION['itrasportatore']);
 else {
 	if (isset($_SESSION['strasportatore'])AND(!empty($_SESSION['strasportatore'])))
 		$trasportatore = $_SESSION['strasportatore'];
@@ -318,7 +318,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['iposizione'])AND(!empty($_SESSION['iposizione'])))
-	$posizione = epura_special2chars($_SESSION['iposizione']);
+	$posizione = norm($_SESSION['iposizione']);
 else {
 	if (isset($_SESSION['sposizione'])AND(!empty($_SESSION['sposizione'])))
 		$posizione = $_SESSION['sposizione'];
