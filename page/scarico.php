@@ -365,12 +365,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 	if ($valid) {
 
 		// 2221. SCARICO
-		$ritorno = myquery::scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note);
+		$ritorno = myquery::scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note)[0];
 	
 		// 2223. test ritorno
-		if ($DEBUG) $log .= remesg("Ritorno sp: ".$ritorno[0],"debug");
+		if ($DEBUG) $log .= remesg("Ritorno sp: ".$ritorno,"debug");
 
-		if ($ritorno[0]=="0") {
+		if ($ritorno=="0") {
 
 			$log .= remesg("Scarico completato correttamente","done");
 
