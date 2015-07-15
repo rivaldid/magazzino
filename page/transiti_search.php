@@ -25,6 +25,39 @@ else {
 $data = date("d/m/Y");
 $utente = $_SERVER["PHP_AUTH_USER"];
 
+/* test valori per ricerca veloce
+	se dato un pattern
+		vedi quale campo ho scelto tramite target
+		quindi valorizza il campo scelto con il valore pattern
+*/
+if (isset($_POST['pattern'])AND(!empty($_POST['pattern']))) {
+	if (isset($_POST['target'])AND(!empty($_POST['target']))) {
+		
+		if ($DEBUG) $log .= remesg("Valore variabile target: ".$_POST['target'],"debug");
+		if ($DEBUG) $log .= remesg("Valore variabile pattern: ".$_POST['pattern'],"debug");
+	
+		switch ($_POST['target']) {
+			case "merce":
+				$_POST['tags'] = $_POST['pattern'];
+				break;
+			case "documento":
+				$_POST['documento'] = $_POST['pattern'];
+				break;
+			case "posizione":
+				$_POST['posizione'] = $_POST['pattern'];
+				break;
+			case "ordine":
+				$_POST['ordine'] = $_POST['pattern'];
+				break;
+			case "note":
+				$_POST['note'] = $_POST['pattern'];
+				break;
+			default:
+				$log .= remesg("Errore nel passaggio del campo da ricerca. Torna alla <a href=\"?page=transiti\">visualizzazione transiti</a>","warn");
+		}
+	}
+}
+
 // data_min data_max
 if (isset($_POST['data_min'])AND(!empty($_POST['data_min'])))
 	$data_min = date("d/m/Y", strtotime($_POST['data_min']));
@@ -47,6 +80,12 @@ if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
 else
 	$documento = NULL;
 
+// posizione
+if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
+	$posizione = trim(epura_space2percent($_POST['posizione']));
+else
+	$posizione = NULL;
+
 // ODA
 if (isset($_POST['oda'])AND(!empty($_POST['oda'])))
 	$oda = trim($_POST['oda']);
@@ -65,7 +104,7 @@ if (isset($_POST['invia'])) {
 
 	$log .= remesg("Effettua una nuova <a href=\"?page=transiti_search\">ricerca</a> in transiti","search");
 
-	$query = myquery::transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$oda,$note);
+	$query = myquery::transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note);
 
 	// test ritorno valori
 	if ($query) {
@@ -103,7 +142,7 @@ if (isset($_POST['invia'])) {
 			//print_r($row);
 
 			$riga .= "<td>".safetohtml($row['rete'])."</td>\n";
-			$riga .= "<td>".safetohtml($row['data'])."</td>\n";
+			$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['status'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['posizione'])."</td>\n";
 			$riga .= "<td>".$row['documento']."</td>\n";
@@ -177,22 +216,27 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>intervallo</td>\n";
+			$a .= "<td>Intervallo</td>\n";
 			$a .= "<td><input type='text' class='datepicker' name='data_min'/> - <input type='text' class='datepicker' name='data_max'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>tags</td>\n";
+			$a .= "<td>Merce</td>\n";
 			$a .= "<td><input type='text' name='tags'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>documento</td>\n";
+			$a .= "<td>Documento</td>\n";
 			$a .= "<td><input type='text' name='documento'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";
-			$a .= "<td>ordine</td>\n";
+			$a .= "<td>Posizione</td>\n";
+			$a .= "<td><input type='text' name='posizione'/></td>\n";
+		$a .= "</tr>\n";
+
+		$a .= "<tr>\n";
+			$a .= "<td>ODA</td>\n";
 			$a .= "<td><input type='text' name='oda'/></td>\n";
 		$a .= "</tr>\n";
 

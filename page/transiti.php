@@ -44,6 +44,27 @@ $export = "<?php\n\$html = \"";
 include 'lib/template_export_pdf.php';
 $export .= addslashes(ob_get_clean());
 
+// form ricerca
+$a .= jsx_select_target_pattern;
+$log .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_search");
+if ($DEBUG) $log .= "&debug";
+$log .= "'>\n";
+
+$log .= "<fieldset>\n";
+$log .= "<legend>Ricerca in transiti</legend>\n";
+$log .= "<select id='target' name='target'>\n";
+	$log .= "<option selected='selected' value=''>Seleziona...</option>\n";
+	$log .= "<option value='merce'>Merce</option>\n";
+	$log .= "<option value='documento'>Documento</option>\n";
+	$log .= "<option value='posizione'>Posizione</option>\n";
+	$log .= "<option value='ordine'>ODA</option>\n";
+	$log .= "<option value='note'>Note</option>\n";
+$log .= "</select>\n";
+
+$log .= "<input type='text' id='pattern' name='pattern' disabled='disabled' />\n";
+$log .= "<input type='submit' id='invia' name='invia' value='Invia' disabled='disabled' />\n";
+$log .= "</fieldset>\n</form>\n";
+
 
 // risultati
 $a .= jsxtable;

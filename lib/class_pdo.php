@@ -335,7 +335,7 @@ class myquery extends DB {
 		}
 	}
 
-	public function transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$oda,$note) {
+	public function transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note) {
 		
 		try {
 			
@@ -344,6 +344,7 @@ class myquery extends DB {
 			if ($data_min AND $data_max) $q .= " AND STR_TO_DATE(dataop, '%d/%m/%Y') BETWEEN STR_TO_DATE('$data_min', '%d/%m/%Y') AND STR_TO_DATE('$data_max', '%d/%m/%Y')";
 			if ($tags) $q .= " AND tags LIKE '%$tags%'";
 			if ($documento) $q .= " AND documento LIKE '%$documento%'";
+			if ($posizione) $q .= " AND posizione LIKE '%$posizione%'";
 			if ($oda) $q .= " AND ordine LIKE '%$oda%'";
 			if ($note) $q .= " AND note LIKE '%$note%'";
 			
