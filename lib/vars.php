@@ -12,7 +12,6 @@ define("jsxtable","<script type='text/javascript'>\n$(document).ready(function()
 define("jsxdate","<script type='text/javascript'>\n $(function() {\n $('.datepicker').datepicker($.datepicker.regional['it']);\n });\n </script>\n");
 define("jsaltrows","<script type='text/javascript'>\n  function altRows(id){ if(document.getElementsByTagName){ var table = document.getElementById(id); var rows = table.getElementsByTagName(\"tr\"); for(i = 0; i < rows.length; i++){ if(i % 2 == 0){ rows[i].className = \"evenrowcolor\"; }else{ rows[i].className = \"oddrowcolor\"; } } } } window.onload=function(){ altRows('alternatecolor'); } </script>\n");
 define("jsxtop","<script type='text/javascript'>\n $(function() { $('#toTop').scrollToTop(1000); });\n</script>\n");
-
 define("jsx_select_target_pattern","<script type='text/javascript'>\n document.getElementById('target').onchange = function () { document.getElementById('pattern').disabled = this.value == ''; document.getElementById('invia').disabled = this.value == ''; document.getElementById('pattern').focus();}\n</script>\n");
 
 // query
