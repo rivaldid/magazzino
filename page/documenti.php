@@ -16,18 +16,58 @@ else $DEBUG=false;
 if ($DEBUG) $log .= remesg("DEBUG ATTIVO","debug");
 if ($DEBUG) $log .= remesg("Stato variabile VALID: ".(($valid) ? "true" : "false"),"debug");
 
-// variabili: post
+// variabili post
 foreach ($_POST AS $key => $value) $_SESSION[$key] = $value;
 
 if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 
-// variabili: session
-$mittente = $_SESSION['imittente'] ?: $_SESSION['smittente'] ?: $_SESSION['mittente'] ?: NULL;
-$tipo = $_SESSION['itipo'] ?: $_SESSION['stipo'] ?: $_SESSION['tipo'] ?: NULL;
-$numero = $_SESSION['inumero'] ?: $_SESSION['snumero'] ?: $_SESSION['numero'] ?: NULL;
-$data = $_SESSION['idata'] ?: $_SESSION['sdata'] ?: $_SESSION['data'] ?: NULL;
-$scansione = $_SESSION['scansione'] ?: NULL;
+
+// variabili session
+
+// tripla mittente - tipo - numero
+if (isset($_SESSION['imittente'])AND(!empty($_SESSION['imittente'])))
+	$mittente = $_SESSION['imittente'];
+else {
+	if (isset($_SESSION['smittente'])AND(!empty($_SESSION['smittente'])))
+		$mittente = $_SESSION['smittente'];
+	else
+		$mittente = NULL;
+}
+
+if (isset($_SESSION['itipo'])AND(!empty($_SESSION['itipo'])))
+	$tipo = $_SESSION['itipo'];
+else {
+	if (isset($_SESSION['stipo'])AND(!empty($_SESSION['stipo'])))
+		$tipo = $_SESSION['stipo'];
+	else
+		$tipo = NULL;
+}
+
+if (isset($_SESSION['inumero'])AND(!empty($_SESSION['inumero'])))
+	$numero = $_SESSION['inumero'];
+else {
+	if (isset($_SESSION['snumero'])AND(!empty($_SESSION['snumero'])))
+		$numero = $_SESSION['snumero'];
+	else
+		$numero = NULL;
+}
+
+// data
+if (isset($_SESSION['idata'])AND(!empty($_SESSION['idata'])))
+	$data = $_SESSION['idata'];
+else {
+	if (isset($_SESSION['sdata'])AND(!empty($_SESSION['sdata'])))
+		$data = $_SESSION['sdata'];
+	else
+		$data = NULL;
+}
+
+// scansione
+if (isset($_SESSION['scansione'])AND(!empty($_SESSION['scansione'])))
+	$scansione = $_SESSION['scansione'];
+else
+	$scansione = NULL;
 
 $link_id_registro = $_SESSION['link_id_registro'] ?: NULL;
 if ($link_id_registro)
@@ -326,9 +366,9 @@ if (is_null($a) OR empty($a)) {
 			$a .= "'>\n";
 			$a .= noinput_hidden("id_registro",$row['id_registro'])."\n";
 			$a .= noinput_hidden("smittente",$row['contatto'])."\n";
-			$a .= noinput_hidden("tipo",$row['tipo'])."\n";
-			$a .= noinput_hidden("numero",$row['numero'])."\n";
-			$a .= noinput_hidden("gruppo",$row['gruppo'])."\n";
+			$a .= noinput_hidden("stipo",$row['tipo'])."\n";
+			$a .= noinput_hidden("snumero",$row['numero'])."\n";
+			$a .= noinput_hidden("sgruppo",$row['gruppo'])."\n";
 			$a .= "<input type='submit' name='add' value='Aggiungi data'/>\n";
 			$a .= "</form>\n";
 			$a .= "</td>\n";
@@ -350,9 +390,9 @@ if (is_null($a) OR empty($a)) {
 			$a .= "'>\n";
 			$a .= noinput_hidden("id_registro",$row['id_registro'])."\n";
 			$a .= noinput_hidden("smittente",$row['contatto'])."\n";
-			$a .= noinput_hidden("tipo",$row['tipo'])."\n";
-			$a .= noinput_hidden("numero",$row['numero'])."\n";
-			$a .= noinput_hidden("gruppo",$row['gruppo'])."\n";
+			$a .= noinput_hidden("stipo",$row['tipo'])."\n";
+			$a .= noinput_hidden("snumero",$row['numero'])."\n";
+			$a .= noinput_hidden("sgruppo",$row['gruppo'])."\n";
 			$a .= "<input type='submit' name='add' value='Aggiungi scansione'/>\n";
 			$a .= "</form>\n";
 			$a .= "</td>\n";
