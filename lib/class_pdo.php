@@ -174,7 +174,7 @@ class myquery extends DB {
 	public function get_cognome($db,$rete) {
 		
 		try {
-			return $query = $db->query("SELECT get_cognome('?');")
+			return $query = $db->query("SELECT get_cognome(?);")
 				->bind(1,$rete)
 				->single();
 		} catch (PDOException $e) { 
@@ -315,11 +315,35 @@ class myquery extends DB {
 		}
 	}
 	
-	
 	public function transiti_nopagination($db) {
 		
 		try {
 			return $query = $db->query("SELECT * FROM vserv_transiti")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function transito_da_id($db,$id_operazioni) {
+		
+		try {
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni=?")
+				->bind(1,$id_operazioni)
+				->single();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function aggiorna_oda($db,$id_operazioni,$oda,$scansione) {
+		
+		try {
+			logging2("CALL aggiornamento_oda('$id_operazioni','$oda','$scansione');",splog);
+			return $query = $db->query("CALL upd_oda(?,?,?);")
+				->bind(1,$id_operazioni)
+				->bind(2,$oda)
+				->bind(3,$scansione)
+				->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
@@ -371,7 +395,9 @@ class myquery extends DB {
 		
 		try {
 			
-			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni = ? ")->bind(1,$id_operazioni)->resultset();
+			return $query = $db->query("SELECT * FROM vserv_transiti WHERE id_operazioni = ? ")
+				->bind(1,$id_operazioni)
+				->resultset();
 			
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
@@ -473,9 +499,15 @@ class myquery extends DB {
 		
 		try {
 			
-			$sql = "CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');";
-			logging2($sql,splog);
-			return $query = $db->query($sql)->single();
+			logging2("CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');",splog);
+			return $query = $db->query("CALL aggiornamento_magazzino_quantita(?,?,?,?,?,?)")
+				->bind(1,$utente)
+				->bind(2,$id_merce)
+				->bind(3,$posizione)
+				->bind(4,$nuova_posizione)
+				->bind(5,$quantita)
+				->bind(6,$data)
+				->single();
 					
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
@@ -486,9 +518,15 @@ class myquery extends DB {
 	
 		try {
 			
-			$sql = "CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');";
-			logging2($sql,splog);
-			return $query = $db->query($sql)->single();
+			logging2("CALL aggiornamento_magazzino_quantita('$utente','$id_merce','$posizione','$quantita','$nuova_quantita','$data');",splog);
+			return $query = $db->query("CALL aggiornamento_magazzino_quantita(?,?,?,?,?,?)")
+				->bind(1,$utente)
+				->bind(2,$id_merce)
+				->bind(3,$posizione)
+				->bind(4,$quantita)
+				->bind(5,$nuova_quantita)
+				->bind(6,$data)
+				->single();
 					
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
@@ -590,9 +628,20 @@ class myquery extends DB {
 	public function scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note) {
 		
 		try {
-			$sql = "CALL SCARICO('$num_mds','$utente','$richiedente','$id_merce','$quantita','$posizione','$destinazione','$data_doc_scarico','$data_scarico','$note',@myvar);";
-			logging2($sql,splog);
-			return $query = $db->query($sql)->single();
+			logging2("CALL SCARICO('$num_mds','$utente','$richiedente','$id_merce','$quantita','$posizione','$destinazione','$data_doc_scarico','$data_scarico','$note',@myvar);",splog);
+			return $query = $db->query("CALL SCARICO(?,?,?,?,?,?,?,?,?,?,@myvar);")
+				->bind(1,$num_mds)
+				->bind(2,$utente)
+				->bind(3,$richiedente)
+				->bind(4,$id_merce)
+				->bind(5,$quantita)
+				->bind(6,$posizione)
+				->bind(7,$destinazione)
+				->bind(8,$data_doc_scarico)
+				->bind(9,$data_scarico)
+				->bind(10,$note)
+				->single();
+				
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}
@@ -673,7 +722,6 @@ class myquery extends DB {
 	public function aggiornamento_registro($db,$id_registro,$mittente,$tipo,$numero,$gruppo,$data,$scansione) {
 		
 		try {
-			//$id_registro = ($id_registro == '' ? 'NULL' : $id_registro);
 			$sql = "CALL aggiornamento_registro('$id_registro','$mittente','$tipo','$numero','$gruppo','$data','$scansione',@myvar);";
 			logging2($sql,splog);
 			return $db->query("CALL aggiornamento_registro(?,?,?,?,?,?,?,@myvar)")
@@ -685,7 +733,6 @@ class myquery extends DB {
 				->bind(6,$data)
 				->bind(7,$scansione)
 				->single();
-			//return $query = $db->query($sql)->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());
 		}

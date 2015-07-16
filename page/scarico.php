@@ -121,7 +121,6 @@ $data_scarico = date("Y-m-d");
 $utente = $_SERVER["PHP_AUTH_USER"];
 
 // 134. richiedente
-//$richiedente = norm($_SESSION['irichiedente']) ?: $_SESSION['srichiedente'] ?: $_SESSION['richiedente'] ?: NULL;
 if (isset($_SESSION['irichiedente'])AND(!empty($_SESSION['irichiedente'])))
 	$richiedente = norm($_SESSION['irichiedente']);
 else {
@@ -138,7 +137,6 @@ if ($DEBUG) {
 }
 
 // 135. quantita
-//$quantita = $_SESSION['iquantita'] ?: $_SESSION['squantita'] ?: $_SESSION['quantita'] ?: NULL;
 if (isset($_SESSION['iquantita'])AND(!empty($_SESSION['iquantita'])))
 	$quantita = $_SESSION['iquantita'];
 else {
@@ -155,7 +153,6 @@ if ($DEBUG) {
 }
 
 // 136. destinazione
-//$destinazione = norm($_SESSION['idestinazione']) ?: $_SESSION['sdestinazione'] ?: $_SESSION['destinazione'] ?: NULL;
 if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
 	$destinazione = norm($_SESSION['idestinazione']);
 else {
@@ -172,7 +169,6 @@ if ($DEBUG) {
 }
 
 // 137. data_doc_scarico
-//$data_doc_scarico = $_SESSION['idata_doc_scarico'] ?: $_SESSION['sdata_doc_scarico'] ?: $_SESSION['data_doc_scarico'] ?: NULL;
 if (isset($_SESSION['idata_doc_scarico'])AND(!empty($_SESSION['idata_doc_scarico'])))
 	$data_doc_scarico = $_SESSION['idata_doc_scarico'];
 else {
@@ -189,7 +185,6 @@ if ($DEBUG) {
 }
 
 // 138. note
-//$note = norm($_SESSION['inote']) ?: $_SESSION['snote'] ?: $_SESSION['note'] ?: NULL;
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
 	$note = $_SESSION['inote'];
 else {
@@ -206,28 +201,24 @@ if ($DEBUG) {
 }
 
 // 139. id_merce - tags - posizione - maxquantita
-//$id_merce = $_SESSION['id_merce'] ?: NULL;
 if (isset($_SESSION['id_merce'])AND(!empty($_SESSION['id_merce'])))
 	$id_merce = $_SESSION['id_merce'];
 else {
 	$id_merce = NULL;
 }
 
-//$merce = $_SESSION['merce'] ?: NULL;
 if (isset($_SESSION['merce'])AND(!empty($_SESSION['merce'])))
 	$merce = norm($_SESSION['merce']);
 else {
 	$merce = NULL;
 }
 
-//$posizione = $_SESSION['posizione'] ?: NULL;
 if (isset($_SESSION['posizione'])AND(!empty($_SESSION['posizione'])))
 	$posizione = norm($_SESSION['posizione']);
 else {
 	$posizione = NULL;
 }
 
-//$maxquantita = $_SESSION['maxquantita'] ?: NULL;
 if (isset($_SESSION['maxquantita'])AND(!empty($_SESSION['maxquantita'])))
 	$maxquantita = $_SESSION['maxquantita'];
 else {
@@ -242,7 +233,6 @@ if ($DEBUG) {
 }
 
 // 140. num_mds
-//$num_mds = $_SESSION['num_mds'] ?: myquery::next_mds_doc($db)[0];
 if (isset($_SESSION['num_mds'])AND(!empty($_SESSION['num_mds'])))
 	$num_mds = $_SESSION['num_mds'];
 else
@@ -381,6 +371,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				// 222411. create
 				ob_start();
+				$cognome = myquery::get_cognome($db,$utente)[0];
 				include 'lib/template_mds1.php';
 				$corpo_html = ob_get_clean();
 				$_SESSION['mds'] = "<?php\n\$html = \"".addslashes($corpo_html)."\n";
@@ -424,7 +415,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$corpo_html = ob_get_clean();
 				$_SESSION['mds'] .= addslashes($corpo_html)."\";\n";
 				$_SESSION['mds'] .= "//==============================================================\n";
-				$_SESSION['mds'] .= "include(\"".lib_mpdf57."\");\n";
+				$_SESSION['mds'] .= "include('../../".lib_mpdf57."');\n";
 				$_SESSION['mds'] .= "\$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13);\n";
 				$_SESSION['mds'] .= "\$stylesheet = file_get_contents('../../css/mds.css');\n";
 				$_SESSION['mds'] .= "\$mpdf->WriteHTML(\$stylesheet,1);\n";
@@ -609,7 +600,8 @@ if (is_null($a) OR empty($a)) {
 		
 		$a .= "<td>\n";
 		$a .= noinput_hidden("id_merce",$elemento['id_merce'])."\n";
-		$a .= input_hidden("merce",$elemento['merce']);
+		$a .= noinput_hidden("merce",$elemento['tags'])."\n";
+		$a .= $elemento['merce'];
 		$a .= "<a href=\"?page=transiti_search&id_merce=".$elemento['id_merce']."\">[dettagli]</a>\n";
 		$a .= "</td>\n";
 		$a .= "<td>".input_hidden("posizione",$elemento['posizione'])."</td>\n";

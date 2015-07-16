@@ -1,0 +1,793 @@
+<h1>Eseguito il 16/07/2015 15.45.14</h1>
+<h3> --> Carico la base </h3>
+<P>.Note (Code 1051): Unknown table 'magazzino.ASSET'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.MAGAZZINO'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.MERCE'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.OPERAZIONI'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.ORDINI'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.REGISTRO'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.proprieta'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.UTENTI'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.trace'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.session_handler'.</P>
+<h3> --> Carico le funzioni </h3>
+<P>.Note (Code 1305): FUNCTION magazzino.strip_htmltags does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.split_string does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.quantita_per_magazzino does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.next_system_doc does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.doc_exists does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.next_reintegro_doc does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.next_mds_doc does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.get_provenienza does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.get_gruppo_da_documento does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.get_next_gruppo does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.account_exists does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.get_permission does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.get_cognome does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.sh_record_exists does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.mezzorafa does not exist.</P>
+<P>.Note (Code 1305): FUNCTION magazzino.linkeggia does not exist.</P>
+<h3> --> Carico le procedure </h3>
+<P>.Note (Code 1305): PROCEDURE magazzino.tokenizza_tags does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.fix_proprieta_tags does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.sh_cleanup_retexpage does not exist.</P>
+<h3> --> Carico le procedure di input </h3>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_proprieta does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_registro does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_merce does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_operazioni does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_ordini does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_magazzino does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_utenti does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_permission does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_trace does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.input_trace_noadmin does not exist.</P>
+<h3> --> Carico le procedure di aggiornamento dati </h3>
+<P>.Note (Code 1305): PROCEDURE magazzino.upd_giacenza_magazzino does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.upd_posizione_magazzino does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.aggiornamento_magazzino_quantita does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.aggiornamento_magazzino_posizione does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.aggiornamento_magazzino_merce does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.aggiornamento_magazzino does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.aggiornamento_registro does not exist.</P>
+<h3> --> Carico le APIs pubbliche </h3>
+<P>.Note (Code 1305): PROCEDURE magazzino.CARICO does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.SCARICO does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.revert does not exist.</P>
+<h3> --> Carico le viste sui dati </h3>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_documenti'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_ordini'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.TRANSITI'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_magazzino'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_magazzino_parzxtot'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_magazzino_detail_simple'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_magazzino_detail'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.contromagazzino_subsel1'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.contromagazzino_subsel2'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.contromagazzino_jsubsel'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.contromagazzino'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.report_transiti_mensile'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_trace'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vista_sh'.</P>
+<h3> --> Carico Session Handler </h3>
+<P>.Note (Code 1305): PROCEDURE magazzino.sh_write does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.sh_read does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.sh_destroy does not exist.</P>
+<P>.Note (Code 1305): PROCEDURE magazzino.sh_garbage does not exist.</P>
+<h3> --> Carico le viste per il service </h3>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_etichette'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_contatti'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_tipodoc'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_numdoc'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_posizioni'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_destinazioni'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_numoda'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_transiti'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_report_transiti_mensile'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_transiti_uscita'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_magazzino_simple'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_magazzino'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_magazzino_contro'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_magazzino_detail'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_magazzino_detail_simple'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_registro'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_merce'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_utenti'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_tags2'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_tags3'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_documento_con_id'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.vserv_dati_per_aggiornamento_registro'.</P>
+<h3> --> Strumenti di debug </h3>
+<P>.Note (Code 1051): Unknown table 'magazzino.seldist_op'.</P>
+<P>.Note (Code 1051): Unknown table 'magazzino.selfull_op'.</P>
+<h3> --> Carico i dati </h3>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 87 1 P06 SALA1-ISOLA_STORAGE 102 2014-06-17 2014-06-17 Progetto EMC2 destinazione vblock isola storage.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 14 6 B1L03 SALA1-ISOLA_STORAGE 103 2014-06-17 2014-06-17 Richiesto da Facility referente Lucati progetto EMC2 destinazione vblock isola storage.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 72 3 P17 SALA1-ISOLA7 104 2014-02-11 2014-02-11 progetto full mvno isola7, referente Farina per Postemobile Mobile (tec).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 73 1 P17 SALA1-ISOLA7 105 2014-02-11 2014-02-11 progetto full mvno isola7, referente Farina per Postemobile Mobile (tec).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 75 2 P17 SALA1-ISOLA7 106 2014-02-13 2014-02-13 progetto full mvno isola7, referente Farina per Postemobile Mobile (tec).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 90 1 P08 SALA1-ISOLA_STORAGE 107 2014-06-24 2014-06-24 attivita per conto di EMC2, spostato in sala il giorno stesso.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 91 1 B1L13 SALA1-ISOLA_STORAGE 108 2014-06-26 2014-06-26 cablaggio cavi alimentazione armadio rack vmax postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Prossimita 61 220 UFFICIO3 UFFICIO3 109 2014-06-27 2014-06-27 Scarico rimanenze perche assegnate alla struttura Prossimita, custodite in armadio ufficio3.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Prossimita 86 200 UFFICIO3 UFFICIO3 110 2014-06-27 2014-06-27 Scarico rimanenze perche assegnate alla struttura Prossimita, custodite in armadio ufficio3.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 89 6 P16 SALA2 111 2014-06-20 2014-06-27 Implementazione infrstruttura Sun per Fase2, destinazioni ISOLE 10 13 16.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 54 6 P02 SALA1-ISOLA5 112 2014-06-30 2014-06-30 email di Farina, progetto FULL MVNO. consegnato da Accessi a Lorusso.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 80 A1L08 SALA2 113 2014-06-30 2014-06-30 allestimento switch fase2, referente Florio.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 30 A2L08 SALA2 114 2014-06-30 2014-06-30 allestimento switch fase2, referente Florio.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 54 2 P01 SALA1 115 2014-07-10 2014-07-10 progetto FULL MVNO per conto di Farina Andrea.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 92 1 P17 SALA2 116 2014-07-18 2014-07-18 allestimento centera sala2 referente lucati gennarelli.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 54 1 P17 SALA2 117 2014-07-18 2014-07-18 allestimento centera sala2 referente lucati gennarelli.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 2 2 A2L05 A2L05 118 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 2 695 P16 P16 119 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 2 695 B1L06 B1L06 120 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 49 50 A1L11 A1L11 121 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 88 15 P16 P16 122 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 88 15 B1L01 B1L01 123 2014-07-24 2014-07-24 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Polo Immobiliare 2 32 A2L05 SALA2 124 2014-08-11 2014-08-11 Futura site coss Sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Polo Immobiliare 48 4 A2L10 SALA2 125 2014-08-11 2014-08-11 Futura site coss Sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Polo Immobiliare 47 4 A2L09 SALA2 126 2014-08-11 2014-08-11 Futura site coss Sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile TLC 46 100 A1L07 SALA2 127 2014-08-07 2014-08-07 progetto non pervenuto.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 46 100 A1L07 A1L07 128 2014-09-01 2014-09-01 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 46 71 A2L08 A2L08 129 2014-09-01 2014-09-01 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile TLC 46 60 A2L07 TLC 130 2014-09-01 2014-09-01 Attivita site DC2 ditta OSAT, referente Napoli.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 200 A1L06 SALA2+TLC 131 2014-07-16 2014-07-16 referente Napoli, site modulo 2 dcto cablaggio sala2 e tlc.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 80 A1L07 SALA2+TLC 132 2014-07-16 2014-07-16 referente Napoli, site modulo 2 dcto cablaggio sala2 e tlc.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 32 A2L08 SALA2+TLC 133 2014-07-16 2014-07-16 referente Napoli, site modulo 2 dcto cablaggio sala2 e tlc.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema POSTECOM 5 4 B1L04 LOCALE_SECURITY 134 2014-09-24 2014-09-24 PROGETTO VIDEOSORVEGLIANZA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 94 1 P10 P10 135 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 74 1 P17 P17 136 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 84 2 P05 P05 137 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 59 56 P01 P01 138 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 55 4560 P01 P01 139 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 56 4560 P01 P01 140 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 83 1 B2L04 B2L04 141 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 38 2 P10 P10 142 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile Tec 39 10 P10 SALA2 143 2014-06-01 2014-06-30 cablaggio storage sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 39 8 P10 P10 144 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 63 7 P16 P16 145 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 14 21 B1L03 B1L03 146 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 200 A2L06 SALA2+TLC 147 2014-09-26 2014-09-29 cablaggio storage ln san sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 46 8 A2L08 SALA2+TLC 148 2014-09-26 2014-09-29 cablaggio storage lan san sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Facility 6 4 A2L04 SALA2+TLC 149 2014-09-26 2014-09-29 cablaggio storage lan san sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Postemobile TLC 13 2 P10 SALA1-ISOLA5 150 2014-09-29 2014-03-10 progetto telepresence isola5 sala1.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Vilardi Aggiornamento 68 6 P06 P06 151 2014-09-26 2014-09-26 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Sistema 68 4 P30 SALA2 152 2014-09-26 2014-09-26 scarico 4 dei 6 switch wsc4948e progetto mvno.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Sistema 85 2 P05 SALA1 153 2014-09-26 2014-09-26 Rimozione dal magazzino causa assenza, apparecchiatura montata in precedenti site.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO Sistema Sistema 93 2 P06 SALA1 154 2014-09-26 2014-09-26 Rimozione dal magazzino causa assenza, apparecchiatura montata in precedenti site.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 3 12 P01 SALA2+TLC 155 2014-09-30 2014-09-30 cablaggio storage lan san sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 4 12 P01 SALA2+TLC 156 2014-09-30 2014-09-30 cablaggio storage lan san sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 79 P02 SALA1-SALA2 157 2014-10-17 2014-10-17 ref. Lucati, safe program dcx upgrade postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 47 16 A2L09 SALA1-SALA2 158 2014-10-17 2014-10-17 ref. Lucati, safe program dcx upgrade postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 2 10 A2L05 SALA1-SALA2 159 2014-10-17 2014-10-17 ref. Lucati, safe program dcx upgrade postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 46 198 A1L08 SALA1-SALA2 160 2014-10-17 2014-10-17 ref. Lucati, safe program dcx upgrade postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 19 24 A2L13 SALA1-SALA2 161 2014-10-17 2014-10-17 ref. Lucati, safe program dcx upgrade postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 54 88 B1L09 B1L09 162 2014-10-21 2014-10-21 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 107 2 P29 SALA2-ISOLA13 163 2014-10-23 2014-10-23 progetto safe program.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 110 1 P09 SALA2-ISOLA13 164 2014-10-30 2014-10-30 scarico per montaggio in sala2 progetto 104435 monitoraggio opensource imballi da ritirare dal magazzino a cura del fornitore.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 111 1 P16 SALA2-ISOLA13 165 2014-10-30 2014-10-30 scarico per montaggio in sala2 progetto 104435 monitoraggio opensource imballi da ritirare dal magazzino a cura del fornitore.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 76 8 A2L11 SALA2 166 2014-10-28 2014-10-28 progetto coss sala2 cablaggio (item73).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 78 41 B2L05 B2L05 167 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 79 40 B2L05 B2L05 168 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 80 40 B2L05 B2L05 169 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 81 40 B2L05 B2L05 170 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 82 10 B2L04 B2L04 171 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 78 41 C2L05 C2L05 172 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 79 40 C2L05 C2L05 173 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 82 10 C2L04 C2L04 174 2014-10-30 2014-10-30 Scarico invocato dal sistema per aggiornamento giacenza magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Geico Lender 82 39 C2L04 SALA2-ISOLA13 175 2014-10-29 2014-10-29 richiesti da Gheriani, compartimentazione corridoi isola13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Geico Lender 81 11 C2L05 SALA2-ISOLA13 176 2014-10-30 2014-10-30 richiesti da La Tona, compartimentazione corridoi isola13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Geico Lender 80 11 C2L05 SALA2-ISOLA13 177 2014-10-30 2014-10-30 richiesti da La Tona, compartimentazione corridoi isola13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 69 P02 SALA2-ISOLA13 178 2014-10-29 2014-10-29 GECT per CRM, opensource.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 22 A2L05 SALA2-ISOLA13 179 2014-10-29 2014-10-29 GECT per CRM, opensource.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 47 22 A2L09 SALA2-ISOLA13 183 2014-10-30 2014-10-30 monitoraggio opensource sala2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 6 8 P22 SALA2-ISOLA13 184 2014-11-03 2014-11-03 scarico per movimentazione cerce.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 22 P22 SALA2-ISOLA13 185 2014-11-03 2014-11-03 scarico per movimentazione merce.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 113 1 P06 SALA2-ISOLA13 186 2014-11-05 2014-11-05.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 114 1 P06 SALA2 187 2014-11-11 2014-11-11.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 76 31 A2L11 A2L11 188 2014-11-17 2014-11-17 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 46 102 A1L08 A1L08 189 2014-11-17 2014-11-17 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 46 51 A2L08 A2L08 190 2014-11-17 2014-11-17 Scarico invocato dal sistema per aggiornamento posizione magazzino.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Gestione Accessi 94 1 P03 SALA1 191 2014-11-21 2014-11-24 Materiale avanzato dalla installazione del VBLOCK AVAMAR rispedito (per conto di EMC2 ) a VCE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 59 30 B1L03 SALA2 ISOLA10 192 2014-11-26 2014-11-27 PROG ANTIRICICLAGGIO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 49 8 A2L11 SALA2 ISOLA10 193 2014-11-26 2014-11-27 PROG ANTIRICICLAGGIO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 8 P02 SALA1 ISOLA1 194 2014-11-26 2014-11-27 PROG CERT.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 120 1 P15 SALA2-ISOLA10 195 2014-12-04 2014-12-04 PROGETTO ANTIRICICLAGGIO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 121 1 A2L05 SALA2-ISOLA10 196 2014-12-04 2014-12-04 PROGETTO ANTIRICICLAGGIO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 49 26 A2L11 SALA2 197 2014-12-05 2014-12-05 MOVING ARTE ANTICA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 119 1 C2L13 SALA2-ISOLA10-F2P1 198 2014-12-15 2014-12-15 progetto antiriciclaggio antiterrorismo, soluzione a tendere.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 98 1 P05 SALA1 ISOLA1 199 2014-12-12 2014-12-18 progetto nas rete cert.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Aggiornamento 95 1 P25 P25 200 2014-12-29 2014-12-29 Scarico di sistema per aggiornamento posizioni magazzino (da P25 a P33).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 182 P02 SALA1 201 2015-01-09 2015-01-09 VMWARE 4,5,6,7,8 VMAX DTT E TP MEDIAMANAGER.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 2 42 A2L05 SALA1 202 2015-01-09 2015-01-09 VMWARE 4,5,6,7,8 VMAX DTT E TP MEDIAMANAGER.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 47 8 A2L09 SALA1 203 2015-01-09 2015-01-09 VMWARE 4,5,6,7,8 VMAX DTT E TP MEDIAMANAGER.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 48 18 A1L09 SALA1 204 2015-01-09 2015-01-09 VMWARE 4,5,6,7,8 VMAX DTT E TP MEDIAMANAGER.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 38 P02 SALA1 205 2015-01-12 2015-01-12 VMWARE 9 SERVER MASTER BACKUP. COMPLETAMENTO SITE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 2 8 A2L05 SALA1 206 2015-01-12 2015-01-12 VMWARE 9 SERVER MASTER BACKUP. COMPLETAMENTO SITE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 48 4 A1L09 SALA1 207 2015-01-12 2015-01-12 VMWARE 9 SERVER MASTER BACKUP. COMPLETAMENTO SITE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 74 1 P13 P13 208 2015-01-15 2015-01-15 Scarico di sistema per aggiornamento posizioni magazzino (da P13 a Z1L04).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 140 1 M08 SALA2 209 2015-01-27 2015-01-28 progetto superdome2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI POSTEL 125 1 P18 RESTITUZIONE 210 2015-01-29 2015-01-30 RESTITUZIONE MERCE POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 97 1 P34 SALA1 211 2015-01-29 2015-01-30 INSTALLAZIONE CENTERA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 139 1 P21 SALA1-ISOLA7 212 2015-01-29 2015-01-30.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 59 4 B1L03 SALA1 213 2015-02-02 2015-02-02 APPARATO CENTERA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 39 P02 SALA2 216 2015-02-04 2015-02-04 ref. Florio, progetto moving server SAP.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 141 1 P22 SALA2 217 2015-02-03 2015-02-04 PROGETTO SITE VMWARE FASE 5.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 143 1 M08 SALA2 218 2015-02-03 2015-02-04 PROGETTO SITE VMWARE FASE 8.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 6 16 P05 SALA2 219 2015-02-03 2015-02-04 PROGETTO SITE VMWARE FASE 5.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 44 P05 SALA2 220 2015-02-03 2015-02-04 PROGETTO SITE VMWARE FASE 5.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 11 P16 SALA2 221 2015-02-03 2015-02-04 PROGETTO SITE VMWARE FASE 8.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO LORUSSO6 Facility 116 2 P22 SALA2-ISOLA13 222 2015-01-13 2015-02-05 Data collaudo.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro INFORDATA DDT 2015-DDTCL-0000339 478 2015-02-02 DDT-INFORDATA-2015-DDTCL-0000339.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 146 4 B2L08 SALA2-ISOLA13 223 2014-12-31 2015-02-06.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 108 2 P12 SALA2 224 2014-10-27 2015-02-06 SITE SALA 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 109 2 M08-M09 SALA2 225 2014-10-27 2015-02-06 SITE SALA 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 84 2 P32 P32 226 2015-02-10 2015-02-10 Scarico di sistema per aggiornamento posizioni magazzino (da P32 a P31).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Italtel S.p.A. DDT NVLS 60072390 488 2013-10-23 DDT-ItaltelS.p.A.-NVLS60072390.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Italtel S.p.A. DDT NVLS 60073110 490 2013-12-23 DDT-ItaltelS.p.A.-NVLS60073110.jpg.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Italtel S.p.A. DDT NVLS 60073100 491 2013-12-20 DDT-ItaltelS.p.A.-NVLS60073100.jpg.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Italtel S.p.A. DDT NVLS 60074311 492 2014-05-19 DDT-ItaltelS.p.A.-NVLS60074311.jpg.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 148 2 A2L04 SALA1 227 2013-12-20 2015-02-11 INSTALLATO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 149 2 UFFICIO_RESPONSABILE SALA1 228 2013-12-23 2015-02-11 INSTALLATA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 150 4 P13 SALA2-ISOLA13 229 2013-12-23 2015-02-11 INSTALLATA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 151 2 M7 SALA2-ISOLA13 230 2013-12-23 2015-02-11 INSTALLATA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 111 1 P16 SALA2-ISOLA_STORAGE 231 2014-10-27 2015-02-11 site sala2 isola storage.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 112 2 P07 SALA2-ISOLA_STORAGE 232 2014-10-27 2015-02-11 site sala2 isola storage.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 PostemobileTLC 155 2 P09 SALA1 232 2013-12-23 2015-02-12 SALDO NETWORK 128617.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 PostemobileTLC 156 24 P09 SALA1 233 2013-12-23 2015-02-12 SALDO NETWORK 128617.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 PostemobileTLC 157 2 P09 SALA1 234 2013-12-23 2015-02-12 SALDO NETWORK 128617.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 10 P01 SALA2-ISOLA16 235 2015-02-16 2015-02-16 PROGETTO VPLEX RECOVER POINT.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 2 56 A2L05 SALA2-ISOLA16 236 2015-02-16 2015-02-16 PROGETTO VPLEX RECOVER POINT.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 46 56 A2L07 SALA2-ISOLA16 237 2015-02-16 2015-02-16 PROGETTO VPLEX RECOVER POINT.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 161 17 P04 SALA2-ISOLA13 238 2015-02-12 2015-02-17.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 39 8 P31 P31 239 2015-02-17 2015-02-17 Scarico di sistema per aggiornamento posizioni magazzino (da P31 a P30).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 46 8 A2L07 CARRIER A 241 2015-02-24 2015-02-24 GI POSTEMOBILE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 6 2 A2L04 CARRIER A 242 2015-02-24 2015-02-24 GI POSTEMOBILE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 162 2 P15 SALA2-ISOLA16 243 2015-02-25 2015-02-25 PROGETTI BANCOPOSTA GESTIONE INCASSI MIT E CRM.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 51 100 A1L02 A1L02 244 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A1L02 a A2L04).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 48 178 A1L09 A1L09 245 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A1L09 a A2L14).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 48 178 A2L14 A2L14 246 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 178 a 200).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 6 159 A2L04 A2L04 247 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L04 a A2L08).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 6 159 A2L08 A2L08 248 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 159 a 214).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 76 31 A1L11 A1L11 249 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A1L11 a B1L03).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 49 10 A1L11 A1L11 250 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A1L11 a B1L02).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 49 10 B1L02 B1L02 251 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 10 a 16).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 46 370 A2L06 A2L06 252 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L06 a A2L09).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 46 229 A2L07 A2L07 253 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L07 a A2L09).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 46 599 A2L09 A2L09 254 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 599 a 470).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 53 64 A2L02 A2L02 255 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L02 a A2L05).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 50 100 A2L01 A2L01 256 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L01 a A2L03).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 50 100 A2L03 A2L03 257 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 100 a 80).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 52 252 A2L03 A2L03 258 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L03 a A2L07).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 52 252 A2L07 A2L07 259 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento giacenze magazzino (da 252 a 253).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 6 214 A2L08 A2L08 260 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L08 a A2L09).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 46 470 A2L09 A2L09 261 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L09 a A2L08).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Accessi 6 32 P09 SALA 262 2015-02-27 2015-02-27 mancato scarico ad installazione apparati.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 148 18 A2L04 A2L04 263 2015-02-27 2015-02-27 Scarico di sistema per aggiornamento posizioni magazzino (da A2L04 a A2L09).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Accessi 148 18 A2L09 SALA 264 2015-02-27 2015-02-27 scarico per errato caricamento in lunghezza, integrate in conteggio fibre sc sc da 3m.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 29 P01 SALA2 265 2015-02-27 2015-02-27 S.P. STRONG AUTHENTICATION PER AMMINISTRATORI DI POSTE ITALIANE SU DC.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 59 8 B1L03 SALA1 266 2015-03-02 2015-03-02 Site UPGRADE OTP POSTEMOBILE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 4 A2L05 SALA1 267 2015-03-02 2015-03-02 Site UPGRADE OTP POSTEMOBILE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro EMC Computer Systems Italia S.p.a. DDT 197 569 2015-02-26 DDT-EMCComputerSystemsItaliaS.p.a.-197.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Accessi 121 5 A2L05 SALA 268 2015-03-02 2015-03-02 scarico per mancata disponibilita, errore in fase di caricamento.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 2 100 B1L01 B1L01 269 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L01 a A2L11).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 2 400 B1L06 B1L06 270 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L06 a A2L11).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 2 478 A2L05 A2L05 271 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L05 a A2L12).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 2 500 A2L11 A2L11 272 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 500 a 600).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 2 478 A2L12 A2L12 273 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 478 a 324).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 47 23 A2L09 A2L09 274 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L09 a A2L13).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 120 A2L13 A2L13 275 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L13 a B1L10).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 100 A2L15 A2L15 276 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L15 a B1L08).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 20 A2L14 A2L14 277 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L14 a B1L07).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 20 B1L07 B1L07 278 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 20 a 40).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 100 B1L08 B1L08 279 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 100 a 90).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 19 120 B1L10 B1L10 280 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 120 a 100).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 48 72 A2L10 A2L10 281 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L10 a A2L14).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 49 16 A2L11 A2L11 282 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da A2L11 a B1L02).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 49 32 B1L02 B1L02 283 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 32 a 16).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 48 272 A2L14 A2L14 284 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 272 a 203).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 63 23 B1L13 B1L13 285 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 23 a 18).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 88 20 B1L01 B1L01 286 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L01 a A2L01).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 55 4560 B1L02 B1L02 287 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L02 a C2L02).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 56 4560 B1L02 B1L02 288 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L02 a C2L02).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 59 14 B1L03 B1L03 289 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L03 a C1L02).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 59 14 C1L02 C1L02 290 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento giacenze magazzino (da 14 a 16).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 14 20 B1L03 B1L03 291 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L03 a C1L03).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 5 50 B1L04 B1L04 292 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da B1L04 a C1L04).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 3 34 P01 P01 293 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da P01 a C1L05).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Aggiornamento 4 35 P01 P01 294 2015-03-02 2015-03-02 Scarico di sistema per aggiornamento posizioni magazzino (da P01 a C1L05).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 46 8 A2L08 SALA2 ISOLA10 295 2015-03-04 2015-03-04 Progetto movingp595_.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 102 2 M07 SALA1 296 2015-03-12 2015-03-13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO LORUSSO6 Architetture centrale 88 4 A2L01 Roma 297 2015-03-16 2015-03-16 Richiesta di D Ettorre.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO LORUSSO6 Architetture centrale 46 32 A2L08 Roma 298 2015-03-16 2015-03-16 Richiesta di D Ettorre.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO LORUSSO6 Architetture centrale 6 3 A2L09 Roma 299 2015-03-16 2015-03-16 Richiesta di D Ettorre.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 166 2 P05 SALA1 300 2015-03-16 2015-03-18 INTEGRAZIONE FORNITURA 1040854.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Prossimità 168 2 C1L12 RESTITUZIONE 301 2015-03-19 2015-03-19 RICONSEGNATE A GHION E DE MARTINIS.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 167 17 M11 SALA1 302 2015-03-20 2015-03-20.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 100 1 P34 SALA1 303 2015-03-20 2015-03-20 materiale montato.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Hewlett Packard International Sarl DDT GW0F238880/034/01C 646 2015-03-24 DDT-HewlettPackardInternationalSarl-GW0F23888003401C.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 164 2 P23-P24 SALA2-ISOLA16 304 2015-02-26 2015-03-31.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 170 1 P26 P26 305 2015-04-01 2015-04-01 Scarico di sistema per aggiornamento posizioni magazzino (da P26 a P23).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 12 1 C1L13 C1L13 306 2015-04-01 2015-04-01 Scarico di sistema per aggiornamento posizioni magazzino (da C1L13 a D1 L20).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 127 46 B1L05 B1L05 307 2015-04-01 2015-04-01 Scarico di sistema per aggiornamento posizioni magazzino (da B1L05 a C1L11).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 172 5 P24 SALA2 308 2015-04-08 2015-04-08 INSTALLAZIONE STRONG AUTHENTICATION AMMINISTRATORI POSTE ITALIANE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 169 1 C2 L12 SALA1 309 2015-04-09 2015-04-09 SOSTITUZIONE CPU NAS CERT.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 4 P01 SALA1 310 2015-04-09 2015-04-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTec 177 2 M09 CARRIER A 311 2015-03-31 2015-04-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTec 176 2 M09 CARRIER A 312 2015-03-31 2015-04-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTec 178 2 M09 CARRIER A 313 2015-03-31 2015-04-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTec 180 1 CARRIER A CARRIER A 314 2015-04-09 2015-04-13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 182 1 CARRIER A CARRIER A 315 2015-04-09 2015-04-13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 181 1 CARRIER A CARRIER A 316 2015-04-09 2015-04-13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 179 1 CARRIER A CARRIER A 317 2015-04-09 2015-04-13.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Immobiliare 78 39 C2L05 SALA1-SALA2 318 2015-04-14 2015-04-14 COPERTURA RACK SALE 1 E 2 PER OTTIMIZZAZIONE RICIRCOLO ARIA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Immobiliare 79 39 C2L05 SALA1-SALA2 319 2015-04-14 2015-04-14 COPERTURA RACK SALE 1 E 2 PER OTTIMIZZAZIONE RICIRCOLO ARIA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Immobiliare 80 29 C2L05 SALA1-SALA2 320 2015-04-14 2015-04-14 COPERTURA RACK SALE 1 E 2 PER OTTIMIZZAZIONE RICIRCOLO ARIA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Immobiliare 81 29 C2L05 SALA1-SALA2 321 2015-04-14 2015-04-14 COPERTURA RACK SALE 1 E 2 PER OTTIMIZZAZIONE RICIRCOLO ARIA.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTec 142 1 M08 SALA1 322 2015-04-14 2015-04-14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 109 4 M08-M09 RESTITUZIONE 323 2015-03-20 2015-04-14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 165 4 M08 M08 324 2015-04-14 2015-04-14 Scarico di sistema per aggiornamento posizioni magazzino (da M08 a M07).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 140 6 M08 M08 325 2015-04-14 2015-04-14 Scarico di sistema per aggiornamento posizioni magazzino (da M08 a M07).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 140 7 P07 P07 326 2015-04-14 2015-04-14 Scarico di sistema per aggiornamento posizioni magazzino (da P07 a M07).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 46 8 A2L08 SALA2 327 2015-04-16 2015-04-16 MOVING SAP.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 19 2 B1L07 SALA2 328 2015-04-16 2015-04-16 MOVING SAP.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 59 4 C1L02 SALA2 329 2015-04-18 2015-04-20 moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 188 4 P99 P99 330 2015-04-22 2015-04-22 Scarico di sistema per aggiornamento giacenze magazzino (da 4 a 1).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 48 24 A2L14 SALA1-SALA2 332 2015-04-24 2015-04-24 Nuovi media server backup-Vmware 10-moving opens source.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 2 30 A2L12 SALA1-SALA2 332 2015-04-24 2015-04-24 Nuovi media server backup-Vmware 10-moving opens source.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 88 P02 SALA1-SALA2 332 2015-04-24 2015-04-24 Nuovi media server backup-Vmware 10-moving opens source.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 46 10 A2L08 SALA2 333 2015-04-27 2015-04-27 istallazione DCX Fase 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 4 12 C1L05 SALA2 333 2015-04-27 2015-04-27 istallazione DCX Fase 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 3 12 C1L05 SALA2 333 2015-04-27 2015-04-27 istallazione DCX Fase 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Prossimita 192 1 C1L13 SALA1-ISOLA7 334 2015-04-28 2015-04-28 Riferimento mail da Francesco Pannullo del 23/04/2015; mailid: b4e33b8000023380@posteitaliane.it \t.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Prossimita 193 1 C1L13 SALA2 335 2015-04-29 2015-04-29 disco per sostituzione net-app, all attenzione di pistillo s/n: ygjjv0da.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 48 22 A2L14 SALA2 336 2015-05-05 2015-05-05 Progetto moving open source.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 195 8 P38 SALA2 337 2015-05-04 2015-05-06.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro INFORDATA DDT 38 721 2015-04-27 DDT-INFORDATA-38.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 14 8 C1L03 SALA2 338 2015-05-06 2015-05-06 oda 4501195609 e al progetto vmware fase 10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 59 2 C1L02 SALA1 ISOLA1 339 2015-05-08 2015-05-08 upgrade DR Postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 8 A2L12 SALA1 ISOLA1 339 2015-05-08 2015-05-08 upgrade DR Postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 46 6 A2L08 SALA1 ISOLA1 339 2015-05-08 2015-05-08 upgrade DR Postel.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 189 2 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 188 1 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 191 3 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 185 2 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 187 9 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 186 1 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 184 2 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO VILARDID Facility 190 1 P99 SALA2 340 2015-04-18 2015-05-13 correzione dati per transito merce per moving sap.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 175 30 P32 RESTITUZIONE 341 2015-05-18 2015-05-18 restituite a PM.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 174 1 P32 RESTITUZIONE 341 2015-05-18 2015-05-18 restituite a PM.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 DC 198 1 P34 SALA2-ISOLA16 342 2015-05-19 2015-05-19 SOSTITUZIONE PORTA RACK VMAX SALA DUE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 38 2 P20 DC ROZZANO 343 2015-05-22 2015-05-22 TRASFERIMENTO PER ISTALLAZIONE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 49 8 B1L02 SALA1-ISOLA5 344 2015-05-22 2015-05-22 SITE PREPARATION ITEM 44 DR PosteVita.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 54 20 P02 SALA1-ISOLA5 344 2015-05-22 2015-05-22 SITE PREPARATION ITEM 44 DR PosteVita.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro Telecom Italia DDT DCCS 95/15/PM 746 2015-05-26 DDT-TelecomItalia-DCCS9515PM.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 199 2 P28 SALA1 345 2015-05-27 2015-05-28.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 200 2 P28 SALA1 346 2015-05-27 2015-05-28.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 PosteMobile 201 2 P20 SALA2 347 2015-06-04 2015-06-04 materiale per installazione tor progetto crm.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 PostemobileTLC 46 4 A2L08 SALA2-ISOLA10 348 2015-06-04 2015-06-04 TOR PROGETTO CRM GETC SUN 1_2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 14 P02 SALA2-ISOLA13 349 2015-06-05 2015-06-05.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 6 4 A2L09 SALA2_ISOLA11 350 2015-06-05 2015-06-05.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 65 P38 SALA2 ISOLA15 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 204 2 P37 SALA2 ISOLA15 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 202 2 P37 SALA2 ISOLA15 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 203 5 P37 SALA2 ISOLA15 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 205 2 P37 SALA2 ISOLA15 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 132 1 P37 SALA2 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 136 1 P37 SALA2 351 2015-06-03 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 46 P02 SALA2 352 2015-06-09 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 46 40 A2L08 SALA2 352 2015-06-09 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 20 A2L12 TLC 352 2015-06-09 2015-06-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 206 4 SALA2-ISOLA13 SALA2-ISOLA13 353 2015-06-09 2015-06-09 Scarico di sistema per aggiornamento posizioni magazzino (da SALA2-ISOLA13 a P28).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 206 4 P28 SALA2-ISOLA13 354 2015-06-04 2015-06-09 MOVING DA ROZZANO.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 127 18 C1L11 SALA2 343 2015-06-11 2015-06-11 MOVING VMWARE DA ROZZANO - SOSTITUZIONE BRETELLE.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 48 1 A2L15 SALA2-ISOLA13 344 2015-06-11 2015-06-11.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 68 P02 SALA2 346 2015-06-19 2015-06-19 Progetto Garante privacy sala 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 76 31 B1L03 SALA2 346 2015-06-19 2015-06-19 Progetto Garante privacy sala 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 49 1 B1L02 SALA2 346 2015-06-19 2015-06-19 Progetto Garante privacy sala 2.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 12 P02 SALA2 349 2015-06-26 2015-06-26.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 46 28 A2L08 SALA2 355 2015-06-26 2015-06-26 INFRASTRUTTURA SAN ISOLA8 ISOLA14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 4 8 C1L05 SALA2 355 2015-06-26 2015-06-26 INFRASTRUTTURA SAN ISOLA8 ISOLA14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MANZOGI9 Facility 3 8 C1L05 SALA2 355 2015-06-26 2015-06-26 INFRASTRUTTURA SAN ISOLA8 ISOLA14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro EMC Computer Systems Italia S.p.a. Lettera_di_vettura 15-006899 792 2015-06-26 Letteradivettura-EMCComputerSystemsItaliaS.p.a.-15-006899.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 210 1 P38 SALA2 357 2015-06-24 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 145 4 P05 P05 358 2015-06-29 2015-06-29 Scarico di sistema per aggiornamento posizioni magazzino (da P05 a P16).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO DALES177 Aggiornamento 66 240 P06 P06 359 2015-06-29 2015-06-29 Scarico di sistema per aggiornamento posizioni magazzino (da P06 a p19).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO DALES177 Aggiornamento 67 28 P06 P06 360 2015-06-29 2015-06-29 Scarico di sistema per aggiornamento posizioni magazzino (da P06 a p19).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO DALES177 Aggiornamento 126 1 P06 P06 361 2015-06-29 2015-06-29 Scarico di sistema per aggiornamento posizioni magazzino (da P06 a sala1).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 117 1 P08 SALA2-ISOLA16 362 2015-06-29 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 118 7 P08 SALA1 363 2015-06-29 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 110 1 P09 SALA1 364 2015-06-29 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 123 6 P09 SALA1 365 2015-06-29 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 122 1 P09 SALA1 366 2015-06-29 2015-06-29.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 128 1 P36 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 133 1 P27 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 134 1 P38 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 135 1 P26 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 137 1 P36 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 138 1 P38 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 129 1 P23 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 130 1 P25 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 131 2 P36 SALA1 367 2015-06-30 2015-06-30 VMAX POSTEL.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI PostemobileTLC 46 42 A2L08 SALA1 368 2015-07-01 2015-07-01 progetto Poste Vita.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro INFORDATA Lettera_di_vettura 15-6540 819 2015-06-18 Letteradivettura-INFORDATA-15-6540.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro INFORDATA Lettera_di_vettura 15-6540 819 2015-06-18 Letteradivettura-INFORDATA-15-6540.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 28 A2L12 SALA2 369 2015-07-06 2015-07-06 contact center.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 47 4 A2L13 SALA2 369 2015-07-06 2015-07-06 contact center.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 46 10 A2L08 SALA2 369 2015-07-06 2015-07-06 contact center.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 14 P02 SALA2 369 2015-07-06 2015-07-06 contact center.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 217 2 P38 SALA2 370 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 216 1 P38 SALA2 370 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 215 1 P38 SALA2 370 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 54 40 P02 SALA1-SALA2 371 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 48 4 A2L14 SALA1-SALA2 371 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 218 1 P27 SALA2 372 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 219 1 P27 SALA1 372 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 220 1 P27 SALA1 372 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 214 2 P38 SALA2 372 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 221 1 P27 SALA1 373 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 203 2 P38 SALA1 374 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 223 2 P38 SALA2 374 2015-07-08 2015-07-08.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro INFORDATA DDT 51/lt 852 2015-07-02 DDT-INFORDATA-51lt.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Aggiornamento 197 1 P25 P25 375 2015-07-09 2015-07-09 Scarico di sistema per aggiornamento posizioni magazzino (da P25 a P38).</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 197 1 P38 SALA1 376 2015-07-09 2015-07-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 194 1 P24 SALA1 377 2015-07-09 2015-07-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 196 8 P25 SALA1 378 2015-07-09 2015-07-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO MURATO48 Facility 59 2 C1L02 SALA1-SALA2 379 2015-07-09 2015-07-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 48 1 A2L14 SALA2-ISOLA10 380 2015-07-09 2015-07-09.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 224 1 P24 SALA1-ISOLA_STORAGE 381 2015-07-10 2015-07-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 aggiornamento_registro EMC Lettera_di_vettura AS86C 862 2015-07-09 Letteradivettura-EMC-AS86C.pdf.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 207 1 P26 SALA1 382 2015-06-01 2015-07-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 211 2 P26-P36 SALA2 383 2015-07-26 2015-07-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 222 6 D2-L21 SALA2 384 2015-07-08 2015-07-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 225 7 D1 L20 SALA1 385 2015-07-10 2015-07-10.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 4 A2L12 SALA1-ISOLA5 386 2015-07-14 2015-07-14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 46 12 A2L08 SALA1-ISOLA5 386 2015-07-14 2015-07-14.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 54 29 P02 ISOLA13-F1P5 387 2015-07-15 2015-07-15 ITEM 40.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO PISCAZZI Facility 2 6 A2L12 ISOLA13-F1P5 387 2015-07-15 2015-07-15 ITEM 40.</P>
+<P>.risultato riferimenti.</P>
+<P>.0 SCARICO piscazzi Facility 54 20 P02 SALA1-ISOLA5 388 2015-07-16 2015-07-16 ITEM 13 2013.</P>

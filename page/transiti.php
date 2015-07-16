@@ -99,7 +99,19 @@ foreach ($query as $row) {
 	$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
 	$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
-	$riga .= "<td>".$row['doc_ordine']."</td>\n";
+	
+	if (empty($row['doc_ordine'])) {
+		
+		$riga .= "<td>\n";
+		$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=oda");
+		if ($DEBUG) $riga .= "&debug";
+		$riga .= "'>\n";
+		$riga .= noinput_hidden("id_operazioni",$row['id_operazioni']);
+		$riga .= "<input type='submit' name='add' value='Aggiungi ODA'/>\n";
+		$riga .= "</form>\n";
+		$riga .= "</td>\n";
+		
+	} else $riga .= "<td>".$row['doc_ordine']."</td>\n";
 
 	$riga .= "</tr>\n";
 
