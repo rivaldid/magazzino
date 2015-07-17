@@ -738,6 +738,15 @@ class myquery extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function lista_accessi($db) {
+		
+		try {
+			return $db->query("SELECT * FROM vserv_trace;")->resultset();
+		} catch (PDOException $e) { 
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 
