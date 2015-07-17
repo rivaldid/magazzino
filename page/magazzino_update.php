@@ -48,7 +48,7 @@ else
 	$inserimento = NULL;
 
 if (isset($_POST['target'])AND(!empty($_POST['target']))) {
-	
+
 	switch ($_POST['target']) {
 		case "posizione":
 			$nuova_posizione=$inserimento;
@@ -60,7 +60,7 @@ if (isset($_POST['target'])AND(!empty($_POST['target']))) {
 			$nuova_posizione=NULL;
 			$nuova_quantita=NULL;
 	}
-	
+
 } else {
 	$nuova_posizione=NULL;
 	$nuova_quantita=NULL;
@@ -99,7 +99,7 @@ if (isset($_POST['save'])) {
 			myquery::magazzino_agg_posizione($db,$utente,$id_merce,$posizione,$nuova_posizione,$quantita,$data);
 		elseif (isset($nuova_quantita))
 			myquery::magazzino_agg_quantita($db,$utente,$id_merce,$posizione,$quantita,$nuova_quantita,$data);
-	
+
 		$log .= remesg("Aggiornamento posizione magazzino inviato al database","done");
 
 	}
@@ -131,14 +131,14 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=magazzino_update");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
-		
+
 		$a .= noinput_hidden("id_merce",$row['id_merce']);
 		$a .= "<td>".input_hidden("tags",$row['merce'])."</td>\n";
 		$a .= "<td>".input_hidden("posizione",$row['posizione'])."</td>\n";
 		$a .= "<td>".input_hidden("quantita",$row['quantita'])."</td>\n";
 
 		$a .= "<td>\n";
-			
+
 		$a .= "<fieldset class=\"fieldform\">\n";
 		$a .= "<select name='target'>\n";
 		$a .= "<option selected='selected' value=''>Seleziona...</option>\n";
@@ -149,9 +149,9 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<input type='submit' name='save' value='Salva'/>\n";
 		$a .= "</form>\n";
 		$a .= "</fieldset>\n";
-		
+
 		$a .= "</td>\n";
-		
+
 		$a .= "</tr>\n";
 	}
 

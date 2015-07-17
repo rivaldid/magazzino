@@ -335,14 +335,15 @@ class myquery extends DB {
 		}
 	}
 
-	public function aggiorna_oda($db,$id_operazioni,$oda,$scansione) {
+	public function aggiorna_oda($db,$id_operazioni,$oda,$data_oda,$scansione) {
 		
 		try {
-			logging2("CALL aggiornamento_oda('$id_operazioni','$oda','$scansione');",splog);
-			return $query = $db->query("CALL upd_oda(?,?,?);")
+			logging2("CALL aggiornamento_oda('$id_operazioni','$oda','$data_oda','$scansione');",splog);
+			return $query = $db->query("CALL aggiornamento_oda(?,?,?,?);")
 				->bind(1,$id_operazioni)
 				->bind(2,$oda)
-				->bind(3,$scansione)
+				->bind(3,$data_oda)
+				->bind(4,$scansione)
 				->single();
 		} catch (PDOException $e) { 
 			error_handler($e->getMessage());

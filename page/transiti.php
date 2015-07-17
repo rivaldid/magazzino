@@ -89,7 +89,7 @@ foreach ($query as $row) {
 	$riga .= "<tr>\n";
 
 	//print_r($row);
-	
+
 	$riga .= "<td>".safetohtml($row['rete'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['status'])."</td>\n";
@@ -99,9 +99,9 @@ foreach ($query as $row) {
 	$riga .= "<td>".safetohtml($row['tags'])."</td>\n";
 	$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
 	$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
-	
+
 	if (empty($row['doc_ordine'])) {
-		
+
 		$riga .= "<td>\n";
 		$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=oda");
 		if ($DEBUG) $riga .= "&debug";
@@ -110,7 +110,7 @@ foreach ($query as $row) {
 		$riga .= "<input type='submit' name='add' value='Aggiungi ODA'/>\n";
 		$riga .= "</form>\n";
 		$riga .= "</td>\n";
-		
+
 	} else $riga .= "<td>".$row['doc_ordine']."</td>\n";
 
 	$riga .= "</tr>\n";

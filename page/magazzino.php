@@ -18,7 +18,7 @@ if (isset($_POST['pattern'])AND(!empty($_POST['pattern'])))
 	$pattern = trim(epura_space2percent($_POST['pattern']));
 else
 	$pattern = NULL;
-	
+
 if (isset($_POST['target'])AND(!empty($_POST['target'])))
 	$target = trim($_POST['target']);
 else
@@ -26,19 +26,19 @@ else
 
 
 if (isset($_GET["detail"])) {
-	
+
 	$query = myquery::magazzino_detail($db);
-	
+
 } elseif (isset($_GET["contro"])) {
 
 	$query = myquery::magazzino_contro($db);
 
 } elseif (isset($_GET["search"])) {
-	
+
 	$query = myquery::magazzino_search($db,$target,$pattern);
-	
+
 } else {
-	
+
 	$query = myquery::magazzino($db);
 
 }

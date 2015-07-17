@@ -4,7 +4,7 @@
 define("lib_mpdf57","lib/MPDF57/mpdf.php");
 define("registro",Config::read('workspace')."registro/");
 define("registro_mds",Config::read('workspace')."registro_mds/");
-define("splog",$_SERVER['DOCUMENT_ROOT'].Config::read('workspace')."log/sp.log");
+define("splog",$_SERVER['DOCUMENT_ROOT'].Config::read('workspace')."log/database.sql");
 define("ricerche",Config::read('workspace')."ricerche/");
 
 // js

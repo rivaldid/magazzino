@@ -356,7 +356,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// 2221. SCARICO
 		$ritorno = myquery::scarico($db,$num_mds,$utente,$richiedente,$id_merce,$quantita,$posizione,$destinazione,$data_doc_scarico,$data_scarico,$note)[0];
-	
+
 		// 2223. test ritorno
 		if ($DEBUG) $log .= remesg("Ritorno sp: ".$ritorno,"debug");
 
@@ -446,13 +446,13 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$log .= remesg("Scarico non riuscito, ripetere l'operazione","err");
 
 		}
-		
+
 		// scarico riuscito o no, reset sessione server per ripetere attivita
 		session_riavvia();
 
 		// 224. test not valid
 	} else {
-		
+
 		$lista_destinazioni = myquery::destinazioni($db);
 
 		// 2241. form input scarico
@@ -592,12 +592,12 @@ if (is_null($a) OR empty($a)) {
 	$a .= "<tbody>\n";
 
 	foreach ($lista_merce AS $elemento) {
-		
+
 		$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=scarico");
 		if ($DEBUG) $a .= "&debug";
 		$a .= "'>\n";
 		$a .= "<tr>\n";
-		
+
 		$a .= "<td>\n";
 		$a .= noinput_hidden("id_merce",$elemento['id_merce'])."\n";
 		$a .= noinput_hidden("merce",$elemento['tags'])."\n";
@@ -607,7 +607,7 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<td>".input_hidden("posizione",$elemento['posizione'])."</td>\n";
 		$a .= "<td>".input_hidden("maxquantita",$elemento['quantita'])."</td>\n";
 		$a .= "<td>".input_hidden("note",$elemento['note'])."</td>\n";
-		
+
 		$a .= "<td><input type='submit' name='add' value='Scarico'/></td>\n";
 
 		$a .= "</tr>\n";
