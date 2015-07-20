@@ -85,8 +85,10 @@ cat /etc/krb5.conf
 
 [realms]
  RETE.POSTE = {
-  kdc = 10.208.77.84:88
-  kdc = 10.205.73.84:88
+  kdc = 10.208.77.84
+  kdc = 10.205.73.84
+  admin_server = 10.208.77.84
+  default_domain = rete.poste
  }
 
 [domain_realm]
@@ -101,7 +103,8 @@ cat /etc/krb5.conf
    forwardable = true
    krb4_convert = false
  }
-cat /var/www/auth_kerb.keytab
+
+cat /etc/krb5.keytab
 HTTP/10.98.2.181@RETE.POSTE
 
 *pagine test
@@ -115,7 +118,7 @@ AuthName           "immettere le credenziali rete.poste"
 KrbMethodNegotiate off
 KrbVerifyKDC       off
 KrbAuthRealm       RETE.POSTE
-Krb5Keytab         /var/www/auth_kerb.keytab
+Krb5Keytab         /etc/krb5.keytab
 KrbSaveCredentials on
 Require            valid-user
 $ cat /etc/httpd/conf.d/web.conf
@@ -215,7 +218,7 @@ fix subscription-manager*
 yum install php -y [no more needed!!!!]
 service httpd restart
 fix permessi su www*
-yum install mod_auth_kerb krb5-workstation
+yum install mod_auth_kerb krb5-workstation pam_krb5
 config apache*
 config krb5*
 service httpd restart

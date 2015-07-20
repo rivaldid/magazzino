@@ -46,7 +46,7 @@
 
 		<?php
 
-		$lettura=array(NULL,"home","transiti","transiti_search","magazzino");
+		$lettura=array(NULL,"home","transiti","transiti_search","magazzino","documenti");
 		//$scrittura=array("transiti_revert","magazzino_update","carico","scarico");
 
 		$permission=myquery::permission($db)[0];

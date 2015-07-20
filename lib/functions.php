@@ -201,19 +201,36 @@ return "UID: ".$_SERVER["AUTHENTICATE_UID"]." @ ".date('Y/m/d H:i:s')." on ".bas
 } // logging2(occhiomalocchio(basename(__FILE__)),accesslog);
 
 
-function user2name($utente) {
+/*function user2name($utente) {
 foreach (array("Piscazzi","Manzo","Muratore","Lorusso","Vilardi") as $name)
 	if (strcasecmp(substr($utente,0,4),substr($name,0,4)) == 0)
 		return $name;
-}
+}*/
 
 function add_tooltip($msg) {
 return "<a class=\"tooltip\">*<span><img class=\"callout\" src=\"imgs/callout.gif\" />".$msg."</span></a>";
 }
 
+function get_permission($db) {
+	$db = myquery::start();
+	$foo = myquery::permission($db)[0];
+	switch ($foo) {
+		case "1":
+			return " | accesso in lettura";
+			break;
+		case "2":
+			return " | accesso in scrittura";
+			break;
+		default:
+			return " | nessun accesso";
+	}
+}
+
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
-$o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span><span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["PHP_AUTH_USER"]."</span>";
+$o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span>\n";
+$o .= "<span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["PHP_AUTH_USER"]."</span>\n";
+$o .= "<span class=\"permission\">".get_permission($db)."</span>\n";
 $o .= "<hr class=\"divisore_log\" />\n";
 
 if (isset($log)) {
