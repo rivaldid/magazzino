@@ -128,7 +128,7 @@ AuthName           "ACCOUNT RETE.POSTE"
 KrbMethodNegotiate off
 KrbVerifyKDC       off
 KrbAuthRealm       RETE.POSTE
-Krb5Keytab         /var/www/auth_kerb.keytab
+Krb5Keytab         /etc/krb5.keytab
 KrbSaveCredentials on
 Require            valid-user
 RewriteEngine On
@@ -165,7 +165,7 @@ date.timezone = Europe/Rome
 
 *fix SSL
 yum install mod_ssl java-1.8.0-openjdk
-*** GABAGE:
+*** GARBAGE:
 *** openssl req -new -newkey rsa:2048 -nodes -out rete.poste.crs -keyout rete.poste.key -subj '/C=IT/ST=Piemonte/L=Torino/O=Poste Italiane/CN=rto1dcvm181.rete.poste'
 *** openssl req -new -newkey rsa:2048 -nodes -out rto1dcvm181.rete.poste.csr -keyout rto1dcvm181.rete.poste.key -subj "/C=IT/O=Poste Italiane/CN=rto1dcvm181.rete.poste"
 *** www.startssl.com
@@ -223,7 +223,7 @@ config apache*
 config krb5*
 service httpd restart
 pagine test*
-yum install mutt
+yum install mutt man man-pages
 
 PORTING DB
 # yum install git
