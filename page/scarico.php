@@ -437,6 +437,8 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				fclose($fp);
 
 				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
+				session_riavvia();
+				
 			}
 
 		} else {
@@ -446,9 +448,6 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 			$log .= remesg("Scarico non riuscito, ripetere l'operazione","err");
 
 		}
-
-		// scarico riuscito o no, reset sessione server per ripetere attivita
-		session_riavvia();
 
 		// 224. test not valid
 	} else {
