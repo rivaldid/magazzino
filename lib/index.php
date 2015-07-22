@@ -16,7 +16,8 @@
 	<link rel="stylesheet" href="css/pagination.css" type="text/css" />
 	<link rel="stylesheet" href="css/scroll_top.css" type="text/css" />
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css" />
-	<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+	
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-ui.js"></script>
 	<script type="text/javascript" src="lib/jquery.filtertable.js"></script>
 	<script type="text/javascript" src="lib/jquery.tablesorter.js"></script>

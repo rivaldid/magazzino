@@ -169,9 +169,7 @@ yum install mod_ssl java-1.8.0-openjdk
 *** openssl req -new -newkey rsa:2048 -nodes -out rete.poste.crs -keyout rete.poste.key -subj '/C=IT/ST=Piemonte/L=Torino/O=Poste Italiane/CN=rto1dcvm181.rete.poste'
 *** openssl req -new -newkey rsa:2048 -nodes -out rto1dcvm181.rete.poste.csr -keyout rto1dcvm181.rete.poste.key -subj "/C=IT/O=Poste Italiane/CN=rto1dcvm181.rete.poste"
 *** www.startssl.com
-openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr
-openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+*sha-2 (256)
 sudo cp ca.crt /etc/pki/tls/certs/
 sudo cp ca.key /etc/pki/tls/private/
 sudo cp ca.csr /etc/pki/tls/private/
@@ -181,6 +179,14 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo /sbin/service iptables save
 sudo iptables -L -v
 sudo httpd restart
+
+*sha-1
+openssl genrsa -out ca.key 2048
+openssl req -new -key ca.key -out ca.csr
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+
+*sha-2 (256)
+openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -keyout ca2.key -out ca2.crt
 
 
 
