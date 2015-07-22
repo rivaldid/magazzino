@@ -59,16 +59,9 @@ font: bold 12px Verdana, "Times New Roman", serif;
 
 .wellcomePage{
 color: #31b404;
-left: 370px;
+left: 450px;
 position: relative;
 }
-
-.permission{
-color: #ff0000;
-left: 374px;
-position: relative;
-}
-
 
 /*#log p {
 display: inline;

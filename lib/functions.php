@@ -216,21 +216,20 @@ function get_permission($db) {
 	$foo = myquery::permission($db)[0];
 	switch ($foo) {
 		case "1":
-			return " | accesso in lettura";
+			return " <i class=\"fa fa-book fa-2x\"> R</i>";
 			break;
 		case "2":
-			return " | accesso in scrittura";
+			return " <i class=\"fa fa-pencil fa-2x\"> RW</i>";
 			break;
 		default:
-			return " | nessun accesso";
+			return " <i class=\"fa fa-ban fa-2x\"> NA</i>";
 	}
 }
 
 function makepage($a, $log) {
 $o = "<div id=\"log\">\n";
 $o .= "<span class=\"tit\"><i class=\"fa fa-cogs fa-2x\"></i> Strumenti</span>\n";
-$o .= "<span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["PHP_AUTH_USER"]."</span>\n";
-$o .= "<span class=\"permission\">".get_permission($db)."</span>\n";
+$o .= "<span class=\"wellcomePage\"><i class=\"fa fa-check fa-2x\"></i> ".$_SERVER["PHP_AUTH_USER"].get_permission($db)."</span>\n";
 $o .= "<hr class=\"divisore_log\" />\n";
 
 if (isset($log)) {
