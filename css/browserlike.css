@@ -1,4 +1,38 @@
-#browserlike ul{
+div#browserlike {
+margin: 0 auto;
+border: 1px solid black;
+background-color: white;
+width: 80%;
+}
+
+div#browserlike ul {
 list-style-type: none;
 text-align: left;
 }
+
+div#browserlike li {
+letter-spacing: 0.1em;
+margin-left: 2em;
+padding: 0.3em;
+}
+
+/* unvisited link */
+div#browserlike li a:link, div#browserlike span a:link {
+color: #6C99B4;
+}
+
+/* visited link */
+div#browserlike li a:visited, div#browserlike span a:visited {
+color: #366092;
+}
+
+/* mouse over link */
+div#browserlike li a:hover, div#browserlike span a:hover {
+background-color: #dfeeff;
+color: #000;
+}
+
+/* selected link */
+div#browserlike li a:active, div#browserlike span a:active {
+color: #000;
+} 
