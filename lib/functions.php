@@ -430,7 +430,45 @@ function getBrowser($u_agent)
         'platform'  => $platform,
         'pattern'    => $pattern
     );
-} 
+}
+
+
+function list_directory($path) {
+$pagine = array("log","registro","registro_mds","ricerche");
+
+//print_r(explode('path=dati/',$_SERVER['HTTP_REFERER']));
+
+if (in_array(explode('path=dati/',$_SERVER['HTTP_REFERER'])[1],$pagine))
+	$precedente = "/magazzino";
+else
+	$precedente = $_SERVER['HTTP_REFERER'];
+
+$a = "<div id=\"browserlike\">\n";
+$a .= "<ul>\n";
+$a .= "<li><i class=\"fa fa-arrow-left\"></i> <a href=\"$precedente\">Torna indietro</a></li>\n";
+
+if ($handle = opendir($path)) {
+
+	while (false !== ($entry = readdir($handle))) {
+		
+        if ($entry != "." && $entry != "..") {
+			
+			if (is_file($path."/".$entry))
+				$a .= "<li><i class=\"fa fa-file-text\"></i> <a href=\"$path/$entry\">$entry</a></li>\n";
+			else
+				$a .= "<li><i class=\"fa fa-plus-square\"></i> <a href=\"?page=home&path=$path/$entry\">$entry</a></li>\n";
+		}
+		
+	}
+
+	closedir($handle);
+}
+
+$a .= "<li><i class=\"fa fa-arrow-left\"></i> <a href=\"$precedente\">Torna indietro</a></li>\n";
+$a .= "</ul>\n";
+$a .= "</div>\n";
+return $a;
+}
 
 
 ?>
