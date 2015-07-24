@@ -188,6 +188,41 @@ openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
 *sha-2 (256)
 openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -keyout ca2.key -out ca2.crt
 
+*cgi-bin
+vim /etc/httpd/conf/httpd.conf
+<Directory "/var/www/cgi-bin">
+    AllowOverride None
+    #Options None
+    Options +ExecCGI -Indexes
+    AddHandler cgi-script .cgi .pl .py
+    Order allow,deny
+    Allow from all
+</Directory>
+
+*test hello world
+$ cat /var/www/cgi-bin/hello.pl
+#!/usr/bin/perl
+
+# hello.pl -- my first perl script!
+
+print "Content-type: text/html\n\n";
+
+print <<"EOF";
+<HTML>
+
+<HEAD>
+<TITLE>Hello, world!</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Hello, world!</H1>
+</BODY>
+
+</HTML>
+EOF
+
+
+
 
 
 
@@ -269,4 +304,5 @@ date.timezone = Europe/Rome
 fix mbstring* [no more needed!!!!]
 fix php5.3 to php5.4*
 fix SSL*
-
+cgi-bin*
+test hello world*
