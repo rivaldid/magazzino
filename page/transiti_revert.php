@@ -77,7 +77,7 @@ if (isset($_POST['finish'])) {
 	
 	$a .= "<td>\n";
 
-	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=revert");
+	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_revert");
 	if ($DEBUG) $a .= "&debug";
 	$a .= "'>\n";
 	$a .= noinput_hidden("id_operazioni",$id_operazioni);
@@ -133,7 +133,7 @@ if (is_null($a) OR empty($a)) {
 			
 			$riga .= "<td>\n";
 
-			$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=revert");
+			$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_revert");
 			if ($DEBUG) $riga .= "&debug";
 			$riga .= "'>\n";
 			$riga .= noinput_hidden("id_operazioni",$row['id_operazioni']);
