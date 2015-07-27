@@ -234,7 +234,8 @@ fix nuovo mac*
 passwd
 useradd utente
 passwd utente
-usermod -g wheel utente
+usermod -g primogruppo utente
+usermod -G secondogruppo utente
 reboot
 visudo e scommento %wheel ALL=(ALL) ALL
 
