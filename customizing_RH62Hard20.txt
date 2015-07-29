@@ -289,10 +289,16 @@ mysql> CREATE USER 'magazzino'@'localhost' IDENTIFIED BY 'magauser';
 mysql> CREATE DATABASE magazzino;
 mysql> GRANT ALL PRIVILEGES ON magazzino.* TO 'magazzino'@'localhost';
 mysql> FLUSH PRIVILEGES;
+fix1 Warning: Using a password on the command line interface can be insecure
 $ mysql_config_editor set --login-path=local --host=localhost --user=magazzino --password
 $ mysql --login-path=local -D magazzino
 $ grep magazzino .bash_profile
 export connect_db_magazzino="mysql --login-path=local -D magazzino"
+fix2 Warning: Using a password on the command line interface can be insecure
+$ cat html/cgi-bin/.my.cnf
+[mysql]
+user=magazzino
+password=magauser
 
 PORTING WEBAPP
 $ git clone https://rivaldid@bitbucket.org/rivaldid/magazzino.git
