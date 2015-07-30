@@ -95,7 +95,12 @@ foreach ($query as $row) {
 	$riga .= "<td>".$row['merce']."</td>\n";
 	$riga .= "<td>".$row['posizione']."</td>\n";
 	$riga .= "<td>".$row['quantita']."</td>\n";
-	if (isset($_GET["contro"]) OR isset($_GET["detail"]) OR isset($_GET["search"]) ) $riga .= "<td>".$row['note']."</td>\n";
+	if (isset($_GET["contro"]) OR isset($_GET["detail"]) OR isset($_GET["search"]) ) {
+		$riga .= "<td>\n";
+		$riga .= $row['note'];
+		$riga .= " <a href=\"?page=transiti_search&tags=".urlencode(base64_encode(serialize($row['tags'])))."\">[DETAIL]</a>";
+		$riga .= "</td>\n";
+	}
 	$riga .= "</tr>\n";
 }
 

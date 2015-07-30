@@ -69,10 +69,16 @@ else
 	$data_max = NULL;
 
 // tags
-if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
-	$tags = trim(epura_space2percent($_POST['tags']));
-else
-	$tags = NULL;
+if (isset($_GET['tags'])AND(!empty($_GET['tags']))) {
+	$log .= remesg("Torna alla <a href=\"".$_SERVER['HTTP_REFERER']."\">visualizzazione magazzino</a>","action");
+	$tags = unserialize(base64_decode($_GET['tags']));
+	$_POST['invia'] = true;
+} else {
+	if (isset($_POST['tags'])AND(!empty($_POST['tags'])))
+		$tags = trim(epura_space2percent($_POST['tags']));
+	else
+		$tags = NULL;
+}
 
 // documento
 if (isset($_POST['documento'])AND(!empty($_POST['documento'])))
@@ -104,6 +110,7 @@ if (isset($_POST['invia'])) {
 
 	$log .= remesg("Effettua una nuova <a href=\"?page=transiti_search\">ricerca</a> in transiti","search");
 
+	if ($DEBUG) $log .= remesg("Chiamata per transiti_search con variabili: $id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note","debug");
 	$query = myquery::transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note);
 
 	// test ritorno valori

@@ -17,6 +17,10 @@ function epura_specialchars($string) {
 	return preg_replace('/[^A-Za-z0-9\. -]/', '', $string);
 }
 
+function epura_specialchars2percent($string) {
+	return preg_replace('/[^A-Za-z0-9\. -]/', '%', $string);
+}
+
 function epura_crlf($mixed) {
 	return str_replace(array("\n", "\t"), '', $mixed);
 }
