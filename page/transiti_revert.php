@@ -30,7 +30,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_POST)."</pre>";
 
 // test bottoni
 if (isset($_POST['finish'])) {
-	
+
 	$res_revert = myquery::revert_do($db,$utente,$id_operazioni);
 	$log .= remesg("Hai confermato l'annullamento del transito #".$id_operazioni,"done");
 
@@ -73,8 +73,8 @@ if (isset($_POST['finish'])) {
 	$a .= "<td>".safetohtml($target[0]['tags'])."</td>\n";
 	$a .= "<td>".safetohtml($target[0]['quantita'])."</td>\n";
 	$a .= "<td>".safetohtml(strtolower($target[0]['note']))."</td>\n";
-	$a .= "<td>".$target[0]['doc_ordine']."</td>\n";		
-	
+	$a .= "<td>".$target[0]['doc_ordine']."</td>\n";
+
 	$a .= "<td>\n";
 
 	$a .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_revert");
@@ -115,11 +115,11 @@ if (is_null($a) OR empty($a)) {
 			$a .= "<th>Azione</th>\n";
 		$a .= "</tr></thead>\n";
 		$a .= "<tbody>\n";
-		
+
 		foreach ($resultset as $row) {
-			
+
 			$riga .= "<tr>\n";
-			
+
 			$riga .= "<td>".safetohtml($row['rete'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['dataop'])."</td>\n";
 			$riga .= "<td>".safetohtml($row['status'])."</td>\n";
@@ -130,7 +130,7 @@ if (is_null($a) OR empty($a)) {
 			$riga .= "<td>".safetohtml($row['quantita'])."</td>\n";
 			$riga .= "<td>".safetohtml(strtolower($row['note']))."</td>\n";
 			$riga .= "<td>".$row['doc_ordine']."</td>\n";
-			
+
 			$riga .= "<td>\n";
 
 			$riga .= "<form method='post' enctype='multipart/form-data' action='".htmlentities("?page=transiti_revert");

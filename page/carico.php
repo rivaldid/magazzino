@@ -225,7 +225,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inum_oda'])AND(!empty($_SESSION['inum_oda'])))
-	$num_oda = $_SESSION['inum_oda'];
+	$num_oda = norm($_SESSION['inum_oda']);
 else {
 	if (isset($_SESSION['snum_oda'])AND(!empty($_SESSION['snum_oda'])))
 		$num_oda = $_SESSION['snum_oda'];
@@ -240,7 +240,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
-	$note = $_SESSION['inote'];
+	$note = epura_crlf(norm($_SESSION['inote']));
 else {
 	if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
 		$note = $_SESSION['snote'];
@@ -284,7 +284,7 @@ $utente = $_SERVER["PHP_AUTH_USER"];
 
 // tripla tags - quantita' - posizione
 if (isset($_SESSION['itags'])AND(!empty($_SESSION['itags'])))
-	$tags = $_SESSION['itags'];
+	$tags = epura_crlf(norm($_SESSION['itags']));
 else {
 	if (isset($_SESSION['tag2']) AND (!empty($_SESSION['tag2'])) AND isset($_SESSION['tag3']) AND (!empty($_SESSION['tag3']))) {
 		$tags = $_SESSION['tag1']." ".$_SESSION['tag2']." ".$_SESSION['tag3'];
@@ -318,7 +318,7 @@ if ($DEBUG) {
 }
 
 if (isset($_SESSION['iposizione'])AND(!empty($_SESSION['iposizione'])))
-	$posizione = norm($_SESSION['iposizione']);
+	$posizione = strtoupper(epura_ws(norm($_SESSION['iposizione'])));
 else {
 	if (isset($_SESSION['sposizione'])AND(!empty($_SESSION['sposizione'])))
 		$posizione = $_SESSION['sposizione'];
@@ -337,14 +337,14 @@ if ($DEBUG) {
 
 // stop
 if (isset($_SESSION['stop'])) {
-	
+
 	// reset variabili client
 	unset($tags, $quantita, $posizione);
 	unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
-	
+
 	// reset variabili server
 	session_riavvia();
-	
+
 	// alert
 	$log .= remesg("Sessione terminata","done");
 }
@@ -488,10 +488,10 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// test save
 		if (isset($_SESSION['save'])) {
-			
+
 			// reset altre variabili client
 			unset($fornitore, $trasportatore, $tipo_doc, $num_doc, $data_doc, $nome_doc, $data_carico, $note, $num_oda);
-			
+
 			// reset variabili server
 			session_riavvia();
 		}
@@ -536,7 +536,7 @@ $a .= "<table class='altrowstable' id='alternatecolor'>\n";
 	$a .= "</tfoot>\n";
 
 	$a .= "<tbody>\n";
-		
+
 		$a .= "<tr>\n";
 		if (isset($fornitore)) {
 			$a .= "<td><label for='ifornitore'>Fornitore</label></td>\n";

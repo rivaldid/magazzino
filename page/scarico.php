@@ -154,7 +154,7 @@ if ($DEBUG) {
 
 // 136. destinazione
 if (isset($_SESSION['idestinazione'])AND(!empty($_SESSION['idestinazione'])))
-	$destinazione = norm($_SESSION['idestinazione']);
+	$destinazione = strtoupper(epura_ws(norm($_SESSION['idestinazione'])));
 else {
 	if (isset($_SESSION['sdestinazione'])AND(!empty($_SESSION['sdestinazione'])))
 		$destinazione = $_SESSION['sdestinazione'];
@@ -186,7 +186,7 @@ if ($DEBUG) {
 
 // 138. note
 if (isset($_SESSION['inote'])AND(!empty($_SESSION['inote'])))
-	$note = $_SESSION['inote'];
+	$note = epura_crlf(norm($_SESSION['inote']));
 else {
 	if (isset($_SESSION['snote'])AND(!empty($_SESSION['snote'])))
 		$note = $_SESSION['snote'];
@@ -438,7 +438,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 				$log .= remesg("<a href=\"".registro_mds.$nome_report."\">Modulo di scarico</a> pronto per la stampa","pdf");
 				session_riavvia();
-				
+
 			}
 
 		} else {

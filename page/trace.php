@@ -23,17 +23,17 @@ $a .= "<tbody>\n";
 
 foreach ($query as $row) {
 	$a .= "<tr>\n";
-	
+
 	/*for($i=0; $i<=5; $i++) {
 		$a .= "<td>$row[$i]</td>\n";
 	}*/
-	
+
 	$a .= "<td>".$row['0']."</td>\n";
 	$a .= "<td>".$row['1']."</td>\n";
 	$a .= "<td>".$row['2']."</td>\n";
 	$a .= "<td>".$row['5']." (".$row['3'].")</td>\n";
 	$a .= "<td>".getBrowser($row['6'])['name']." - ".getBrowser($row['6'])['version']."</td>\n";
-	
+
 	$a .= "</tr>\n";
 }
 

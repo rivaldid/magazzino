@@ -5,9 +5,9 @@
 $a = ""; $log = "";
 
 if (isset($_GET['path'])) {
-	
+
 	$a .= list_directory($_GET['path']);
-	
+
 } else {
 	$log .= remesg("In questa applicazione sono previste due modalita' di accesso: in <u>LETTURA</u><mark>*</mark> ed in <u>SCRITTURA</u>","info");
 	$log .= remesg("Le pagine in acquisizione dati sono provviste di due modalita': <u>MANUALE</u><mark>**</mark> e <u>GUIDATA</u>","info");

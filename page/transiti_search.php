@@ -32,10 +32,10 @@ $utente = $_SERVER["PHP_AUTH_USER"];
 */
 if (isset($_POST['pattern'])AND(!empty($_POST['pattern']))) {
 	if (isset($_POST['target'])AND(!empty($_POST['target']))) {
-		
+
 		if ($DEBUG) $log .= remesg("Valore variabile target: ".$_POST['target'],"debug");
 		if ($DEBUG) $log .= remesg("Valore variabile pattern: ".$_POST['pattern'],"debug");
-	
+
 		switch ($_POST['target']) {
 			case "merce":
 				$_POST['tags'] = $_POST['pattern'];
@@ -108,7 +108,7 @@ if (isset($_POST['invia'])) {
 
 	// test ritorno valori
 	if ($query) {
-	
+
 		// inizializzo pdf
 		ob_start();
 		$export = "<?php\n\$html = \"";
@@ -180,7 +180,7 @@ if (isset($_POST['invia'])) {
 		fwrite($fp,$export);
 		fclose($fp);
 		$log .= remesg("<a href=\"".ricerche.$file_export."\">Esporta in pdf</a> ","pdf");
-	
+
 	// altrimenti avvisa
 	} else
 		$a .= remesg("Nessun risultato trovato, ridefinire la ricerca con diversi parametri.","warn");

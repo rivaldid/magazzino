@@ -173,42 +173,42 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 
 		// UPLOAD
 		if (empty($_FILES['scansione']['name'])) {
-			
+
 			$log .= remesg("Nessun file selezionato","warn");
-			
+
 		} else {
-			
+
 			if ($_FILES['scansione']['size'] > 0) {
 
 				$scansione = epura_specialchars(epura_space2underscore($tipo))."-".epura_specialchars(epura_space2underscore($mittente))."-".epura_specialchars(epura_space2underscore($numero)).".".getfilext($_FILES['scansione']['name']);
 				$filename = $_SERVER['DOCUMENT_ROOT'].registro.$scansione;
-				
+
 				if (file_exists(registro.$scansione)) {
-					
+
 					$log .= remesg("Nessun file caricato perche' presente sul disco","warn");
-							
+
 				} else {
-					
+
 					if (move_uploaded_file($_FILES['scansione']['tmp_name'], $filename)) {
-						
+
 						$log .= remesg("Scansione del documento caricata correttamente","done");
-						
+
 					} else {
-						
+
 						$log .= remesg("Scansione del documento non caricata","err");
 						$scansione = NULL;
-					}		
+					}
 				}
 			}
 		}
-		
+
 		/* SP
 		passo1: se gruppo nullo mi calcolo il prossimo disponibile
 		passo2: se ho dato un id a cui collegare gli aggiorno il gruppo dato che vuoto in quella posizione
 		passo3: inserisco i dati correnti
 		*/
-		
-		if (is_null($gruppo) OR empty($gruppo)) 
+
+		if (is_null($gruppo) OR empty($gruppo))
 			$gruppo = myquery::prossimo_gruppo($db)[0];
 
 		if (isset($link_id_registro)AND(!empty($link_id_registro)))
@@ -221,7 +221,7 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 		session_riavvia();
 
 	} else {
-		
+
 		// pre
 		$lista_contatti = myquery::contatti($db); //pre1
 		$lista_tipi_doc = myquery::tipi_doc($db); //pre2
@@ -314,12 +314,12 @@ if ((isset($_SESSION['add'])) OR (isset($_SESSION['save']))) {
 				$a .= "<tr>\n";
 				$a .= "<td><label for='associazione'>Associazione a documento</label></td>\n";
 				if ((isset($link_id_registro)AND(!empty($link_id_registro)))) {
-					
+
 					$a .= "<td colspan='2'>".myquery::documento_da_id($db,$link_id_registro)['documento']."</td>\n"; //pre4: solo visualizzazione
 					$a .= noinput_hidden("link_id_registro",$link_id_registro);
-					
+
 				} else {
-					
+
 					$a .= "<td colspan='2'>".myoptlst_double("link_id_registro",$lista_documenti_per_link)."</td>\n"; // pre5
 				}
 				$a .= "</tr>\n";
@@ -353,11 +353,11 @@ if (is_null($a) OR empty($a)) {
 		$a .= "<th>Scansione</th>\n";
 	$a .= "</tr></thead>\n";
 	$a .= "<tbody>\n";
-	
+
 	foreach ($query as $row) {
-				
+
 		$a .= "<tr>\n";
-		
+
 		// data - data_ita
 		if (is_null($row['data']) OR empty($row['data'])) {
 			$a .= "<td>\n";
@@ -375,13 +375,13 @@ if (is_null($a) OR empty($a)) {
 		} else {
 			$a .= "<td>".$row['data_ita']."</td>\n";
 		}
-		
+
 		// mittente
 		$a .= "<td>".$row['contatto']."</td>\n";
-		
+
 		// documento
 		$a .= "<td>".$row['documento']."</td>\n";
-	
+
 		// scansione
 		if (is_null($row['scansione']) OR empty($row['scansione'])) {
 			$a .= "<td>\n";
@@ -403,7 +403,7 @@ if (is_null($a) OR empty($a)) {
 		$a .= "</tr>\n";
 
 	}
-	
+
 	$a .= "</tbody>\n</table>\n";
 }
 
