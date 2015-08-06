@@ -501,7 +501,7 @@ class myquery extends DB {
 		try {
 
 			logging2("CALL aggiornamento_magazzino_posizione('$utente','$id_merce','$posizione','$nuova_posizione','$quantita','$data');",splog);
-			return $query = $db->query("CALL aggiornamento_magazzino_quantita(?,?,?,?,?,?)")
+			return $query = $db->query("CALL aggiornamento_magazzino_posizione(?,?,?,?,?,?)")
 				->bind(1,$utente)
 				->bind(2,$id_merce)
 				->bind(3,$posizione)
