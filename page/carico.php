@@ -131,7 +131,7 @@ if ($DEBUG) $log .= "<pre>".var_dump($_SESSION)."</pre>";
 if (isset($_GET["reintegro"])) {
 	$_SESSION['ifornitore'] = "Accessi";
 	$_SESSION['itipo_doc'] = "Reintegro";
-	$_SESSION['inum_doc'] = myquery::next_reintegro_doc($db);
+	$_SESSION['inum_doc'] = myquery::next_reintegro_doc($db)[0];
 	$_SESSION['idata_doc'] = date('Y-m-d');
 
 	if ($DEBUG) {
