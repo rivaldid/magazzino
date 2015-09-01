@@ -458,6 +458,11 @@ $a .= "<span><i class=\"fa fa-arrow-left\"></i> <a href=\"$precedente\">Torna in
 
 $a .= "<ul>\n";
 
+if ($path == "dati") {
+	$a .= "<li><i class=\"fa fa-file-text\"></i> <a href=\"/cgi-bin/certifica.cgi\">Manutenzione/Certifica Attivita'</a></li>\n";
+	$a .= "<li><i class=\"fa fa-file-text\"></i> <a href=\"/cgi-bin/status.cgi\">Manutenzione/Stato Macchina</a></li>\n";
+}
+
 if ($handle = opendir($path)) {
 
 	while (false !== ($entry = readdir($handle))) {
