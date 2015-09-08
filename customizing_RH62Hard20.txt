@@ -325,3 +325,19 @@ fix jakarta-taglibs-standard*
 yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
 chkconfig tomcat6 on
 service tomcat6 start
+
+
+________________________________________________________________________
+SETUP CENTOS rto1dcpm172.rete.poste
+chkconfig network on
+proxy*
+yum update
+yum upgrade
+yum install vim links wget mutt man man-pages git
+reboot
+yum install httpd php
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --permanent --zone=public --add-service=https
+firewall-cmd --permanent --zone=public --add-port=3221/tcp
+firewall-cmd --reload
+echo -e "<?php\nphpinfo();\n?>"  > /var/www/html/info.php
