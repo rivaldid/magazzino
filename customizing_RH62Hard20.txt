@@ -154,6 +154,11 @@ wget ftp://fr2.rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-mbstring
 rpm -ivh php-mbstring-5.3.3-40.el6_6.x86_64.rpm
 service httpd restart
 
+*fix jakarta-taglibs-standard
+yum install apache-tomcat-apis xalan-j2
+wget ftp://mirror.switch.ch/pool/4/mirror/scientificlinux/6.3/i386/os/Packages/jakarta-taglibs-standard-1.1.1-11.4.el6.noarch.rpm
+rpm -ivh jakarta-taglibs-standard-1.1.1-11.4.el6.noarch.rpm
+
 *fix php5.3 to php5.4
 source /etc/profile.d/proxy.sh.bk
 rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
@@ -313,3 +318,10 @@ fix php5.3 to php5.4*
 fix SSL*
 cgi-bin*
 test hello world*
+
+JAVA
+yum update
+fix jakarta-taglibs-standard*
+yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
+chkconfig tomcat6 on
+service tomcat6 start
