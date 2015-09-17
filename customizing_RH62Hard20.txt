@@ -420,16 +420,25 @@ systemctl enable mariadb.service
 fix mysql_secure_installation*
 yum -y install php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel mod-ssl
 yum -y install mod_auth_kerb krb5-workstation pam_krb5
-config apache: ServerAdmin + /etc/httpd/conf.d/web.conf
+config apache: ServerAdmin/ServerName + /etc/httpd/conf.d/web.conf
 config krb5*
 firewall-cmd --permanent --zone=public --remove-port=3221/tcp
 firewall-cmd --zone=public --list-all
 firewall-cmd --zone=public --list-port
 firewall-cmd --permanent --zone=public --add-port=443/tcp
 firewall-cmd --reload
-sha-2*
+
+openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+openssl rsa -passin pass:x -in server.pass.key -out server.key
+rm server.pass.key
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
 cp ca2.crt /etc/pki/tls/certs/ca.crt
 cp ca2.key /etc/pki/tls/private/ca.key
 vim /etc/httpd/conf.d/ssl.conf
 systemctl restart httpd.service
 fix permessi su www*
+porting db (no fixes)*
+porting webapp (solo git clone)*
+vim /etc/hosts
