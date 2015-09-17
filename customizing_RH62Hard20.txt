@@ -121,6 +121,7 @@ KrbAuthRealm       RETE.POSTE
 Krb5Keytab         /etc/krb5.keytab
 KrbSaveCredentials on
 Require            valid-user
+
 $ cat /etc/httpd/conf.d/web.conf
 <Location "/">
 AuthType           Kerberos
@@ -327,13 +328,85 @@ chkconfig tomcat6 on
 service tomcat6 start
 
 
+
+
+
+
+
+
 ________________________________________________________________________
-SETUP CENTOS rto1dcpm172.rete.poste
+*fix mysql_secure_installation
+[root@server1 ~]# mysql_secure_installation
+/usr/bin/mysql_secure_installation: line 379: find_mysql_client: command not found
+
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user.  If you've just installed MariaDB, and
+you haven't set the root password yet, the password will be blank,
+so you should just press enter here.
+
+Enter current password for root (enter for none): <--ENTER
+OK, successfully used password, moving on...
+
+Setting the root password ensures that nobody can log into the MariaDB
+root user without the proper authorisation.
+
+Set root password? [Y/n] 
+New password: <--yourmariadbpassword
+Re-enter new password: <--yourmariadbpassword
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] <--ENTER
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] <--ENTER
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] <--ENTER
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] <--ENTER
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+[root@server1 ~]#
+
+
+SETUP CENTOS7 rto1dcpm172.rete.poste
 chkconfig network on
 proxy*
 yum update
 yum upgrade
-yum install vim links wget mutt man man-pages git
+yum -y install vim links wget mutt man man-pages git deltarpm
 reboot
 yum install httpd php
 firewall-cmd --permanent --zone=public --add-service=http
@@ -341,3 +414,21 @@ firewall-cmd --permanent --zone=public --add-service=https
 firewall-cmd --permanent --zone=public --add-port=3221/tcp
 firewall-cmd --reload
 echo -e "<?php\nphpinfo();\n?>"  > /var/www/html/info.php
+yum -y install mariadb-server mariadb
+systemctl start mariadb.service
+systemctl enable mariadb.service
+fix mysql_secure_installation*
+yum -y install php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel mod-ssl
+yum -y install mod_auth_kerb krb5-workstation pam_krb5
+config apache: ServerAdmin + /etc/httpd/conf.d/web.conf
+config krb5*
+firewall-cmd --permanent --zone=public --remove-port=3221/tcp
+firewall-cmd --zone=public --list-all
+firewall-cmd --zone=public --list-port
+firewall-cmd --permanent --zone=public --add-port=443/tcp
+firewall-cmd --reload
+sha-2*
+cp ca2.crt /etc/pki/tls/certs/ca.crt
+cp ca2.key /etc/pki/tls/private/ca.key
+vim /etc/httpd/conf.d/ssl.conf
+systemctl restart httpd.service
