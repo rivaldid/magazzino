@@ -432,3 +432,4 @@ cp ca2.crt /etc/pki/tls/certs/ca.crt
 cp ca2.key /etc/pki/tls/private/ca.key
 vim /etc/httpd/conf.d/ssl.conf
 systemctl restart httpd.service
+fix permessi su www*
