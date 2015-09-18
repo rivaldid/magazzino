@@ -441,3 +441,8 @@ systemctl restart httpd.service
 fix permessi su www*
 porting db (no fixes)*
 porting webapp (solo git clone)*
+fix1: PHP Warning:  date()
+$ grep "date.timezone =" /etc/php.ini
+date.timezone = Europe/Rome
+fix2: PHP Warning:  fopen
+chcon -t httpd_sys_rw_content_t /var/www/html/mysite/mydir -R
