@@ -448,7 +448,10 @@ function getBrowser($u_agent)
 function list_directory($path) {
 $pagine = array("log","registro","registro_mds","ricerche");
 
-if (in_array(explode('path=dati/',$_SERVER['HTTP_REFERER'])[1],$pagine))
+$offset = explode('path=dati/',$_SERVER['HTTP_REFERER']);
+if (!isset($offset[1])) $offset[1]="home";
+
+if (in_array($offset[1],$pagine))
 	$precedente = "/magazzino";
 else
 	$precedente = $_SERVER['HTTP_REFERER'];

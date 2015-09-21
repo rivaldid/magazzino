@@ -407,8 +407,9 @@ chkconfig network on
 proxy*
 yum update
 yum upgrade
-yum -y install vim links wget mutt man man-pages git deltarpm
+yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils
 reboot
+localectl set-locale LANG=it_IT.utf8
 yum install httpd php
 echo -e "<?php\nphpinfo();\n?>"  > /var/www/html/info.php
 yum -y install mariadb-server mariadb
@@ -446,3 +447,5 @@ $ grep "date.timezone =" /etc/php.ini
 date.timezone = Europe/Rome
 fix2: PHP Warning:  fopen
 chcon -t httpd_sys_rw_content_t /var/www/html/mysite/mydir -R
+cgi-bin*
+systemctl restart httpd.service
