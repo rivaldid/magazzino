@@ -7,8 +7,8 @@
 	<body>
 		<?php
                     require_once('GestioneMagazzino.php');		
-                    $magazzino = new GestioneMagazzino('localhost','root','','magazzino'); 
-                    $magazzino->setPosizione($_GET['cella']);
+                    $magazzino = new GestioneMagazzino('localhost','magazzino','magauser','magazzino'); 
+                    $magazzino->setRicerca($_GET['merce']);
 		?>
 		<div id="mappa">
 			<?php
@@ -18,10 +18,11 @@
 		</div>		
 		<div id="ricerca" >
 			<?php
-                            $magazzino->listaRicerca();
-                            $magazzino->stampaMercePianale();
+                          $magazzino->listaRicerca();
+                          $magazzino->stampaMerceTrovata($_GET['merce']);
 			?>
-		</div>	
+		</div>
+		
+		
 	</body>
 </html>
-

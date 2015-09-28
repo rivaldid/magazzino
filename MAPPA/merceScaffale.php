@@ -7,7 +7,7 @@
 	<body>
 		<?php
                     require_once('GestioneMagazzino.php');		
-                    $magazzino = new GestioneMagazzino('localhost','root','','magazzino'); 
+					$magazzino = new GestioneMagazzino('localhost','magazzino','magauser','magazzino'); 
                     $magazzino->setPosizione($_GET['cella']);
 		?>
 		<div id="mappa">

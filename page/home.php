@@ -13,6 +13,7 @@ if (isset($_GET['path'])) {
 	$log .= remesg("Le pagine in acquisizione dati sono provviste di due modalita': <u>MANUALE</u><mark>**</mark> e <u>GUIDATA</u>","info");
 	$log .= remesg("<mark>*</mark>L'accesso in <u>LETTURA</u> e' ristretto alle pagine che non agiscono attivamente sui dati","info");
 	$log .= remesg("<mark>**</mark>La modalita' di acquisizione <u>MANUALE</u> ha priorita' su quella <u>GUIDATA</u>","info");
+	$log .= remesg("Accedi alla <a href=\"MAPPA\">nuova visualizzazione grafica</a>","action");
 	$a .= "<a href=\"?page=home&path=dati\"><img border=\"0\" src=\"imgs/maga.png\" alt=\"Homepage\" /></a>\n";
 }
 
