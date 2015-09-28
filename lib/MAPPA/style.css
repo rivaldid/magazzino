@@ -1,0 +1,884 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 27-ago-2015, 12.55.23
+    Author     : binattia
+*/
+
+body
+{
+    width: 1900px;
+    height: 900px;
+    background-color: cornflowerblue;
+    margin: 0;
+    padding:0;
+}
+#mappa
+{
+    float:left;
+    width: 1300px;
+    height: 920px;
+    background-image: url("magazzino.jpg");
+    background-size: 1300px,450px;
+    background-repeat: no-repeat;
+   
+}
+#ricerca
+{
+    width: auto;
+    
+}
+.muro
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: center;
+    position: absolute;
+}
+
+.muro:hover
+{
+    border: 3px dashed red;
+}
+
+.muroOccupato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: #FFB266;
+    text-align: center;
+    position: absolute;
+}
+
+.muroOccupato:hover
+{
+    border: 3px dashed red;
+}
+
+.muroSelezionato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: yellow;
+    text-align: center;
+    position: absolute;
+}
+
+.muroSelezionato:hover
+{
+    border: 3px dashed red;
+}
+
+
+
+.pavimento
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+.pavimento:hover
+{
+    border: 3px dashed red;
+}
+
+.pavimentoSelezionato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: yellow;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+.pavimentoSelezionato:hover
+{
+    border: 3px dashed red;
+}
+
+.pavimentoOccupato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: #FFB266;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+
+
+.pavimentoOccupato:hover
+{
+    border: 3px dashed red;
+}
+
+
+.pavimento_Basso
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: center;
+    width: 62px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+.pavimento_Basso:hover
+{
+    border: 3px dashed red;
+}
+.pavimento_BassoSelezionato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: yellow;
+    text-align: center;
+    width: 62px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+.pavimento_BassoSelezionato:hover
+{
+    border: 3px dashed red;
+}
+.pavimento_BassoOccupato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: #FFB266;
+    text-align: center;
+    width: 62px;
+    height: 70px;
+    padding-top: 5px;
+    position: absolute;
+}
+.pavimento_BassoOccupato:hover
+{
+    border: 3px dashed red;
+}
+
+.scaffale
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: center;
+    vertical-align: middle;
+    width: 190px;
+    height: 30px;
+    left:1065px;
+    padding-top: 5px;
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+.scaffale:hover
+{
+    border: 3px dashed red;
+}
+
+.scaffaleSelezionato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: yellow;
+    text-align: center;
+    vertical-align: middle;
+    width: 190px;
+    height: 30px;
+    left:1065px;
+    padding-top: 5px;
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+.scaffaleSelezionato:hover
+{
+    border: 3px dashed red;
+}
+
+
+.scaffaleOccupato
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color: #FFB266;
+    text-align: center;
+    vertical-align: middle;
+    width: 190px;
+    height: 30px;
+    left:1065px;
+    padding-top: 5px;
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+.scaffaleOccupato:hover
+{
+    border: 3px dashed red;
+}
+
+
+.vuoto
+{
+    
+    background-color: white;
+    border:1px solid white;
+    position: absolute;
+}
+.scarto
+{
+    border: 3px solid black;
+    box-sizing: border-box;
+    background-color:lightcoral;
+    text-align: center;
+    width: 205px;
+    height: 70px;
+    position: absolute;
+    left: 410px;
+    top:55px;
+    font-size: 20px;
+}
+
+
+
+#bianco1
+{   width: 865px;
+    height: 610px;
+    left:130px;
+    top: 75px;
+}
+#bianco2
+{   width: 215px;
+    height: 610px;
+    left:30px;
+    top: 240px;
+}
+#bianco3
+{   width: 205px;
+    height: 100px;
+    left:240px;
+    top: 745px;
+}
+#bianco4
+{   width: 250px;
+    height: 100px;
+    left:560px;
+    top: 745px;
+}
+#bianco5
+{   width: 350px;
+    height: 10px;
+    left:400px;
+    top: 680px;
+}
+
+#bianco6
+{   width: 450px;
+    height: 295px;
+    left:805px;
+    top: 405px;
+}
+
+#bianco7
+{   top: 80px;
+    height: 315px;
+    left:990px;
+    width: 23px;
+}
+
+#bianco8
+{   top: 55px;
+    height: 780px;
+    left:1048px;
+    width: 205px;
+}
+
+#bianco9
+{   top: 150px;
+    height: 650px;
+    left:1040px;
+    width: 15px;
+}
+
+#bianco10
+{   top: 80px;
+    height: 600px;
+    left:1272px;
+    width: 28px;
+}
+
+#M1
+{   width: 70px;
+    height: 70px;
+    top: 55px;
+    left: 930px;   
+}
+
+#M2
+{   width: 70px;
+    height: 70px;
+    top: 55px;
+    left: 860px;   
+}
+
+#M3
+{   width: 70px;
+    height: 70px;
+    top: 55px;
+    left:790px;   
+}
+
+#M4
+{   width: 80px;
+    height: 70px;
+    top: 55px;
+    left:665px;   
+}
+
+#M5
+{   width: 70px;
+    height: 70px;
+    top: 245px;
+    left:25px;   
+}
+
+#M6
+{   width: 70px;
+    height: 70px;
+    top: 315px;
+    left:25px;   
+}
+
+#M7
+{   width: 70px;
+    height: 315px;
+    top: 535px;
+    left:28px;   
+}
+#M8
+{   width: 75px;
+    height: 155px;
+    top: 695px;
+    left:98px;   
+}
+#M9
+{   width: 75px;
+    height: 155px;
+    top: 695px;
+    left:173px;   
+}
+#M10
+{   width: 45px;
+    height: 110px;
+    top: 740px;
+    left:248px;   
+}
+#M11
+{   width: 75px;
+    height: 80px;
+    top: 770px;
+    left:580px;   
+}
+#M12
+{   width: 75px;
+    height: 80px;
+    top: 770px;
+    left:655px;   
+}
+#M13
+{   width: 75px;
+    height: 80px;
+    top: 770px;
+    left:730px;   
+}
+
+
+#P1
+{
+   top: 250px;
+   left:945px;
+   
+}
+#P2
+{
+   top: 250px;
+   left:875px;
+   
+}
+#P3
+{
+   top: 250px;
+   left:805px;
+   
+}
+#P4
+{
+   top: 250px;
+   left:735px;
+   
+}
+#P5
+{
+   top: 250px;
+   left:665px;
+   
+}
+#P6
+{
+   top: 250px;
+   left:595px;
+   
+}
+#P7
+{
+   top: 250px;
+   left:525px;
+   
+}
+#P8
+{
+   top: 250px;
+   left:455px;
+   
+}
+#P9
+{
+   top: 250px;
+   left:385px;
+   
+}
+
+
+#P10
+{
+   top: 320px;
+   left:945px;
+   
+}
+#P11
+{
+   top: 320px;
+   left:875px;
+   
+}
+#P12
+{
+   top: 320px;
+   left:805px;
+   
+}
+#P13
+{
+   top: 320px;
+   left:735px;
+   
+}
+#P14
+{
+   top: 320px;
+   left:665px;
+   
+}
+#P15
+{
+   top: 320px;
+   left:595px;
+   
+}
+#P16
+{
+  top: 320px;
+   left:525px;
+   
+}
+#P17
+{
+   top: 320px;
+   left:455px;
+   
+}
+#P18
+{
+   top: 320px;
+   left:385px;
+   
+}
+
+#P19
+{
+   top: 545px;
+   left:962px;
+   
+}
+#P20
+{
+   top: 545px;
+   left:902px;
+   
+}
+#P21
+{
+   top: 545px;
+   left:842px;
+   
+}
+#P22
+{
+   top: 545px;
+   left:782px;
+   
+}
+#P23
+{
+   top: 545px;
+   left:722px;
+   
+}
+#P24
+{
+   top: 545px;
+   left:662px;
+   
+}
+#P25
+{
+   top: 545px;
+   left:602px;
+   
+}
+#P26
+{
+   top: 545px;
+   left:542px;
+   
+}
+#P27
+{
+   top: 545px;
+   left:482px;
+   
+}
+#P28
+{
+   top: 545px;
+   left:422px;
+   
+}
+
+
+#P29
+{
+   top: 615px;
+   left:962px;
+   
+}
+#P30
+{
+   top: 615px;
+   left:902px;
+   
+}
+#P31
+{
+   top: 615px;
+   left:842px;
+   
+}
+#P32
+{
+   top: 615px;
+   left:782px;
+   
+}
+#P33
+{
+   top: 615px;
+   left:722px;
+   
+}
+#P34
+{
+   top: 615px;
+   left:662px;
+   
+}
+#P35
+{
+  top: 615px;
+   left:602px;
+   
+}
+#P36
+{
+   top: 615px;
+   left:542px;
+   
+}
+#P37
+{
+  top: 615px;
+  left:482px;
+   
+}
+#P38
+{
+   top: 615px;
+   left:422px;
+   
+}
+
+#A1
+{
+    top: 55px;
+}
+
+#A2
+{
+    top: 85px;
+}
+
+
+#B1
+{
+    top: 165px;
+}
+
+#B2
+{
+    top: 195px;
+}
+
+#C1
+{
+    top: 270px;
+}
+
+#C2
+{
+    top: 300px;
+}
+
+#D1
+{
+    top: 390px;
+}
+
+#E1
+{
+    top: 500px;
+}
+
+#E2
+{
+    top: 530px;
+}
+
+#Z1
+{
+    top: 730px;
+}
+
+#Z2
+{
+    top: 760px;
+}
+
+.pianoScaffale
+{
+    border: 5px solid black;
+    background-color: white;
+    text-align: center;
+    width: 200px;
+    height: 60px;
+    position: absolute;
+    visibility: visible;
+}
+.pianoScaffale:hover
+{
+    border: 3px dashed red;
+}
+
+.pianoScaffaleSelezionato
+{
+    border: 5px solid black;
+    background-color: yellow;
+    text-align: center;
+    width: 200px;
+    height: 60px;
+    position: absolute;
+    visibility: visible;
+}
+.pianoScaffaleSelezionato:hover
+{
+    border: 3px dashed red;
+}
+
+
+.pianoScaffaleOccupato
+{
+    border: 5px solid black;
+    background-color: #FFB266;
+    text-align: center;
+    width: 200px;
+    height: 60px;
+    position: absolute;
+    visibility: visible;
+}
+.pianoScaffaleOccupato:hover
+{
+    border: 3px dashed red;
+}
+
+.pianoScaffaleOccupato:focus
+{
+    background-color: #FFB266;
+}
+
+#A
+{
+    left:1300px;
+    top: 70px;
+}
+#B
+{
+  left:1500px;
+  top: 70px;
+}
+#C
+{
+  left:1700px;
+  top: 70px;
+}
+
+#D
+{
+   left:1300px; 
+   top: 130px;
+        
+}
+#E
+{
+    top: 130px;
+    left:1500px;
+}
+#F
+{
+    top: 130px;
+    left:1700px;
+}
+#G
+{
+    left:1300px;
+    top: 190px;
+}
+#H
+{  
+    top: 190px;
+    left:1500px;
+}
+#I
+{
+    top: 190px;
+    left:1700px;
+}
+
+#L
+{
+    left:1300px;
+    top: 250px;       
+}
+#M
+{
+    top: 250px;
+    left:1500px;
+}
+#N
+{
+    top: 250px;
+    left:1700px;
+}
+#O
+{
+    left:1300px;
+    top: 310px;      
+}
+#P
+{
+    top: 310px;
+    left:1500px;
+}
+#Q
+{
+    top: 310px;
+    left:1700px;
+}
+#R
+{
+    left:1300px;
+    top: 370px;
+}
+#S
+{  
+    top: 370px;
+    left:1500px;
+}
+#T
+{
+    top: 370px;
+    left:1700px;
+}
+
+#U
+{
+   left:1300px; 
+   top: 430px;        
+}
+#V
+{
+    top: 430px;
+    left:1500px;
+}
+#Z
+{
+    top: 430px;
+    left:1700px;
+}
+
+
+
+#Risultato
+{
+    top: 510px;
+    left: 1300px;
+    position: absolute;
+    width:auto;
+    visibility:visible;
+}
+table,th,td
+{
+   border: 1px solid black;
+   background-color:white;
+   visibility:visible;
+}
+
+
+

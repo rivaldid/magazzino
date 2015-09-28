@@ -87,7 +87,8 @@ cat /etc/krb5.conf
  RETE.POSTE = {
   kdc = 10.208.77.84
   kdc = 10.205.73.84
-  admin_server = 10.208.77.84
+  #admin_server = 10.208.77.84
+  admin_server = miretedc001.rete.poste
   default_domain = rete.poste
  }
 
@@ -449,3 +450,37 @@ fix2: PHP Warning:  fopen
 chcon -t httpd_sys_rw_content_t /var/www/html/mysite/mydir -R
 cgi-bin*
 systemctl restart httpd.service
+firewall-cmd --permanent --zone=public --add-port=3306/tcp
+firewall-cmd --reload
+
+yum install samba samba-client samba-common
+mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+cat /etc/samba/smb.conf
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+netbios name = centos
+security = user
+map to guest = bad user
+dns proxy = no
+#============================ Share Definitions ==============================
+[Anonymous]
+path = /samba/stagisti
+browsable =yes
+writable = yes
+guest ok = yes
+read only = no
+
+firewall-cmd --permanent --zone=public --add-service=samba
+firewall-cmd --reload
+
+mkdir -p /samba/
+systemctl enable smb.service
+systemctl enable nmb.service
+systemctl restart smb.service
+systemctl restart nmb.service
+
+cd /samba
+chmod -R 0755 stagisti/
+chown -R nobody:nobody stagisti/
+chcon -t samba_share_t /samba/stagisti/
