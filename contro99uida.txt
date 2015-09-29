@@ -401,6 +401,23 @@ installation should now be secure.
 Thanks for using MariaDB!
 [root@server1 ~]#
 
+*fix mariadb character-set
+cat /etc/my.cnf
+[mysqld]
+...
+character-set-server=utf8
+
+*remote windows shares
+yum install samba-client samba-common cifs-utils
+vim /etc/fstab
+\\rto1y11c013\Dati\DC\REPORT\Export /mnt/REPORT cifs user,uid=500,rw,noauto,suid,credentials=/home/myuser/account_ad.txt 0 0
+$ cat /home/vilardid/account_ad.txt
+username=myuser
+password=mypass
+
+
+
+
 
 SETUP CENTOS7 rto1dcpm172.rete.poste
 vim /etc/hosts
@@ -442,6 +459,7 @@ systemctl restart httpd.service
 
 fix permessi su www*
 porting db (no fixes)*
+fix mariadb character-set*
 porting webapp (solo git clone)*
 fix1: PHP Warning:  date()
 $ grep "date.timezone =" /etc/php.ini
@@ -484,3 +502,5 @@ cd /samba
 chmod -R 0755 stagisti/
 chown -R nobody:nobody stagisti/
 chcon -t samba_share_t /samba/stagisti/
+remote windows shares*
+
