@@ -425,7 +425,7 @@ chkconfig network on
 proxy*
 yum update
 yum upgrade
-yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils
+yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen
 reboot
 localectl set-locale LANG=it_IT.utf8
 yum install httpd php
@@ -504,3 +504,8 @@ chown -R nobody:nobody stagisti/
 chcon -t samba_share_t /samba/stagisti/
 remote windows shares*
 
+WEBUSER*
+CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
+GRANT SELECT ON reporting.WINWATCH TO 'webreporting'@'%';
+GRANT SELECT ON reporting.SERCHIO TO 'webreporting'@'%';
+FLUSH PRIVILEGES;
