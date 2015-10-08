@@ -509,3 +509,53 @@ CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
 GRANT SELECT ON reporting.WINWATCH TO 'webreporting'@'%';
 GRANT SELECT ON reporting.SERCHIO TO 'webreporting'@'%';
 FLUSH PRIVILEGES;
+
+ELREPO REPOSITORY
+- installazione
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+- rimozione
+rpm -qf /etc/yum.repos.d/elrepo.repo
+yum remove elrepo-release
+yum clean all
+
+## RHEL/CentOS 7 64-Bit ##
+# wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# rpm -ivh epel-release-7-5.noarch.rpm
+yum-config-manager --save --setopt=updates.skip_if_unavailable=true
+yum --enablerepo=epel info <PACKAGE>
+
+yum install dnstop
+dnstop enp63s0
+
+*CNTLM
+rpm -Uvh http://sourceforge.net/projects/cntlm/files/cntlm/cntlm%200.92.3/cntlm-0.92.3-1.x86_64.rpm
+cp /etc/cntlm.conf /etc/cntlm.conf.bk
+vim /etc/cntlm.conf
+/etc/init.d/cntlmd start
+chkconfig --add cntlmd
+chkconfig cntlmd on
+firewall-cmd --permanent --zone=public --add-port=3128/tcp
+firewall-cmd --reload
+/etc/init.d/cntlmd restart
+service --status-all
+NOTA: cntlm -v -c /etc/cntlm.conf
+*fix Error creating a new PID file
+mkdir /var/run/cntlm
+chgrp cntlm /var/run/cntlm/
+chmod g+w /var/run/cntlm/
+systemctl start cntlm.service
+less /var/log/messages | grep cntlm
+
+*fix disable samba printing support
+(failed to retrieve printer list: NT_STATUS_UNSUCCESSFUL)
+cat /etc/samba/smb.conf
+[global]
+...
+load printers = no
+printing = bsd
+printcap name = /dev/null
+disable spoolss = yes
+
+systemctl restart smb.service
+systemctl restart nmb.service
