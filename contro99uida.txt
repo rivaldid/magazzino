@@ -559,3 +559,9 @@ disable spoolss = yes
 
 systemctl restart smb.service
 systemctl restart nmb.service
+
+*hardware support
+yum install lm_sensors.x86_64
+sensors-detect
+yum install smartmontools
+test: smartctl --test=long /dev/sda
