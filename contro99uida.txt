@@ -565,3 +565,13 @@ yum install lm_sensors.x86_64
 sensors-detect
 yum install smartmontools
 test: smartctl --test=long /dev/sda
+smartctl -H /dev/sda
+service smartd start
+chkconfig smartd on
+smartctl -H /dev/sda
+smartctl -i /dev/sda
+smartctl -s on /dev/sda
+smartctl -c /dev/sda
+smartctl -a /dev/sda
+smartctl -a -d ata /dev/sda
+
