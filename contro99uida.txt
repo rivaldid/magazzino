@@ -575,3 +575,8 @@ smartctl -c /dev/sda
 smartctl -a /dev/sda
 smartctl -a -d ata /dev/sda
 
+problema di intrusione:
+Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
+soluzione:
+si tratta di un reverse lookup fatto dal server dhcp (penso), la soluzione è 
+UseDNS no in /etc/ssh/sshd_config

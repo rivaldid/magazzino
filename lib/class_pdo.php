@@ -742,7 +742,7 @@ class myquery extends DB {
 	public function lista_accessi($db) {
 
 		try {
-			return $db->query("SELECT * FROM vserv_trace;")->resultset();
+			return $db->query("SELECT * FROM vserv_webtrace;")->resultset();
 		} catch (PDOException $e) {
 			error_handler($e->getMessage());
 		}
