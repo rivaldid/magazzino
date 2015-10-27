@@ -425,7 +425,7 @@ chkconfig network on
 proxy*
 yum update
 yum upgrade
-yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen
+yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen htop
 reboot
 localectl set-locale LANG=it_IT.utf8
 yum install httpd php
@@ -580,3 +580,8 @@ Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map bac
 soluzione:
 si tratta di un reverse lookup fatto dal server dhcp (penso), la soluzione è 
 UseDNS no in /etc/ssh/sshd_config
+
+fix sudo: è necessario disporre di un tty per eseguire sudo
+commenta Defaults requiretty in visudo
+
+yum --enablerepo=epel-testing install jnettop
