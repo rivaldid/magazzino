@@ -584,4 +584,36 @@ UseDNS no in /etc/ssh/sshd_config
 fix sudo: è necessario disporre di un tty per eseguire sudo
 commenta Defaults requiretty in visudo
 
+
+
+
+________________________________________________________________________
+SYSADMIN:
 yum --enablerepo=epel-testing install jnettop
+
+$ cat .jnettop
+interface "enp63s0"
+local_aggregation host
+promisc on
+remote_aggregation port
+resolve off
+resolve_rule "10.208.74.124" "255.255.254.0" normal
+resolve_rule "10.208.74.124" "255.255.254.0" external "/usr/share/jnettop/jnettop-lookup-nmb"
+rule "show 10.98.2.120" "src 10.98.2.120"
+select_rule "show 10.98.2.120"
+variable "intranet" "net 10.0.0.0/8"
+
+yum install atop mytop iftop
+
+cat .mytop
+user=root
+pass=w3a49!Xy
+host=localhost
+db=mysql
+delay=1
+port=3306
+socket=
+batchmode=0
+header=1
+color=1
+idle=1
