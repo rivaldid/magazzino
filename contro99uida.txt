@@ -508,6 +508,7 @@ WEBUSER*
 CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
 GRANT SELECT ON reporting.WINWATCH TO 'webreporting'@'%';
 GRANT SELECT ON reporting.SERCHIO TO 'webreporting'@'%';
+GRANT EXECUTE ON PROCEDURE reporting.routing TO 'webreporting'@'%';
 FLUSH PRIVILEGES;
 
 ELREPO REPOSITORY
@@ -603,7 +604,7 @@ rule "show 10.98.2.120" "src 10.98.2.120"
 select_rule "show 10.98.2.120"
 variable "intranet" "net 10.0.0.0/8"
 
-yum install atop mytop iftop
+yum install atop mytop iftop nmap
 
 cat .mytop
 user=root
@@ -617,3 +618,26 @@ batchmode=0
 header=1
 color=1
 idle=1
+
+
+SOLUZIONE NON APPLICATA
+Ip 2 Netbios resolution
+1) vim /etc/samba/smb.conf
+wins support = yes
+wins server = 10.207.72.244
+wins proxy = yes
+dns proxy = yes
+2) vim /etc/nsswitch.conf
+hosts:      files dns wins
+3) systemctl restart smb.service
+systemctl restart nmb.service
+
+nmblookup -A 10.98.2.41
+
+samba fix: Unable to find the Domain Master Browser name RETE<1b> for the workgroup RETE.
+vim /etc/samba/smb.conf
+local master = yes
+preferred master = yes
+domain master = yes
+These two should take care of your error messages concerning no master browser
+FINE SOLUZIONE NON APPLICATA
