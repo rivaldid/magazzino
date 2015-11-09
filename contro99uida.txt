@@ -410,7 +410,8 @@ character-set-server=utf8
 *remote windows shares
 yum install samba-client samba-common cifs-utils
 vim /etc/fstab
-\\rto1y11c013\Dati\DC\REPORT\Export /mnt/REPORT cifs user,uid=500,rw,noauto,suid,credentials=/home/myuser/account_ad.txt 0 0
+\\rto1y11c013\Dati\DC\REPORT\Export /mnt/REPORT         cifs user,uid=500,rw,noauto,suid,credentials=/home/vilardid/account_ad.txt 0 0
+\\10.200.22.24\tempRAS /mnt/tempRAS                     cifs user,uid=500,rw,noauto,suid,credentials=/home/vilardid/account_ad.txt 0 0
 $ cat /home/vilardid/account_ad.txt
 username=myuser
 password=mypass
@@ -425,7 +426,7 @@ chkconfig network on
 proxy*
 yum update
 yum upgrade
-yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen htop
+yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen htop xls2csv
 reboot
 localectl set-locale LANG=it_IT.utf8
 yum install httpd php
@@ -604,11 +605,11 @@ rule "show 10.98.2.120" "src 10.98.2.120"
 select_rule "show 10.98.2.120"
 variable "intranet" "net 10.0.0.0/8"
 
-yum install atop mytop iftop nmap
+yum install atop mytop iftop nmap iptraf
 
 cat .mytop
 user=root
-pass=w3a49!Xy
+pass=mypass
 host=localhost
 db=mysql
 delay=1
@@ -641,3 +642,23 @@ preferred master = yes
 domain master = yes
 These two should take care of your error messages concerning no master browser
 FINE SOLUZIONE NON APPLICATA
+
+drop ping request (non funzionante)
+sudo iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
+sudo iptables -L INPUT -v
+sudo iptables -D INPUT #num
+
+*fix kdump fail to start
+yum install system-config-kdump
+Procedure 2.1. Changing Memory Options in GRUB2
+Open the /etc/default/grub configuration file as root using a plain text editor such as vim or Gedit.
+In this file, locate the line beginning with GRUB_CMDLINE_LINUX. The line will look similar to the following:
+GRUB_CMDLINE_LINUX="rd.lvm.lv=rhel/swap crashkernel=auto rd.lvm.lv=rhel/root rhgb quiet"
+Note the highlighted crashkernel= option; this is where the reserved memory is configured.
+Change the value of the crashkernel= option to the amount of memory you want to reserve. For example, to reserve 128 MB of memory, use the following:
+crashkernel=128M
+NOTE
+There are multiple ways to configure the memory reserved - for example, you can define an offset or multiple memory amounts based on how much RAM is available in the system at startup. This is described further in this section.
+Then, save the file and exit the editor.
+Finally, regenerate the GRUB2 configuration using the edited default file. If your system uses BIOS firmware, execute the following command:
+# grub2-mkconfig -o /boot/grub2/grub.cfg
