@@ -662,3 +662,17 @@ There are multiple ways to configure the memory reserved - for example, you can 
 Then, save the file and exit the editor.
 Finally, regenerate the GRUB2 configuration using the edited default file. If your system uses BIOS firmware, execute the following command:
 # grub2-mkconfig -o /boot/grub2/grub.cfg
+
+UTILIZZO YUM
+yum info package
+yumdb info package
+repoquery --list package
+
+*fix ntp timeserver
+yum install ntp
+ntpdate -q server_addr
+ntpdate server_addr
+edit /etc/ntp.conf add server_addr
+The iburst directive at the end of each line is to speed up the initial synchronization
+service ntpd restart
+chkconfig ntpd on
