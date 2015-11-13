@@ -507,9 +507,17 @@ remote windows shares*
 
 WEBUSER*
 CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
-GRANT SELECT ON reporting.WINWATCH TO 'webreporting'@'%';
-GRANT SELECT ON reporting.SERCHIO TO 'webreporting'@'%';
-GRANT EXECUTE ON PROCEDURE reporting.routing TO 'webreporting'@'%';
+
+GRANT SELECT ON `reporting`.`SERCHIO` TO 'webreporting'@'%';
+GRANT SELECT ON `reporting`.`BADGES` TO 'webreporting'@'%';
+GRANT SELECT ON `magazzino`.`vserv_trace` TO 'webreporting'@'%';
+GRANT SELECT ON `reporting`.`WINWATCH` TO 'webreporting'@'%';
+GRANT EXECUTE ON PROCEDURE `reporting`.`routing` TO 'webreporting'@'%';
+SHOW GRANTS FOR 'webreporting'@'%';
+
+(REVOKE ALL ON reporting.SERCHIO FROM 'webreporting'@'localhost';)
+(REVOKE EXECUTE ON PROCEDURE reporting.routing FROM 'webreporting'@'localhost';)
+
 FLUSH PRIVILEGES;
 
 ELREPO REPOSITORY
@@ -676,3 +684,6 @@ edit /etc/ntp.conf add server_addr
 The iburst directive at the end of each line is to speed up the initial synchronization
 service ntpd restart
 chkconfig ntpd on
+
+cronjobs
+15 10 * * 1-5 /home/vilardid/reporting/population.sh
