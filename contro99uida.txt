@@ -687,3 +687,6 @@ chkconfig ntpd on
 
 cronjobs
 15 10 * * 1-5 /home/vilardid/reporting/population.sh
+
+list directory
+du -csh /what/ever
