@@ -92,13 +92,13 @@ if (isset($_POST['posizione'])AND(!empty($_POST['posizione'])))
 else
 	$posizione = NULL;
 
-// ODA
-if (isset($_POST['oda'])AND(!empty($_POST['oda'])))
-	$oda = trim($_POST['oda']);
+// ordine
+if (isset($_POST['ordine'])AND(!empty($_POST['ordine'])))
+	$ordine = trim($_POST['ordine']);
 else
-	$oda = NULL;
+	$ordine = NULL;
 
-//note
+// note
 if (isset($_POST['note'])AND(!empty($_POST['note'])))
 	$note = trim(epura_space2percent($_POST['note']));
 else
@@ -110,8 +110,8 @@ if (isset($_POST['invia'])) {
 
 	$log .= remesg("Effettua una nuova <a href=\"?page=transiti_search\">ricerca</a> in transiti","search");
 
-	if ($DEBUG) $log .= remesg("Chiamata per transiti_search con variabili: $id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note","debug");
-	$query = myquery::transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note);
+	if ($DEBUG) $log .= remesg("Chiamata per transiti_search con variabili: $id_merce,$data_min,$data_max,$tags,$documento,$posizione,$ordine,$note","debug");
+	$query = myquery::transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$ordine,$note);
 
 	// test ritorno valori
 	if ($query) {
@@ -244,7 +244,7 @@ if (is_null($a) OR empty($a)) {
 
 		$a .= "<tr>\n";
 			$a .= "<td>ODA</td>\n";
-			$a .= "<td><input type='text' name='oda'/></td>\n";
+			$a .= "<td><input type='text' name='ordine'/></td>\n";
 		$a .= "</tr>\n";
 
 		$a .= "<tr>\n";

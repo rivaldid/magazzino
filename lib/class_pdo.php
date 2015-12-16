@@ -360,7 +360,7 @@ class myquery extends DB {
 		}
 	}
 
-	public function transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$oda,$note) {
+	public function transiti_search($db,$id_merce,$data_min,$data_max,$tags,$documento,$posizione,$ordine,$note) {
 
 		try {
 
@@ -370,7 +370,7 @@ class myquery extends DB {
 			if ($tags) $q .= " AND tags LIKE '%$tags%'";
 			if ($documento) $q .= " AND documento LIKE '%$documento%'";
 			if ($posizione) $q .= " AND posizione LIKE '%$posizione%'";
-			if ($oda) $q .= " AND ordine LIKE '%$oda%'";
+			if ($ordine) $q .= " AND doc_ordine LIKE '%$ordine%'";
 			if ($note) $q .= " AND note LIKE '%$note%'";
 
 			return $query = $db->query($q)->resultset();

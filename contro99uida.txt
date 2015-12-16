@@ -690,3 +690,7 @@ cronjobs
 
 list directory
 du -csh /what/ever
+
+hard disk healt
+smartctl -a /dev/sda | less
+badblocks -v /dev/sda
