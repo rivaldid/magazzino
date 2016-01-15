@@ -435,7 +435,7 @@ yum -y install mariadb-server mariadb
 systemctl start mariadb.service
 systemctl enable mariadb.service
 fix mysql_secure_installation*
-yum -y install php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel mod-ssl
+yum -y install php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel mod-ssl pv testdisk
 yum -y install mod_auth_kerb krb5-workstation pam_krb5
 config apache: ServerAdmin/ServerName + /etc/httpd/conf.d/web.conf
 config krb5*
@@ -508,10 +508,13 @@ remote windows shares*
 WEBUSER*
 CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
 
+GRANT EXECUTE ON FUNCTION `reporting`.`html_unencode` TO 'webreporting'@'%' 
 GRANT SELECT ON `reporting`.`SERCHIO` TO 'webreporting'@'%';
+GRANT SELECT ON `reporting`.`SERCHIO_OSPITI` TO 'webreporting'@'%';
 GRANT SELECT ON `reporting`.`BADGES` TO 'webreporting'@'%';
 GRANT SELECT ON `magazzino`.`vserv_trace` TO 'webreporting'@'%';
 GRANT SELECT ON `reporting`.`WINWATCH` TO 'webreporting'@'%';
+GRANT SELECT ON `reporting`.`ADC` TO 'webreporting'@'%';
 GRANT EXECUTE ON PROCEDURE `reporting`.`routing` TO 'webreporting'@'%';
 SHOW GRANTS FOR 'webreporting'@'%';
 
