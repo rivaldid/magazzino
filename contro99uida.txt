@@ -588,6 +588,10 @@ smartctl -c /dev/sda
 smartctl -a /dev/sda
 smartctl -a -d ata /dev/sda
 
+hard disk healt
+smartctl -a /dev/sda | less
+badblocks -v /dev/sda
+
 problema di intrusione:
 Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
 soluzione:
@@ -694,6 +698,19 @@ cronjobs
 list directory
 du -csh /what/ever
 
-hard disk healt
-smartctl -a /dev/sda | less
-badblocks -v /dev/sda
+**)components npm & nodejs & jquery
+yum install npm
+npm config set proxy http://127.0.0.1:3128
+npm config set https-proxy http://127.0.0.1:3128
+npm install -g inherits
+npm install -g bower
+cat ~/.bowerrc
+{
+    "proxy" : "http://127.0.0.1:3128",
+    "https-proxy" : "http://127.0.0.1:3128",
+    "strict-ssl": false
+}
+bower install jquery
+bower install dynatable
+bower install font-awesome-bower
+bower install font-awesome-animation
