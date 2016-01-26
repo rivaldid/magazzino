@@ -40,6 +40,7 @@ $(document).ready(function() {
 <h1><a class="firstletter">G</a>estione <a class="firstletter">M</a>agazzino <a class="firstletter">D</a>C<a class="firstletter">T</a>O</h1>
 </div>
 
+<div id="contents">
 <?php
 	if ($_SERVER["QUERY_STRING"] != NULL) {
 		if (!empty($_GET["page"])) $page = sprintf("page/%s.php",$_GET["page"]);
@@ -81,6 +82,7 @@ $(document).ready(function() {
 	echo $a;
 	
 ?>
+</div>
 
 <div id="footer">
 <h3>&copy; Poste italiane 2016 - Specifiche tecniche</h3>

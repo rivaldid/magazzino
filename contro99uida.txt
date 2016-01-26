@@ -1,19 +1,19 @@
-                  _            ___   ___        _     _       
-                 | |          / _ \ / _ \      (_)   | |      
-   ___ ___  _ __ | |_ _ __ __| (_) | (_) |_   _ _  __| | __ _ 
+                  _            ___   ___        _     _
+                 | |          / _ \ / _ \      (_)   | |
+   ___ ___  _ __ | |_ _ __ __| (_) | (_) |_   _ _  __| | __ _
   / __/ _ \| '_ \| __| '__/ _ \__, |\__, | | | | |/ _` |/ _` |
  | (_| (_) | | | | |_| | | (_) |/ /   / /| |_| | | (_| | (_| |
   \___\___/|_| |_|\__|_|  \___//_/   /_/  \__,_|_|\__,_|\__,_|
-                                                              
-                                                              
+
+
 ------------------------------------------------------------------------
 
 
-*fix nuovo mac: 
-rigenerandolo dal programma di virtualizzazione si sara' creato 
+*fix nuovo mac:
+rigenerandolo dal programma di virtualizzazione si sara' creato
 nuovo nic eth1 in /etc/udev/rules.d/70-persistent-net.rules
 quel mac lo inserisco in HWADDR in /etc/sysconfig/network-scripts/ifcfg-eth0
-e /etc/udev/rules.d/70-persistent-net.rules stesso eliminando la riga 
+e /etc/udev/rules.d/70-persistent-net.rules stesso eliminando la riga
 relativa al nuovo nic e lasciando eth0 con il mac attuale
 
 *fix repo baseline:
@@ -354,7 +354,7 @@ OK, successfully used password, moving on...
 Setting the root password ensures that nobody can log into the MariaDB
 root user without the proper authorisation.
 
-Set root password? [Y/n] 
+Set root password? [Y/n]
 New password: <--yourmariadbpassword
 Re-enter new password: <--yourmariadbpassword
 Password updated successfully!
@@ -508,7 +508,7 @@ remote windows shares*
 WEBUSER*
 CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
 
-GRANT EXECUTE ON FUNCTION `reporting`.`html_unencode` TO 'webreporting'@'%' 
+GRANT EXECUTE ON FUNCTION `reporting`.`html_unencode` TO 'webreporting'@'%'
 GRANT SELECT ON `reporting`.`SERCHIO` TO 'webreporting'@'%';
 GRANT SELECT ON `reporting`.`SERCHIO_OSPITI` TO 'webreporting'@'%';
 GRANT SELECT ON `reporting`.`BADGES` TO 'webreporting'@'%';
@@ -595,7 +595,7 @@ badblocks -v /dev/sda
 problema di intrusione:
 Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
 soluzione:
-si tratta di un reverse lookup fatto dal server dhcp (penso), la soluzione è 
+si tratta di un reverse lookup fatto dal server dhcp (penso), la soluzione è
 UseDNS no in /etc/ssh/sshd_config
 
 fix sudo: è necessario disporre di un tty per eseguire sudo
@@ -714,3 +714,5 @@ bower install jquery
 bower install dynatable
 bower install font-awesome-bower
 bower install font-awesome-animation
+bower install DataTables
+bower install datatables-tabletools
