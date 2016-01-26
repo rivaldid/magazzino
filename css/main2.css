@@ -1,0 +1,27 @@
+html, body {
+height: 100%;
+width: 100%;
+margin: 0;
+display: table;
+}
+
+#banner h1{
+background: #E8F404;
+color: #09539F;
+text-align: center;
+padding: 15px;
+margin: 0 auto;
+}
+
+#footer h3{
+background: #EFEFEF;
+text-align: center;
+padding: 20px;
+margin: 0 auto;
+font-size: 80%;
+font-style: italic;
+}
+
+.firstletter {
+font-size: 120%;
+}

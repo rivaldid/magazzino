@@ -9,7 +9,8 @@
 <head>
 <title>Gestione Magazzino</title>
 <link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" href="css/tabella.css" type="text/css" />
+<link rel="stylesheet" href="css/main2.css" type="text/css" />
+<link rel="stylesheet" href="css/tabella2.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/dynatable/jquery.dynatable.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/font-awesome-bower/css/font-awesome.css" type="text/css" />
 <script type="text/javascript" src="/lib/bower_components/jquery/dist/jquery.js"></script>
@@ -18,89 +19,15 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#magazzino').dynatable({
-	  features: {
-		paginate: true,
-		sort: true,
-		pushState: true,
-		search: true,
-		recordCount: true,
-		perPageSelect: true
-	  },
-	  table: {
-		defaultColumnIdStyle: 'camelCase',
-		columns: null,
-		headRowSelector: 'thead tr', // or e.g. tr:first-child
-		bodyRowSelector: 'tbody tr',
-		headRowClass: null
-	  },
-	  inputs: {
-		queries: null,
-		sorts: null,
-		multisort: ['ctrlKey', 'shiftKey', 'metaKey'],
-		page: null,
-		queryEvent: 'blur change',
-		recordCountTarget: null,
-		recordCountPlacement: 'after',
-		paginationLinkTarget: null,
-		paginationLinkPlacement: 'after',
-		paginationPrev: 'Previous',
-		paginationNext: 'Next',
-		paginationGap: [1,2,2,1],
-		searchTarget: null,
-		searchPlacement: 'before',
-		perPageTarget: null,
-		perPagePlacement: 'before',
-		perPageText: 'Show: ',
-		recordCountText: 'Showing ',
-		processingText: 'Processing...'
-	  },
-	  dataset: {
-		ajax: false,
-		ajaxUrl: null,
-		ajaxCache: null,
-		ajaxOnLoad: false,
-		ajaxMethod: 'GET',
-		ajaxDataType: 'json',
-		totalRecordCount: null,
-		queries: null,
-		queryRecordCount: null,
-		page: null,
-		perPageDefault: 10,
-		perPageOptions: [10,20,50,100],
-		sorts: null,
-		sortsKeys: null,
-		sortTypes: {},
-		records: null
-	  },
-	  // Built-in writer functions,
-	  // can be overwritten, any additional functions
-	  // provided in writers will be merged with
-	  // this default object.
-	  writers: {
-		_rowWriter: defaultRowWriter,
-		_cellWriter: defaultCellWriter,
-		_attributeWriter: defaultAttributeWriter
-	  },
-	  // Built-in reader functions,
-	  // can be overwritten, any additional functions
-	  // provided in readers will be merged with
-	  // this default object.
-	  readers: {
-		_rowReader: null,
-		_attributeReader: defaultAttributeReader
-	  },
-	  params: {
-		dynatable: 'dynatable',
-		queries: 'queries',
-		sorts: 'sorts',
-		page: 'page',
-		perPage: 'perPage',
-		offset: 'offset',
-		records: 'records',
-		record: null,
-		queryRecordCount: 'queryRecordCount',
-		totalRecordCount: 'totalRecordCount'
-	  }
+		features: {
+			paginate: false
+		},
+		input: {
+			queries: $('#merce, #posizione')
+		},
+		table: {
+			defaultColumnIdStyle: 'trimDash'
+		}
 	})
 });
 </script>
@@ -108,6 +35,11 @@ $(document).ready(function() {
 </head>
 
 <body>
+
+<div id="banner">
+<h1><a class="firstletter">G</a>estione <a class="firstletter">M</a>agazzino <a class="firstletter">D</a>C<a class="firstletter">T</a>O</h1>
+</div>
+
 <?php
 	if ($_SERVER["QUERY_STRING"] != NULL) {
 		if (!empty($_GET["page"])) $page = sprintf("page/%s.php",$_GET["page"]);
@@ -149,6 +81,10 @@ $(document).ready(function() {
 	echo $a;
 	
 ?>
+
+<div id="footer">
+<h3>&copy; Poste italiane 2016 - Specifiche tecniche</h3>
+</div>
 
 </body>
 
