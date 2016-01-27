@@ -11,24 +11,16 @@
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="stylesheet" href="css/main2.css" type="text/css" />
 <link rel="stylesheet" href="css/tabella2.css" type="text/css" />
-<link rel="stylesheet" href="/lib/bower_components/dynatable/jquery.dynatable.css" type="text/css" />
+
 <link rel="stylesheet" href="/lib/bower_components/font-awesome-bower/css/font-awesome.css" type="text/css" />
 <script type="text/javascript" src="/lib/bower_components/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="/lib/bower_components/dynatable/jquery.dynatable.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/lib/bower_components/datatables/media/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#magazzino').dynatable({
-		features: {
-			paginate: false
-		},
-		input: {
-			queries: $('#merce, #posizione')
-		},
-		table: {
-			defaultColumnIdStyle: 'trimDash'
-		}
-	})
+	$('#magazzino').DataTable();
 });
 </script>
 
@@ -65,6 +57,9 @@ $(document).ready(function() {
 	$a .= "<th data-dynatable-column=\"quantita\">Quantita'</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</thead>\n";
+	
+	$a .= "<tfoot>\n";
+	$a .= "</tfoot>\n";
 	
 	$a .= "<tbody>\n";
 	foreach ($query as $row) {
