@@ -716,3 +716,4 @@ bower install font-awesome-bower
 bower install font-awesome-animation
 bower install DataTables
 bower install datatables-tabletools
+bower install --save datatables.net-buttons

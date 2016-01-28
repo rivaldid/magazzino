@@ -18,10 +18,39 @@
 <link rel="stylesheet" type="text/css" href="/lib/bower_components/datatables/media/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#magazzino').DataTable();
+
+	$('#magazzino').DataTable({
+		"iDisplayLength": 25,
+		buttons: [
+			'copy'
+		]
+	});
+	
+	/*$('#addbtn').on('click', function() {
+		table.row.add([
+			$('#merce').val('ciao merce'),
+			$('#posizione').val('puzza'),
+			$('#quantita').val('la caccaaaa')
+		]).draw();
+	});*/
+	
+	$('#magazzino').on('click','a.input_scarico',function (scarico_do) {
+		scarico_do.preventDefault();
+		
+		form_scarico
+			.title( 'Edit record' )
+			.message( "Are you sure you wish to delete this row?" )
+			.buttons( { "label": "Delete", "fn": function () { editor.submit() } } )
+			.remove( $(this).closest('tr') );
+	});
+	
 });
+
 </script>
 
 </head>
@@ -33,6 +62,7 @@ $(document).ready(function() {
 </div>
 
 <div id="contents">
+<!-- <input type="button" value="add" id="addbtn" /> -->
 <?php
 	if ($_SERVER["QUERY_STRING"] != NULL) {
 		if (!empty($_GET["page"])) $page = sprintf("page/%s.php",$_GET["page"]);
@@ -52,13 +82,20 @@ $(document).ready(function() {
 	
 	$a .= "<thead>\n";
 	$a .= "<tr>\n";
-	$a .= "<th data-dynatable-column=\"merce\">Merce</th>\n";
-	$a .= "<th data-dynatable-column=\"posizione\">Posizione</th>\n";
-	$a .= "<th data-dynatable-column=\"quantita\">Quantita'</th>\n";
+	$a .= "<th>Merce</th>\n";
+	$a .= "<th>Posizione</th>\n";
+	$a .= "<th>Quantita'</th>\n";
+	$a .= "<th>Scarica</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</thead>\n";
 	
 	$a .= "<tfoot>\n";
+	$a .= "<tr>\n";
+	$a .= "<th>Merce</th>\n";
+	$a .= "<th>Posizione</th>\n";
+	$a .= "<th>Quantita'</th>\n";
+	$a .= "<th>Scarica</th>\n";
+	$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
 	
 	$a .= "<tbody>\n";
@@ -67,6 +104,7 @@ $(document).ready(function() {
 		$riga .= "<td>".$row['merce']."</td>\n";
 		$riga .= "<td>".$row['posizione']."</td>\n";
 		$riga .= "<td>".$row['quantita']."</td>\n";
+		$riga .= "<td><a href=\"\" class=\"input_scarico\">Scarica</td></td>\n";
 		$riga .= "</tr>\n";
 	}
 	$a .= $riga;
