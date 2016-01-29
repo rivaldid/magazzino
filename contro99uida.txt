@@ -108,6 +108,11 @@ cat /etc/krb5.conf
 cat /etc/krb5.keytab
 HTTP/10.98.2.181@RETE.POSTE
 
+
+
+#################### fino qui #############################
+
+
 *pagine test
 # cat /var/www/html/test.php
 <?php
@@ -717,3 +722,21 @@ bower install font-awesome-animation
 bower install DataTables
 bower install datatables-tabletools
 bower install --save datatables.net-buttons
+
+**) mediawiki
+yum install php-xml
+yum install php-intl
+yum install php-gd
+yum install texlive
+yum install php-xcache
+systemctl restart httpd.service
+mkdir wiki
+chown vilardid:vilardid wiki
+curl -O https://releases.wikimedia.org/mediawiki/1.26/mediawiki-1.26.2.tar.gz
+tar xvzf mediawiki-1.26.2.tar.gz
+mv mediawiki-1.26.2/* .
+mysql -uroot -p
+CREATE DATABASE WIKI;
+CREATE USER 'wiki'@'%' IDENTIFIED BY 'wikiuser';
+GRANT INDEX, CREATE, SELECT, INSERT, UPDATE, DELETE, ALTER, LOCK TABLES ON WIKI.* TO 'wiki'@'%' IDENTIFIED BY 'wikiuser';
+FLUSH PRIVILEGES;
