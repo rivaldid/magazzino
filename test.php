@@ -57,7 +57,7 @@ $(document).ready(function() {
 
 <body>
 
-<div id="banner">
+<div id="banner" onclick="location.href='<?php echo $_SERVER['PHP_SELF'] ?>';">
 <h1><a class="firstletter">G</a>estione <a class="firstletter">M</a>agazzino <a class="firstletter">D</a>C<a class="firstletter">T</a>O</h1>
 </div>
 
@@ -85,7 +85,7 @@ $(document).ready(function() {
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
-	$a .= "<th>Scarica</th>\n";
+	$a .= "<th>Azioni</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</thead>\n";
 	
@@ -94,7 +94,7 @@ $(document).ready(function() {
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
-	$a .= "<th>Scarica</th>\n";
+	$a .= "<th>Azioni</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
 	
@@ -104,7 +104,7 @@ $(document).ready(function() {
 		$riga .= "<td>".$row['merce']."</td>\n";
 		$riga .= "<td>".$row['posizione']."</td>\n";
 		$riga .= "<td>".$row['quantita']."</td>\n";
-		$riga .= "<td><a href=\"\" class=\"input_scarico\">Scarica</td></td>\n";
+		$riga .= "<td><a href=\"\" class=\"input_scarico\">Info</a> <a href=\"\" class=\"input_scarico\">Scarica</a></td>\n";
 		$riga .= "</tr>\n";
 	}
 	$a .= $riga;

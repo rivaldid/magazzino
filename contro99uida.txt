@@ -9,162 +9,6 @@
 ------------------------------------------------------------------------
 
 
-*fix nuovo mac:
-rigenerandolo dal programma di virtualizzazione si sara' creato
-nuovo nic eth1 in /etc/udev/rules.d/70-persistent-net.rules
-quel mac lo inserisco in HWADDR in /etc/sysconfig/network-scripts/ifcfg-eth0
-e /etc/udev/rules.d/70-persistent-net.rules stesso eliminando la riga
-relativa al nuovo nic e lasciando eth0 con il mac attuale
-
-*fix repo baseline:
-modifica baseurl /etc/yum.repos.d/baselinesec_6.2_x86_64.repo
-baseurl = ftp://10.207.248.41/yum/rhel62/cache/x86_64/6Server/rhel-x86_64-server-6/getPackage/
-
-*fix rpmnew
-# find / -print | egrep "rpmnew"
-
-*disable proxy
-mv /etc/profile.d/proxy.csh /etc/profile.d/proxy.csh.bk
-mv /etc/profile.d/proxy.sh /etc/profile.d/proxy.sh.bk
-
-*fix proxy
-[root@rto1dcvm181 /]# cat /etc/profile.d/proxy.sh
-# proxy inizialization script (sh)
-export no_proxy='.rete.poste'
-export HTTP_PROXY='http://10.98.2.171:3128/'
-export http_proxy=$HTTP_PROXY
-export https_proxy=$HTTP_PROXY
-export FTP_PROXY=$HTTP_PROXY
-export ftp_proxy=$HTTP_PROXY
-
-[root@rto1dcvm181 /]# cat /etc/profile.d/proxy.csh
-# inizialization script (csh)
-setenv HTTP_PROXY http://10.98.2.171:3128/
-setenv FTP_PROXY http://10.98.2.171:3128/
-setenv http_proxy http://10.98.2.171:3128/
-setenv ftp_proxy http://10.98.2.171:3128/
-setenv no_proxy .rete.poste
-
-*fix warning timestamp
-aggiunta della riga in mysqld in /etc/my.cnf: explicit_defaults_for_timestamp = 1
-
-*fix MYSQL
-yum install perl-DBI
-manual download http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
-yum localinstall mysql-community-release-el6-5.noarch.rpm
-fix proxy*
-yum install mysql-community-server
-disable proxy*
-fix warning timestamp*
-chmod 1777 /tmp
-mysql_install_db
-chown -R mysql:mysql /var/lib/mysql/
-service mysqld start
-mysql_secure_installation
-
-*fix permessi su wwww
-groupadd devs
-usermod -a -G devs utente
-getent group
-chown -R root:devs /var/www/
-chmod -R 775 /var/www/
-
-*config apache: /etc/httpd/conf/httpd.conf
-ServerAdmin
-ServerName
-AllowOverride All nella home del webserver (per eseguire .htaccess)
-
-*config krb5
-mv /etc/krb5.conf /etc/krb5.conf.bk
-cat /etc/krb5.conf
-[libdefaults]
- ticket_lifetime = 24000
- default_realm = RETE.POSTE
- dns_lookup_realm = false
- dns_lookup_kdc = false
-
-[realms]
- RETE.POSTE = {
-  kdc = 10.208.77.84
-  kdc = 10.205.73.84
-  #admin_server = 10.208.77.84
-  admin_server = miretedc001.rete.poste
-  default_domain = rete.poste
- }
-
-[domain_realm]
- .rete.poste = RETE.POSTE
- rete.poste = RETE.POSTE
-
-[appdefaults]
- pam = {
-   debug = false
-   ticket_lifetime = 36000
-   renew_lifetime = 36000
-   forwardable = true
-   krb4_convert = false
- }
-
-cat /etc/krb5.keytab
-HTTP/10.98.2.181@RETE.POSTE
-
-
-
-#################### fino qui #############################
-
-
-*pagine test
-# cat /var/www/html/test.php
-<?php
-  phpinfo();
-?>
-# cat /var/www/html/.htaccess >> RENAMED web.conf
-AuthType           Kerberos
-AuthName           "immettere le credenziali rete.poste"
-KrbMethodNegotiate off
-KrbVerifyKDC       off
-KrbAuthRealm       RETE.POSTE
-Krb5Keytab         /etc/krb5.keytab
-KrbSaveCredentials on
-Require            valid-user
-
-$ cat /etc/httpd/conf.d/web.conf
-<Location "/">
-AuthType           Kerberos
-AuthName           "ACCOUNT RETE.POSTE"
-KrbMethodNegotiate off
-KrbVerifyKDC       off
-KrbAuthRealm       RETE.POSTE
-Krb5Keytab         /etc/krb5.keytab
-KrbSaveCredentials on
-Require            valid-user
-RewriteEngine On
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</Location>
-
-# cat /var/www/html/index.php
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Benvenuto nel server di preproduzione!</h1>
-<p>Ti sei autenticato come <?php echo $_SERVER['REMOTE_USER']; ?></p>
-</body>
-</html>
-
-*mount cdrom RHEL6
-mount -o loop /dev/cdrom1 /mnt/
-
-*fix mbstring
-source /etc/profile.d/proxy.sh.bk
-wget ftp://fr2.rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-mbstring-5.3.3-40.el6_6.x86_64.rpm
-rpm -ivh php-mbstring-5.3.3-40.el6_6.x86_64.rpm
-service httpd restart
-
-*fix jakarta-taglibs-standard
-yum install apache-tomcat-apis xalan-j2
-wget ftp://mirror.switch.ch/pool/4/mirror/scientificlinux/6.3/i386/os/Packages/jakarta-taglibs-standard-1.1.1-11.4.el6.noarch.rpm
-rpm -ivh jakarta-taglibs-standard-1.1.1-11.4.el6.noarch.rpm
 
 *fix php5.3 to php5.4
 source /etc/profile.d/proxy.sh.bk
@@ -175,30 +19,6 @@ yum reinstall mod_auth_kerb
 $ grep "date.timezone =" /etc/php.ini
 date.timezone = Europe/Rome
 
-*fix SSL
-yum install mod_ssl java-1.8.0-openjdk
-*** GARBAGE:
-*** openssl req -new -newkey rsa:2048 -nodes -out rete.poste.crs -keyout rete.poste.key -subj '/C=IT/ST=Piemonte/L=Torino/O=Poste Italiane/CN=rto1dcvm181.rete.poste'
-*** openssl req -new -newkey rsa:2048 -nodes -out rto1dcvm181.rete.poste.csr -keyout rto1dcvm181.rete.poste.key -subj "/C=IT/O=Poste Italiane/CN=rto1dcvm181.rete.poste"
-*** www.startssl.com
-*sha-2 (256)
-sudo cp ca.crt /etc/pki/tls/certs/
-sudo cp ca.key /etc/pki/tls/private/
-sudo cp ca.csr /etc/pki/tls/private/
-sudo restorecon -RvF /etc/pki
-sudo vim /etc/httpd/conf.d/ssl.conf
-sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo /sbin/service iptables save
-sudo iptables -L -v
-sudo httpd restart
-
-*sha-1
-openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr
-openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
-
-*sha-2 (256)
-openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -keyout ca2.key -out ca2.crt
 
 *cgi-bin
 vim /etc/httpd/conf/httpd.conf
@@ -210,31 +30,6 @@ vim /etc/httpd/conf/httpd.conf
     Order allow,deny
     Allow from all
 </Directory>
-
-*test hello world
-$ cat /var/www/cgi-bin/hello.pl
-#!/usr/bin/perl
-
-# hello.pl -- my first perl script!
-
-print "Content-type: text/html\n\n";
-
-print <<"EOF";
-<HTML>
-
-<HEAD>
-<TITLE>Hello, world!</TITLE>
-</HEAD>
-
-<BODY>
-<H1>Hello, world!</H1>
-</BODY>
-
-</HTML>
-EOF
-
-
-
 
 
 
@@ -326,100 +121,10 @@ fix SSL*
 cgi-bin*
 test hello world*
 
-JAVA
-yum update
-fix jakarta-taglibs-standard*
-yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
-chkconfig tomcat6 on
-service tomcat6 start
 
 
 
 
-
-
-
-
-________________________________________________________________________
-*fix mysql_secure_installation
-[root@server1 ~]# mysql_secure_installation
-/usr/bin/mysql_secure_installation: line 379: find_mysql_client: command not found
-
-NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
-      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
-
-In order to log into MariaDB to secure it, we'll need the current
-password for the root user.  If you've just installed MariaDB, and
-you haven't set the root password yet, the password will be blank,
-so you should just press enter here.
-
-Enter current password for root (enter for none): <--ENTER
-OK, successfully used password, moving on...
-
-Setting the root password ensures that nobody can log into the MariaDB
-root user without the proper authorisation.
-
-Set root password? [Y/n]
-New password: <--yourmariadbpassword
-Re-enter new password: <--yourmariadbpassword
-Password updated successfully!
-Reloading privilege tables..
- ... Success!
-
-
-By default, a MariaDB installation has an anonymous user, allowing anyone
-to log into MariaDB without having to have a user account created for
-them.  This is intended only for testing, and to make the installation
-go a bit smoother.  You should remove them before moving into a
-production environment.
-
-Remove anonymous users? [Y/n] <--ENTER
- ... Success!
-
-Normally, root should only be allowed to connect from 'localhost'.  This
-ensures that someone cannot guess at the root password from the network.
-
-Disallow root login remotely? [Y/n] <--ENTER
- ... Success!
-
-By default, MariaDB comes with a database named 'test' that anyone can
-access.  This is also intended only for testing, and should be removed
-before moving into a production environment.
-
-Remove test database and access to it? [Y/n] <--ENTER
- - Dropping test database...
- ... Success!
- - Removing privileges on test database...
- ... Success!
-
-Reloading the privilege tables will ensure that all changes made so far
-will take effect immediately.
-
-Reload privilege tables now? [Y/n] <--ENTER
- ... Success!
-
-Cleaning up...
-
-All done!  If you've completed all of the above steps, your MariaDB
-installation should now be secure.
-
-Thanks for using MariaDB!
-[root@server1 ~]#
-
-*fix mariadb character-set
-cat /etc/my.cnf
-[mysqld]
-...
-character-set-server=utf8
-
-*remote windows shares
-yum install samba-client samba-common cifs-utils
-vim /etc/fstab
-\\rto1y11c013\Dati\DC\REPORT\Export /mnt/REPORT         cifs user,uid=500,rw,noauto,suid,credentials=/home/vilardid/account_ad.txt 0 0
-\\10.200.22.24\tempRAS /mnt/tempRAS                     cifs user,uid=500,rw,noauto,suid,credentials=/home/vilardid/account_ad.txt 0 0
-$ cat /home/vilardid/account_ad.txt
-username=myuser
-password=mypass
 
 
 
@@ -445,23 +150,23 @@ yum -y install mod_auth_kerb krb5-workstation pam_krb5
 config apache: ServerAdmin/ServerName + /etc/httpd/conf.d/web.conf
 config krb5*
 
-firewall-cmd --permanent --zone=public --add-service=http
-firewall-cmd --permanent --zone=public --add-service=https
-firewall-cmd --permanent --zone=public --add-port=443/tcp
-firewall-cmd --zone=public --list-all
-firewall-cmd --zone=public --list-port
-firewall-cmd --reload
+		firewall-cmd --permanent --zone=public --add-service=http
+		firewall-cmd --permanent --zone=public --add-service=https
+		firewall-cmd --permanent --zone=public --add-port=443/tcp
+		firewall-cmd --zone=public --list-all
+		firewall-cmd --zone=public --list-port
+		firewall-cmd --reload
 
-openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
-openssl rsa -passin pass:x -in server.pass.key -out server.key
-rm server.pass.key
-openssl req -new -key server.key -out server.csr
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+		openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+		openssl rsa -passin pass:x -in server.pass.key -out server.key
+		rm server.pass.key
+		openssl req -new -key server.key -out server.csr
+		openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
-cp server.crt /etc/pki/tls/certs/
-cp server.key /etc/pki/tls/private/
-vim /etc/httpd/conf.d/ssl.conf
-systemctl restart httpd.service
+		cp server.crt /etc/pki/tls/certs/
+		cp server.key /etc/pki/tls/private/
+		vim /etc/httpd/conf.d/ssl.conf
+		systemctl restart httpd.service
 
 fix permessi su www*
 porting db (no fixes)*
@@ -510,32 +215,6 @@ chown -R nobody:nobody stagisti/
 chcon -t samba_share_t /samba/stagisti/
 remote windows shares*
 
-WEBUSER*
-CREATE USER 'webreporting'@'%' IDENTIFIED BY 'webreporting';
-
-GRANT EXECUTE ON FUNCTION `reporting`.`html_unencode` TO 'webreporting'@'%'
-GRANT SELECT ON `reporting`.`SERCHIO` TO 'webreporting'@'%';
-GRANT SELECT ON `reporting`.`SERCHIO_OSPITI` TO 'webreporting'@'%';
-GRANT SELECT ON `reporting`.`BADGES` TO 'webreporting'@'%';
-GRANT SELECT ON `magazzino`.`vserv_trace` TO 'webreporting'@'%';
-GRANT SELECT ON `reporting`.`WINWATCH` TO 'webreporting'@'%';
-GRANT SELECT ON `reporting`.`ADC` TO 'webreporting'@'%';
-GRANT EXECUTE ON PROCEDURE `reporting`.`routing` TO 'webreporting'@'%';
-SHOW GRANTS FOR 'webreporting'@'%';
-
-(REVOKE ALL ON reporting.SERCHIO FROM 'webreporting'@'localhost';)
-(REVOKE EXECUTE ON PROCEDURE reporting.routing FROM 'webreporting'@'localhost';)
-
-FLUSH PRIVILEGES;
-
-ELREPO REPOSITORY
-- installazione
-rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
-- rimozione
-rpm -qf /etc/yum.repos.d/elrepo.repo
-yum remove elrepo-release
-yum clean all
 
 ## RHEL/CentOS 7 64-Bit ##
 # wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
@@ -546,56 +225,8 @@ yum --enablerepo=epel info <PACKAGE>
 yum install dnstop
 dnstop enp63s0
 
-*CNTLM
-rpm -Uvh http://sourceforge.net/projects/cntlm/files/cntlm/cntlm%200.92.3/cntlm-0.92.3-1.x86_64.rpm
-cp /etc/cntlm.conf /etc/cntlm.conf.bk
-vim /etc/cntlm.conf
-/etc/init.d/cntlmd start
-chkconfig --add cntlmd
-chkconfig cntlmd on
-firewall-cmd --permanent --zone=public --add-port=3128/tcp
-firewall-cmd --reload
-/etc/init.d/cntlmd restart
-service --status-all
-NOTA: cntlm -v -c /etc/cntlm.conf
-*fix Error creating a new PID file
-mkdir /var/run/cntlm
-chgrp cntlm /var/run/cntlm/
-chmod g+w /var/run/cntlm/
-systemctl start cntlm.service
-less /var/log/messages | grep cntlm
 
-*fix disable samba printing support
-(failed to retrieve printer list: NT_STATUS_UNSUCCESSFUL)
-cat /etc/samba/smb.conf
-[global]
-...
-load printers = no
-printing = bsd
-printcap name = /dev/null
-disable spoolss = yes
 
-systemctl restart smb.service
-systemctl restart nmb.service
-
-*hardware support
-yum install lm_sensors.x86_64
-sensors-detect
-yum install smartmontools
-test: smartctl --test=long /dev/sda
-smartctl -H /dev/sda
-service smartd start
-chkconfig smartd on
-smartctl -H /dev/sda
-smartctl -i /dev/sda
-smartctl -s on /dev/sda
-smartctl -c /dev/sda
-smartctl -a /dev/sda
-smartctl -a -d ata /dev/sda
-
-hard disk healt
-smartctl -a /dev/sda | less
-badblocks -v /dev/sda
 
 problema di intrusione:
 Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
@@ -610,50 +241,8 @@ commenta Defaults requiretty in visudo
 
 
 ________________________________________________________________________
-SYSADMIN:
-yum --enablerepo=epel-testing install jnettop
-
-$ cat .jnettop
-interface "enp63s0"
-local_aggregation host
-promisc on
-remote_aggregation port
-resolve off
-resolve_rule "10.208.74.124" "255.255.254.0" normal
-resolve_rule "10.208.74.124" "255.255.254.0" external "/usr/share/jnettop/jnettop-lookup-nmb"
-rule "show 10.98.2.120" "src 10.98.2.120"
-select_rule "show 10.98.2.120"
-variable "intranet" "net 10.0.0.0/8"
-
-yum install atop mytop iftop nmap iptraf
-
-cat .mytop
-user=root
-pass=mypass
-host=localhost
-db=mysql
-delay=1
-port=3306
-socket=
-batchmode=0
-header=1
-color=1
-idle=1
 
 
-SOLUZIONE NON APPLICATA
-Ip 2 Netbios resolution
-1) vim /etc/samba/smb.conf
-wins support = yes
-wins server = 10.207.72.244
-wins proxy = yes
-dns proxy = yes
-2) vim /etc/nsswitch.conf
-hosts:      files dns wins
-3) systemctl restart smb.service
-systemctl restart nmb.service
-
-nmblookup -A 10.98.2.41
 
 samba fix: Unable to find the Domain Master Browser name RETE<1b> for the workgroup RETE.
 vim /etc/samba/smb.conf
@@ -668,75 +257,10 @@ sudo iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 sudo iptables -L INPUT -v
 sudo iptables -D INPUT #num
 
-*fix kdump fail to start
-yum install system-config-kdump
-Procedure 2.1. Changing Memory Options in GRUB2
-Open the /etc/default/grub configuration file as root using a plain text editor such as vim or Gedit.
-In this file, locate the line beginning with GRUB_CMDLINE_LINUX. The line will look similar to the following:
-GRUB_CMDLINE_LINUX="rd.lvm.lv=rhel/swap crashkernel=auto rd.lvm.lv=rhel/root rhgb quiet"
-Note the highlighted crashkernel= option; this is where the reserved memory is configured.
-Change the value of the crashkernel= option to the amount of memory you want to reserve. For example, to reserve 128 MB of memory, use the following:
-crashkernel=128M
-NOTE
-There are multiple ways to configure the memory reserved - for example, you can define an offset or multiple memory amounts based on how much RAM is available in the system at startup. This is described further in this section.
-Then, save the file and exit the editor.
-Finally, regenerate the GRUB2 configuration using the edited default file. If your system uses BIOS firmware, execute the following command:
-# grub2-mkconfig -o /boot/grub2/grub.cfg
 
-UTILIZZO YUM
-yum info package
-yumdb info package
-repoquery --list package
-
-*fix ntp timeserver
-yum install ntp
-ntpdate -q server_addr
-ntpdate server_addr
-edit /etc/ntp.conf add server_addr
-The iburst directive at the end of each line is to speed up the initial synchronization
-service ntpd restart
-chkconfig ntpd on
 
 cronjobs
 15 10 * * 1-5 /home/vilardid/reporting/population.sh
 
-list directory
-du -csh /what/ever
 
-**)components npm & nodejs & jquery
-yum install npm
-npm config set proxy http://127.0.0.1:3128
-npm config set https-proxy http://127.0.0.1:3128
-npm install -g inherits
-npm install -g bower
-cat ~/.bowerrc
-{
-    "proxy" : "http://127.0.0.1:3128",
-    "https-proxy" : "http://127.0.0.1:3128",
-    "strict-ssl": false
-}
-bower install jquery
-bower install dynatable
-bower install font-awesome-bower
-bower install font-awesome-animation
-bower install DataTables
-bower install datatables-tabletools
-bower install --save datatables.net-buttons
 
-**) mediawiki
-yum install php-xml
-yum install php-intl
-yum install php-gd
-yum install texlive
-yum install php-xcache
-systemctl restart httpd.service
-mkdir wiki
-chown vilardid:vilardid wiki
-curl -O https://releases.wikimedia.org/mediawiki/1.26/mediawiki-1.26.2.tar.gz
-tar xvzf mediawiki-1.26.2.tar.gz
-mv mediawiki-1.26.2/* .
-mysql -uroot -p
-CREATE DATABASE WIKI;
-CREATE USER 'wiki'@'%' IDENTIFIED BY 'wikiuser';
-GRANT INDEX, CREATE, SELECT, INSERT, UPDATE, DELETE, ALTER, LOCK TABLES ON WIKI.* TO 'wiki'@'%' IDENTIFIED BY 'wikiuser';
-FLUSH PRIVILEGES;
