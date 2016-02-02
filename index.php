@@ -63,7 +63,7 @@
 		} else {
 
 			header('Location: ' . "/");
-		
+
 		}
 
 		?>
