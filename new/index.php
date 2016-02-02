@@ -28,14 +28,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	var tabella = $('#magazzino').DataTable({
+	var table = $('#magazzino').DataTable({
 		"iDisplayLength": 25,
         fixedHeader: {
             header: true,
             footer: true
         },
 		columnDefs: [ {
-            orderable: false,
+            orderable: true,
             className: 'select-checkbox',
             targets:   0
         } ],
@@ -46,12 +46,13 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#magazzino').on('click','a.input_scarico',function (scarico_do) {
-		scarico_do.preventDefault();
-		
-		form_scarico
-			alert("Puzza la cacca!");
-	});
+    $('#magazzino tbody')
+        .on( 'mouseenter', 'td', function () {
+            var colIdx = table.cell(this).index().column;
+ 
+            $( table.cells().nodes() ).removeClass( 'highlight' );
+            $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
+        } );
 	
 });
 
@@ -82,7 +83,7 @@ $(document).ready(function() {
 	$query = myquery::magazzino($db);
 
 	//presentation
-	$a = "<table id=\"magazzino\">\n";
+	$a = "<table id=\"magazzino\" class=\"row-border hover order-column\">\n";
 	
 	$a .= "<thead>\n";
 	$a .= "<tr>\n";
