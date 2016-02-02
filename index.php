@@ -7,6 +7,7 @@
 <!--[if !IE]><html lang="it-IT"><![endif]-->
 <head>
 	<title>GMDCTO - Gestione Magazzino DC-TO</title>
+	<?php define("prefix","") ?>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="css/menu.css" type="text/css" />
 	<link rel="stylesheet" href="css/footer.css" type="text/css" />
