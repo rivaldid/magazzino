@@ -11,24 +11,38 @@
 <?php define("prefix","../") ?>
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo prefix ?>css/tabella_new.css" type="text/css" />
 
 <link rel="stylesheet" href="/lib/bower_components/font-awesome-bower/css/font-awesome.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-dt/css/jquery.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-buttons-dt/css/buttons.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-select-dt/css/select.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href="/lib/bower_components/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css" type="text/css" />
 
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-select/js/dataTables.select.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
 
 
 <script type="text/javascript">
 $(document).ready(function() {
 
 	var tabella = $('#magazzino').DataTable({
-		"iDisplayLength": 25
+		"iDisplayLength": 25,
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+		columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0
+        } ],
+		select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        }
 	});
 	
 	
@@ -72,6 +86,7 @@ $(document).ready(function() {
 	
 	$a .= "<thead>\n";
 	$a .= "<tr>\n";
+	$a .= "<th>Check</th>\n";
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
@@ -80,6 +95,7 @@ $(document).ready(function() {
 	
 	$a .= "<tfoot>\n";
 	$a .= "<tr>\n";
+	$a .= "<th>Check</th>\n";
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
@@ -89,6 +105,7 @@ $(document).ready(function() {
 	$a .= "<tbody>\n";
 	foreach ($query as $row) {
 		$riga .= "<tr>\n";
+		$riga .= "<td></td>\n";
 		$riga .= "<td>".$row['merce']."</td>\n";
 		$riga .= "<td>".$row['posizione']."</td>\n";
 		$riga .= "<td>".$row['quantita']."</td>\n";

@@ -3,6 +3,7 @@ height: 100%;
 width: 100%;
 margin: 0;
 display: table;
+font-family: "Verdana", "Sans-serif";
 }
 
 #banner h1{
@@ -32,4 +33,16 @@ margin: 0px 10px 10px 10px;
 text-align: center;
 width: auto;
 height: auto;
+}
+
+th {
+  padding: 15px;
+  background: #09539F;
+  color: #E8F404;
+}
+
+td {
+  padding: 5px 10px;
+  border: 1px solid #999;
+  font-size: 12px;
 }

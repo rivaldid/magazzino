@@ -8,26 +8,13 @@ table {
 }
 
 th {
+  padding: 15px;
   background: #09539F;
   color: #E8F404;
-  padding: 15px;
 }
 
 td {
   padding: 5px 10px;
   border: 1px solid #999;
   font-size: 12px;
-}
-
-/* zebra-striping seems to really slow down Opera sometimes */
-tr:nth-child(even) > td {
-  background-color: #f9f9f7;
-}
-
-tr:nth-child(odd) > td {
-  background-color: #ffffff;
-}
-
-.disabled {
-  opacity: 0.5;
 }
