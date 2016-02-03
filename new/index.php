@@ -17,16 +17,25 @@
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-buttons-dt/css/buttons.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-select-dt/css/select.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css" type="text/css" />
+<!-- <link rel="stylesheet" href="/lib/bower_components/datatables.net-rowreorder-dt/css/rowReorder.dataTables.min.css" type="text/css" /> -->
 
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-select/js/dataTables.select.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<!-- <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-rowreorder/js/dataTables.rowReorder.min.js"></script> -->
 
 
 <script type="text/javascript">
 $(document).ready(function() {
+
+	/*$.fn.dataTable.ext.buttons.Scarica = {
+    text: 'Scarica',
+    action: function () {
+        alert("Hello World!");
+    }
+	};*/
 
 	var table = $('#magazzino').DataTable({
 		"iDisplayLength": 25,
@@ -44,16 +53,42 @@ $(document).ready(function() {
             selector: 'td:first-child'
         }
 	});
-	
-	
+
     $('#magazzino tbody')
         .on( 'mouseenter', 'td', function () {
             var colIdx = table.cell(this).index().column;
- 
+
             $( table.cells().nodes() ).removeClass( 'highlight' );
             $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
         } );
-	
+
+	new $.fn.DataTable.Buttons( table, {
+        buttons: [
+            {
+                text: 'Carico',
+                action: function () {
+                    alert("Carico");
+                }
+            },
+            {
+                text: 'Scarico',
+                action: function () {
+                    alert("Scarico");
+                }
+            },
+            {
+                text: 'Info',
+                action: function () {
+                    alert("Info");
+                }
+            }
+        ]
+	} );
+
+	table.buttons( 0, null ).container().prependTo(
+		table.table().container()
+	);
+
 });
 
 </script>
@@ -79,30 +114,30 @@ $(document).ready(function() {
 	$db = myquery::start();
 	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
 	myquery::logger($db);
-	
+
 	$query = myquery::magazzino($db);
 
 	//presentation
 	$a = "<table id=\"magazzino\" class=\"row-border hover order-column\">\n";
-	
+
 	$a .= "<thead>\n";
 	$a .= "<tr>\n";
-	$a .= "<th>Check</th>\n";
+	$a .= "<th></th>\n";
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</thead>\n";
-	
+
 	$a .= "<tfoot>\n";
 	$a .= "<tr>\n";
-	$a .= "<th>Check</th>\n";
+	$a .= "<th></th>\n";
 	$a .= "<th>Merce</th>\n";
 	$a .= "<th>Posizione</th>\n";
 	$a .= "<th>Quantita'</th>\n";
 	$a .= "</tr>\n";
 	$a .= "</tfoot>\n";
-	
+
 	$a .= "<tbody>\n";
 	foreach ($query as $row) {
 		$riga .= "<tr>\n";
@@ -114,11 +149,11 @@ $(document).ready(function() {
 	}
 	$a .= $riga;
 	$a .= "</tbody>\n";
-	
+
 	$a .= "</table>\n";
-	
+
 	echo $a;
-	
+
 ?>
 </div>
 
