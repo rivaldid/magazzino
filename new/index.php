@@ -30,13 +30,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	/*$.fn.dataTable.ext.buttons.Scarica = {
-    text: 'Scarica',
-    action: function () {
-        alert("Hello World!");
-    }
-	};*/
-
 	var table = $('#magazzino').DataTable({
 		"iDisplayLength": 25,
         fixedHeader: {
