@@ -20,7 +20,15 @@
 
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/jszip/dist/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/pdfmake/build/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/bower_components/pdfmake/build/vfs_fonts.js"></script>
+
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-select/js/dataTables.select.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
 
@@ -67,6 +75,7 @@ $(document).ready(function() {
                     alert("Scarico");
                 }
             },
+			'pdf','excel','print',
             {
                 text: 'Info',
                 action: function () {
