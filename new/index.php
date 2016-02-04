@@ -17,14 +17,12 @@
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-buttons-dt/css/buttons.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-select-dt/css/select.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href="/lib/bower_components/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css" type="text/css" />
-<!-- <link rel="stylesheet" href="/lib/bower_components/datatables.net-rowreorder-dt/css/rowReorder.dataTables.min.css" type="text/css" /> -->
 
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-select/js/dataTables.select.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<!-- <script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-rowreorder/js/dataTables.rowReorder.min.js"></script> -->
 
 
 <script type="text/javascript">
@@ -95,7 +93,6 @@ $(document).ready(function() {
 </div>
 
 <div id="contents">
-<!-- <input type="button" value="add" id="addbtn" /> -->
 <?php
 	if ($_SERVER["QUERY_STRING"] != NULL) {
 		if (!empty($_GET["page"])) $page = sprintf(prefix."page/%s.php",$_GET["page"]);
