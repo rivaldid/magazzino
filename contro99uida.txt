@@ -10,69 +10,8 @@
 
 
 
-*fix php5.3 to php5.4
-source /etc/profile.d/proxy.sh.bk
-rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
-yum remove php-common
-yum install php54w php54w-mbstring php54w-pdo php54w-mysql
-yum reinstall mod_auth_kerb
-$ grep "date.timezone =" /etc/php.ini
-date.timezone = Europe/Rome
 
 
-*cgi-bin
-vim /etc/httpd/conf/httpd.conf
-<Directory "/var/www/cgi-bin">
-    AllowOverride None
-    #Options None
-    Options +ExecCGI -Indexes
-    AddHandler cgi-script .cgi .pl .py
-    Order allow,deny
-    Allow from all
-</Directory>
-
-
-
-BEGIN
-/etc/hosts
-/etc/sysconfig/network
-/etc/sysconfig/network-scripts/ifcfg-eth0
-fix nuovo mac*
-passwd
-useradd utente
-passwd utente
-usermod -g primogruppo utente
-usermod -G secondogruppo utente
-reboot
-visudo e scommento %wheel ALL=(ALL) ALL
-
-UPDATE
-fix repo baseline*
-mv /etc/yum.repos.d/cdrom.repo /etc/yum.repos.d/cdrom.repo.bk
-yum repolist all
-yum update
-fix rpmnew*
-
-INSTALL
-yum install httpd -y
-service httpd start
-chkconfig httpd on
-vim /etc/sysconfig/iptables
-and add line -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
-service iptables restart
-fix MYSQL*
-chkconfig mysqld on
-fix subscription-manager*
-
-yum install php -y [no more needed!!!!]
-service httpd restart
-fix permessi su www*
-yum install mod_auth_kerb krb5-workstation pam_krb5
-config apache*
-config krb5*
-service httpd restart
-pagine test*
-yum install mutt man man-pages
 
 PORTING DB
 # yum install git
@@ -130,90 +69,7 @@ test hello world*
 
 
 
-SETUP CENTOS7 rto1dcpm172.rete.poste
-vim /etc/hosts
-chkconfig network on
-proxy*
-yum update
-yum upgrade
-yum -y install vim links wget mutt git man man-pages man-pages-overrides deltarpm yum-utils unzip screen htop xls2csv
-reboot
-localectl set-locale LANG=it_IT.utf8
-yum install httpd php
-echo -e "<?php\nphpinfo();\n?>"  > /var/www/html/info.php
-yum -y install mariadb-server mariadb
-systemctl start mariadb.service
-systemctl enable mariadb.service
-fix mysql_secure_installation*
-yum -y install php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel mod-ssl pv testdisk
-yum -y install mod_auth_kerb krb5-workstation pam_krb5
-config apache: ServerAdmin/ServerName + /etc/httpd/conf.d/web.conf
-config krb5*
 
-		firewall-cmd --permanent --zone=public --add-service=http
-		firewall-cmd --permanent --zone=public --add-service=https
-		firewall-cmd --permanent --zone=public --add-port=443/tcp
-		firewall-cmd --zone=public --list-all
-		firewall-cmd --zone=public --list-port
-		firewall-cmd --reload
-
-		openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
-		openssl rsa -passin pass:x -in server.pass.key -out server.key
-		rm server.pass.key
-		openssl req -new -key server.key -out server.csr
-		openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-
-		cp server.crt /etc/pki/tls/certs/
-		cp server.key /etc/pki/tls/private/
-		vim /etc/httpd/conf.d/ssl.conf
-		systemctl restart httpd.service
-
-fix permessi su www*
-porting db (no fixes)*
-fix mariadb character-set*
-porting webapp (solo git clone)*
-fix1: PHP Warning:  date()
-$ grep "date.timezone =" /etc/php.ini
-date.timezone = Europe/Rome
-fix2: PHP Warning:  fopen
-chcon -t httpd_sys_rw_content_t /var/www/html/mysite/mydir -R
-cgi-bin*
-systemctl restart httpd.service
-firewall-cmd --permanent --zone=public --add-port=3306/tcp
-firewall-cmd --reload
-
-yum install samba samba-client samba-common
-mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
-cat /etc/samba/smb.conf
-[global]
-workgroup = WORKGROUP
-server string = Samba Server %v
-netbios name = centos
-security = user
-map to guest = bad user
-dns proxy = no
-#============================ Share Definitions ==============================
-[Anonymous]
-path = /samba/stagisti
-browsable =yes
-writable = yes
-guest ok = yes
-read only = no
-
-firewall-cmd --permanent --zone=public --add-service=samba
-firewall-cmd --reload
-
-mkdir -p /samba/
-systemctl enable smb.service
-systemctl enable nmb.service
-systemctl restart smb.service
-systemctl restart nmb.service
-
-cd /samba
-chmod -R 0755 stagisti/
-chown -R nobody:nobody stagisti/
-chcon -t samba_share_t /samba/stagisti/
-remote windows shares*
 
 
 ## RHEL/CentOS 7 64-Bit ##
@@ -228,14 +84,6 @@ dnstop enp63s0
 
 
 
-problema di intrusione:
-Address 10.222.180.133 maps to nanadr1m222.rete.poste, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
-soluzione:
-si tratta di un reverse lookup fatto dal server dhcp (penso), la soluzione è
-UseDNS no in /etc/ssh/sshd_config
-
-fix sudo: è necessario disporre di un tty per eseguire sudo
-commenta Defaults requiretty in visudo
 
 
 

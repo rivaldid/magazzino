@@ -8,29 +8,43 @@
 
 <head>
 <title>Gestione Magazzino</title>
-<?php define("prefix","../") ?>
+<?php 
+	define("prefix","../"); 
+	define("libnpm","/lib/node_modules/");  
+	define("libbower","/lib/bower_components/")
+?>
 <link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" />
+<!-- <link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" /> -->
 
-<link rel="stylesheet" href="/lib/bower_components/font-awesome-bower/css/font-awesome.css" type="text/css" />
-<link rel="stylesheet" href="/lib/bower_components/datatables.net-dt/css/jquery.dataTables.min.css" type="text/css" />
-<link rel="stylesheet" href="/lib/bower_components/datatables.net-buttons-dt/css/buttons.dataTables.min.css" type="text/css" />
-<link rel="stylesheet" href="/lib/bower_components/datatables.net-select-dt/css/select.dataTables.min.css" type="text/css" />
-<link rel="stylesheet" href="/lib/bower_components/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>font-awesome/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.structure.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.theme.min.css" type="text/css" />
 
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/jquery/dist/jquery.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-jqui/css/dataTables.jqueryui.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-buttons-jqui/css/buttons.jqueryui.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-select-jqui/css/select.jqueryui.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-fixedheader-jqui/css/fixedHeader.jqueryui.css" type="text/css" />
 
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/jszip/dist/jszip.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/pdfmake/build/pdfmake.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/pdfmake/build/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>jquery/dist/jquery.min.js"></script>
 
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-select/js/dataTables.select.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/lib/bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-jqui/js/dataTables.jqueryui.js"></script>
+
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-select/js/dataTables.select.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-fixedheader/js/dataTables.fixedHeader.js"></script>
+
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/dataTables.buttons.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons-jqui/js/buttons.jqueryui.js"></script>
+
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.flash.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.html5.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.print.js"></script>
+
+<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>jszip/dist/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/vfs_fonts.js"></script>
+
 
 
 <script type="text/javascript">
@@ -85,9 +99,8 @@ $(document).ready(function() {
         ]
 	} );
 
-	table.buttons( 0, null ).container().prependTo(
-		table.table().container()
-	);
+	table.buttons().container()
+        .insertBefore( '#magazzino_filter' );
 
 });
 
@@ -117,7 +130,7 @@ $(document).ready(function() {
 	$query = myquery::magazzino($db);
 
 	//presentation
-	$a = "<table id=\"magazzino\" class=\"row-border hover order-column\">\n";
+	$a = "<table id=\"magazzino\" class=\"display\">\n";
 
 	$a .= "<thead>\n";
 	$a .= "<tr>\n";
