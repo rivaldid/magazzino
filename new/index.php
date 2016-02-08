@@ -56,7 +56,8 @@ $(document).ready(function() {
 	$("#dialog_carico").dialog({
 		autoOpen: false,
 		show: { effect: "blind", duration: 1000 },
-		hide: {	effect: "blind", duration: 1000	}
+		hide: {	effect: "blind", duration: 1000	},
+		open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
 	});
 
 	var table = $('#magazzino').DataTable({
