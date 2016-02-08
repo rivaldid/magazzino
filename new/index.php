@@ -8,32 +8,36 @@
 
 <head>
 <title>Gestione Magazzino</title>
+
 <?php 
 	define("prefix","../"); 
 	define("libnpm","/lib/node_modules/");  
 	define("libbower","/lib/bower_components/")
 ?>
+
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" />
 
-<link rel="stylesheet" href="<?php echo libnpm ?>font-awesome/css/font-awesome.min.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery.ui.theme.css" type="text/css" />
 
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-jqui/css/dataTables.jqueryui.css" type="text/css" />
+
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-buttons-jqui/css/buttons.jqueryui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-select-jqui/css/select.jqueryui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-fixedheader-jqui/css/fixedHeader.jqueryui.css" type="text/css" />
 
+
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>jqueryui/jquery-ui.min.js"></script>
 
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-jqui/js/dataTables.jqueryui.js"></script>
 
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-select/js/dataTables.select.js"></script>
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-fixedheader/js/dataTables.fixedHeader.js"></script>
-
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/dataTables.buttons.js"></script>
+
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons-jqui/js/buttons.jqueryui.js"></script>
 
 <script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.flash.js"></script>
@@ -48,6 +52,12 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	$("#dialog_carico").dialog({
+		autoOpen: false,
+		show: { effect: "blind", duration: 1000 },
+		hide: {	effect: "blind", duration: 1000	}
+	});
 
 	var table = $('#magazzino').DataTable({
 		"iDisplayLength": 25,
@@ -79,7 +89,7 @@ $(document).ready(function() {
             {
                 text: 'Carico',
                 action: function () {
-                    alert("Carico");
+					$("#dialog_carico").dialog("open");
                 }
             },
             {
@@ -88,7 +98,7 @@ $(document).ready(function() {
                     alert("Scarico");
                 }
             },
-			'pdf','excel','print',
+			'pdf','excel',
             {
                 text: 'Info',
                 action: function () {
@@ -98,9 +108,8 @@ $(document).ready(function() {
         ]
 	} );
 
-	table.buttons().container()
-        .insertBefore( '#magazzino_filter' );
-
+	table.buttons().container().insertBefore( '#magazzino_filter' );
+			
 });
 
 </script>
@@ -167,6 +176,8 @@ $(document).ready(function() {
 
 ?>
 </div>
+
+<div id="dialog_carico" title="Carico merce">aaaaaaaaaaaaaaa!</div>
 
 <div id="footer">
 <h3>&copy; Poste italiane 2016 - Specifiche tecniche</h3>
