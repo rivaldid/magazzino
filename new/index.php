@@ -14,12 +14,11 @@
 	define("libbower","/lib/bower_components/")
 ?>
 <link rel="shortcut icon" href="/favicon.ico" />
-<!-- <link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" /> -->
+<link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" />
 
 <link rel="stylesheet" href="<?php echo libnpm ?>font-awesome/css/font-awesome.min.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.min.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.structure.min.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>jqueryui/jquery-ui.theme.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery.ui.theme.css" type="text/css" />
 
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-jqui/css/dataTables.jqueryui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-buttons-jqui/css/buttons.jqueryui.css" type="text/css" />

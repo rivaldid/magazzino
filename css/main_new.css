@@ -8,7 +8,7 @@ font-family: "Verdana", "Sans-serif";
 
 #banner h1{
 background: #E8F404;
-color: #09539F;
+color: #0073EA;
 text-align: center;
 padding: 15px;
 margin: 0 auto;
@@ -28,25 +28,10 @@ font-size: 120%;
 font-weight: bold;
 }
 
-#contents{
-margin: 0px 10px 10px 10px;
-text-align: center;
-width: auto;
-height: auto;
-}
 
-th {
-  padding: 15px;
-  background: #09539F;
-  color: #E8F404;
-}
 
-td {
-  padding: 5px 10px;
-  border: 1px solid #999;
-  font-size: 12px;
-}
 
-td.highlight {
-    background-color: whitesmoke !important;
-}
+
+
+
+
