@@ -9,9 +9,9 @@
 <head>
 <title>Gestione Magazzino</title>
 
-<?php 
-	define("prefix","../"); 
-	define("libnpm","/lib/node_modules/");  
+<?php
+	define("prefix","../");
+	define("libnpm","/lib/node_modules/");
 	define("libbower","/lib/bower_components/")
 ?>
 
@@ -52,10 +52,10 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	$('input:text, input:password, input[type=email]')
-		.button().addClass('my-textfield');
-	
+
+	$("input:text, input:password, input[type=email]")
+		.button().addClass("my-textfield");
+
 	$("#dialog_carico").dialog({
 		autoOpen: false,
 		show: { effect: "blind", duration: 500 },
@@ -64,55 +64,48 @@ $(document).ready(function() {
 		buttons: {
 			"Submit": {
 				text: "Invia",
-				click: function() { 
-					$(this).dialog('close');
+				click: function() {
+					$(this).dialog("close");
 				}
 			}
 		}
 	});
 
-	var table = $('#magazzino').DataTable({
+	var table = $("#magazzino").DataTable({
 		"iDisplayLength": 25,
-        fixedHeader: {
-            header: true,
-            footer: true
-        },
+        fixedHeader: { header: true, footer: true },
 		columnDefs: [ {
             orderable: true,
-            className: 'select-checkbox',
-            targets:   0
+            className: "select-checkbox",
+            targets: 0
         } ],
-		select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        }
+		select: { style: "multi", selector: "td:first-child" }
 	});
 
-    $('#magazzino tbody')
-        .on( 'mouseenter', 'td', function () {
+    $("#magazzino tbody")
+        .on( "mouseenter", "td", function () {
             var colIdx = table.cell(this).index().column;
-
-            $( table.cells().nodes() ).removeClass( 'highlight' );
-            $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
+            $( table.cells().nodes() ).removeClass("highlight");
+            $( table.column( colIdx ).nodes() ).addClass("highlight");
         } );
 
 	new $.fn.DataTable.Buttons( table, {
         buttons: [
             {
-                text: 'Carico',
+                text: "Carico",
                 action: function () {
 					$("#dialog_carico").dialog("open");
                 }
             },
             {
-                text: 'Scarico',
+                text: "Scarico",
                 action: function () {
                     alert("Scarico");
                 }
             },
-			'pdf','excel',
+			"pdf","excel",
             {
-                text: 'Info',
+                text: "Info",
                 action: function () {
                     alert("Info");
                 }
@@ -120,8 +113,8 @@ $(document).ready(function() {
         ]
 	} );
 
-	table.buttons().container().insertBefore( '#magazzino_filter' );
-			
+	table.buttons().container().insertBefore("#magazzino_filter");
+
 });
 
 </script>
