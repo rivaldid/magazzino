@@ -27,3 +27,19 @@ font-style: italic;
 font-size: 120%;
 font-weight: bold;
 }
+
+/* *********** stili js *********** */
+
+/* applica stile alla inputbox */
+.my-textfield {
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    outline: none;
+    cursor: text;
+}
+
+/* nasconde il close button */
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}

@@ -53,11 +53,22 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	$('input:text, input:password, input[type=email]')
+		.button().addClass('my-textfield');
+	
 	$("#dialog_carico").dialog({
 		autoOpen: false,
-		show: { effect: "blind", duration: 1000 },
-		hide: {	effect: "blind", duration: 1000	},
-		open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
+		show: { effect: "blind", duration: 500 },
+		hide: {	effect: "clip", duration: 500 },
+		dialogClass: "no-close",
+		buttons: {
+			"Submit": {
+				text: "Invia",
+				click: function() { 
+					$(this).dialog('close');
+				}
+			}
+		}
 	});
 
 	var table = $('#magazzino').DataTable({
@@ -178,7 +189,14 @@ $(document).ready(function() {
 ?>
 </div>
 
-<div id="dialog_carico" title="Carico merce">aaaaaaaaaaaaaaa!</div>
+<div id="dialog_carico" title="Carico merce">
+	<label>Fornitore</label>
+	<input name="fornitore" type="text" autofocus/>
+	<label>Tipo</label>
+	<input name="tipo_doc" type="text" />
+	<label>Numero di documento</label>
+	<input name="num_doc" type="text" />
+</div>
 
 <div id="footer">
 <h3>&copy; Poste italiane 2016 - Specifiche tecniche</h3>
