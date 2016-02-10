@@ -2,7 +2,6 @@ html, body {
 height: 100%;
 width: 100%;
 margin: 0;
-display: table;
 font-family: "Verdana", "Sans-serif";
 }
 
@@ -32,14 +31,19 @@ font-weight: bold;
 
 /* applica stile alla inputbox */
 .my-textfield {
-    font: inherit;
-    color: inherit;
-    text-align: inherit;
-    outline: none;
-    cursor: text;
+font: inherit;
+color: inherit;
+text-align: inherit;
+outline: none;
+cursor: text;
 }
 
 /* nasconde il close button */
 .no-close .ui-dialog-titlebar-close {
-  display: none;
+display: none;
 }
+
+#dialog_carico div{
+width: 100px;
+}
+

@@ -49,12 +49,12 @@
 <script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/vfs_fonts.js"></script>
 
 
-
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	$( ".datepicker" ).datepicker();
 
-	$("input:text, input:password, input[type=email]")
-		.button().addClass("my-textfield");
+	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
 
 	$("#dialog_carico").dialog({
 		autoOpen: false,
@@ -183,12 +183,25 @@ $(document).ready(function() {
 </div>
 
 <div id="dialog_carico" title="Carico merce">
-	<label>Fornitore</label>
-	<input name="fornitore" type="text" autofocus/>
-	<label>Tipo</label>
-	<input name="tipo_doc" type="text" />
-	<label>Numero di documento</label>
-	<input name="num_doc" type="text" />
+	<div>
+		<span><label>Fornitore</label><input name="fornitore" type="text" autofocus/></span>
+		<span><label>Tipo documento</label><input name="tipo_doc" type="text" /></span>
+		<span><label>Numero documento</label><input name="num_doc" type="text" /></span>
+	</div>
+	<div>
+		<span><label>Data documento</label><input name="data_doc" class="datepicker" type="text" /></span>
+		<span><label>Scansione</label><input name="scansione" type="text" /></span>
+	</div>
+	<div>
+		<span><label>Merce</label><input name="merce" type="text" /></span>
+		<span><label>Quantita'</label><input name="quantita" type="text" /></span>
+		<span><label>Posizione</label><input name="posizione" type="text" /></span>
+	</div>
+	<div>
+		<span><label>Data carico</label><input name="data_carico" class="datepicker" type="text" /></span>
+		<span><label>Note'</label><input name="note" type="text" /></span>
+		<span><label>ODA</label><input name="oda" type="text" /></span>
+	</div>
 </div>
 
 <div id="footer">
