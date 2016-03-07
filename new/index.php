@@ -50,12 +50,12 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
+
 	$("#fornitore").autocomplete({
 		source: "lib/query/contatti.php",
 		minLength: 2
 	});
-	
+
 	$( ".datepicker" ).datepicker();
 
 	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
