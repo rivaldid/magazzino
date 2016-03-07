@@ -10,9 +10,9 @@
 <title>Gestione Magazzino</title>
 
 <?php
-	define("prefix","../");
+	define("prefix","");
 	define("libnpm","/lib/node_modules/");
-	define("libbower","/lib/bower_components/")
+	define("libbower","/lib/bower_components/");
 ?>
 
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -48,9 +48,13 @@
 <script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/pdfmake.min.js"></script>
 <script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/vfs_fonts.js"></script>
 
-
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	$("#fornitore").autocomplete({
+		source: "lib/query/contatti.php",
+		minLength: 2
+	});
 	
 	$( ".datepicker" ).datepicker();
 
@@ -129,18 +133,13 @@ $(document).ready(function() {
 
 <div id="contents">
 <?php
-	if ($_SERVER["QUERY_STRING"] != NULL) {
-		if (!empty($_GET["page"])) $page = sprintf(prefix."page/%s.php",$_GET["page"]);
-		if (!file_exists($page)) $page = sprintf(prefix."page/404.php");
-	} else $page = sprintf(prefix."page/home.php");
-
 	require_once(prefix."lib/init.php");
 
-	$db = myquery::start();
+	$db = basic::start();
 	if (!(isset($_SERVER['HTTP_REFERER']))) $_SERVER['HTTP_REFERER'] = null;
-	myquery::logger($db);
+	basic::logger($db);
 
-	$query = myquery::magazzino($db);
+	$query = basic::magazzino($db);
 
 	//presentation
 	$a = "<table id=\"magazzino\" class=\"display\">\n";
@@ -165,14 +164,13 @@ $(document).ready(function() {
 
 	$a .= "<tbody>\n";
 	foreach ($query as $row) {
-		$riga .= "<tr>\n";
-		$riga .= "<td></td>\n";
-		$riga .= "<td>".$row['merce']."</td>\n";
-		$riga .= "<td>".$row['posizione']."</td>\n";
-		$riga .= "<td>".$row['quantita']."</td>\n";
-		$riga .= "</tr>\n";
+		$a .= "<tr>\n";
+		$a .= "<td></td>\n";
+		$a .= "<td>".$row['merce']."</td>\n";
+		$a .= "<td>".$row['posizione']."</td>\n";
+		$a .= "<td>".$row['quantita']."</td>\n";
+		$a .= "</tr>\n";
 	}
-	$a .= $riga;
 	$a .= "</tbody>\n";
 
 	$a .= "</table>\n";
@@ -184,7 +182,7 @@ $(document).ready(function() {
 
 <div id="dialog_carico" title="Carico merce">
 	<div>
-		<span><label>Fornitore</label><input name="fornitore" type="text" autofocus/></span>
+		<span><label>Fornitore</label><input id="fornitore" name="fornitore" type="text" autofocus/></span>
 		<span><label>Tipo documento</label><input name="tipo_doc" type="text" /></span>
 		<span><label>Numero documento</label><input name="num_doc" type="text" /></span>
 	</div>

@@ -1,0 +1,49 @@
+html, body {
+height: 100%;
+width: 100%;
+margin: 0;
+font-family: "Verdana", "Sans-serif";
+}
+
+#banner h1{
+background: #E8F404;
+color: #0073EA;
+text-align: center;
+padding: 15px;
+margin: 0 auto;
+}
+
+#footer h3{
+background: #EFEFEF;
+text-align: center;
+padding: 20px;
+margin: 0 auto;
+font-size: 80%;
+font-style: italic;
+}
+
+.firstletter {
+font-size: 120%;
+font-weight: bold;
+}
+
+/* *********** stili js *********** */
+
+/* applica stile alla inputbox */
+.my-textfield {
+font: inherit;
+color: inherit;
+text-align: inherit;
+outline: none;
+cursor: text;
+}
+
+/* nasconde il close button */
+.no-close .ui-dialog-titlebar-close {
+display: none;
+}
+
+#dialog_carico div{
+width: 100px;
+}
+
