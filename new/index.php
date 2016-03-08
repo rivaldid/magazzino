@@ -52,7 +52,15 @@
 $(document).ready(function() {
 
 	$("#fornitore").autocomplete({
-		source: "lib/query/contatti.php",
+		source: "lib/json/contatti.php",
+		minLength: 2
+	});
+	$("#tipi_doc").autocomplete({
+		source: "lib/json/tipi_doc.php",
+		minLength: 2
+	});
+	$("#num_doc").autocomplete({
+		source: "lib/json/num_doc.php",
 		minLength: 2
 	});
 
@@ -183,8 +191,8 @@ $(document).ready(function() {
 <div id="dialog_carico" title="Carico merce">
 	<div>
 		<span><label>Fornitore</label><input id="fornitore" name="fornitore" type="text" autofocus/></span>
-		<span><label>Tipo documento</label><input name="tipo_doc" type="text" /></span>
-		<span><label>Numero documento</label><input name="num_doc" type="text" /></span>
+		<span><label>Tipo documento</label><input id="tipi_doc" name="tipo_doc" type="text" /></span>
+		<span><label>Numero documento</label><input id="num_doc" name="num_doc" type="text" /></span>
 	</div>
 	<div>
 		<span><label>Data documento</label><input name="data_doc" class="datepicker" type="text" /></span>

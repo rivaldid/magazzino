@@ -12,5 +12,23 @@ class autocomplete extends DB {
 		}
 	}
 
+	public function tipi_doc($db) {
+
+		try {
+			return $query = $db->query("SELECT * FROM vserv_tipodoc;")->resultset();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function num_doc($db) {
+
+		try {
+			return $query = $db->query("SELECT * FROM vserv_numdoc;")->resultset();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+	
 }
 ?>

@@ -9,6 +9,17 @@ class basic extends DB {
 		}
 	}
 
+	public function get_cognome($db,$rete) {
+
+		try {
+			return $query = $db->query("SELECT get_cognome(?);")
+				->bind(1,$rete)
+				->single();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+
 	public function permission($db) {
 
 		try {
