@@ -16,7 +16,7 @@
 ?>
 
 <link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" href="<?php echo prefix ?>css/main_new.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo prefix ?>css/main.css" type="text/css" />
 
 <link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery.ui.theme.css" type="text/css" />

@@ -26,7 +26,7 @@ class autocomplete extends DB {
 	public function num_doc($db,$term) {
 
 		try {
-			return $query = $db->query("SELECT * FROM vserv_numdoc WHERE numero LIKE ?")
+			return $query = $db->query("SELECT * FROM vserv_numdoc WHERE label LIKE ?")
 				->bind(1,$term.'%')
 				->resultset();
 		} catch (PDOException $e) {
