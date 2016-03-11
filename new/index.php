@@ -53,15 +53,29 @@ $(document).ready(function() {
 
 	$("#fornitore").autocomplete({
 		source: "lib/json/contatti.php",
-		minLength: 2
+		select: function (event, ui) {
+			this.value = ui.item.label;
+			$(this).next("input").value(ui.item.value);
+			event.preventDefault();
+		}
 	});
+
 	$("#tipi_doc").autocomplete({
 		source: "lib/json/tipi_doc.php",
-		minLength: 2
+		select: function (event, ui) {
+			this.value = ui.item.label;
+			$(this).next("input").value(ui.item.value);
+			event.preventDefault();
+		}
 	});
+
 	$("#num_doc").autocomplete({
 		source: "lib/json/num_doc.php",
-		minLength: 2
+		select: function (event, ui) {
+			this.value = ui.item.label;
+			$(this).next("input").value(ui.item.value);
+			event.preventDefault();
+		}
 	});
 
 	$( ".datepicker" ).datepicker();
