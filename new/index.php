@@ -48,102 +48,7 @@
 <script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/pdfmake.min.js"></script>
 <script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/vfs_fonts.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-
-	$("#fornitore").autocomplete({
-		source: "lib/json/contatti.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
-			event.preventDefault();
-		}
-	});
-
-	$("#tipi_doc").autocomplete({
-		source: "lib/json/tipi_doc.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
-			event.preventDefault();
-		}
-	});
-
-	$("#num_doc").autocomplete({
-		source: "lib/json/num_doc.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
-			event.preventDefault();
-		}
-	});
-
-	$( ".datepicker" ).datepicker();
-
-	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
-
-	$("#dialog_carico").dialog({
-		autoOpen: false,
-		show: { effect: "blind", duration: 500 },
-		hide: {	effect: "clip", duration: 500 },
-		dialogClass: "no-close",
-		buttons: {
-			"Submit": {
-				text: "Invia",
-				click: function() {
-					$(this).dialog("close");
-				}
-			}
-		}
-	});
-
-	var table = $("#magazzino").DataTable({
-		"iDisplayLength": 25,
-        fixedHeader: { header: true, footer: true },
-		columnDefs: [ {
-            orderable: true,
-            className: "select-checkbox",
-            targets: 0
-        } ],
-		select: { style: "multi", selector: "td:first-child" }
-	});
-
-    $("#magazzino tbody")
-        .on( "mouseenter", "td", function () {
-            var colIdx = table.cell(this).index().column;
-            $( table.cells().nodes() ).removeClass("highlight");
-            $( table.column( colIdx ).nodes() ).addClass("highlight");
-        } );
-
-	new $.fn.DataTable.Buttons( table, {
-        buttons: [
-            {
-                text: "Carico",
-                action: function () {
-					$("#dialog_carico").dialog("open");
-                }
-            },
-            {
-                text: "Scarico",
-                action: function () {
-                    alert("Scarico");
-                }
-            },
-			"pdf","excel",
-            {
-                text: "Info",
-                action: function () {
-                    alert("Info");
-                }
-            }
-        ]
-	} );
-
-	table.buttons().container().insertBefore("#magazzino_filter");
-
-});
-
-</script>
+<script type="text/javascript" charset="utf8" src="<?php echo prefix ?>lib/implementazioni.js"></script>
 
 </head>
 
@@ -203,11 +108,19 @@ $(document).ready(function() {
 </div>
 
 <div id="dialog_carico" title="Carico merce">
-	<div>
-		<span><label>Fornitore</label><input id="fornitore" name="fornitore" type="text" autofocus/></span>
-		<span><label>Tipo documento</label><input id="tipi_doc" name="tipo_doc" type="text" /></span>
-		<span><label>Numero documento</label><input id="num_doc" name="num_doc" type="text" /></span>
-	</div>
+	<span>
+		<label for="fornitore">Fornitore</label>
+		<input id="fornitore" name="fornitore" autofocus/>
+	</span>
+	<span>
+		<label for="tipi_doc">Tipo documento</label>
+		<input id="tipi_doc" name="tipo_doc" />
+	</span>
+	<span>
+		<label for="num_doc">Numero documento</label>
+		<input id="num_doc" name="num_doc" />
+	</span>
+
 	<div>
 		<span><label>Data documento</label><input name="data_doc" class="datepicker" type="text" /></span>
 		<span><label>Scansione</label><input name="scansione" type="text" /></span>
