@@ -1,42 +1,60 @@
 /*! specifiche jquery/jqueryui/datatables
  * Vilardi D. per il progetto Gestione Magazzino
  */
- 
+
 $(document).ready(function() {
-	
+
 	/* 1) PREPARO I DATI */
-	
-	$("#fornitore").autocomplete({
+
+	$("#fornitore input").autocomplete({
+		appendTo: "#dialog_carico",
 		source: "json/contatti.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
+			$(this).next("input").val(ui.item.value);
 			event.preventDefault();
 		},
-		appendTo: "#dialog_carico"
+		search: function(event, ui) {
+			$('#fornitore .spinner').show();
+		},
+		response: function(event, ui) {
+			$('#fornitore .spinner').hide();
+		}
 	});
 
-	$("#tipi_doc").autocomplete({
+	$("#tipi_doc input").autocomplete({
+		appendTo: "#dialog_carico",
 		source: "json/tipi_doc.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
+			$(this).next("input").val(ui.item.value);
 			event.preventDefault();
 		},
-		appendTo: "#dialog_carico"
+		search: function(event, ui) {
+			$('#tipi_doc .spinner').show();
+		},
+		response: function(event, ui) {
+			$('#tipi_doc .spinner').hide();
+		}
 	});
 
-	$("#num_doc").autocomplete({
+	$("#num_doc input").autocomplete({
+		appendTo: "#dialog_carico",
 		source: "json/num_doc.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
-			$(this).next("input").value(ui.item.value);
+			$(this).next("input").val(ui.item.value);
 			event.preventDefault();
 		},
-		appendTo: "#dialog_carico"
+		search: function(event, ui) {
+			$('#num_doc .spinner').show();
+		},
+		response: function(event, ui) {
+			$('#num_doc .spinner').hide();
+		}
 	});
 
-	
+
 	/* 2) CONFIGURO I FORM DI INTERAZIONE */
 
 	$("#dialog_carico").dialog({
@@ -53,9 +71,9 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+
 	/* 3) CONFIGURO DATATABLE */
-	
+
 	var table = $("#magazzino").DataTable({
 		"iDisplayLength": 25,
         fixedHeader: { header: true, footer: true },
@@ -99,11 +117,11 @@ $(document).ready(function() {
 	} );
 
 	table.buttons().container().insertBefore("#magazzino_filter");
-	
+
 	/* 3) CONFIGURO JQUERYUI */
-	
+
 	$( ".datepicker" ).datepicker();
-	
+
 	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
 
 });

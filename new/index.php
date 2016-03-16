@@ -73,7 +73,7 @@
 ?>
 </div>
 
-<?php 
+<?php
 	include(prefix."lib/forms.php");
 	include(prefix."lib/footer.php");
 ?>

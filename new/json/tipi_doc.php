@@ -1,11 +1,11 @@
 <?php
-define("prefix","../../");
+define("prefix","../");
 require_once(prefix."lib/init.php");
 
 if (isset($_GET['term'])){
-	
+
 	$return = array();
-	
+
 	try {
 		$db = basic::start();
 		$return = autocomplete::tipi_doc($db,$_GET['term']);
