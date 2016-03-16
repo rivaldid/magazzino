@@ -1,5 +1,5 @@
 <?php
-define("prefix","../../");
+define("prefix","../");
 require_once(prefix."lib/init.php");
 
 if (isset($_GET['term'])){

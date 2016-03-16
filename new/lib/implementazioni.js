@@ -1,11 +1,13 @@
 /*! specifiche jquery/jqueryui/datatables
- * Vilardi Dario per il progetto Gestione Magazzino
+ * Vilardi D. per il progetto Gestione Magazzino
  */
  
 $(document).ready(function() {
 	
+	/* 1) PREPARO I DATI */
+	
 	$("#fornitore").autocomplete({
-		source: "lib/json/contatti.php",
+		source: "json/contatti.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
 			$(this).next("input").value(ui.item.value);
@@ -15,7 +17,7 @@ $(document).ready(function() {
 	});
 
 	$("#tipi_doc").autocomplete({
-		source: "lib/json/tipi_doc.php",
+		source: "json/tipi_doc.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
 			$(this).next("input").value(ui.item.value);
@@ -25,7 +27,7 @@ $(document).ready(function() {
 	});
 
 	$("#num_doc").autocomplete({
-		source: "lib/json/num_doc.php",
+		source: "json/num_doc.php",
 		select: function (event, ui) {
 			this.value = ui.item.label;
 			$(this).next("input").value(ui.item.value);
@@ -34,9 +36,8 @@ $(document).ready(function() {
 		appendTo: "#dialog_carico"
 	});
 
-	$( ".datepicker" ).datepicker();
-
-	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
+	
+	/* 2) CONFIGURO I FORM DI INTERAZIONE */
 
 	$("#dialog_carico").dialog({
 		autoOpen: false,
@@ -52,7 +53,9 @@ $(document).ready(function() {
 			}
 		}
 	});
-
+	
+	/* 3) CONFIGURO DATATABLE */
+	
 	var table = $("#magazzino").DataTable({
 		"iDisplayLength": 25,
         fixedHeader: { header: true, footer: true },
@@ -96,5 +99,11 @@ $(document).ready(function() {
 	} );
 
 	table.buttons().container().insertBefore("#magazzino_filter");
+	
+	/* 3) CONFIGURO JQUERYUI */
+	
+	$( ".datepicker" ).datepicker();
+	
+	$("input:text, input:password, input[type=email]").button().addClass("my-textfield");
 
 });

@@ -13,42 +13,8 @@
 	define("prefix","");
 	define("libnpm","/lib/node_modules/");
 	define("libbower","/lib/bower_components/");
+	include(prefix."lib/header.php");
 ?>
-
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" href="<?php echo prefix ?>css/main.css" type="text/css" />
-
-<link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>jquery-ui/themes/flick/jquery.ui.theme.css" type="text/css" />
-
-<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-jqui/css/dataTables.jqueryui.css" type="text/css" />
-
-<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-buttons-jqui/css/buttons.jqueryui.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-select-jqui/css/select.jqueryui.css" type="text/css" />
-<link rel="stylesheet" href="<?php echo libnpm ?>datatables.net-fixedheader-jqui/css/fixedHeader.jqueryui.css" type="text/css" />
-
-
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>jqueryui/jquery-ui.min.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-jqui/js/dataTables.jqueryui.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-select/js/dataTables.select.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-fixedheader/js/dataTables.fixedHeader.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/dataTables.buttons.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons-jqui/js/buttons.jqueryui.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.flash.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.html5.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libnpm ?>datatables.net-buttons/js/buttons.print.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>jszip/dist/jszip.min.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/pdfmake.min.js"></script>
-<script type="text/javascript" charset="utf8" src="<?php echo libbower ?>pdfmake/build/vfs_fonts.js"></script>
-
-<script type="text/javascript" charset="utf8" src="<?php echo prefix ?>lib/implementazioni.js"></script>
 
 </head>
 
@@ -107,39 +73,10 @@
 ?>
 </div>
 
-<div id="dialog_carico" title="Carico merce">
-	<span>
-		<label for="fornitore">Fornitore</label>
-		<input id="fornitore" name="fornitore" autofocus/>
-	</span>
-	<span>
-		<label for="tipi_doc">Tipo documento</label>
-		<input id="tipi_doc" name="tipo_doc" />
-	</span>
-	<span>
-		<label for="num_doc">Numero documento</label>
-		<input id="num_doc" name="num_doc" />
-	</span>
-
-	<div>
-		<span><label>Data documento</label><input name="data_doc" class="datepicker" type="text" /></span>
-		<span><label>Scansione</label><input name="scansione" type="text" /></span>
-	</div>
-	<div>
-		<span><label>Merce</label><input name="merce" type="text" /></span>
-		<span><label>Quantita'</label><input name="quantita" type="text" /></span>
-		<span><label>Posizione</label><input name="posizione" type="text" /></span>
-	</div>
-	<div>
-		<span><label>Data carico</label><input name="data_carico" class="datepicker" type="text" /></span>
-		<span><label>Note'</label><input name="note" type="text" /></span>
-		<span><label>ODA</label><input name="oda" type="text" /></span>
-	</div>
-</div>
-
-<div id="footer">
-<h3>&copy; Poste italiane 2016 - Specifiche tecniche</h3>
-</div>
+<?php 
+	include(prefix."lib/forms.php");
+	include(prefix."lib/footer.php");
+?>
 
 </body>
 
