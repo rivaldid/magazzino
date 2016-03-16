@@ -1,18 +1,21 @@
 <div id="dialog_carico" title="Carico merce">
-	<span id="fornitore">
-		<label for="fornitore">Fornitore</label>
-		<input name="fornitore" autofocus/>
-		<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
-	</span>
-	<span id="tipi_doc">
-		<label for="tipi_doc">Tipo documento</label>
-		<input name="tipo_doc" />
-		<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
-	</span>
-	<span id="num_doc">
-		<label for="num_doc">Numero documento</label>
-		<input name="num_doc" />
-		<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
+
+	<span class="formlimiter">
+		<span id="fornitore">
+			<label for="fornitore">Fornitore</label>
+			<input name="fornitore" autofocus/>
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
+		</span>
+		<span id="tipi_doc">
+			<label for="tipi_doc">Tipo documento</label>
+			<input name="tipo_doc" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
+		</span>
+		<span id="num_doc">
+			<label for="num_doc">Numero documento</label>
+			<input name="num_doc" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
+		</span>
 	</span>
 
 	<div>

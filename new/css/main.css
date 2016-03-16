@@ -29,7 +29,7 @@ font-weight: bold;
 
 /* *********** stili js *********** */
 
-/* applica stile alla inputbox */
+/* inputbox */
 .my-textfield {
 font: inherit;
 color: inherit;
@@ -38,16 +38,19 @@ outline: none;
 cursor: text;
 }
 
-/* nasconde il close button */
+/* close button */
 .no-close .ui-dialog-titlebar-close {
 display: none;
 }
 
-#dialog_carico div{
-width: 100px;
-}
-
+/* gif di caricamento */
 .spinner {
 display: none;
 }
+
+#dialog_carico .formlimiter{
+width: 200px;
+}
+
+
 
