@@ -33,6 +33,39 @@ class autocomplete extends DB {
 			error_handler($e->getMessage());
 		}
 	}
+
+	public function tags($db,$term) {
+
+		try {
+			return $query = $db->query("SELECT * FROM vserv_etichette WHERE label LIKE ?")
+				->bind(1,$term.'%')
+				->resultset();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+
+	public function posizioni($db,$term) {
+
+		try {
+			return $query = $db->query("SELECT * FROM vserv_posizioni WHERE label LIKE ?")
+				->bind(1,$term.'%')
+				->resultset();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
+
+		public function oda($db,$term) {
+
+		try {
+			return $query = $db->query("SELECT * FROM vserv_numoda WHERE label LIKE ?")
+				->bind(1,$term.'%')
+				->resultset();
+		} catch (PDOException $e) {
+			error_handler($e->getMessage());
+		}
+	}
 	
 }
 ?>

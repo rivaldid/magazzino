@@ -9,11 +9,6 @@ $(document).ready(function() {
 	$("#fornitore input").autocomplete({
 		appendTo: "#dialog_carico",
 		source: "json/contatti.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").val(ui.item.value);
-			event.preventDefault();
-		},
 		search: function(event, ui) {
 			$('#fornitore .spinner').show();
 		},
@@ -25,11 +20,6 @@ $(document).ready(function() {
 	$("#tipi_doc input").autocomplete({
 		appendTo: "#dialog_carico",
 		source: "json/tipi_doc.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").val(ui.item.value);
-			event.preventDefault();
-		},
 		search: function(event, ui) {
 			$('#tipi_doc .spinner').show();
 		},
@@ -41,11 +31,6 @@ $(document).ready(function() {
 	$("#num_doc input").autocomplete({
 		appendTo: "#dialog_carico",
 		source: "json/num_doc.php",
-		select: function (event, ui) {
-			this.value = ui.item.label;
-			$(this).next("input").val(ui.item.value);
-			event.preventDefault();
-		},
 		search: function(event, ui) {
 			$('#num_doc .spinner').show();
 		},
@@ -53,7 +38,42 @@ $(document).ready(function() {
 			$('#num_doc .spinner').hide();
 		}
 	});
+	
+	$("#tags").tagit({
+		allowDuplicates: false,
+		autocomplete: {
+			appendTo: "#dialog_carico",
+			source: "json/merce.php",
+			search: function(event, ui) {
+				$('#merce .spinner').show();
+			},
+			response: function(event, ui) {
+				$('#merce .spinner').hide();
+			}
+		}
+	});
 
+	$("#posizione input").autocomplete({
+		appendTo: "#dialog_carico",
+		source: "json/posizioni.php",
+		search: function(event, ui) {
+			$('#posizione .spinner').show();
+		},
+		response: function(event, ui) {
+			$('#posizione .spinner').hide();
+		}
+	});
+
+	$("#oda input").autocomplete({
+		appendTo: "#dialog_carico",
+		source: "json/oda.php",
+		search: function(event, ui) {
+			$('#oda .spinner').show();
+		},
+		response: function(event, ui) {
+			$('#oda .spinner').hide();
+		}
+	});
 
 	/* 2) CONFIGURO I FORM DI INTERAZIONE */
 
