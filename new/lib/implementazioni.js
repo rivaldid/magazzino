@@ -77,11 +77,18 @@ $(document).ready(function() {
 
 	/* 2) CONFIGURO I FORM DI INTERAZIONE */
 
+	$("#scansione").uploadFile({
+		url:"YOUR_FILE_UPLOAD_URL",
+		fileName:"myfile"
+	});
+
 	$("#dialog_carico").dialog({
 		autoOpen: false,
 		show: { effect: "blind", duration: 500 },
 		hide: {	effect: "clip", duration: 500 },
 		dialogClass: "no-close",
+		resizable: false,
+		width: "550px",
 		buttons: {
 			"Submit": {
 				text: "Invia",

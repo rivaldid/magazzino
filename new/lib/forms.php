@@ -4,18 +4,18 @@
 		<legend>Step1</legend>
 		<div id="fornitore">
 			<label for="fornitore">Fornitore</label>
-			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 			<input name="fornitore" autofocus/>
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 		</div>
 		<div id="tipi_doc">
 			<label for="tipi_doc">Tipo documento</label>
-			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 			<input name="tipo_doc" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 		</div>
 		<div id="num_doc">
 			<label for="num_doc">Numero documento</label>
-			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 			<input name="num_doc" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 		</div>
 	</fieldset>
 
@@ -25,10 +25,7 @@
 			<label for="data_doc">Data documento</label>
 			<input name="data_doc" class="datepicker" type="text" />
 		</div>
-		<div id="scansione">
-			<label for="scansione">Scansione</label>
-			<input name="scansione" type="text" />
-		</div>
+		<div id="scansione" name="scansione">Scansione</div>
 	</fieldset>
 
 	<fieldset class="ui-widget ui-widget-content">
@@ -46,8 +43,8 @@
 		</div>
 		<div id="posizione">
 			<label for="posizione">Posizione</label>
-			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 			<input name="posizione" type="text" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 		</div>
 	</fieldset>
 
@@ -63,8 +60,8 @@
 		</div>
 		<div id="oda">
 			<label for="oda">ODA</label>
-			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 			<input name="oda" type="text" />
+			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
 		</div>
 	</fieldset>
 
