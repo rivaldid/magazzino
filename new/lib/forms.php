@@ -30,13 +30,13 @@
 			<input name="scansione" type="text" />
 		</div>
 	</fieldset>
-	
+
 	<fieldset class="ui-widget ui-widget-content">
 		<legend>Step3</legend>
 		<div id="merce">
 			<label for="merce">Merce</label>
 			<img src="<?php echo prefix ?>imgs/loader.gif" alt="Loading" class="spinner">
-			<ul id="tags">
+			<ul id="tags" name="merce">
 				<li></li>
 			</ul>
 		</div>
@@ -50,7 +50,7 @@
 			<input name="posizione" type="text" />
 		</div>
 	</fieldset>
-	
+
 	<fieldset class="ui-widget ui-widget-content">
 		<legend>Step4</legend>
 		<div id="data_carico">
@@ -59,7 +59,7 @@
 		</div>
 		<div id="note">
 			<label for="note">Note</label>
-			<input name="note" type="text" />
+			<textarea name="note" rows="3" cols="21"></textarea>
 		</div>
 		<div id="oda">
 			<label for="oda">ODA</label>
@@ -67,5 +67,5 @@
 			<input name="oda" type="text" />
 		</div>
 	</fieldset>
-	
+
 </div>

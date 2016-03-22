@@ -38,7 +38,7 @@ $(document).ready(function() {
 			$('#num_doc .spinner').hide();
 		}
 	});
-	
+
 	$("#tags").tagit({
 		allowDuplicates: false,
 		autocomplete: {
